@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admission_Discharge {
+  admission_id          Int                     @id @default(autoincrement())
+  admission_date        DateTime?               @db.DateTime(0)
+  admission_mode        String?                 @db.VarChar(45)
+  status                String                  @db.VarChar(45)
+  discharge_date        DateTime?               @db.DateTime(0)
+  discharge_mode        String?                 @db.VarChar(45)
+  registration_id       Int
+  Registration          Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
+  Discharge_Medications Discharge_Medications[]
+
+  @@index([registration_id], map: "fk_Admission Discharge_Registration1_idx")
+  @@map("Admission Discharge")
+}
+
+model Appointment {
+  appointment_id   Int          @id @default(autoincrement())
+  date_appointment DateTime     @db.DateTime(0)
+  plan             String       @db.VarChar(255)
+  registration_id  Int
+  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Appointment_Registration1")
+
+  @@index([registration_id], map: "fk_Appointment_Registration1_idx")
+}
+
+model Clinic_Visit {
+  visit_id         Int          @id @default(autoincrement())
+  clinical_details String?      @db.LongText
+  registration_id  Int
+  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
+
+  @@index([registration_id], map: "fk_Clinic Visit_Registration_idx")
+  @@map("Clinic Visit")
+}
+
+model Discharge_Medications {
+  dc_meds_id          Int                 @id @default(autoincrement())
+  med_name            String              @db.VarChar(45)
+  route               String              @db.VarChar(45)
+  frequency           String              @db.VarChar(45)
+  duration            Int?                @db.TinyInt
+  interval            String?             @db.VarChar(45)
+  admission_id        Int
+  Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Discharge Medications_Admission Discharge1")
+
+  @@index([admission_id], map: "fk_Discharge Medications_Admission Discharge1_idx")
+  @@map("Discharge Medications")
+}
+
+model Registration {
+  registration_id     Int                   @id @default(autoincrement())
+  first_name          String                @db.VarChar(45)
+  last_name           String                @db.VarChar(45)
+  gender              String                @db.VarChar(45)
+  phone_number        String?               @db.VarChar(45)
+  mr_number           String?               @db.VarChar(45)
+  Admission_Discharge Admission_Discharge[]
+  Appointment         Appointment[]
+  Clinic_Visit        Clinic_Visit[]
+}

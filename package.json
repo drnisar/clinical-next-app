@@ -9,13 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "@radix-ui/themes": "^3.2.0",
     "classnames": "^2.5.1",
     "monorepo": "github:radix-ui/themes",
     "next": "15.1.6",
+    "prisma": "^6.2.1",
     "radix-ui": "^1.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
