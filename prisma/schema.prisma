@@ -63,6 +63,7 @@ model Registration {
   gender              String                @db.VarChar(45)
   phone_number        String?               @db.VarChar(45)
   mr_number           String?               @db.VarChar(45)
+  createdAt           DateTime              @default(now())
   Admission_Discharge Admission_Discharge[]
   Appointment         Appointment[]
   Clinic_Visit        Clinic_Visit[]

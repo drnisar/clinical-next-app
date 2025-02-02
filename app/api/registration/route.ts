@@ -4,7 +4,9 @@ import { registrationSchema } from "@/app/validationSchemas";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
-  const regs = await prisma.registration.findMany();
+  const regs = await prisma.registration.findMany({
+    orderBy: { createdAt: "desc" },
+  });
   if (!regs) {
     return NextResponse.json({ message: "No registration found" });
   }
