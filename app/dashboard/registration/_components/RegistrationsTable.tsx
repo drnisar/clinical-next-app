@@ -34,14 +34,9 @@ const RegistrationsTable = ({ registrations }: Props) => {
               <Table.Cell>{registration.phone_number}</Table.Cell>
               <Table.Cell>{registration.mr_number}</Table.Cell>
               <Table.Cell>
-                {new Date(registration.createdAt).toLocaleDateString()}
+                {new Date(registration.createdAt).toDateString()}
               </Table.Cell>
               <Table.Cell>
-                {/* <Link
-                  href={`/dashboard/registration/edit/${registration.registration_id}`}
-                >
-                  Edit
-                </Link> */}
                 <Button
                   size={"1"}
                   color="yellow"

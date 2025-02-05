@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -27,7 +28,10 @@ model Appointment {
   date_appointment DateTime     @db.DateTime(0)
   plan             String       @db.VarChar(255)
   registration_id  Int
-  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Appointment_Registration1")
+  notes            String?      @db.VarChar(255)
+  status           String       @db.VarChar(45)
+  type             String       @db.VarChar(45)
+  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Appointment_Registration1")
 
   @@index([registration_id], map: "fk_Appointment_Registration1_idx")
 }
@@ -67,4 +71,16 @@ model Registration {
   Admission_Discharge Admission_Discharge[]
   Appointment         Appointment[]
   Clinic_Visit        Clinic_Visit[]
+}
+
+view vw_appt_reg {
+  first_name      String @db.VarChar(45)
+  last_name       String @db.VarChar(45)
+  gender          String @db.VarChar(45)
+  appointment_id  Int    @unique
+  plan            String @db.VarChar(255)
+  status          String @db.VarChar(45)
+  registration_id Int
+
+  @@map("vw_appt_reg")
 }
