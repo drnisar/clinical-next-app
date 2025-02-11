@@ -1,5 +1,5 @@
 import { Select, TextField } from "@radix-ui/themes";
-import { UseFormRegister, Control, Controller } from "react-hook-form";
+import { Control, Controller, UseFormRegisterReturn } from "react-hook-form";
 
 export function TextInput({
   label,
@@ -8,6 +8,7 @@ export function TextInput({
   placeholder,
   errorMessage,
   defaultValue,
+  hidden,
   register,
 }: {
   label: string;
@@ -30,11 +31,12 @@ export function TextInput({
   placeholder: string;
   defaultValue?: string | number | undefined;
   errorMessage: string;
+  hidden?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register: UseFormRegister<any>;
+  register: (name: string, options?: object) => UseFormRegisterReturn<any>;
 }) {
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${hidden ? "hidden" : ""}`}>
       <div className="mb-2">
         <label htmlFor={name}>{label}</label>
       </div>
@@ -58,15 +60,7 @@ export function TextInput({
   );
 }
 
-export function SelectInput({
-  label,
-  name,
-  options,
-  control,
-  errorMessage,
-  placeholder,
-  defaultValue,
-}: {
+interface SelectInputProps {
   label: string;
   name: string;
   options: { label: string; value: string }[];
@@ -75,9 +69,19 @@ export function SelectInput({
   errorMessage?: string;
   placeholder?: string;
   defaultValue?: string;
-}) {
+}
+
+export function SelectInput({
+  label,
+  name,
+  options,
+  control,
+  errorMessage,
+  placeholder,
+  defaultValue,
+}: SelectInputProps) {
   return (
-    <div className="mb-2">
+    <div className="mb-4">
       <div className="mb-2">
         <label htmlFor={name}>{label}</label>
       </div>

@@ -29,7 +29,7 @@ model Appointment {
   plan             String       @db.VarChar(255)
   registration_id  Int
   notes            String?      @db.VarChar(255)
-  status           String       @db.VarChar(45)
+  status           String       @default("Pending") @db.VarChar(45)
   type             String       @db.VarChar(45)
   Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Appointment_Registration1")
 

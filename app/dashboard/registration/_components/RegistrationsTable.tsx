@@ -1,6 +1,6 @@
 "use client";
 import { Registration } from "@prisma/client";
-import { Button, Table } from "@radix-ui/themes";
+import { Button, Flex, Table } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -37,17 +37,32 @@ const RegistrationsTable = ({ registrations }: Props) => {
                 {new Date(registration.createdAt).toDateString()}
               </Table.Cell>
               <Table.Cell>
-                <Button
-                  size={"1"}
-                  color="yellow"
-                  onClick={() =>
-                    router.push(
-                      `/dashboard/registration/edit/${registration.registration_id}`
-                    )
-                  }
-                >
-                  Edit
-                </Button>
+                <Flex gap="2">
+                  <Button
+                    size={"1"}
+                    color="purple"
+                    variant="soft"
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/registration/${registration.registration_id}`
+                      )
+                    }
+                  >
+                    Details
+                  </Button>
+                  <Button
+                    size={"1"}
+                    color="yellow"
+                    variant="soft"
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/registration/edit/${registration.registration_id}`
+                      )
+                    }
+                  >
+                    Edit
+                  </Button>
+                </Flex>
               </Table.Cell>
             </Table.Row>
           ))}

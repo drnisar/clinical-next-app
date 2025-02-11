@@ -7,3 +7,12 @@ export const registrationSchema = z.object({
   phone_number: z.string().min(10).max(15),
   mr_number: z.string().min(1).max(20),
 });
+
+export const appointmentSchema = z.object({
+  // date_appointment: z.date().min(new Date(), "Please select a valid date"),
+  date_appointment: z.string().min(1, "Please select a valid date"),
+  plan: z.string().min(1, "Please write plan for the appointment").max(255),
+  registration_id: z.number().min(1),
+  notes: z.string().optional(),
+  type: z.string().min(1, "Please select a valid appointment type").max(255),
+});

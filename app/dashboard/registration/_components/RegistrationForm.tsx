@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
 import { SelectInput, TextInput } from "../../_components/FormComponents";
 import { Registration } from "@prisma/client";
+import { genderOptions } from "../../_components/appConstants";
 
 const validation = z.object({
   first_name: z.string().min(3),
@@ -21,11 +22,6 @@ const validation = z.object({
 
 type FormData = z.infer<typeof validation>;
 
-const genderOptions = [
-  { label: "Male", value: "male" },
-  { label: "Female", value: "female" },
-  { label: "Other", value: "other" },
-];
 const RegistrationForm = ({
   registration,
 }: {
