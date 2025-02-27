@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["views"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -37,13 +36,15 @@ model Appointment {
 }
 
 model Clinic_Visit {
-  visit_id         Int          @id @default(autoincrement())
-  clinical_details String?      @db.LongText
-  registration_id  Int
-  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
+  visit_id                Int                       @id @default(autoincrement())
+  clinical_details        String?                   @db.LongText
+  registration_id         Int
+  visit_date              DateTime?                 @db.Date
+  Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
+  ConsultationMedications ConsultationMedications[]
 
   @@index([registration_id], map: "fk_Clinic Visit_Registration_idx")
-  @@map("Clinic Visit")
+  @@map("Clinic_Visit")
 }
 
 model Discharge_Medications {
@@ -73,14 +74,29 @@ model Registration {
   Clinic_Visit        Clinic_Visit[]
 }
 
-view vw_appt_reg {
-  first_name      String @db.VarChar(45)
-  last_name       String @db.VarChar(45)
-  gender          String @db.VarChar(45)
-  appointment_id  Int    @unique
-  plan            String @db.VarChar(255)
-  status          String @db.VarChar(45)
-  registration_id Int
+model drugs_list {
+  drug_id      Int     @id @default(autoincrement())
+  generic_name String? @db.VarChar(45)
+  trade_name   String? @db.VarChar(45)
+  drug_form    String? @db.VarChar(45)
+  dose         Int?
+  unit         String? @db.VarChar(45)
+  dilution     String? @db.VarChar(255)
+  full_name    String? @db.VarChar(255)
+}
 
-  @@map("vw_appt_reg")
+model ConsultationMedications {
+  consult_med_id Int          @id @default(autoincrement())
+  visit_id       Int
+  drug_name      String       @db.VarChar(45)
+  quantity       Int?
+  drug_form      String?      @db.VarChar(45)
+  frequency      String?      @db.VarChar(45)
+  route          String?      @db.VarChar(45)
+  duration       Int?
+  interval       String?      @db.VarChar(45)
+  instructions   String?      @db.VarChar(255)
+  Clinic_Visit   Clinic_Visit @relation(fields: [visit_id], references: [visit_id], onDelete: NoAction, map: "fk_Consultation Medications_Clinic Visit1")
+
+  @@index([visit_id], map: "fk_Consultation Medications_Clinic Visit1_idx")
 }

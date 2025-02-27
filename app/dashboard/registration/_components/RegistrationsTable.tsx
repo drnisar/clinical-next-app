@@ -44,7 +44,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
                     variant="soft"
                     onClick={() =>
                       router.push(
-                        `/dashboard/registration/${registration.registration_id}`
+                        `/dashboard/registration/${registration.registration_id}?registration_id=${registration.registration_id}`
                       )
                     }
                   >

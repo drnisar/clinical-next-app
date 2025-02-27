@@ -16,3 +16,16 @@ export const appointmentSchema = z.object({
   notes: z.string().optional(),
   type: z.string().min(1, "Please select a valid appointment type").max(255),
 });
+
+export const consultationSchema = z.object({
+  history: z.string().optional(),
+  examination: z.string().optional(),
+  clinical_details: z.string().optional(),
+  records_review: z.string().optional(),
+  investigations: z.string().optional(),
+  diagnosis: z.string().optional(),
+  next_visit_plan: z.string().optional(),
+  instructions: z.string().optional(),
+  registration_id: z.number().optional(),
+  visit_date: z.string().min(1),
+});

@@ -30,7 +30,7 @@ const AppointmentsForSingleRegId = ({
         <Flex
           justify="between"
           key={appointment.appointment_id}
-          className="border-b py-2"
+          className="border-b py-2 last:border-none"
         >
           <Flex gap="3" justify="between">
             {new Date(appointment.date_appointment).toLocaleDateString("en-gb")}

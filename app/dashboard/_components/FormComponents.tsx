@@ -1,4 +1,5 @@
-import { Select, TextField } from "@radix-ui/themes";
+import { Flex, Select, TextField } from "@radix-ui/themes";
+import { ReactNode } from "react";
 import { Control, Controller, UseFormRegisterReturn } from "react-hook-form";
 
 export function TextInput({
@@ -114,5 +115,30 @@ export function SelectInput({
       </div>
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}
     </div>
+  );
+}
+
+interface InputGenericProps {
+  name: string;
+  label: string;
+  errorMessage: string;
+  children: ReactNode;
+  className?: string;
+}
+export function InputGeneric({
+  name,
+  label,
+  errorMessage,
+  children,
+  className = "",
+}: InputGenericProps) {
+  return (
+    <Flex direction="column" className={`mb-2 ${className}`}>
+      <div className="mb-2">
+        <label htmlFor={name}>{label}</label>
+      </div>
+      <div className="w-full">{children}</div>
+      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+    </Flex>
   );
 }

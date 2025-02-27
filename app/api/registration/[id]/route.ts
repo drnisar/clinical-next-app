@@ -6,16 +6,22 @@ export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const id = await params.id;
+  try {
+    const { id } = await params;
+    if (!id) {
+      return NextResponse.json({ error: "Registration ID is required" });
+    }
+    const reg = await prisma.registration.findUnique({
+      where: { registration_id: parseInt(id) },
+    });
 
-  const reg = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(id) },
-  });
-
-  if (!reg) {
-    return NextResponse.json({ error: "Registration not found" });
+    if (!reg) {
+      return NextResponse.json({ error: "Registration not found" });
+    }
+    return NextResponse.json(reg);
+  } catch (error) {
+    return NextResponse.json(error);
   }
-  return NextResponse.json(reg);
 };
 
 export const PATCH = async (

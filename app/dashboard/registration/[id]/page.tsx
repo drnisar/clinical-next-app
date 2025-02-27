@@ -3,6 +3,7 @@ import React from "react";
 import RegistrationDetailsCard from "../_components/RegistrationDetailsCard";
 import AppointmentsForSingleRegId from "../../appointments/_components/AppointmentsForSingleRegId";
 import { Box } from "@radix-ui/themes";
+import ConsultationsForSingleRegId from "../../consultation/_components/ConsultationsForSingleRegId";
 
 const RegistrationDetailsPage = async ({
   params,
@@ -20,16 +21,24 @@ const RegistrationDetailsPage = async ({
     orderBy: { date_appointment: "desc" },
   });
 
+  const consultations = await prisma.clinic_Visit.findMany({
+    where: { registration_id: parseInt(id) },
+  });
+
   if (!registration) {
     return <div>Registration not found</div>;
   }
 
   return (
     <Box className="space-y-5">
-      <RegistrationDetailsCard registration={registration} />
+      <RegistrationDetailsCard registration_id={id} />
 
       <AppointmentsForSingleRegId
         appointments={appointments}
+        registration_id={id}
+      />
+      <ConsultationsForSingleRegId
+        clinicVisits={consultations}
         registration_id={id}
       />
     </Box>
