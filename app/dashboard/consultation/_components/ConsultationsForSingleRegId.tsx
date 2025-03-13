@@ -1,6 +1,7 @@
 import { Box, Card, Flex, Heading, Link } from "@radix-ui/themes";
 import React from "react";
 import { Clinic_Visit } from "@prisma/client";
+import CreateConsultationButton from "./CreateConsultationButton";
 
 interface ClinicVisitsProps {
   clinicVisits: Clinic_Visit[];
@@ -24,12 +25,15 @@ const ConsultationsForSingleRegId = ({
         >
           Create New Consultation
         </Link>
+        <CreateConsultationButton registration_id={registration_id} />
       </Flex>
       <Box>
         {clinicVisits.map((visit) => (
           <Box key={visit.visit_id} className="p-2">
             <Flex justify={"between"}>
-              <Heading size="2">{visit.visit_date?.toString()}</Heading>
+              <Heading size="2">
+                {visit.visit_date?.toLocaleDateString("en-gb")}
+              </Heading>
               <Link
                 href={`/dashboard/consultation/${visit.visit_id}`}
                 className="btn btn-primary"

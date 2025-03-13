@@ -1,11 +1,18 @@
 "use client";
 import { Appointment } from "@prisma/client";
-import { Button } from "@radix-ui/themes";
+import { Button, Select } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Form } from "radix-ui";
-import { useForm } from "react-hook-form";
+import {
+  Controller,
+  ControllerFieldState,
+  ControllerRenderProps,
+  FieldValues,
+  useForm,
+  UseFormStateReturn,
+} from "react-hook-form";
 import { appointmentTypeOptions } from "../../_components/appConstants";
 import { SelectInput, TextInput } from "../../_components/FormComponents";
 import { appointmentSchema } from "@/app/validationSchemas";
@@ -15,6 +22,7 @@ type FormData = Omit<Appointment, "status">;
 
 const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -38,19 +46,61 @@ const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
   const onSubmit = (data: FormData) => {
     addMutation.mutate(data);
   };
+
+  const typeValueChange = (typeValue: string) => {
+    router.push(
+      "/dashboard/appointments/new?registration_id=" +
+        registration_id +
+        "&type=" +
+        typeValue
+    );
+  };
   return (
     <div>
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
-        <SelectInput
+        {/* <SelectInput
           label="Type"
           name="type"
           control={control}
           options={appointmentTypeOptions}
           errorMessage={errors.type?.message?.toString() || ""}
           placeholder="Appointment Type"
+          
+        /> */}
+
+        <Controller
+          control={control}
+          name="type"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Select.Root
+                onValueChange={(newValue) => {
+                  onChange(newValue);
+                  const params = new URLSearchParams(searchParams);
+                  params.set("type", newValue);
+                  params.set("registration_id", registration_id.toString());
+                  router.push(`?${params.toString()}`);
+                }}
+                value={value}
+              >
+                <Select.Trigger placeholder={`options`} />
+
+                <Select.Content>
+                  <Select.Group>
+                    <Select.Label>Options</Select.Label>
+                    {appointmentTypeOptions.map((option) => (
+                      <Select.Item key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Item>
+                    ))}
+                  </Select.Group>
+                </Select.Content>
+              </Select.Root>
+            );
+          }}
         />
 
         <TextInput

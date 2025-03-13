@@ -12,11 +12,13 @@ const ButtonPrintPreview = ({
   return (
     <div>
       <Button
+        variant="soft"
+        color="jade"
         onClick={() =>
           router.push("/dashboard/consultation/" + consultation_id)
         }
       >
-        Print Preview
+        Preview Consultation Report
       </Button>
     </div>
   );

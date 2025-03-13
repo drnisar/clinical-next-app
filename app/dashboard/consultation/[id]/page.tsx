@@ -1,7 +1,10 @@
 import React from "react";
 import SingleConsultationDetails from "../_components/SingleConsultationDetails";
 import prisma from "@/prisma/client";
-import { Box } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
+import ConsultantHeader from "../_components/ConsultantHeader";
+import ButtonPrintPage from "../_components/ButtonPrintPage";
+import ButtonEditPage from "../_components/ButtonEditPage";
 
 const SingleConsultationPage = async ({
   params,
@@ -23,9 +26,19 @@ const SingleConsultationPage = async ({
     return <div>Medications not found</div>;
   }
   return (
-    <Box p="5">
-      <SingleConsultationDetails meds={meds} consultation={consultation} />
-    </Box>
+    <main>
+      <header>
+        <Flex gap="2" justify="end">
+          <ButtonEditPage params={id} />
+          <ButtonPrintPage />
+        </Flex>
+        <ConsultantHeader />
+      </header>
+
+      <Box>
+        <SingleConsultationDetails meds={meds} consultation={consultation} />
+      </Box>
+    </main>
   );
 };
 

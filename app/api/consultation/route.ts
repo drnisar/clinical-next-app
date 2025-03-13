@@ -4,35 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
-  // const validation = await consultationSchema.safeParse(body);
-
-  // if (!validation.success) {
-  //   return NextResponse.json(validation.error, { status: 403 });
-  // }
-
-  const {
-    visit_date,
-    registration_id,
-    history,
-    examination,
-    investigations,
-    diagnosis,
-    instructions,
-    clinical_details,
-    next_visit_plan,
-  } = body;
+  const { visit_date, registration_id, clinical_details, instructions } = body;
   try {
     const consultation = await prisma.clinic_Visit.create({
       data: {
         visit_date: new Date(visit_date),
         registration_id: parseInt(registration_id),
-        history,
-        examination,
-        investigations,
-        diagnosis,
-        instructions,
-        clinical_details,
-        next_visit_plan,
+        instructions: instructions,
+        clinical_details: clinical_details,
       },
     });
     return NextResponse.json(consultation);

@@ -1,0 +1,37 @@
+@media print {
+  .noPrint {
+    display: none !important;
+  }
+
+  /* Hide navigation elements */
+  :global(nav),
+  :global(.rt-NavbarRoot),
+  :global(.navbar),
+  :global(header) {
+    display: none !important;
+  }
+
+  /* Hide action buttons */
+  :global(button),
+  :global(.rt-Button) {
+    display: none !important;
+  }
+
+  /* Print area styles */
+  .printArea {
+    margin: 0;
+    padding: 20px;
+    width: 100%;
+  }
+
+  /* Page break control */
+  .pageBreak {
+    page-break-before: always;
+  }
+}
+
+@media screen {
+  .printContainer {
+    margin: 20px;
+  }
+}

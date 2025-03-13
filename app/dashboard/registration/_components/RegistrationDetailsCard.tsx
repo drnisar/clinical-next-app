@@ -1,5 +1,5 @@
 "use client";
-import { Card, Flex, Text } from "@radix-ui/themes";
+import { Flex, Text } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
@@ -18,10 +18,11 @@ const RegistrationDetailsCard = ({
     queryKey: ["registration", registration_id],
     queryFn: async () => {
       const response = await axios.get(
-        `/api/registration/${registration_id}?registrtion_id=${registration_id}`
+        `/api/registration/${registration_id}?registration_id=${registration_id}`
       );
       return response.data;
     },
+    staleTime: 1000 * 60 * 5,
   });
   if (isLoading) {
     return <div>Loading...</div>;
@@ -33,19 +34,26 @@ const RegistrationDetailsCard = ({
     return <div>Registration not found</div>;
   }
   return (
-    <Card>
-      <Flex gap={"1"}>
-        <Link color="teal" href={`/dashboard/registration/${registration_id}`}>
-          {registration.first_name}
+    <Flex justify={"between"} className=" py-5 border-b">
+      <Flex gap={"5"}>
+        <Link
+          color="teal"
+          href={`/dashboard/registration/${registration_id}`}
+          className="font-bold text-gray-700"
+        >
+          {registration.first_name} {registration.last_name}
         </Link>
-        <Text as="div" weight={"bold"} color="teal" size="4">
-          {registration.last_name}
+        <Text as="div" color="gray">
+          {registration.gender.toUpperCase()}
+        </Text>
+        <Text as="div" color="gray">
+          MR Number: {registration.mr_number}
         </Text>
       </Flex>
       <Text as="div" color="gray">
         {registration.phone_number}
       </Text>
-    </Card>
+    </Flex>
   );
 };
 

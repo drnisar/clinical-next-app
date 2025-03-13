@@ -8,13 +8,9 @@ import RecentAppointmentsTable from "../_components/RecentAppointmentsTable";
 const NewAppointmentPage = async ({
   searchParams,
 }: {
-  searchParams: { registration_id: string };
+  searchParams: { registration_id: string; type: string };
 }) => {
-  const { registration_id } = await searchParams;
-
-  const registration = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(registration_id) },
-  });
+  const { registration_id, type } = await searchParams;
 
   const appointments = await prisma.appointment.findMany({
     orderBy: {
@@ -27,12 +23,14 @@ const NewAppointmentPage = async ({
       <Heading size="4">Create Appointment</Heading>
       <Flex gap="4">
         <Flex direction="column" gap="4" minWidth="450px">
-          {registration && (
-            <RegistrationDetailsCard registration={registration} />
-          )}
+          <RegistrationDetailsCard registration_id={registration_id} />
+
           <AppointmentForm registration_id={parseInt(registration_id)} />
         </Flex>
-        <RecentAppointmentsTable appointments={appointments} />
+        <RecentAppointmentsTable
+          appointments={appointments}
+          searchParams={{ type }}
+        />
       </Flex>
     </>
   );

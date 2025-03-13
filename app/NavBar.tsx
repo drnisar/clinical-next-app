@@ -15,7 +15,11 @@ const links = [
 const NavBar = () => {
   const pathname = usePathname();
   return (
-    <Flex direction={"row"} gap={"6"} className="border-b p-4 shadow-md">
+    <Flex
+      direction={"row"}
+      gap={"6"}
+      className="border-b p-4 shadow-md print:!hidden"
+    >
       <Link href={"/"}>Logo</Link>
       <Flex gap="6">
         {links.map((link) => (

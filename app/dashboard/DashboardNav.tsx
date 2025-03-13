@@ -8,7 +8,7 @@ const DashboardNav = () => {
     { name: "Appointments", href: "/dashboard/appointments" },
   ];
   return (
-    <Flex gap="4" className="border-b shadow-sm mb-4 pb-4">
+    <Flex gap="4" className="border-b shadow-sm mb-4 pb-4 print:!hidden">
       {links.map((link) => (
         <Link href={link.href} key={link.name}>
           {link.name}

@@ -40,6 +40,7 @@ model Clinic_Visit {
   clinical_details        String?                   @db.LongText
   registration_id         Int
   visit_date              DateTime?                 @db.Date
+  instructions            String?                   @db.LongText
   Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
   ConsultationMedications ConsultationMedications[]
 
@@ -79,10 +80,10 @@ model drugs_list {
   generic_name String? @db.VarChar(45)
   trade_name   String? @db.VarChar(45)
   drug_form    String? @db.VarChar(45)
-  dose         Int?
   unit         String? @db.VarChar(45)
   dilution     String? @db.VarChar(255)
   full_name    String? @db.VarChar(255)
+  strength     String? @db.VarChar(45)
 }
 
 model ConsultationMedications {
@@ -99,4 +100,10 @@ model ConsultationMedications {
   Clinic_Visit   Clinic_Visit @relation(fields: [visit_id], references: [visit_id], onDelete: NoAction, map: "fk_Consultation Medications_Clinic Visit1")
 
   @@index([visit_id], map: "fk_Consultation Medications_Clinic Visit1_idx")
+}
+
+model medsTemplates {
+  medsTemplates_id  Int    @id @default(autoincrement())
+  templateName      String @db.VarChar(45)
+  medsArrayTemplate Json
 }

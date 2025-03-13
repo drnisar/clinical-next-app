@@ -1,0 +1,76 @@
+.markdownContent h1 {
+  @apply h-1 font-bold mb-6;
+}
+.markdownContent h2 {
+  @apply h-2 font-bold mb-5;
+}
+.markdownContent h3 {
+  @apply h-3 font-bold mb-4;
+}
+.markdownContent h4 {
+  @apply h-4 font-bold mb-3;
+}
+.markdownContent h5 {
+  @apply h-5 font-bold mb-2;
+}
+.markdownContent h6 {
+  @apply h-6 font-bold mb-1;
+}
+
+.markdownContent p {
+  @apply text-sm ml-3 break-after-all;
+}
+
+/* .markdownContent p + p {
+  margin-top: 1rem !important;
+  @apply break-all;
+} */
+
+.markdownContent ul {
+  @apply list-disc ml-3 text-sm;
+  /* list-style-type: circle !important;
+  margin-left: 1rem !important;
+  margin-bottom: 1rem !important; */
+}
+
+.markdownContent ul li {
+  /* font-size: 0.825rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 0.5rem !important; */
+}
+
+.markdownContent ol {
+  @apply list-decimal ml-3 text-sm;
+}
+
+.markdownContent ol li {
+  @apply ml-3;
+}
+
+.markdownContent blockquote {
+  font-size: 0.825rem !important;
+  font-style: italic !important;
+  font-weight: bold !important;
+  line-height: 1.5 !important;
+  margin-bottom: 1rem !important;
+  display: block !important;
+  white-space: pre-line !important;
+  border-left: 4px solid #f0f0f0 !important;
+  padding-left: 1rem !important;
+}
+
+.markdownContent a {
+  color: #007bff !important;
+  text-decoration: none !important;
+}
+
+.markdownContent a:hover {
+  text-decoration: underline !important;
+}
+
+@media print {
+  .markdownContent {
+    font-size: 12pt !important;
+  }
+}
