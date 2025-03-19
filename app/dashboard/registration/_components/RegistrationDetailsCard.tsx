@@ -1,35 +1,13 @@
 "use client";
+import { Registration } from "@prisma/client";
 import { Flex, Text } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Link from "next/link";
 import React from "react";
 
-const RegistrationDetailsCard = ({
-  registration_id,
-}: {
-  registration_id: string;
-}) => {
-  const {
-    data: registration,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["registration", registration_id],
-    queryFn: async () => {
-      const response = await axios.get(
-        `/api/registration/${registration_id}?registration_id=${registration_id}`
-      );
-      return response.data;
-    },
-    staleTime: 1000 * 60 * 5,
-  });
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+interface Props {
+  registration: Registration;
+}
+const RegistrationDetailsCard = ({ registration }: Props) => {
   if (!registration) {
     return <div>Registration not found</div>;
   }
@@ -38,7 +16,7 @@ const RegistrationDetailsCard = ({
       <Flex gap={"5"}>
         <Link
           color="teal"
-          href={`/dashboard/registration/${registration_id}`}
+          href={`/dashboard/registration/${registration.registration_id}`}
           className="font-bold text-gray-700"
         >
           {registration.first_name} {registration.last_name}

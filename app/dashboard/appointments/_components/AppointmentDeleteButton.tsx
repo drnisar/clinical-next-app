@@ -1,6 +1,6 @@
 "use client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -11,10 +11,12 @@ const AppointmentDeleteButton = ({
   appointment_id: number;
 }) => {
   const router = useRouter();
+
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: () => axios.delete("/api/appointment/" + appointment_id),
     onSuccess: () => {
-      alert("Appointment deleted");
+      queryClient.invalidateQueries({ queryKey: ["appointments"] });
       router.refresh();
     },
     onError: (error) => {

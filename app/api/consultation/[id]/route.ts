@@ -40,8 +40,16 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 }
 
 export async function PATCH(req: NextRequest, { params: { id } }: Props) {
-  const { registration_id, clinical_details, visit_date, instructions } =
-    await req.json();
+  const {
+    registration_id,
+    clinical_details,
+    history,
+    examination,
+    investigations,
+    diagnosis,
+    visit_date,
+    instructions,
+  } = await req.json();
 
   const consultation = await prisma.clinic_Visit.findUnique({
     where: { visit_id: parseInt(id) },
@@ -59,6 +67,10 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
       data: {
         registration_id: parseInt(registration_id),
         clinical_details,
+        history,
+        examination,
+        investigations,
+        diagnosis,
         instructions,
         visit_date,
       },

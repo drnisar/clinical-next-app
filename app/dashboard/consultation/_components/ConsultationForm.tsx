@@ -2,7 +2,7 @@
 import { consultationSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Clinic_Visit } from "@prisma/client";
-import { Button, Card, TextField } from "@radix-ui/themes";
+import { Box, Button, Flex, TextField } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { Controller, useForm } from "react-hook-form";
@@ -66,42 +66,45 @@ const ConsultationForm = ({
   const isLoading = addmutation.isPending || editPending;
 
   return (
-    <Card className="p-5">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField.Root
-          type="number"
-          defaultValue={registration_id}
-          {...register("registration_id", { valueAsNumber: true })}
-          className="invisible"
-          size="1"
-        />
-
-        <InputGeneric
-          name={"clinical_details"}
-          label={"Clinical Details"}
-          errorMessage={""}
-        >
-          <Controller
-            name="clinical_details"
-            control={control}
-            defaultValue={
-              consultation?.clinical_details ?? "## Clinical Details"
-            }
-            render={({ field }) => (
-              <SimpleMDE
-                placeholder="Enter Clinical Details ..."
-                {...field}
-                value={field.value || ""}
-              />
-            )}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Flex className="p-5">
+        <Box minWidth={"xl"}>
+          <TextField.Root
+            type="number"
+            defaultValue={registration_id}
+            {...register("registration_id", { valueAsNumber: true })}
+            className="invisible"
+            size="1"
           />
-        </InputGeneric>
 
-        <Button type="submit" className="btn btn-primary" disabled={isLoading}>
-          Save
-        </Button>
-      </form>
-    </Card>
+          <InputGeneric name={"clinical_details"} label={""} errorMessage={""}>
+            <Controller
+              name="clinical_details"
+              control={control}
+              defaultValue={
+                consultation?.clinical_details ?? "## Clinical Details"
+              }
+              render={({ field }) => (
+                <SimpleMDE
+                  placeholder="Enter Clinical Details ..."
+                  {...field}
+                  value={field.value || ""}
+                />
+              )}
+            />
+          </InputGeneric>
+        </Box>
+        <Box width={"50px"}>
+          <Button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isLoading}
+          >
+            Save
+          </Button>
+        </Box>
+      </Flex>
+    </form>
   );
 };
 

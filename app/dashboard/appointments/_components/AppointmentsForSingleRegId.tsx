@@ -16,7 +16,7 @@ const AppointmentsForSingleRegId = ({
     <Card>
       <Flex justify="between">
         <Heading size="2">
-          Appointments {appointments.length === 0 && `(No appointments found)`}
+          Appointments {!appointments && `(No appointments found)`}
         </Heading>
         <Link
           href={`/dashboard/appointments/new?registration_id=${registration_id}`}
@@ -26,36 +26,39 @@ const AppointmentsForSingleRegId = ({
         </Link>
       </Flex>
 
-      {appointments.map((appointment) => (
-        <Flex
-          justify="between"
-          key={appointment.appointment_id}
-          className="border-b py-2 last:border-none"
-        >
-          <Flex gap="3" justify="between">
-            {new Date(appointment.date_appointment).toLocaleDateString("en-gb")}
-            <Flex direction="column">
-              <Flex gap="3">
-                <Text weight="bold">Plan</Text>
-                <Text color="gray">{appointment.plan}</Text>
-              </Flex>
-              <Flex gap="3">
-                <Text weight="bold">Status</Text>
-                <Text color="gray">{appointment.status}</Text>
-              </Flex>
-              <Flex gap="3">
-                <Text weight="bold">Notes</Text>
-                <Text color="gray">{appointment.notes}</Text>
+      {appointments &&
+        appointments.map((appointment) => (
+          <Flex
+            justify="between"
+            key={appointment.appointment_id}
+            className="border-b py-2 last:border-none"
+          >
+            <Flex gap="3" justify="between">
+              {new Date(appointment.date_appointment).toLocaleDateString(
+                "en-gb"
+              )}
+              <Flex direction="column">
+                <Flex gap="3">
+                  <Text weight="bold">Plan</Text>
+                  <Text color="gray">{appointment.plan}</Text>
+                </Flex>
+                <Flex gap="3">
+                  <Text weight="bold">Status</Text>
+                  <Text color="gray">{appointment.status}</Text>
+                </Flex>
+                <Flex gap="3">
+                  <Text weight="bold">Notes</Text>
+                  <Text color="gray">{appointment.notes}</Text>
+                </Flex>
               </Flex>
             </Flex>
+            <Flex>
+              <AppointmentDeleteButton
+                appointment_id={appointment.appointment_id}
+              />
+            </Flex>
           </Flex>
-          <Flex>
-            <AppointmentDeleteButton
-              appointment_id={appointment.appointment_id}
-            />
-          </Flex>
-        </Flex>
-      ))}
+        ))}
     </Card>
   );
 };

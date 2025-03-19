@@ -22,10 +22,11 @@ const ConsultantHeader = () => {
         <Image
           src={KTH_logo}
           width={75}
+          height={75}
           alt={"kth logo"}
           className="object-contain"
         />
-        <Image src={kth_name} width={150} alt={"kth name"} />
+        <Image src={kth_name} width={150} height={75} alt={"kth name"} />
       </Flex>
     </Flex>
   );

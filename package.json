@@ -21,6 +21,10 @@
     "@tiptap/starter-kit": "^2.11.5",
     "axios": "^1.7.9",
     "classnames": "^2.5.1",
+    "datatables.net-dt": "^2.2.2",
+    "datatables.net-react": "^1.0.0",
+    "datatables.net-responsive-dt": "^3.0.4",
+    "datatables.net-select-dt": "^3.0.0",
     "easymde": "^2.19.0",
     "monorepo": "github:radix-ui/themes",
     "next": "15.1.6",
@@ -40,6 +44,7 @@
     "react-select": "^5.10.1",
     "react-simplemde-editor": "^5.2.0",
     "react-tabs": "^6.1.0",
+    "undefined": "^0.1.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

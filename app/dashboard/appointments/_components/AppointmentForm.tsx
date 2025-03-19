@@ -1,22 +1,15 @@
 "use client";
+import { appointmentSchema } from "@/app/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Appointment } from "@prisma/client";
 import { Button, Select } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Form } from "radix-ui";
-import {
-  Controller,
-  ControllerFieldState,
-  ControllerRenderProps,
-  FieldValues,
-  useForm,
-  UseFormStateReturn,
-} from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { appointmentTypeOptions } from "../../_components/appConstants";
-import { SelectInput, TextInput } from "../../_components/FormComponents";
-import { appointmentSchema } from "@/app/validationSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { TextInput } from "../../_components/FormComponents";
 
 type FormData = Omit<Appointment, "status">;
 
@@ -47,14 +40,14 @@ const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
     addMutation.mutate(data);
   };
 
-  const typeValueChange = (typeValue: string) => {
-    router.push(
-      "/dashboard/appointments/new?registration_id=" +
-        registration_id +
-        "&type=" +
-        typeValue
-    );
-  };
+  // const typeValueChange = (typeValue: string) => {
+  //   router.push(
+  //     "/dashboard/appointments/new?registration_id=" +
+  //       registration_id +
+  //       "&type=" +
+  //       typeValue
+  //   );
+  // };
   return (
     <div>
       <Form.Root

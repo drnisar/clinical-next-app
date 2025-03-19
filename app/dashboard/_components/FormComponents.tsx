@@ -134,7 +134,7 @@ export function InputGeneric({
 }: InputGenericProps) {
   return (
     <Flex direction="column" className={`mb-2 ${className}`}>
-      <div className="mb-2">
+      <div className="mb-2 ">
         <label htmlFor={name}>{label}</label>
       </div>
       <div className="w-full">{children}</div>

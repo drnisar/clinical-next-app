@@ -31,7 +31,7 @@ const RegistrationDetailsPage = async ({
 
   return (
     <Box className="space-y-5">
-      <RegistrationDetailsCard registration_id={id} />
+      <RegistrationDetailsCard registration={registration} />
 
       <AppointmentsForSingleRegId
         appointments={appointments}

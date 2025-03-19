@@ -25,6 +25,14 @@ const SingleConsultationPage = async ({
   if (!meds) {
     return <div>Medications not found</div>;
   }
+
+  const registration = await prisma.registration.findUnique({
+    where: { registration_id: consultation.registration_id },
+  });
+
+  if (!registration) {
+    return <div>Registration not found</div>;
+  }
   return (
     <main>
       <header>
@@ -36,7 +44,11 @@ const SingleConsultationPage = async ({
       </header>
 
       <Box>
-        <SingleConsultationDetails meds={meds} consultation={consultation} />
+        <SingleConsultationDetails
+          registration={registration}
+          meds={meds}
+          consultation={consultation}
+        />
       </Box>
     </main>
   );

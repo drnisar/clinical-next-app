@@ -41,6 +41,10 @@ model Clinic_Visit {
   registration_id         Int
   visit_date              DateTime?                 @db.Date
   instructions            String?                   @db.LongText
+  history                 String?                   @db.LongText
+  examination             String?                   @db.LongText
+  investigations          String?                   @db.LongText
+  diagnosis               String?                   @db.LongText
   Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
   ConsultationMedications ConsultationMedications[]
 

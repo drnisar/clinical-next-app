@@ -1,5 +1,6 @@
 import prisma from "@/prisma/client";
 import AppointmentsTable from "./_components/AppointmentsTable";
+import AppointmentsDatatable from "./_components/AppointmentsDatatable";
 
 const AppointmentsPage = async () => {
   try {
