@@ -16,15 +16,13 @@ const ConsultationAppointmentsTable = ({
     return <div>No appointments found</div>;
   }
   return (
-    <Table.Root>
+    <Table.Root size="1" variant="surface">
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Date</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
+          {/* <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell> */}
           <Table.ColumnHeaderCell>Plan</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Notes</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -37,11 +35,11 @@ const ConsultationAppointmentsTable = ({
                 )?.first_name
               }
             </Table.Cell>
-            <Table.Cell>{appointment.date_appointment.toString()}</Table.Cell>
-            <Table.Cell>{appointment.type}</Table.Cell>
+            <Table.Cell>
+              {appointment.date_appointment.toString().slice(0, 10)}
+            </Table.Cell>
+            {/* <Table.Cell>{appointment.type}</Table.Cell> */}
             <Table.Cell>{appointment.plan} </Table.Cell>
-            <Table.Cell>{appointment.notes}</Table.Cell>
-            <Table.Cell>{appointment.status}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

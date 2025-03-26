@@ -1,4 +1,5 @@
-import { Box, Card, Flex, Heading, Link } from "@radix-ui/themes";
+import { Box, Button, Card, Flex, Heading } from "@radix-ui/themes";
+import Link from "next/link";
 import React from "react";
 import { Clinic_Visit } from "@prisma/client";
 import CreateConsultationButton from "./CreateConsultationButton";
@@ -22,6 +23,7 @@ const ConsultationsForSingleRegId = ({
         <Link
           href={`/dashboard/consultation/new?registration_id=${registration_id}`}
           className="btn btn-primary items-end"
+          prefetch
         >
           Create New Consultation
         </Link>
@@ -34,12 +36,26 @@ const ConsultationsForSingleRegId = ({
               <Heading size="2">
                 {visit.visit_date?.toLocaleDateString("en-gb")}
               </Heading>
-              <Link
-                href={`/dashboard/consultation/${visit.visit_id}`}
-                className="btn btn-primary"
-              >
-                View
-              </Link>
+              <Flex gap="2">
+                <Link
+                  href={`/dashboard/consultation/edit/${visit.visit_id}`}
+                  className="btn btn-primary"
+                  prefetch
+                >
+                  <Button size="1" color="red" variant="soft">
+                    Edit
+                  </Button>
+                </Link>
+                <Link
+                  href={`/dashboard/consultation/${visit.visit_id}`}
+                  className="btn btn-primary"
+                  prefetch
+                >
+                  <Button size="1" color="blue" variant="soft">
+                    View
+                  </Button>
+                </Link>
+              </Flex>
             </Flex>
             <p>{visit.clinical_details}</p>
           </Box>

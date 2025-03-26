@@ -1,8 +1,8 @@
 "use client";
 import { Registration } from "@prisma/client";
 import { Button, Flex, Table } from "@radix-ui/themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 interface Props {
   registrations: Registration[];
@@ -38,18 +38,14 @@ const RegistrationsTable = ({ registrations }: Props) => {
               </Table.Cell>
               <Table.Cell>
                 <Flex gap="2">
-                  <Button
-                    size={"1"}
-                    color="purple"
-                    variant="soft"
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/registration/${registration.registration_id}?registration_id=${registration.registration_id}`
-                      )
-                    }
+                  <Link
+                    href={`/dashboard/registration/${registration.registration_id}`}
+                    prefetch={true}
                   >
-                    Details
-                  </Button>
+                    <Button size={"1"} color="grass" variant="soft">
+                      Details
+                    </Button>
+                  </Link>
                   <Button
                     size={"1"}
                     color="yellow"

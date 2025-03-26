@@ -4,11 +4,17 @@ import MedsForm from "../../_components/MedsForm";
 import ButtonPrintPreview from "../../_components/ButtonPrintPreview";
 import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
 import { Flex, Tabs } from "@radix-ui/themes";
-import ConsultationAppointmentForm from "../../_components/ConsultationAppointmentForm";
 import ConsultationTabs from "../../_components/ConsultationTabs";
 import { Instructions } from "../../_components/ConsultationNotes";
+import AppointmentsTab from "../../_components/AppointmentsTab";
 
-const ConsultationEditPage = async ({ params }: { params: { id: string } }) => {
+const ConsultationEditPage = async ({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { type: string };
+}) => {
   const { id } = await params;
   const consultation = await prisma.clinic_Visit.findUnique({
     where: {
@@ -44,20 +50,12 @@ const ConsultationEditPage = async ({ params }: { params: { id: string } }) => {
           <Tabs.Trigger value="appointment">Appointment</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="consultation">
-          {/* <ConsultationForm
-            registration_id={consultation?.registration_id}
-            consultation={consultation}
-          /> */}
           <ConsultationTabs visit_id={parseInt(id)} />
         </Tabs.Content>
         <Tabs.Content value="medications">
           <MedsForm visit_id={parseInt(id)} />
         </Tabs.Content>
         <Tabs.Content value="instructions">
-          {/* <ConsultationInstructionsForm
-            consultation={consultation}
-            registration_id={consultation.registration_id}
-          /> */}
           <Instructions
             defaultValue={consultation.instructions || ""}
             visit_id={consultation.visit_id}
@@ -65,16 +63,13 @@ const ConsultationEditPage = async ({ params }: { params: { id: string } }) => {
           />
         </Tabs.Content>
         <Tabs.Content value="appointment">
-          <ConsultationAppointmentForm
-            registration_id={consultation.registration_id}
+          <AppointmentsTab
+            registration_id={registration.registration_id}
+            visit_id={parseInt(id)}
+            type={searchParams.type}
           />
         </Tabs.Content>
       </Tabs.Root>
-      {/* <ConsultationForm
-        registration_id={consultation?.registration_id}
-        consultation={consultation}
-      />
-      <MedsForm visit_id={parseInt(id)} /> */}
     </>
   );
 };

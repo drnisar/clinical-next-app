@@ -9,14 +9,16 @@ import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ConsultationAppointmentsTable from "./ConsultationAppointmentsTable";
-import AppointmentsForSingleRegId from "../../appointments/_components/AppointmentsForSingleRegId";
+import DataListAppointmentSingleVisitId from "./DataListAppointmentSingleVisitId";
 
-type FormData = Omit<Appointment, "registration_id">;
+type FormData = Omit<Appointment, "registration_id" | "visit_id">;
 
 const ConsultationAppointmentForm = ({
   registration_id,
+  visit_id,
 }: {
   registration_id: number;
+  visit_id: number;
 }) => {
   const {
     register,
@@ -27,7 +29,6 @@ const ConsultationAppointmentForm = ({
   } = useForm<FormData>();
 
   const [type, setType] = useState("");
-  const [date, setDate] = useState("");
 
   //   const router = useRouter();
 
@@ -58,26 +59,24 @@ const ConsultationAppointmentForm = ({
     },
   });
 
+  const filteredAppointments = appointmentsData?.filter(
+    (appointment: Appointment) => appointment.type === type
+  );
+
   const onSubmit = (data: FormData) => {
-    const submissionData = { registration_id, ...data };
+    const submissionData = { visit_id, registration_id, ...data };
     addMutate(submissionData);
+    // console.log(submissionData);
   };
 
   const onReset = () => {
-    setDate("");
     setType("");
     reset();
   };
   return (
     <>
-      <Flex>
-        <Flex gap="2" direction="column" p="5">
-          <Box>
-            <AppointmentsForSingleRegId
-              appointments={appointmentsData}
-              registration_id={registration_id.toString()}
-            />
-          </Box>
+      <Flex justify="between">
+        <Flex gap="2" p="5">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <InputGeneric
               name="type"
@@ -124,7 +123,6 @@ const ConsultationAppointmentForm = ({
               <TextField.Root
                 type="date"
                 {...register("date_appointment")}
-                onChange={(e) => setDate(e.target.value)}
                 className="w-full"
               />
             </InputGeneric>
@@ -162,27 +160,10 @@ const ConsultationAppointmentForm = ({
               </Button>
             </Flex>
           </Form>
+          <Box>{/* <DataListAppointmentSingleVisitId /> */}</Box>
         </Flex>
         <ConsultationAppointmentsTable
-          appointments={
-            (appointmentsData &&
-              appointmentsData.filter((appointment: FormData) => {
-                const appointmentType = type;
-                const appointmentDate = date;
-
-                if (!appointmentType || !appointmentDate) return false;
-
-                const isSameType = appointment.type === appointmentType;
-                const isSameDate =
-                  new Date(appointment.date_appointment)
-                    .toISOString()
-                    .split("T")[0] ===
-                  new Date(appointmentDate).toISOString().split("T")[0];
-
-                return isSameType && isSameDate;
-              })) ||
-            []
-          }
+          appointments={filteredAppointments}
           registrations={registrationsData}
         />
       </Flex>

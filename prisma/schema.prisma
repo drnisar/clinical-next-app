@@ -30,6 +30,7 @@ model Appointment {
   notes            String?      @db.VarChar(255)
   status           String       @default("Pending") @db.VarChar(45)
   type             String       @db.VarChar(45)
+  visit_id         Int?
   Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Appointment_Registration1")
 
   @@index([registration_id], map: "fk_Appointment_Registration1_idx")

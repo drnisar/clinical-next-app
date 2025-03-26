@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -12,6 +12,16 @@ interface Props {
 
 const CreateConsultationButton = ({ registration_id }: Props) => {
   const router = useRouter();
+
+  const { data: todaysConsults } = useQuery({
+    queryKey: ["todaysConsults"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "/api/consultation/today/" + registration_id
+      );
+      return response.data;
+    },
+  });
 
   const addMutation = useMutation({
     mutationFn: async () => {
@@ -29,7 +39,18 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
     },
   });
   const createConsult = async () => {
-    addMutation.mutate();
+    if (todaysConsults) {
+      if (todaysConsults.length > 0) {
+        alert(
+          "Consultation already created for today" +
+            JSON.stringify(todaysConsults)
+        );
+      } else {
+        addMutation.mutate();
+      }
+    } else {
+      addMutation.mutate();
+    }
   };
   return (
     <Button

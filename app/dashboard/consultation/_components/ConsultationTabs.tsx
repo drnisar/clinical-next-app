@@ -1,6 +1,6 @@
 "use client";
 import { Clinic_Visit } from "@prisma/client";
-import { Tabs } from "@radix-ui/themes";
+import { Spinner, Tabs } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {
@@ -21,7 +21,7 @@ const ConsultationTabs = ({ visit_id }: { visit_id: number }) => {
     },
     staleTime: 1000 * 60 * 60,
   });
-  if (!consultation) return <div>No consultation Found</div>;
+  if (!consultation) return <Spinner />;
   return (
     <>
       <Tabs.Root defaultValue="history">

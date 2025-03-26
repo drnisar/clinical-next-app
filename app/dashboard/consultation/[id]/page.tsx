@@ -33,6 +33,11 @@ const SingleConsultationPage = async ({
   if (!registration) {
     return <div>Registration not found</div>;
   }
+
+  const appointment = await prisma.appointment.findFirst({
+    where: { visit_id: parseInt(id) },
+  });
+
   return (
     <main>
       <header>
@@ -48,6 +53,7 @@ const SingleConsultationPage = async ({
           registration={registration}
           meds={meds}
           consultation={consultation}
+          appointment={appointment || null}
         />
       </Box>
     </main>
