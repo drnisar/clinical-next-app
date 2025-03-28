@@ -4,6 +4,7 @@ import RegistrationDetailsCard from "../_components/RegistrationDetailsCard";
 import AppointmentsForSingleRegId from "../../appointments/_components/AppointmentsForSingleRegId";
 import { Box } from "@radix-ui/themes";
 import ConsultationsForSingleRegId from "../../consultation/_components/ConsultationsForSingleRegId";
+import AdmissionsForSingleRegId from "../../admissions/_components/AdmissionsForSingleRegId";
 
 const RegistrationDetailsPage = async ({
   params,
@@ -29,6 +30,10 @@ const RegistrationDetailsPage = async ({
     return <div>Registration not found</div>;
   }
 
+  const admissions = await prisma.admission_Discharge.findMany({
+    where: { registration_id: parseInt(id) },
+  });
+
   return (
     <Box className="space-y-5">
       <RegistrationDetailsCard registration={registration} />
@@ -40,6 +45,10 @@ const RegistrationDetailsPage = async ({
       <ConsultationsForSingleRegId
         clinicVisits={consultations}
         registration_id={id}
+      />
+      <AdmissionsForSingleRegId
+        admissions={admissions}
+        registration_id={parseInt(id)}
       />
     </Box>
   );

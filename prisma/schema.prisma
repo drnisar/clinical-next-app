@@ -15,6 +15,9 @@ model Admission_Discharge {
   discharge_date        DateTime?               @db.DateTime(0)
   discharge_mode        String?                 @db.VarChar(45)
   registration_id       Int
+  bed_number            Int?
+  ward                  String?                 @db.VarChar(45)
+  admission_plan        String?                 @db.LongText
   Registration          Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
   Discharge_Medications Discharge_Medications[]
 
