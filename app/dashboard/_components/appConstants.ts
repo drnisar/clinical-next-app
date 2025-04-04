@@ -251,3 +251,20 @@ export const drugUnitsForMedEntry = [
   { label: "IU", value: "IU" },
   { label: "mg/5 ml", value: "mg/5 ml" },
 ];
+
+export const admissionModes = [
+  { label: "SEHAT CARD", value: "SEHAT CARD" },
+  { label: "IBP", value: "IBP" },
+  { label: "REGULAR", value: "REGULAR" },
+  { label: "EMERGENCY", value: "EMERGENCY" },
+];
+
+export const dischargeStatuses = [{ label: "DISCHARGED", value: "DISCHARGED" }];
+
+export const dischargeModes = [
+  { label: "NORMAL", value: "NORMAL" },
+  { label: "LAMA", value: "LAMA" },
+  { label: "DEATH", value: "DEATH" },
+  { label: "TRANSFER", value: "TRANSFER" },
+  { label: "OTHER", value: "OTHER" },
+];

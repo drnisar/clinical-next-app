@@ -8,18 +8,25 @@ datasource db {
 }
 
 model Admission_Discharge {
-  admission_id          Int                     @id @default(autoincrement())
-  admission_date        DateTime?               @db.DateTime(0)
-  admission_mode        String?                 @db.VarChar(45)
-  status                String                  @db.VarChar(45)
-  discharge_date        DateTime?               @db.DateTime(0)
-  discharge_mode        String?                 @db.VarChar(45)
-  registration_id       Int
-  bed_number            Int?
-  ward                  String?                 @db.VarChar(45)
-  admission_plan        String?                 @db.LongText
-  Registration          Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
-  Discharge_Medications Discharge_Medications[]
+  admission_id            Int                     @id @default(autoincrement())
+  admission_date          DateTime?               @db.DateTime(0)
+  admission_mode          String?                 @db.VarChar(45)
+  status                  String                  @db.VarChar(45)
+  discharge_date          DateTime?               @db.DateTime(0)
+  discharge_mode          String?                 @db.VarChar(45)
+  registration_id         Int
+  bed_number              Int?
+  ward                    String?                 @db.VarChar(45)
+  admission_plan          String?                 @db.LongText
+  discharge_summary       String?                 @db.LongText
+  hospital_investigations String?                 @db.LongText
+  hospital_medications    String?                 @db.LongText
+  hospital_procedures     String?                 @db.LongText
+  discharge_medications   Json?
+  discharge_instructions  String?                 @db.LongText
+  medical_leave           String?                 @db.LongText
+  Registration            Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
+  Discharge_Medications   Discharge_Medications[]
 
   @@index([registration_id], map: "fk_Admission Discharge_Registration1_idx")
   @@map("Admission Discharge")

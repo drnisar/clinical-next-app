@@ -18,11 +18,18 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
         </Heading>
 
         {isCurrentlyAdmitted ? (
-          <Tooltip content="Patient is currently admitted">
-            <Button size="2" color="gray" variant="soft" disabled>
-              Create New Admission
-            </Button>
-          </Tooltip>
+          //   <Tooltip content="Patient is currently admitted">
+          //     <Button size="2" color="gray" variant="soft" disabled>
+          //       Create New Admission
+          //     </Button>
+          //   </Tooltip>
+          <Link
+            href={`/dashboard/discharge/${admissions[0].admission_id}`}
+            className="btn btn-primary items-end"
+            prefetch
+          >
+            Create Discharge Summary
+          </Link>
         ) : (
           <Link
             href={`/dashboard/admissions/new?registration_id=${registration_id}`}

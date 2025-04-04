@@ -6,6 +6,7 @@ import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { admissionModes } from "../../_components/appConstants";
 
 type admission = Admission_Discharge;
 
@@ -56,8 +57,11 @@ const AdmissionForm = ({ registration_id }: { registration_id: number }) => {
                     {value}
                   </Select.Trigger>
                   <Select.Content>
-                    <Select.Item value="In-Patient">In-Patient</Select.Item>
-                    <Select.Item value="Out-Patient">Out-Patient</Select.Item>
+                    {admissionModes.map((mode) => (
+                      <Select.Item key={mode.value} value={mode.value}>
+                        {mode.label}
+                      </Select.Item>
+                    ))}
                   </Select.Content>
                 </Select.Root>
               )}
