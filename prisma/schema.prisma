@@ -21,10 +21,12 @@ model Admission_Discharge {
   discharge_summary       String?                 @db.LongText
   hospital_investigations String?                 @db.LongText
   hospital_medications    String?                 @db.LongText
-  hospital_procedures     String?                 @db.LongText
+  instructions            String?                 @db.LongText
   discharge_medications   Json?
   discharge_instructions  String?                 @db.LongText
   medical_leave           String?                 @db.LongText
+  diagnostic_procedures   String?                 @db.LongText
+  therapeutic_procedures  String?                 @db.LongText
   Registration            Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
   Discharge_Medications   Discharge_Medications[]
 

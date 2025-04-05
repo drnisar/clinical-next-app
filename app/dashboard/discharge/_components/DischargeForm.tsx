@@ -10,7 +10,7 @@ import {
   dischargeStatuses,
 } from "../../_components/appConstants";
 import { InputGeneric } from "../../_components/FormComponents";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type discharge = Admission_Discharge;
 

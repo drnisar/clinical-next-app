@@ -16,7 +16,7 @@ const NewDischargePage = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission={admission} />
+      <DischargeTabs admission_id={parseInt(params.id)} />
     </>
   );
 };

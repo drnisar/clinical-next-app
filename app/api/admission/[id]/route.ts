@@ -1,15 +1,22 @@
 import prisma from "@/prisma/client";
-import { Admission_Discharge } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-type discharge = Admission_Discharge;
 
 export const PATCH = async (
   req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   //   const { id } = await params;
-  const { discharge_date, discharge_mode, status } = await req.json();
+  const {
+    discharge_date,
+    discharge_mode,
+    status,
+    discharge_summary,
+    hospital_investigations,
+    diagnostic_procedures,
+    therapeutic_procedures,
+    instructions,
+    medical_leave,
+  } = await req.json();
 
   try {
     const admission = await prisma.admission_Discharge.findUnique({
@@ -27,6 +34,12 @@ export const PATCH = async (
         discharge_date: discharge_date,
         discharge_mode: discharge_mode,
         status: status,
+        discharge_summary: discharge_summary,
+        hospital_investigations: hospital_investigations,
+        diagnostic_procedures: diagnostic_procedures,
+        therapeutic_procedures: therapeutic_procedures,
+        instructions: instructions,
+        medical_leave: medical_leave,
       },
     });
 
@@ -41,4 +54,21 @@ export const PATCH = async (
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
+};
+
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  const { id } = await params;
+  const admission = await prisma.admission_Discharge.findUnique({
+    where: { admission_id: parseInt(id) },
+  });
+  if (!admission) {
+    return NextResponse.json(
+      { message: "Admission not found" },
+      { status: 404 }
+    );
+  }
+  return NextResponse.json(admission, { status: 200 });
 };
