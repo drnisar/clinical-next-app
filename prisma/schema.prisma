@@ -58,6 +58,7 @@ model Clinic_Visit {
   examination             String?                   @db.LongText
   investigations          String?                   @db.LongText
   diagnosis               String?                   @db.LongText
+  plan                    String?                   @db.LongText
   Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
   ConsultationMedications ConsultationMedications[]
 
@@ -68,11 +69,14 @@ model Clinic_Visit {
 model Discharge_Medications {
   dc_meds_id          Int                 @id @default(autoincrement())
   med_name            String              @db.VarChar(45)
-  route               String              @db.VarChar(45)
-  frequency           String              @db.VarChar(45)
+  route               String?             @db.VarChar(45)
+  frequency           String?             @db.VarChar(45)
   duration            Int?                @db.TinyInt
   interval            String?             @db.VarChar(45)
   admission_id        Int
+  quantity            Int?
+  drug_form           String?             @db.VarChar(45)
+  instructions        String?             @db.LongText
   Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Discharge Medications_Admission Discharge1")
 
   @@index([admission_id], map: "fk_Discharge Medications_Admission Discharge1_idx")

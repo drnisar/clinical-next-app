@@ -41,10 +41,12 @@ const SingleConsultationDetails = ({
           {appointment && <AppointmentCard appointment={appointment} />}
         </Grid>
 
-        <Box className="col-span-2 py-5 bg-purple-50">
-          <Heading size="2">Medications</Heading>
-          <MedDetailsForSingleVisitId meds={meds} />
-        </Box>
+        {meds.length > 0 && (
+          <Box className="col-span-2 py-5 bg-purple-50">
+            <Heading size="2">Medications</Heading>
+            <MedDetailsForSingleVisitId meds={meds} />
+          </Box>
+        )}
         {consultation.instructions && (
           <Box className="col-span-2 py-5 bg-amber-50">
             <Heading size="2">Instructions</Heading>

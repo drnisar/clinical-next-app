@@ -32,6 +32,7 @@ const RegistrationDetailsPage = async ({
 
   const admissions = await prisma.admission_Discharge.findMany({
     where: { registration_id: parseInt(id) },
+    orderBy: { admission_id: "desc" },
   });
 
   return (

@@ -99,6 +99,25 @@ export function Diagnosis({ defaultValue, visit_id, registration_id }: Props) {
     </Flex>
   );
 }
+export function Plan({ defaultValue, visit_id, registration_id }: Props) {
+  const [plan, setPlan] = useState({});
+
+  return (
+    <Flex gap="2" direction="column" mt="2">
+      <TextArea
+        style={{ minHeight: "200px" }}
+        defaultValue={defaultValue}
+        onChange={(e) =>
+          setPlan({
+            plan: e.target.value,
+            registration_id: registration_id,
+          })
+        }
+      />
+      <ButtonSaveConsultationNotes visit_id={visit_id} fieldData={plan} />
+    </Flex>
+  );
+}
 export function Instructions({
   defaultValue,
   visit_id,

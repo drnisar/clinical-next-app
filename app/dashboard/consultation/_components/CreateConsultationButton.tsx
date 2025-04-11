@@ -54,8 +54,8 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
   };
   return (
     <Button
-      variant="ghost"
-      color="teal"
+      variant="soft"
+      color="gray"
       onClick={createConsult}
       disabled={addMutation.isPending}
     >

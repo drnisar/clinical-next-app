@@ -1,4 +1,3 @@
-import { Button } from "@radix-ui/themes";
 import { Toast } from "radix-ui";
 import React from "react";
 
@@ -9,7 +8,7 @@ interface Props {
 
 const ToastMessage = ({ title, description }: Props) => {
   return (
-    <Toast.Provider>
+    <Toast.Provider duration={3000}>
       <Toast.Root>
         <Toast.Title>{title}</Toast.Title>
         <Toast.Description>{description}</Toast.Description>

@@ -8,6 +8,7 @@ import {
   Examination,
   History,
   Investigations,
+  Plan,
 } from "./ConsultationNotes";
 
 const ConsultationTabs = ({ visit_id }: { visit_id: number }) => {
@@ -56,6 +57,13 @@ const ConsultationTabs = ({ visit_id }: { visit_id: number }) => {
         <Tabs.Content value="diagnosis">
           <Diagnosis
             defaultValue={consultation.diagnosis || ""}
+            visit_id={consultation.visit_id}
+            registration_id={consultation.registration_id}
+          />
+        </Tabs.Content>
+        <Tabs.Content value="plan">
+          <Plan
+            defaultValue={consultation.plan || ""}
             visit_id={consultation.visit_id}
             registration_id={consultation.registration_id}
           />

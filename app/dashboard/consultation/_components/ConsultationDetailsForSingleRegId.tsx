@@ -49,6 +49,16 @@ const ConsultationDetailsForSingleRegId = ({
           </Box>
         </Box>
       )}
+      {consultation.plan && (
+        <Box py="1">
+          <Heading size="2">Plan</Heading>
+          <Box px="4">
+            <Text size="2" style={{ whiteSpace: "pre-line" }}>
+              {consultation.plan}
+            </Text>
+          </Box>
+        </Box>
+      )}
     </Flex>
   );
 };

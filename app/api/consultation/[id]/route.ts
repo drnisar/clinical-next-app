@@ -49,6 +49,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
     diagnosis,
     visit_date,
     instructions,
+    plan,
   } = await req.json();
 
   const consultation = await prisma.clinic_Visit.findUnique({
@@ -73,6 +74,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
         diagnosis,
         instructions,
         visit_date,
+        plan,
       },
     });
 

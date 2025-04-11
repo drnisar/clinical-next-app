@@ -1,19 +1,19 @@
 "use client";
 import { Button, Flex } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import Link from "next/link";
 
 const CreateRegistrationButton = () => {
-  const router = useRouter();
-  useEffect(() => {
-    router.prefetch("/dashboard/registration/new");
-  }, [router]);
-
   return (
     <Flex justify="end">
-      <Button onClick={() => router.push("/dashboard/registration/new")}>
-        Create Registration
-      </Button>
+      <Link
+        href="/dashboard/registration/new"
+        prefetch
+        className="btn btn-primary items-end"
+      >
+        <Button size="2" color="gray" variant="soft">
+          Create New Registration
+        </Button>
+      </Link>
     </Flex>
   );
 };

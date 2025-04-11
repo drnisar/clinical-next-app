@@ -20,13 +20,6 @@ const ConsultationsForSingleRegId = ({
           {clinicVisits.length === 0 && `(No Clinic Visits found)`}
         </Heading>
 
-        <Link
-          href={`/dashboard/consultation/new?registration_id=${registration_id}`}
-          className="btn btn-primary items-end"
-          prefetch
-        >
-          Create New Consultation
-        </Link>
         <CreateConsultationButton registration_id={registration_id} />
       </Flex>
       <Box>
