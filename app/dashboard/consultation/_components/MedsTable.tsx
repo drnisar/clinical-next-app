@@ -13,6 +13,7 @@ const MedsTable = ({ visit_id }: { visit_id: number }) => {
     queryKey: ["meds"],
     queryFn: async () => {
       const response = await axios.get("/api/consult_med/" + visit_id);
+
       return response.data;
     },
     staleTime: 1000,
@@ -37,11 +38,12 @@ const MedsTable = ({ visit_id }: { visit_id: number }) => {
   };
   if (isPending) return <div>Loading...</div>;
   if (meds.length === 0) return <div>No meds</div>;
+  const enhancedMeds = meds.map((med: Med) => ({ ...med, visit_id: visit_id }));
   return (
     <>
       <Table.Root size="1" variant="surface">
         <Table.Body>
-          {meds.map((med: Med) => (
+          {enhancedMeds.map((med: Med) => (
             <Table.Row key={med.consult_med_id}>
               <Table.Cell>{med.drug_name.toUpperCase()}</Table.Cell>
               <Table.Cell>{med.quantity?.toString()}</Table.Cell>
@@ -64,7 +66,7 @@ const MedsTable = ({ visit_id }: { visit_id: number }) => {
           ))}
         </Table.Body>
       </Table.Root>
-      {meds.length > 2 && <MedsAddToTemplateDialog medsArray={meds} />}
+      {meds.length > 2 && <MedsAddToTemplateDialog medsArray={enhancedMeds} />}
     </>
   );
 };

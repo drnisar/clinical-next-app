@@ -1,11 +1,14 @@
 import prisma from "@/prisma/client";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (
+// Remove the Props interface definition if it still exists
+
+// Use the inline type annotation for the second argument
+export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  //   const { id } = await params;
+  { params }: { params: { id: string } } // Correct type annotation here
+) {
   const {
     discharge_date,
     discharge_mode,
@@ -19,15 +22,19 @@ export const PATCH = async (
   } = await req.json();
 
   try {
+    // First, check if the admission exists
     const admission = await prisma.admission_Discharge.findUnique({
       where: { admission_id: parseInt(params.id) },
     });
+
     if (!admission) {
       return NextResponse.json(
         { message: "Admission not found" },
         { status: 404 }
       );
     }
+
+    // If it exists, proceed with the update
     const updatedAdmission = await prisma.admission_Discharge.update({
       where: { admission_id: parseInt(params.id) },
       data: {
@@ -43,32 +50,51 @@ export const PATCH = async (
       },
     });
 
-    if (updatedAdmission) {
-      return NextResponse.json(updatedAdmission, { status: 200 });
+    // The update operation itself returns the updated record or throws an error
+    // No need to check if updatedAdmission exists here unless update can return null
+    return NextResponse.json(updatedAdmission, { status: 200 });
+  } catch (error) {
+    console.error("Error updating admission:", error);
+    // Handle potential Prisma errors like record not found during update
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        // Prisma code for record not found on update/delete
+        return NextResponse.json(
+          { message: "Admission not found during update" },
+          { status: 404 }
+        );
+      }
+    }
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
+
+// Also apply the fix to the GET handler if you uncomment it
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } } // Correct type annotation here
+) {
+  try {
+    const admission = await prisma.admission_Discharge.findUnique({
+      where: { admission_id: parseInt(params.id) },
+    });
+
+    if (!admission) {
+      return NextResponse.json(
+        { message: "Admission not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json(
-      { message: "Admission not found" },
-      { status: 404 }
-    );
+    return NextResponse.json(admission, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
-  }
-};
-
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
-  const admission = await prisma.admission_Discharge.findUnique({
-    where: { admission_id: parseInt(id) },
-  });
-  if (!admission) {
+    console.error("Error fetching admission:", error);
     return NextResponse.json(
-      { message: "Admission not found" },
-      { status: 404 }
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
     );
   }
-  return NextResponse.json(admission, { status: 200 });
-};
+}

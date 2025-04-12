@@ -1,22 +1,22 @@
 "use client";
-import { ConsultationMedications, medsTemplates } from "@prisma/client";
+import { ConsultationMedications } from "@prisma/client";
 import { Button, Dialog, Flex, TextField, Text, Box } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+// import { useState } from "react";
 
 interface Props {
   medsArray: ConsultationMedications[];
 }
 
-type MedsTemplate = medsTemplates;
+type MedsTemplate = ConsultationMedications[];
 
 const MedsAddToTemplateDialog = ({ medsArray }: Props) => {
-  const [templateName, setTemplateName] = useState("");
-  // const [arrayMeds setArrayMeds] = useState([]);
-  const medsArrayTemplate = medsArray.map(
-    ({ consult_med_id, visit_id, ...modifiedMed }) => modifiedMed
-  );
+  // const [templateName, setTemplateName] = useState("");
+  // // const [arrayMeds setArrayMeds] = useState([]);
+  // const medsArrayTemplate = medsArray.map(
+  //   ({ consult_med_id, visit_id, ...modifiedMed }) => modifiedMed
+  // );
 
   const mutation = useMutation({
     mutationFn: async (data: MedsTemplate) =>
@@ -26,8 +26,7 @@ const MedsAddToTemplateDialog = ({ medsArray }: Props) => {
   });
 
   const addToTemplate = () => {
-    const data = { templateName, medsArrayTemplate };
-    mutation.mutate(data);
+    mutation.mutate(medsArray);
   };
   return (
     <Box mt="5">
@@ -55,7 +54,7 @@ const MedsAddToTemplateDialog = ({ medsArray }: Props) => {
               <TextField.Root
                 defaultValue=""
                 placeholder="Enter the name of the template"
-                onBlur={(e) => setTemplateName(e.target.value)}
+                onBlur={addToTemplate}
               />
             </label>
           </Flex>

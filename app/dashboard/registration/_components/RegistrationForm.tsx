@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@radix-ui/themes";
+import { Registration } from "@prisma/client";
+import { Button, TextField } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -8,9 +9,8 @@ import { Form } from "radix-ui";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import { SelectInput, TextInput } from "../../_components/FormComponents";
-import { Registration } from "@prisma/client";
 import { genderOptions } from "../../_components/appConstants";
+import { InputGeneric, SelectInput } from "../../_components/FormComponents";
 
 const validation = z.object({
   first_name: z.string().min(3),
@@ -92,7 +92,7 @@ const RegistrationForm = ({
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
-        <TextInput
+        {/* <TextInput
           label={"First Name"}
           name={"first_name"}
           type={"text"}
@@ -100,8 +100,18 @@ const RegistrationForm = ({
           errorMessage={errors.first_name?.message?.toString() || ""}
           placeholder={"First Name"}
           defaultValue={registration?.first_name}
-        />
-        <TextInput
+        /> */}
+        <InputGeneric
+          name={"first_name"}
+          label={"First Name"}
+          errorMessage={""}
+        >
+          <TextField.Root type="text" {...register("first_name")} />
+        </InputGeneric>
+        <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
+          <TextField.Root type="text" {...register("last_name")} />
+        </InputGeneric>
+        {/* <TextInput
           label={"Last Name"}
           name={"last_name"}
           type={"text"}
@@ -109,7 +119,7 @@ const RegistrationForm = ({
           errorMessage={errors.last_name?.message?.toString() || ""}
           placeholder={"Last Name"}
           defaultValue={registration?.last_name}
-        />
+        /> */}
         <SelectInput
           label="Gender"
           name="gender"
@@ -120,7 +130,19 @@ const RegistrationForm = ({
           defaultValue={registration?.gender || ""}
         />
 
-        <TextInput
+        <InputGeneric
+          name={"phone_number"}
+          label={"Phone Number"}
+          errorMessage={""}
+        >
+          <TextField.Root type="text" {...register("phone_number")} />
+        </InputGeneric>
+
+        <InputGeneric name={"mr_number"} label={"MR Number"} errorMessage={""}>
+          <TextField.Root type="text" {...register("mr_number")} />
+        </InputGeneric>
+
+        {/* <TextInput
           label={"Phone Number"}
           name={"phone_number"}
           type={"text"}
@@ -138,7 +160,7 @@ const RegistrationForm = ({
           register={register}
           errorMessage={errors.mr_number?.message?.toString() || ""}
           defaultValue={registration?.mr_number || ""}
-        />
+        /> */}
         <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending
             ? "Submitting ..."
