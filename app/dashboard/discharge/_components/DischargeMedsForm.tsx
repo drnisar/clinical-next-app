@@ -66,7 +66,7 @@ const DischargeMedsForm = ({ admission_id }: { admission_id: number }) => {
       addMutation.mutate(data);
       queryClient.invalidateQueries({ queryKey: ["dischargeMeds"] });
     },
-    [addMutation, admission_id]
+    [addMutation, queryClient]
   );
 
   return (

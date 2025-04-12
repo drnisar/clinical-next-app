@@ -12,6 +12,8 @@ const MedsAddToTemplate = ({ medsArray }: Props) => {
   const addToTemplateMutation = useMutation({
     mutationFn: async (
       data: {
+        consult_med_id: number;
+        visit_id: number;
         drug_name: string;
         quantity: number | null;
         drug_form: string | null;
@@ -28,7 +30,6 @@ const MedsAddToTemplate = ({ medsArray }: Props) => {
 
   const addToTemplate = () => {
     const array = medsArray.map(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ({ consult_med_id, visit_id, ...modifiedMed }) => modifiedMed
     );
     addToTemplateMutation.mutate(array);

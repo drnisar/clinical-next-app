@@ -67,7 +67,7 @@ const MedsForm = ({ visit_id }: { visit_id?: number }) => {
       addMutation.mutate(data);
       queryClient.invalidateQueries({ queryKey: ["meds"] });
     },
-    [addMutation, visit_id]
+    [addMutation, queryClient]
   );
 
   return (

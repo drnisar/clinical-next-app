@@ -9,7 +9,6 @@ import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ConsultationAppointmentsTable from "./ConsultationAppointmentsTable";
-import DataListAppointmentSingleVisitId from "./DataListAppointmentSingleVisitId";
 
 type FormData = Omit<Appointment, "registration_id" | "visit_id">;
 
