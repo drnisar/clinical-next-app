@@ -1,15 +1,16 @@
 "use client";
 import { Registration } from "@prisma/client";
-import { Button, Flex, Table } from "@radix-ui/themes";
+import { Button, Flex, Spinner, Table } from "@radix-ui/themes";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   registrations: Registration[];
 }
 
 const RegistrationsTable = ({ registrations }: Props) => {
-  const router = useRouter();
+  const [isNavigatingEdit, setIsNavigatingEdit] = useState(false);
+  const [isNavigatingView, setIsNavigatingView] = useState(false);
   return (
     <>
       <div>Registrations Table</div>
@@ -42,22 +43,34 @@ const RegistrationsTable = ({ registrations }: Props) => {
                     href={`/dashboard/registration/${registration.registration_id}`}
                     prefetch={true}
                   >
-                    <Button size={"1"} color="grass" variant="soft">
-                      Details
+                    <Button
+                      size={"1"}
+                      color="grass"
+                      variant="soft"
+                      disabled={isNavigatingView}
+                      onClick={() => {
+                        setIsNavigatingView(true);
+                      }}
+                    >
+                      {isNavigatingView ? <Spinner /> : "View"}
                     </Button>
                   </Link>
-                  <Button
-                    size={"1"}
-                    color="yellow"
-                    variant="soft"
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/registration/edit/${registration.registration_id}`
-                      )
-                    }
+                  <Link
+                    href={`/dashboard/registration/edit/${registration.registration_id}`}
+                    prefetch={true}
                   >
-                    Edit
-                  </Button>
+                    <Button
+                      size={"1"}
+                      color="blue"
+                      variant="soft"
+                      disabled={isNavigatingEdit}
+                      onClick={() => {
+                        setIsNavigatingEdit(true);
+                      }}
+                    >
+                      {isNavigatingEdit ? <Spinner /> : "Edit"}
+                    </Button>
+                  </Link>
                 </Flex>
               </Table.Cell>
             </Table.Row>

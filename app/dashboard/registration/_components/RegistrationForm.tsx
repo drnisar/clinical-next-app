@@ -106,10 +106,18 @@ const RegistrationForm = ({
           label={"First Name"}
           errorMessage={""}
         >
-          <TextField.Root type="text" {...register("first_name")} />
+          <TextField.Root
+            type="text"
+            {...register("first_name")}
+            defaultValue={registration?.first_name}
+          />
         </InputGeneric>
         <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
-          <TextField.Root type="text" {...register("last_name")} />
+          <TextField.Root
+            type="text"
+            {...register("last_name")}
+            defaultValue={registration?.last_name}
+          />
         </InputGeneric>
         {/* <TextInput
           label={"Last Name"}
@@ -135,11 +143,19 @@ const RegistrationForm = ({
           label={"Phone Number"}
           errorMessage={""}
         >
-          <TextField.Root type="text" {...register("phone_number")} />
+          <TextField.Root
+            type="text"
+            {...register("phone_number")}
+            defaultValue={registration?.phone_number || ""}
+          />
         </InputGeneric>
 
         <InputGeneric name={"mr_number"} label={"MR Number"} errorMessage={""}>
-          <TextField.Root type="text" {...register("mr_number")} />
+          <TextField.Root
+            type="text"
+            {...register("mr_number")}
+            defaultValue={registration?.mr_number || ""}
+          />
         </InputGeneric>
 
         {/* <TextInput

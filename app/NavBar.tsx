@@ -1,5 +1,5 @@
 "use client";
-import { Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,9 +19,10 @@ const NavBar = () => {
       direction={"row"}
       gap={"6"}
       className="border-b p-4 shadow-md print:!hidden"
+      justify={"between"}
     >
-      <Link href={"/"}>Logo</Link>
       <Flex gap="6">
+        <Link href={"/"}>Logo</Link>
         {links.map((link) => (
           <Link
             key={link.href}
@@ -34,6 +35,11 @@ const NavBar = () => {
           </Link>
         ))}
       </Flex>
+      <Link href="/login">
+        <Button size="1" color="blue" variant="soft">
+          Login
+        </Button>
+      </Link>
     </Flex>
   );
 };

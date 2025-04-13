@@ -1,7 +1,8 @@
 import prisma from "@/prisma/client";
-import React from "react";
+import React, { Suspense } from "react";
 import RegistrationsTable from "./_components/RegistrationsTable";
 import CreateRegistrationButton from "./_components/CreateRegistrationButton";
+import { Spinner } from "@radix-ui/themes";
 
 const RegistrationPage = async () => {
   const registrations = await prisma.registration.findMany({
@@ -10,10 +11,10 @@ const RegistrationPage = async () => {
     },
   });
   return (
-    <div>
+    <Suspense fallback={<Spinner />}>
       <CreateRegistrationButton />
       <RegistrationsTable registrations={registrations} />
-    </div>
+    </Suspense>
   );
 };
 

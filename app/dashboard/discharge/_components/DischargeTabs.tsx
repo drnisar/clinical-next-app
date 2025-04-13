@@ -1,5 +1,5 @@
 "use client";
-import { Box, Flex, Tabs } from "@radix-ui/themes";
+import { Box, Flex, Spinner, Tabs } from "@radix-ui/themes";
 import React from "react";
 import DischargeForm from "./DischargeForm";
 // import { Admission_Discharge } from "@prisma/client";
@@ -28,7 +28,7 @@ const DischargeTabs = ({ admission_id }: { admission_id: number }) => {
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-  if (isPending) return <div>Loading...</div>;
+  if (isPending) return <Spinner size={"3"} />;
   if (isError) return <div>Error fetching admission</div>;
 
   return (

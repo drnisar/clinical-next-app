@@ -48,8 +48,12 @@ const AppointmentDeleteButton = ({
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button color="red" onClick={deleteAppointment}>
-              Delete
+            <Button
+              color="red"
+              onClick={deleteAppointment}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? "Deleting..." : "Delete Appointment"}
             </Button>
           </AlertDialog.Action>
         </Flex>
