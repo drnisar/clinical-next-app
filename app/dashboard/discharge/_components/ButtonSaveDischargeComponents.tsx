@@ -6,9 +6,14 @@ import axios from "axios";
 interface Props {
   admission_id: number;
   fieldData: object;
+  onSave: () => void;
 }
 
-const ButtonSaveDischargeComponents = ({ admission_id, fieldData }: Props) => {
+const ButtonSaveDischargeComponents = ({
+  admission_id,
+  fieldData,
+  onSave,
+}: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (dataForForm: object) =>
@@ -16,7 +21,6 @@ const ButtonSaveDischargeComponents = ({ admission_id, fieldData }: Props) => {
     //   await console.log(dataForForm),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admission"] });
-      alert("Saved successfully");
     },
 
     onError: () => console.log("error"),
@@ -28,6 +32,7 @@ const ButtonSaveDischargeComponents = ({ admission_id, fieldData }: Props) => {
       color="red"
       onClick={() => {
         mutation.mutate(fieldData);
+        onSave();
       }}
       disabled={mutation.isPending}
       className="max-w-[100px]"

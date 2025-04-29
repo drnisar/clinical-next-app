@@ -1,6 +1,13 @@
 "use client";
 import { Admission_Discharge } from "@prisma/client";
-import { Box, Button, Flex, Select, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Flex,
+  Select,
+  Spinner,
+  TextField,
+} from "@radix-ui/themes";
 import { Controller, useForm } from "react-hook-form";
 import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +18,12 @@ import { admissionModes } from "../../_components/appConstants";
 type admission = Admission_Discharge;
 
 const AdmissionForm = ({ registration_id }: { registration_id: number }) => {
-  const { register, control, handleSubmit } = useForm<admission>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { disabled },
+  } = useForm<admission>();
 
   const router = useRouter();
 
@@ -31,62 +43,66 @@ const AdmissionForm = ({ registration_id }: { registration_id: number }) => {
   return (
     <Box maxWidth="500px" m="auto">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGeneric
-          name={""}
-          label={"Admission Date and Time"}
-          errorMessage={""}
-        >
-          <TextField.Root
-            type="datetime-local"
-            {...register("admission_date", { valueAsDate: true })}
-          />
-        </InputGeneric>
-        <Flex gap="5">
+        <fieldset disabled={addMutation.isPending}>
           <InputGeneric
-            name="admission_mode"
-            label="Admission Mode"
-            errorMessage=""
-            className="min-w-[200px]"
+            name={""}
+            label={"Admission Date and Time"}
+            errorMessage={""}
           >
-            <Controller
-              name="admission_mode"
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <Select.Root onValueChange={onChange} value={value || ""}>
-                  <Select.Trigger placeholder="Select Admission Mode">
-                    {value}
-                  </Select.Trigger>
-                  <Select.Content>
-                    {admissionModes.map((mode) => (
-                      <Select.Item key={mode.value} value={mode.value}>
-                        {mode.label}
-                      </Select.Item>
-                    ))}
-                  </Select.Content>
-                </Select.Root>
-              )}
-            />
-          </InputGeneric>
-          <InputGeneric name="bed_number" label="Bed Number" errorMessage="">
             <TextField.Root
-              type="number"
-              {...register("bed_number", { valueAsNumber: true })}
+              type="datetime-local"
+              {...register("admission_date", { valueAsDate: true })}
             />
           </InputGeneric>
-          <InputGeneric name="ward" label="Ward" errorMessage="">
-            <TextField.Root type="text" {...register("ward")} />
+          <Flex gap="5">
+            <InputGeneric
+              name="admission_mode"
+              label="Admission Mode"
+              errorMessage=""
+              className="min-w-[200px]"
+            >
+              <Controller
+                name="admission_mode"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <Select.Root onValueChange={onChange} value={value || ""}>
+                    <Select.Trigger placeholder="Select Admission Mode">
+                      {value || "Select Admission Mode"}
+                    </Select.Trigger>
+                    <Select.Content>
+                      {admissionModes.map((mode) => (
+                        <Select.Item key={mode.value} value={mode.value}>
+                          {mode.label}
+                        </Select.Item>
+                      ))}
+                    </Select.Content>
+                  </Select.Root>
+                )}
+              />
+            </InputGeneric>
+            <InputGeneric name="bed_number" label="Bed Number" errorMessage="">
+              <TextField.Root
+                type="number"
+                {...register("bed_number", { valueAsNumber: true })}
+              />
+            </InputGeneric>
+            <InputGeneric name="ward" label="Ward" errorMessage="">
+              <TextField.Root type="text" {...register("ward")} />
+            </InputGeneric>
+          </Flex>
+          <InputGeneric
+            name="admission_plan"
+            label="Admission Plan"
+            errorMessage=""
+          >
+            <TextField.Root type="text" {...register("admission_plan")} />
           </InputGeneric>
-        </Flex>
-        <InputGeneric
-          name="admission_plan"
-          label="Admission Plan"
-          errorMessage=""
-        >
-          <TextField.Root type="text" {...register("admission_plan")} />
-        </InputGeneric>
-        <InputGeneric name={""} label={""} errorMessage={""}>
-          <Button type="submit">Submit</Button>
-        </InputGeneric>
+          <InputGeneric name={""} label={""} errorMessage={""}>
+            <Button type="submit" disabled={addMutation.isPending}>
+              {addMutation.isPending ? <Spinner /> : "Submit"}
+            </Button>
+          </InputGeneric>
+        </fieldset>
       </form>
     </Box>
   );

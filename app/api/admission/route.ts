@@ -54,6 +54,10 @@ export async function POST(request: NextRequest) {
         registration_id: registrationId,
         status: "ADMITTED", // Set initial status explicitly
         admission_date: new Date(),
+        ward: body.ward,
+        bed_number: body.bed_number,
+        admission_mode: body.admission_mode,
+        admission_plan: body.admission_plan,
         // Only include fields from 'body' that are valid for creation
         // Example: admission_mode: body.admission_mode,
         // Avoid passing the whole 'body' if it contains extra fields

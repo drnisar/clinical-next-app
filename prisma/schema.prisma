@@ -15,20 +15,21 @@ model Admission_Discharge {
   discharge_date          DateTime?               @db.DateTime(0)
   discharge_mode          String?                 @db.VarChar(45)
   registration_id         Int
-  bed_number              Int?
-  ward                    String?                 @db.VarChar(45)
   admission_plan          String?                 @db.LongText
+  bed_number              Int?
+  diagnostic_procedures   String?                 @db.LongText
+  discharge_instructions  String?                 @db.LongText
+  discharge_medications   Json?
   discharge_summary       String?                 @db.LongText
   hospital_investigations String?                 @db.LongText
   hospital_medications    String?                 @db.LongText
   instructions            String?                 @db.LongText
-  discharge_medications   Json?
-  discharge_instructions  String?                 @db.LongText
   medical_leave           String?                 @db.LongText
-  diagnostic_procedures   String?                 @db.LongText
   therapeutic_procedures  String?                 @db.LongText
+  ward                    String?                 @db.VarChar(45)
   Registration            Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
   Discharge_Medications   Discharge_Medications[]
+  ot                      ot[]
 
   @@index([registration_id], map: "fk_Admission Discharge_Registration1_idx")
   @@map("Admission Discharge")
@@ -54,10 +55,10 @@ model Clinic_Visit {
   registration_id         Int
   visit_date              DateTime?                 @db.Date
   instructions            String?                   @db.LongText
-  history                 String?                   @db.LongText
-  examination             String?                   @db.LongText
-  investigations          String?                   @db.LongText
   diagnosis               String?                   @db.LongText
+  examination             String?                   @db.LongText
+  history                 String?                   @db.LongText
+  investigations          String?                   @db.LongText
   plan                    String?                   @db.LongText
   Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
   ConsultationMedications ConsultationMedications[]
@@ -74,9 +75,9 @@ model Discharge_Medications {
   duration            Int?                @db.TinyInt
   interval            String?             @db.VarChar(45)
   admission_id        Int
-  quantity            Int?
   drug_form           String?             @db.VarChar(45)
   instructions        String?             @db.LongText
+  quantity            Int?
   Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Discharge Medications_Admission Discharge1")
 
   @@index([admission_id], map: "fk_Discharge Medications_Admission Discharge1_idx")
@@ -127,4 +128,95 @@ model medsTemplates {
   medsTemplates_id  Int    @id @default(autoincrement())
   templateName      String @db.VarChar(45)
   medsArrayTemplate Json
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  username      String?         @unique
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  accounts      Account?
+  Authenticator Authenticator[]
+  sessions      Session[]
+}
+
+model Account {
+  id                       String   @id @default(cuid())
+  userId                   String   @unique
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?  @db.Text
+  access_token             String?  @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?  @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  user                     User     @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+model ot {
+  ot_id               Int                 @id @default(autoincrement())
+  admission_id        Int
+  surgery_date        DateTime?           @db.Date
+  surgeon             String?             @db.VarChar(45)
+  assistant_1         String?             @db.VarChar(45)
+  assistant_2         String?             @db.VarChar(45)
+  assistant_3         String?             @db.VarChar(45)
+  anaesthetist        String?             @db.VarChar(45)
+  anaesthesia         String?             @db.VarChar(45)
+  procedure_name      String?             @db.VarChar(255)
+  findings            String?             @db.LongText
+  operative_details   String?             @db.LongText
+  closure             String?             @db.LongText
+  postop_instructions String?             @db.LongText
+  finalize            Int?                @default(0) @db.TinyInt
+  Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_admission_id")
+
+  @@index([admission_id], map: "fk_admission_id")
 }

@@ -1,6 +1,7 @@
 "use client";
 import { Button, Flex } from "@radix-ui/themes";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -9,11 +10,12 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/dashboard", label: "Dashboard" },
+  // { href: "/dashboard", label: "Dashboard" },
 ];
 
 const NavBar = () => {
   const pathname = usePathname();
+  const { status, data: session } = useSession();
   return (
     <Flex
       direction={"row"}
@@ -34,12 +36,23 @@ const NavBar = () => {
             {link.label}
           </Link>
         ))}
+        {status === "authenticated" && <Link href="/dashboard">DashBoard</Link>}
       </Flex>
-      <Link href="/login">
-        <Button size="1" color="blue" variant="soft">
-          Login
-        </Button>
-      </Link>
+      {status === "unauthenticated" && (
+        <Link href="/api/auth/signin">
+          <Button size="1" color="blue" variant="soft">
+            Login
+          </Button>
+        </Link>
+      )}
+      {status === "authenticated" && (
+        <div>
+          {session.user!.name}{" "}
+          <Link className="ml-3" href="/api/auth/signout">
+            Logout
+          </Link>
+        </div>
+      )}
     </Flex>
   );
 };

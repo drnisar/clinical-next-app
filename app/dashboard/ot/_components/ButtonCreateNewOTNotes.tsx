@@ -1,0 +1,33 @@
+"use client";
+
+import { Button } from "@radix-ui/themes";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
+import React from "react";
+
+const ButtonCreateNewOTNotes = () => {
+  const { id } = useParams();
+  const router = useRouter();
+
+  const addMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post("/api/ot", {
+        admission_id: id,
+      });
+      return response.data;
+    },
+    onSuccess: (response) => {
+      console.log("OT Notes created successfully:", response);
+      // Optionally, you can redirect or show a success message here
+      router.push(`/dashboard/ot/${response.ot_id}`);
+    },
+  });
+
+  const handleClick = () => {
+    addMutation.mutate();
+  };
+  return <Button onClick={handleClick}>Create New OT Notes</Button>;
+};
+
+export default ButtonCreateNewOTNotes;

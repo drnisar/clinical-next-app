@@ -8,6 +8,7 @@ import { Container, Theme } from "@radix-ui/themes";
 import { PropsWithChildren } from "react";
 import QueryClProvider from "./QueryClProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AuthProvider from "./dashboard/auth/AuthProvider";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -30,17 +31,19 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Theme accentColor="violet" radius="medium">
-          <QueryClProvider>
-            <Container>
-              <header>
-                <NavBar />
-              </header>
-              <main className="py-5">{children}</main>
-            </Container>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClProvider>
-        </Theme>
+        <AuthProvider>
+          <Theme accentColor="violet" radius="medium">
+            <QueryClProvider>
+              <Container>
+                <header>
+                  <NavBar />
+                </header>
+                <main className="py-5">{children}</main>
+              </Container>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClProvider>
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );

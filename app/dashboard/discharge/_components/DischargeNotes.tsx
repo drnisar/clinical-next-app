@@ -5,9 +5,14 @@ import ButtonSaveDischargeComponents from "./ButtonSaveDischargeComponents";
 interface Props {
   defaultValue: string;
   admission_id: number;
+  onSave: () => void;
 }
 
-export function DischargeSummary({ defaultValue, admission_id }: Props) {
+export function DischargeSummary({
+  defaultValue,
+  admission_id,
+  onSave,
+}: Props) {
   const [summary, setSummary] = useState({});
 
   return (
@@ -32,13 +37,18 @@ export function DischargeSummary({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={summary}
+          onSave={onSave}
         />
       </Box>
     </Flex>
   );
 }
 
-export function HospitalInvestigations({ defaultValue, admission_id }: Props) {
+export function HospitalInvestigations({
+  defaultValue,
+  admission_id,
+  onSave,
+}: Props) {
   const [hospitalInvestigations, setHospitalInvestigations] = useState({});
 
   return (
@@ -63,12 +73,17 @@ export function HospitalInvestigations({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={hospitalInvestigations}
+          onSave={onSave}
         />
       </Box>
     </Flex>
   );
 }
-export function DiagnosticProcedures({ defaultValue, admission_id }: Props) {
+export function DiagnosticProcedures({
+  defaultValue,
+  admission_id,
+  onSave,
+}: Props) {
   const [diagnosticProcedures, setDiagnosticProcedures] = useState({});
 
   return (
@@ -93,12 +108,17 @@ export function DiagnosticProcedures({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={diagnosticProcedures}
+          onSave={onSave}
         />
       </Box>
     </Flex>
   );
 }
-export function TherapeuticProcudures({ defaultValue, admission_id }: Props) {
+export function TherapeuticProcudures({
+  defaultValue,
+  admission_id,
+  onSave,
+}: Props) {
   const [therapeuticProcedures, setTherapeuticProcedures] = useState({});
 
   return (
@@ -123,12 +143,13 @@ export function TherapeuticProcudures({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={therapeuticProcedures}
+          onSave={onSave}
         />
       </Box>
     </Flex>
   );
 }
-export function Instructions({ defaultValue, admission_id }: Props) {
+export function Instructions({ defaultValue, admission_id, onSave }: Props) {
   const [instructions, setInstructions] = useState({});
 
   return (
@@ -153,12 +174,13 @@ export function Instructions({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={instructions}
+          onSave={onSave}
         />
       </Box>
     </Flex>
   );
 }
-export function MedicalRest({ defaultValue, admission_id }: Props) {
+export function MedicalRest({ defaultValue, admission_id, onSave }: Props) {
   const [medicalRest, setMedicalRest] = useState({});
 
   return (
@@ -183,6 +205,7 @@ export function MedicalRest({ defaultValue, admission_id }: Props) {
         <ButtonSaveDischargeComponents
           admission_id={admission_id}
           fieldData={medicalRest}
+          onSave={onSave}
         />
       </Box>
     </Flex>

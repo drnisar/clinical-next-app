@@ -23,11 +23,11 @@ const CreateNewAdmissionButton = ({
 
           <AdmissionForm registration_id={registration_id} />
 
-          <Dialog.Close aria-label="close" className="items-end">
+          {/* <Dialog.Close aria-label="close" className="place-items-end ">
             <Button size="1" variant="soft">
               Close
             </Button>
-          </Dialog.Close>
+          </Dialog.Close> */}
         </Dialog.Content>
       </Dialog.Root>
     </>
