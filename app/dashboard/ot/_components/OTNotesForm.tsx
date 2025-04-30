@@ -12,7 +12,7 @@ import {
 } from "@radix-ui/themes";
 import { ot } from "@prisma/client";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -43,6 +43,8 @@ const OTNotesForm = ({
     },
     enabled: !!ot_id,
   });
+
+  const queryClient = useQueryClient();
 
   const { register, handleSubmit, reset } = useForm<OTNotes>({
     defaultValues: {
@@ -130,6 +132,7 @@ const OTNotesForm = ({
     };
     console.log("Payload", payLoad);
     finalizeMutation.mutate(payLoad);
+    queryClient.invalidateQueries({ queryKey: ["ot"] });
   };
 
   if (isLoadingData)
@@ -144,6 +147,11 @@ const OTNotesForm = ({
         <Callout.Text>Error fetching OT Note details.</Callout.Text>
       </Callout.Root>
     );
+  const finalizeButtonText = () => {
+    if (mutation.isPending) return "Finalizing";
+    else if (initialData.finalize === 1) return "Finalized";
+    else return "Finalize";
+  };
 
   return (
     <>
@@ -151,160 +159,172 @@ const OTNotesForm = ({
       <Flex>
         <Flex className=" p-4 border-2 border-gray-200 bg-slate-50 w-full">
           <form className="w-full">
-            <Flex gap="4">
-              <InputGeneric
-                label="Procedure Name"
-                name="procedure_name"
-                className="w-3/4"
-                errorMessage={""}
-              >
-                <TextField.Root
-                  className="w-full"
-                  placeholder="Enter Procedure Name"
-                  {...register("procedure_name")}
-                />
-              </InputGeneric>
-              <InputGeneric
-                label="Date"
-                name="date"
-                className="w-1/4"
-                errorMessage={""}
-              >
-                <TextField.Root
-                  type="date"
-                  className="w-full"
-                  {...register("surgery_date")}
-                />
-              </InputGeneric>
-            </Flex>
-            <Flex gap="4" direction={"column"}>
-              <Flex direction="row" className="w-1/2" gap={"4"} width={"100%"}>
+            <fieldset disabled={initialData.finalize === 1}>
+              <Flex gap="4">
                 <InputGeneric
-                  label="Surgeon"
-                  name="surgeon"
-                  className="w-full"
+                  label="Procedure Name"
+                  name="procedure_name"
+                  className="w-3/4"
                   errorMessage={""}
                 >
                   <TextField.Root
                     className="w-full"
-                    placeholder="Enter Surgeon Name"
-                    {...register("surgeon")}
+                    placeholder="Enter Procedure Name"
+                    {...register("procedure_name")}
                   />
                 </InputGeneric>
                 <InputGeneric
-                  label="Assistant 1"
-                  name="assistant_1"
-                  className="w-full"
+                  label="Date"
+                  name="date"
+                  className="w-1/4"
                   errorMessage={""}
                 >
                   <TextField.Root
+                    type="date"
                     className="w-full"
-                    placeholder="Assistant 1"
-                    {...register("assistant_1")}
-                  />
-                </InputGeneric>
-                <InputGeneric
-                  label="Assistant 2"
-                  name="assistant_2"
-                  className="w-full"
-                  errorMessage={""}
-                >
-                  <TextField.Root
-                    className="w-full"
-                    placeholder="Assistant 2"
-                    {...register("assistant_2")}
-                  />
-                </InputGeneric>
-                <InputGeneric
-                  label="Assistant 3"
-                  name="assistant_3"
-                  className="w-full"
-                  errorMessage={""}
-                >
-                  <TextField.Root
-                    className="w-full"
-                    placeholder="Assistant 3"
-                    {...register("assistant_3")}
+                    {...register("surgery_date")}
                   />
                 </InputGeneric>
               </Flex>
-              <Flex direction="row" className="w-1/2" width={"100%"} gap={"4"}>
-                <InputGeneric
-                  label="Anaesthesia"
-                  name="anaesthesia"
-                  className="w-full"
-                  errorMessage={""}
+              <Flex gap="4" direction={"column"}>
+                <Flex
+                  direction="row"
+                  className="w-1/2"
+                  gap={"4"}
+                  width={"100%"}
                 >
-                  <TextField.Root
+                  <InputGeneric
+                    label="Surgeon"
+                    name="surgeon"
                     className="w-full"
-                    placeholder="Anaesthesia"
-                    {...register("anaesthesia")}
-                  />
-                </InputGeneric>
-                <InputGeneric
-                  label="Anaesthetist"
-                  name="anaesthetist"
-                  className="w-full"
-                  errorMessage={""}
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Enter Surgeon Name"
+                      {...register("surgeon")}
+                    />
+                  </InputGeneric>
+                  <InputGeneric
+                    label="Assistant 1"
+                    name="assistant_1"
+                    className="w-full"
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Assistant 1"
+                      {...register("assistant_1")}
+                    />
+                  </InputGeneric>
+                  <InputGeneric
+                    label="Assistant 2"
+                    name="assistant_2"
+                    className="w-full"
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Assistant 2"
+                      {...register("assistant_2")}
+                    />
+                  </InputGeneric>
+                  <InputGeneric
+                    label="Assistant 3"
+                    name="assistant_3"
+                    className="w-full"
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Assistant 3"
+                      {...register("assistant_3")}
+                    />
+                  </InputGeneric>
+                </Flex>
+                <Flex
+                  direction="row"
+                  className="w-1/2"
+                  width={"100%"}
+                  gap={"4"}
                 >
-                  <TextField.Root
+                  <InputGeneric
+                    label="Anaesthesia"
+                    name="anaesthesia"
                     className="w-full"
-                    placeholder="Anaesthetist"
-                    {...register("anaesthetist")}
-                  />
-                </InputGeneric>
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Anaesthesia"
+                      {...register("anaesthesia")}
+                    />
+                  </InputGeneric>
+                  <InputGeneric
+                    label="Anaesthetist"
+                    name="anaesthetist"
+                    className="w-full"
+                    errorMessage={""}
+                  >
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="Anaesthetist"
+                      {...register("anaesthetist")}
+                    />
+                  </InputGeneric>
+                </Flex>
               </Flex>
-            </Flex>
 
-            <InputGeneric
-              label="Findings"
-              name="findings"
-              className="w-full"
-              errorMessage={""}
-            >
-              <TextArea
+              <InputGeneric
+                label="Findings"
+                name="findings"
                 className="w-full"
-                placeholder="Enter Findings"
-                {...register("findings")}
-              />
-            </InputGeneric>
-            <InputGeneric
-              label="Operative Details"
-              name="operative_details"
-              className="w-full"
-              errorMessage={""}
-            >
-              <TextArea
-                className="w-full min-h-10"
-                placeholder="Enter Operative Details"
-                {...register("operative_details")}
-              />
-            </InputGeneric>
-            <InputGeneric
-              label="Closure"
-              name="closure"
-              className="w-full"
-              errorMessage={""}
-            >
-              <TextArea
-                className="w-full min-h-10"
-                placeholder="Enter Closure Details"
-                {...register("closure")}
-              />
-            </InputGeneric>
-            <InputGeneric
-              label="Post Operative Instructions"
-              name="post_op_instructions"
-              className="w-full"
-              errorMessage={""}
-            >
-              <TextArea
-                className="w-full min-h-10"
-                placeholder="Enter Post operative instructions"
-                {...register("postop_instructions")}
-                color="crimson"
-              />
-            </InputGeneric>
+                errorMessage={""}
+              >
+                <TextArea
+                  className="w-full"
+                  placeholder="Enter Findings"
+                  {...register("findings")}
+                />
+              </InputGeneric>
+              <InputGeneric
+                label="Operative Details"
+                name="operative_details"
+                className="w-full"
+                errorMessage={""}
+              >
+                <TextArea
+                  className="w-full min-h-10"
+                  placeholder="Enter Operative Details"
+                  {...register("operative_details")}
+                />
+              </InputGeneric>
+              <InputGeneric
+                label="Closure"
+                name="closure"
+                className="w-full"
+                errorMessage={""}
+              >
+                <TextArea
+                  className="w-full min-h-10"
+                  placeholder="Enter Closure Details"
+                  {...register("closure")}
+                />
+              </InputGeneric>
+              <InputGeneric
+                label="Post Operative Instructions"
+                name="post_op_instructions"
+                className="w-full"
+                errorMessage={""}
+              >
+                <TextArea
+                  className="w-full min-h-10"
+                  placeholder="Enter Post operative instructions"
+                  {...register("postop_instructions")}
+                  color="crimson"
+                />
+              </InputGeneric>
+            </fieldset>
           </form>
         </Flex>
         <Flex
@@ -317,7 +337,7 @@ const OTNotesForm = ({
             variant="soft"
             className="w-full mt-4"
             onClick={handleSubmit(onSubmit)}
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || initialData.finalize === 1}
           >
             {mutation.isPending ? "Saving..." : "Save"}
           </Button>
@@ -325,10 +345,10 @@ const OTNotesForm = ({
             variant="soft"
             className="w-full mt-4"
             onClick={handleSubmit(onFinalize)}
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || initialData.finalize === 1}
             color="red"
           >
-            {mutation.isPending ? "Finalizing..." : "Finalize"}
+            {finalizeButtonText()}
           </Button>
         </Flex>
       </Flex>

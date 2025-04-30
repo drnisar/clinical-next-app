@@ -32,13 +32,13 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
               className={admission.status === "admitted" ? "bg-gray-50" : ""}
             >
               <Flex gap="5">
-                <Heading size="2">
-                  {admission.admission_date?.toLocaleDateString("en-gb")}
-                </Heading>
-                {admission.status === "admitted" ? (
+                {admission.status === "ADMITTED" ? (
                   <div>Patient is currently admitted</div>
                 ) : (
                   <>
+                    <Heading size="2">
+                      {admission.admission_date?.toLocaleDateString("en-gb")}
+                    </Heading>
                     <Heading size="2">TILL</Heading>
                     <Heading size="2">
                       {admission.discharge_date?.toLocaleDateString("en-gb")}
@@ -56,15 +56,17 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
                   </Button>
                 </Link>
               ) : (
-                <Link
-                  href={`/dashboard/discharge/${admissions[0].admission_id}`}
-                  className="btn btn-primary items-end"
-                  prefetch
-                >
-                  <Button size="1" color="red" variant="soft">
-                    Discharge
-                  </Button>
-                </Link>
+                <Flex gap="2">
+                  <Link
+                    href={`/dashboard/admissions/${admission.admission_id}`}
+                    className="btn btn-primary items-end"
+                    prefetch
+                  >
+                    <Button size="1" color="blue" variant="soft">
+                      Details
+                    </Button>
+                  </Link>
+                </Flex>
               )}
             </Flex>
           </Box>

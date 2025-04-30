@@ -27,7 +27,11 @@ const ButtonCreateNewOTNotes = () => {
   const handleClick = () => {
     addMutation.mutate();
   };
-  return <Button onClick={handleClick}>Create New OT Notes</Button>;
+  return (
+    <Button onClick={handleClick} variant="soft" size="1" color="green">
+      Create New OT Notes
+    </Button>
+  );
 };
 
 export default ButtonCreateNewOTNotes;

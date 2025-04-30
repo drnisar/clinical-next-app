@@ -18,12 +18,7 @@ import { admissionModes } from "../../_components/appConstants";
 type admission = Admission_Discharge;
 
 const AdmissionForm = ({ registration_id }: { registration_id: number }) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { disabled },
-  } = useForm<admission>();
+  const { register, control, handleSubmit } = useForm<admission>();
 
   const router = useRouter();
 
