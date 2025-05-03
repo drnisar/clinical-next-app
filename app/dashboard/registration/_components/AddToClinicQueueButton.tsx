@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
-  registration_id: string;
+  registration_id: number;
 }
 
-const CreateConsultationButton = ({ registration_id }: Props) => {
+const AddToClinicQueueButton = ({ registration_id }: Props) => {
   const router = useRouter();
 
   const { data: todaysConsults } = useQuery({
@@ -26,13 +26,14 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
   const addMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(`/api/consultation`, {
-        registration_id: parseInt(registration_id),
+        registration_id: registration_id,
         visit_date: new Date(),
+        status: "QUEUED",
       });
       return response.data;
     },
-    onSuccess: (response) => {
-      router.push(`/dashboard/consultation/edit/${response.visit_id}`);
+    onSuccess: () => {
+      router.push(`/dashboard/consultation`);
     },
     onError: (error) => {
       console.log("onError", error);
@@ -56,12 +57,13 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
     <Button
       variant="soft"
       color="purple"
+      size="1"
       onClick={createConsult}
       disabled={addMutation.isPending}
     >
-      Create Consultation
+      Add to Clinic Queue
     </Button>
   );
 };
 
-export default CreateConsultationButton;
+export default AddToClinicQueueButton;

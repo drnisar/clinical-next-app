@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import DischargeForm from "./DischargeForm";
 // import { Admission_Discharge } from "@prisma/client";
 import {
+  Diagnosis,
   DiagnosticProcedures,
   DischargeSummary,
   HospitalInvestigations,
@@ -16,6 +17,7 @@ import axios from "axios";
 import DischargeMedsTab from "./DischargeMedsTab";
 
 const tabValues = [
+  "Diagnosis / es",
   "Hospital Stay Summary",
   "Investigations Done in Hospital",
   "Diagnostic Procedures",
@@ -63,7 +65,7 @@ const DischargeTabs = ({ admission_id }: { admission_id: number }) => {
         onValueChange={setActiveTab}
       >
         <Flex className="min-h-[200px]">
-          <Box className="w-1/6 bg-teal-50">
+          <Box className="w-1/6 bg-teal-50 dark:bg-transparent">
             <Tabs.List className="flex md:flex-col md:items-start">
               {tabValues.map((value) => (
                 <Tabs.Trigger value={value} key={value}>
@@ -73,6 +75,13 @@ const DischargeTabs = ({ admission_id }: { admission_id: number }) => {
             </Tabs.List>
           </Box>
           <Box className="w-4/5 pl-4 min-h-[500px] ">
+            <Tabs.Content value="Diagnosis / es">
+              <Diagnosis
+                defaultValue={admission.diagnosis || ""}
+                admission_id={admission.admission_id}
+                onSave={handleSaveSuccess}
+              />
+            </Tabs.Content>
             <Tabs.Content value="Hospital Stay Summary">
               <DischargeSummary
                 defaultValue={admission.discharge_summary || ""}

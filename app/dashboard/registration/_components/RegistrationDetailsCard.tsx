@@ -12,14 +12,17 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
     return <div>Registration not found</div>;
   }
   return (
-    <Flex justify={"between"} className=" py-5 border-b">
+    <Flex
+      justify={"between"}
+      className=" p-5 border-b bg-green-50 dark:bg-transparent my-2"
+    >
       <Flex gap={"5"}>
         <Link
-          color="teal"
           href={`/dashboard/registration/${registration.registration_id}`}
-          className="font-bold text-gray-700"
+          className="font-bold"
         >
-          {registration.first_name} {registration.last_name}
+          {registration.first_name.toUpperCase()}{" "}
+          {registration.last_name.toUpperCase()}
         </Link>
         <Text as="div" color="gray">
           {registration.gender.toUpperCase()}

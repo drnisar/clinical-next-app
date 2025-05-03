@@ -1,50 +1,56 @@
-"use client";
-import { Registration } from "@prisma/client";
+"use client"; // Required for state and effects
+
+import React, { useState, useEffect, useMemo } from "react";
 import {
+  Table,
+  TextField,
+  Flex,
+  Box,
+  Button,
+  Text,
+  Select,
+  Badge,
+} from "@radix-ui/themes";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  createColumnHelper,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  SortingState,
+  PaginationState,
+} from "@tanstack/react-table";
+import {
+  TriangleDownIcon,
+  TriangleUpIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-  TriangleDownIcon,
-  TriangleUpIcon,
 } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 import {
-  Box,
-  Button,
-  Flex,
-  Select,
-  Spinner,
-  Table,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useRouter } from "next/navigation"; // Use router for programmatic navigation if needed
-import React, { useEffect, useMemo, useState, useTransition } from "react"; // Import hooks
+  Clinic_Visit,
+  Registration as PrismaRegistration,
+} from "@prisma/client";
+
+type Consultation = Omit<Clinic_Visit, "Registration"> & {
+  registration: PrismaRegistration | null;
+};
 
 interface Props {
-  registrations: Registration[];
+  consultations: Consultation[];
 }
 
-const columnHelper = createColumnHelper<Registration>();
+const columnHelper = createColumnHelper<Consultation>();
 
-// Client component for safe date formatting
 const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   const [formattedDate, setFormattedDate] = useState<string | null>(null);
   useEffect(() => {
     if (date) {
-      // Using toDateString as in your original code
-      setFormattedDate(new Date(date).toDateString());
+      setFormattedDate(new Date(date).toLocaleDateString("en-GB")); // Adjust locale as needed
     } else {
       setFormattedDate(null);
     }
@@ -52,58 +58,9 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   return <>{formattedDate ?? "N/A"}</>;
 };
 
-// Component for Action Buttons to manage state individually
-const ActionButtons = ({ registrationId }: { registrationId: number }) => {
+const ConsultationsTable = ({ consultations }: Props) => {
   const router = useRouter();
-  const [isNavigatingView, startViewTransition] = useTransition();
-  const [isNavigatingEdit, startEditTransition] = useTransition();
 
-  const handleNavigate = (
-    path: string,
-    startTransition: React.TransitionStartFunction
-  ) => {
-    startTransition(() => {
-      router.push(path);
-    });
-  };
-
-  return (
-    <Flex gap="2">
-      {/* Using Button with onClick and useTransition */}
-      <Button
-        size={"1"}
-        color="grass"
-        variant="soft"
-        disabled={isNavigatingView || isNavigatingEdit} // Disable both if either is navigating
-        onClick={() =>
-          handleNavigate(
-            `/dashboard/registration/${registrationId}`,
-            startViewTransition
-          )
-        }
-      >
-        {isNavigatingView ? <Spinner size="1" /> : "View"}
-      </Button>
-      <Button
-        size={"1"}
-        color="blue"
-        variant="soft"
-        disabled={isNavigatingEdit || isNavigatingView} // Disable both if either is navigating
-        onClick={() =>
-          handleNavigate(
-            `/dashboard/registration/edit/${registrationId}`,
-            startEditTransition
-          )
-        }
-      >
-        {isNavigatingEdit ? <Spinner size="1" /> : "Edit"}
-      </Button>
-    </Flex>
-  );
-};
-
-const RegistrationsTable = ({ registrations }: Props) => {
-  // State for table features
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
@@ -111,7 +68,6 @@ const RegistrationsTable = ({ registrations }: Props) => {
     pageSize: 10,
   });
 
-  // Define columns
   const columns = useMemo(
     () => [
       columnHelper.display({
@@ -122,45 +78,72 @@ const RegistrationsTable = ({ registrations }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.accessor("first_name", {
-        header: "First Name",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("last_name", {
-        header: "Last Name",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("gender", {
-        header: "Gender",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("phone_number", {
-        header: "Phone Number",
-        cell: (info) => info.getValue() ?? "N/A",
-      }),
-      columnHelper.accessor("mr_number", {
+      columnHelper.accessor(
+        (row) =>
+          `${row.registration?.first_name || ""} ${
+            row.registration?.last_name || ""
+          }`,
+        {
+          id: "patient_name",
+          header: "Patient Name",
+          cell: (info) => info.getValue() || "N/A",
+        }
+      ),
+      columnHelper.accessor((row) => row.registration?.mr_number, {
+        id: "mr_number",
         header: "MR Number",
         cell: (info) => info.getValue() ?? "N/A",
       }),
-      columnHelper.accessor("createdAt", {
-        header: "Registered Date",
+      columnHelper.accessor((row) => row.registration?.gender, {
+        id: "gender",
+        header: "Gender",
+        cell: (info) => info.getValue() ?? "N/A",
+      }),
+      // Accessing consultation data (use correct field names from Clinic_Visit or mapped names)
+      columnHelper.accessor("visit_date", {
+        // Use 'visit_date' from Clinic_Visit
+        header: "Consultation Date",
         cell: (info) => <FormattedDateCell date={info.getValue()} />,
+      }),
+      columnHelper.accessor("status", {
+        header: "Status",
+        cell: (info) => {
+          const status = info.getValue();
+          let color: React.ComponentProps<typeof Badge>["color"] = "gray";
+          if (status === "COMPLETED") color = "green";
+          if (status === "QUEUED") color = "orange";
+          return <Badge color={color}>{status ?? "N/A"}</Badge>;
+        },
+      }),
+      columnHelper.accessor("clinical_details", {
+        header: "Notes",
+        cell: (info) => info.getValue() ?? "N/A",
+        enableSorting: false,
       }),
       columnHelper.display({
         id: "actions",
         header: "Actions",
         enableSorting: false,
         cell: (props) => (
-          <ActionButtons registrationId={props.row.original.registration_id} />
+          <Button
+            size="1"
+            variant="soft"
+            onClick={() => {
+              router.push(
+                `/dashboard/consultation/edit/${props.row.original.visit_id}` // Use 'visit_id'
+              );
+            }}
+          >
+            Clinical Info
+          </Button>
         ),
       }),
     ],
-    [] // No external dependencies needed for column definitions themselves
+    [router]
   );
 
-  // useReactTable hook
   const table = useReactTable({
-    data: registrations,
+    data: consultations || [],
     columns,
     state: {
       sorting,
@@ -174,23 +157,21 @@ const RegistrationsTable = ({ registrations }: Props) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // debugTable: true, // Uncomment for debugging
+    // debugTable: true,
   });
 
   return (
     <Box>
-      {/* Search Input */}
       <Flex mb="3">
         <TextField.Root
-          placeholder="Search registrations..."
+          placeholder="Search consultations..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           style={{ maxWidth: 300 }}
         />
       </Flex>
 
-      {/* Table */}
-      <Table.Root variant="surface" size={"1"}>
+      <Table.Root variant="surface">
         <Table.Header>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Row key={headerGroup.id}>
@@ -232,21 +213,21 @@ const RegistrationsTable = ({ registrations }: Props) => {
           {table.getRowModel().rows.length === 0 && (
             <Table.Row>
               <Table.Cell colSpan={columns.length} align="center">
-                No registrations found {globalFilter && "matching your search"}.
+                No consultations found {globalFilter && "matching your search"}.
               </Table.Cell>
             </Table.Row>
           )}
         </Table.Body>
       </Table.Root>
 
-      {/* Pagination Controls */}
       <Flex align="center" justify="between" mt="4" gap="3">
         <Text size="2">
           Page{" "}
           <strong>
             {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
-          </strong>
+          </strong>{" "}
+          ({table.getFilteredRowModel().rows.length} total rows)
         </Text>
         <Flex gap="1">
           <Button
@@ -282,7 +263,6 @@ const RegistrationsTable = ({ registrations }: Props) => {
             <DoubleArrowRightIcon />
           </Button>
         </Flex>
-        {/* Optional: Page size selector */}
         <Select.Root
           size="1"
           value={String(table.getState().pagination.pageSize)}
@@ -304,4 +284,4 @@ const RegistrationsTable = ({ registrations }: Props) => {
   );
 };
 
-export default RegistrationsTable;
+export default ConsultationsTable;

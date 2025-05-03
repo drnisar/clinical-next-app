@@ -1,34 +1,34 @@
 import React from "react";
 import prisma from "@/prisma/client";
-import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 import AdmissionDetailsForSingleAdmission from "../_components/AdmissionDetailsForSingleAdmission";
+import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
-const SingleAdmissionPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
-  const admission = await prisma.admission_Discharge
-    .findUnique({
-      where: { admission_id: parseInt(id) },
-    })
-    .catch((error) => {
-      console.error("Error fetching admission:", error);
-      return null;
-    });
-  if (!admission) {
-    return <div>No admission found</div>;
+const AdmissionDetailPage = async ({ params }: { params: { id: string } }) => {
+  const admissionId = parseInt(params.id, 10);
+  if (isNaN(admissionId)) {
+    return <div>Invalid Admission ID</div>;
   }
-  const registration = await prisma.registration.findUnique({
-    where: { registration_id: admission.registration_id },
+
+  const admission = await prisma.admission_Discharge.findUnique({
+    where: { admission_id: admissionId },
+    include: { Registration: true },
   });
-  if (!registration) {
-    return <div>No registration found</div>;
-  }
+
+  const ots = admission
+    ? await prisma.ot.findMany({
+        where: { admission_id: admission.admission_id },
+        orderBy: { surgery_date: "desc" }, // Example ordering
+      })
+    : [];
 
   return (
     <>
-      <RegistrationDetailsCard registration={registration} />
-      <AdmissionDetailsForSingleAdmission params={{ id: parseInt(id) }} />
+      {admission?.Registration && (
+        <RegistrationDetailsCard registration={admission.Registration} />
+      )}
+      <AdmissionDetailsForSingleAdmission admission={admission} ots={ots} />
     </>
   );
 };
 
-export default SingleAdmissionPage;
+export default AdmissionDetailPage;

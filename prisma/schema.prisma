@@ -17,6 +17,7 @@ model Admission_Discharge {
   registration_id         Int
   admission_plan          String?                 @db.LongText
   bed_number              Int?
+  diagnosis               String?                 @db.LongText
   diagnostic_procedures   String?                 @db.LongText
   discharge_instructions  String?                 @db.LongText
   discharge_medications   Json?
@@ -54,6 +55,7 @@ model Clinic_Visit {
   clinical_details        String?                   @db.LongText
   registration_id         Int
   visit_date              DateTime?                 @db.Date
+  status                  String?                   @db.VarChar(45)
   instructions            String?                   @db.LongText
   diagnosis               String?                   @db.LongText
   examination             String?                   @db.LongText

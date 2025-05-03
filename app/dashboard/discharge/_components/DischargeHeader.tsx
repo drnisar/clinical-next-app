@@ -1,6 +1,7 @@
 "use client";
 import { Admission_Discharge } from "@prisma/client";
 import { DataList, Flex } from "@radix-ui/themes";
+import { FormattedDateCell } from "../../_components/appConstants";
 
 interface Props {
   admissionDischarge: Admission_Discharge;
@@ -14,12 +15,17 @@ const DischargeHeader = ({
   },
 }: Props) => {
   return (
-    <Flex justify="between" className="w-full bg-gray-50 p-4">
+    <Flex
+      justify="between"
+      className="w-full bg-gray-50 p-4 dark:bg-transparent"
+    >
       <DataList.Root>
         <DataList.Item>
           <DataList.Label>Admission Date</DataList.Label>
           <DataList.Value>
-            {new Date(admission_date || "").toLocaleDateString()}
+            <FormattedDateCell date={admission_date} />
+            {/* {admission_date &&
+              new Date(admission_date || "").toLocaleDateString()} */}
           </DataList.Value>
         </DataList.Item>
         <DataList.Item>
@@ -31,8 +37,9 @@ const DischargeHeader = ({
         <DataList.Item>
           <DataList.Label>Discharge Date</DataList.Label>
           <DataList.Value>
-            {discharge_date &&
-              new Date(discharge_date || "").toLocaleDateString()}
+            <FormattedDateCell date={discharge_date} />
+            {/* {discharge_date &&
+              new Date(discharge_date || "").toLocaleDateString()} */}
           </DataList.Value>
         </DataList.Item>
         <DataList.Item>

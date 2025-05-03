@@ -9,6 +9,7 @@ import { PropsWithChildren } from "react";
 import QueryClProvider from "./QueryClProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthProvider from "./dashboard/auth/AuthProvider";
+import { ThemeProvider } from "./providers/ThemeProvider"; // Your provider
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -27,23 +28,31 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    // Add suppressHydrationWarning to the html tag
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <Theme accentColor="violet" radius="medium">
-            <QueryClProvider>
-              <Container>
-                <header>
-                  <NavBar />
-                </header>
-                <main className="py-5">{children}</main>
-              </Container>
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClProvider>
-          </Theme>
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <Theme accentColor="violet" radius="medium" appearance="inherit">
+              <QueryClProvider>
+                <Container>
+                  <header>
+                    <NavBar />
+                  </header>
+                  <main className="py-5">{children}</main>
+                </Container>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClProvider>
+            </Theme>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

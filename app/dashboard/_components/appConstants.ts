@@ -1,3 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+export const FormattedDateCell = ({
+  date,
+}: {
+  date: Date | null | undefined;
+}) => {
+  const [formattedDate, setFormattedDate] = useState<string | null>(null);
+  useEffect(() => {
+    if (date) {
+      // Using toDateString as in your original code
+      setFormattedDate(new Date(date).toLocaleDateString());
+    } else {
+      setFormattedDate(null);
+    }
+  }, [date]);
+  return formattedDate;
+};
+
 export const genderOptions = [
   { label: "Male", value: "male" },
   { label: "Female", value: "female" },
@@ -267,4 +288,15 @@ export const dischargeModes = [
   { label: "DEATH", value: "DEATH" },
   { label: "TRANSFER", value: "TRANSFER" },
   { label: "OTHER", value: "OTHER" },
+];
+
+export const mr_type = [
+  { label: "K03", value: "K03" },
+  { label: "ACE", value: "ACE" },
+];
+
+export const mr_intermediate = [
+  { label: "0000", value: "0000" },
+  { label: "6000", value: "6000" },
+  { label: "7000", value: "7000" },
 ];

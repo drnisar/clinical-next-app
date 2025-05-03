@@ -1,58 +1,116 @@
 "use client";
-import { Button, Flex } from "@radix-ui/themes";
-import classNames from "classnames";
-import { useSession } from "next-auth/react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
-
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  // { href: "/dashboard", label: "Dashboard" },
-];
+import React, { useState, useEffect } from "react"; // Import useState, useEffect
+import { Flex, Text, Button, IconButton, Skeleton } from "@radix-ui/themes"; // Import IconButton
+import classnames from "classnames";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes"; // Import useTheme
+import { SunIcon, MoonIcon } from "@radix-ui/react-icons"; // Import icons
 
 const NavBar = () => {
-  const pathname = usePathname();
-  const { status, data: session } = useSession();
+  const currentPath = usePathname();
+  const { theme, setTheme } = useTheme();
+  // State to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const links = [
+    { label: "Dashboard", href: "/dashboard" },
+    // Add other main navigation links if needed
+  ];
+
+  // Render placeholder or null until mounted to avoid hydration errors
+  const renderThemeToggle = () => {
+    if (!mounted) {
+      // Render a simple placeholder matching IconButton size
+      return (
+        <div className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+      );
+    }
+
+    const isDarkMode = theme === "dark";
+
+    return (
+      <IconButton
+        variant="ghost"
+        color="gray"
+        onClick={() => setTheme(isDarkMode ? "light" : "dark")}
+        title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {isDarkMode ? (
+          <SunIcon width="18" height="18" />
+        ) : (
+          <MoonIcon width="18" height="18" />
+        )}
+      </IconButton>
+    );
+  };
+
   return (
-    <Flex
-      direction={"row"}
-      gap={"6"}
-      className="border-b p-4 shadow-md print:!hidden"
-      justify={"between"}
-    >
-      <Flex gap="6">
-        <Link href={"/"}>Logo</Link>
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={classNames("text-zinc-400", {
-              "text-zinc-900": pathname === link.href,
-            })}
-          >
-            {link.label}
+    <nav className="border-b mb-5 px-5 py-3">
+      <Flex justify="between" align="center">
+        <Flex align="center" gap="3">
+          <Link href="/">
+            <Text>Logo</Text> {/* Replace with your actual logo */}
           </Link>
-        ))}
-        {status === "authenticated" && <Link href="/dashboard">DashBoard</Link>}
+          <ul className="flex space-x-6">
+            {links.map((link) => (
+              <li key={link.href}>
+                <Link
+                  className={classnames({
+                    "nav-link": true, // Add a common class for styling if needed
+                    "text-zinc-900 dark:text-zinc-100 font-semibold":
+                      link.href === currentPath,
+                    "text-zinc-500 dark:text-zinc-400":
+                      link.href !== currentPath,
+                  })}
+                  href={link.href}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Flex>
+
+        <Flex align="center" gap="4">
+          {/* Theme Toggle Button */}
+          {renderThemeToggle()}
+
+          {/* Auth Status */}
+          <AuthStatus />
+        </Flex>
       </Flex>
-      {status === "unauthenticated" && (
-        <Link href="/api/auth/signin">
-          <Button size="1" color="blue" variant="soft">
-            Login
-          </Button>
-        </Link>
-      )}
-      {status === "authenticated" && (
-        <div>
-          {session.user!.name}{" "}
-          <Link className="ml-3" href="/api/auth/signout">
-            Logout
-          </Link>
-        </div>
-      )}
+    </nav>
+  );
+};
+
+// Separate component for AuthStatus for clarity
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  if (status === "loading") return <Skeleton width="3rem" />; // Use your Skeleton component
+
+  if (status === "unauthenticated")
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Login
+      </Link>
+    );
+
+  return (
+    <Flex align="center" gap="2">
+      <Text size="2">{session!.user!.name}</Text>
+      <Link href="/api/auth/signout">
+        <Button variant="soft" color="gray" size="1">
+          Log Out
+        </Button>
+      </Link>
     </Flex>
   );
 };

@@ -8,6 +8,37 @@ interface Props {
   onSave: () => void;
 }
 
+export function Diagnosis({ defaultValue, admission_id, onSave }: Props) {
+  const [diagnosis, setDiagnosis] = useState({});
+
+  return (
+    <Flex direction="column" mt="2" className="h-full flex-grow">
+      <Box className="flex-grow h-[calc(100vh-400px)]">
+        <TextArea
+          style={{
+            minHeight: "100%",
+            maxHeight: "100%",
+            boxSizing: "border-box",
+          }}
+          placeholder="Diagnosis"
+          defaultValue={defaultValue}
+          onChange={(e) =>
+            setDiagnosis({
+              diagnosis: e.target.value,
+            })
+          }
+        />
+      </Box>
+      <Box className="mt-4">
+        <ButtonSaveDischargeComponents
+          admission_id={admission_id}
+          fieldData={diagnosis}
+          onSave={onSave}
+        />
+      </Box>
+    </Flex>
+  );
+}
 export function DischargeSummary({
   defaultValue,
   admission_id,

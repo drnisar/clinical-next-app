@@ -4,13 +4,14 @@ import { Registration } from "@prisma/client";
 import { Button, TextField } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { Form } from "radix-ui";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
 import { genderOptions } from "../../_components/appConstants";
 import { InputGeneric, SelectInput } from "../../_components/FormComponents";
+import RegistrationSuccessDialog from "./RegistrationSuccessDialog";
+import { useState } from "react";
 
 const validation = z.object({
   first_name: z.string().min(3),
@@ -27,7 +28,6 @@ const RegistrationForm = ({
 }: {
   registration?: Registration;
 }) => {
-  const router = useRouter();
   const {
     register,
     control,
@@ -37,17 +37,22 @@ const RegistrationForm = ({
     resolver: zodResolver(validation),
   });
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [regId, setRegId] = useState<number>();
+
   const mutation = useMutation({
     mutationFn: (data: FormData) => {
       return axios.post("/api/registration", data);
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       toast.success("Registration Successful", {
         duration: 4000,
         position: "top-center",
       });
+      setIsDialogOpen(true);
+      setRegId(response.data.registration_id);
       // alert("Registration Successful");
-      router.push("/dashboard/registration");
+      // router.push("/dashboard/registration");
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -70,7 +75,9 @@ const RegistrationForm = ({
         duration: 4000,
         position: "top-center",
       });
-      router.push("/dashboard/registration");
+      setIsDialogOpen(true);
+      setRegId(registration?.registration_id);
+      // router.push("/dashboard/registration");
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -88,19 +95,11 @@ const RegistrationForm = ({
   return (
     <>
       <Toaster />
+      <RegistrationSuccessDialog isDialogOpen={isDialogOpen} id={regId} />
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
-        {/* <TextInput
-          label={"First Name"}
-          name={"first_name"}
-          type={"text"}
-          register={register}
-          errorMessage={errors.first_name?.message?.toString() || ""}
-          placeholder={"First Name"}
-          defaultValue={registration?.first_name}
-        /> */}
         <InputGeneric
           name={"first_name"}
           label={"First Name"}
@@ -119,15 +118,7 @@ const RegistrationForm = ({
             defaultValue={registration?.last_name}
           />
         </InputGeneric>
-        {/* <TextInput
-          label={"Last Name"}
-          name={"last_name"}
-          type={"text"}
-          register={register}
-          errorMessage={errors.last_name?.message?.toString() || ""}
-          placeholder={"Last Name"}
-          defaultValue={registration?.last_name}
-        /> */}
+
         <SelectInput
           label="Gender"
           name="gender"
@@ -157,26 +148,6 @@ const RegistrationForm = ({
             defaultValue={registration?.mr_number || ""}
           />
         </InputGeneric>
-
-        {/* <TextInput
-          label={"Phone Number"}
-          name={"phone_number"}
-          type={"text"}
-          placeholder={"Enter Phone Number"}
-          errorMessage={errors.phone_number?.message?.toString() || ""}
-          register={register}
-          defaultValue={registration?.phone_number || ""}
-        />
-
-        <TextInput
-          label="MR Number"
-          name="mr_number"
-          type="text"
-          placeholder="Enter MR Number"
-          register={register}
-          errorMessage={errors.mr_number?.message?.toString() || ""}
-          defaultValue={registration?.mr_number || ""}
-        /> */}
         <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending
             ? "Submitting ..."
