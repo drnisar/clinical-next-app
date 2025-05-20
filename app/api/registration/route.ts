@@ -24,12 +24,13 @@ export async function POST(req: NextRequest) {
       error: validation.error.errors,
     });
   }
-  const { first_name, last_name, gender, phone_number, mr_number } = body;
+  const { first_name, last_name, gender, code, phone_number, mr_number } = body;
   const newRegistration = await prisma.registration.create({
     data: {
       first_name,
       last_name,
       gender,
+      code,
       phone_number,
       mr_number,
     },

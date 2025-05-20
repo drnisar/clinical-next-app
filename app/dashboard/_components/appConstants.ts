@@ -19,27 +19,6 @@ export const FormattedDateCell = ({
   return formattedDate;
 };
 
-("use client");
-
-import { useEffect, useState } from "react";
-
-export const FormattedDateCell = ({
-  date,
-}: {
-  date: Date | null | undefined;
-}) => {
-  const [formattedDate, setFormattedDate] = useState<string | null>(null);
-  useEffect(() => {
-    if (date) {
-      // Using toDateString as in your original code
-      setFormattedDate(new Date(date).toLocaleDateString());
-    } else {
-      setFormattedDate(null);
-    }
-  }, [date]);
-  return formattedDate;
-};
-
 export const genderOptions = [
   { label: "Male", value: "male" },
   { label: "Female", value: "female" },
@@ -290,6 +269,7 @@ export const drugUnitsForMedEntry = [
   { label: "ml", value: "ml" },
   { label: "g", value: "g" },
   { label: "mcg", value: "mcg" },
+];
 export const mr_type = [
   { label: "K03", value: "K03" },
   { label: "ACE", value: "ACE" },
@@ -356,14 +336,28 @@ export const refineMRN = (MRN: string): string => {
     return "K03-" + first + "00000" + last;
   }
 
-  // If none of the known patterns match, throw an error
-  throw new Error(`Invalid or unhandled MRN format: ${MRN}`);
-};
-    return "K03-" + first + "00000" + last;
+  // New Pattern: Check for K03- followed by 11 digits (e.g., K03-12345678901)
+  const patternK03 = /^K03-\d{11}$/;
+  if (patternK03.test(MRN)) {
+    return MRN; // Return the original MRN if it matches this format
   }
 
   // If none of the known patterns match, throw an error
   throw new Error(`Invalid or unhandled MRN format: ${MRN}`);
 };
-
 // ... rest of the file ...
+
+export const refinePhoneNumber = (phoneNumber: string): string => {
+  // Remove all non-digit characters
+  let cleaned = phoneNumber.replace(/\D/g, "");
+
+  // Remove preceding zeros
+  cleaned = cleaned.replace(/^0+/, "");
+
+  // Check if the cleaned number is valid
+  if (cleaned.length < 10 || cleaned.length > 11) {
+    throw new Error("Invalid phone number format");
+  }
+
+  return cleaned;
+};

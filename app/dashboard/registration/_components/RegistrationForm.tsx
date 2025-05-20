@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Registration } from "@prisma/client";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Form } from "radix-ui";
@@ -23,6 +23,7 @@ const validation = z.object({
   last_name: z.string().min(3),
   gender: z.string().nonempty("please select"),
   phone_number: z.string().min(10),
+  code: z.string().min(1),
   mr_number: z.string().min(3), // Keep basic validation
 });
 
@@ -43,7 +44,18 @@ const RegistrationForm = ({
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(validation),
+    defaultValues: {
+      first_name: registration?.first_name || "",
+      last_name: registration?.last_name || "",
+      gender: registration?.gender || "",
+      code: registration?.code || "+92",
+      phone_number: registration?.phone_number || "",
+      mr_number: registration?.mr_number || "",
+    },
   });
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [regId, setRegId] = useState<number>(0);
 
   const mutation = useMutation({
     mutationFn: (data: FormData) => {
@@ -75,12 +87,13 @@ const RegistrationForm = ({
         data
       );
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       toast.success("Registration Updated", {
         duration: 4000,
         position: "top-center",
       });
-      router.push("/dashboard/registration");
+      setIsDialogOpen(true);
+      setRegId(response.data.registration_id);
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -92,46 +105,23 @@ const RegistrationForm = ({
   });
 
   const onSubmit = (data: FormData) => {
-    // Optionally re-validate MRN on submit in case it wasn't blurred
     try {
-      if (data.mr_number) {
-        // Only refine if there's a value
-        const refined = refineMRN(data.mr_number);
-        // If refineMRN modifies the value, update it before submitting
-        if (refined !== data.mr_number) {
-          data.mr_number = refined; // Mutate data directly before sending
-        }
-      }
-      clearErrors("mr_number"); // Clear any previous errors before submitting
       if (registration) {
         editMutation.mutate(data); // Ensure editMutation is used for updates
       } else mutation.mutate(data);
-    } catch (error: any) {
-      setError("mr_number", {
-        type: "custom",
-        message: error.message || "Invalid MRN format",
-      });
-      toast.error(error.message || "Invalid MRN format"); // Show toast as well
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <>
       <Toaster />
-      <RegistrationSuccessDialog isDialogOpen={} id={0} />
+      <RegistrationSuccessDialog isDialogOpen={isDialogOpen} id={regId} />
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
-        {/* <TextInput
-          label={"First Name"}
-          name={"first_name"}
-          type={"text"}
-          register={register}
-          errorMessage={errors.first_name?.message?.toString() || ""}
-          placeholder={"First Name"}
-          defaultValue={registration?.first_name}
-        /> */}
         <InputGeneric
           name={"first_name"}
           label={"First Name"}
@@ -140,21 +130,9 @@ const RegistrationForm = ({
           <TextField.Root type="text" {...register("first_name")} />
         </InputGeneric>
         <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
-          <TextField.Root
-            type="text"
-            {...register("last_name")}
-            defaultValue={registration?.last_name}
-          />
+          <TextField.Root type="text" {...register("last_name")} />
         </InputGeneric>
-        {/* <TextInput
-          label={"Last Name"}
-          name={"last_name"}
-          type={"text"}
-          register={register}
-          errorMessage={errors.last_name?.message?.toString() || ""}
-          placeholder={"Last Name"}
-          defaultValue={registration?.last_name}
-        /> */}
+
         <SelectInput
           label="Gender"
           name="gender"
@@ -164,14 +142,36 @@ const RegistrationForm = ({
           placeholder="Select Gender"
           // defaultValue prop removed, use defaultValues in useForm
         />
-
-        <InputGeneric
-          name={"phone_number"}
-          label={"Phone Number"}
-          errorMessage={errors.phone_number?.message || ""}
-        >
-          <TextField.Root type="text" {...register("phone_number")} />
-        </InputGeneric>
+        <Flex gap="2">
+          <SelectInput
+            label="Code"
+            name="code"
+            control={control}
+            options={[
+              { value: "+92", label: "+92" },
+              { value: "+93", label: "+93" },
+            ]}
+            errorMessage={""}
+            placeholder="Select Code"
+          />
+          <InputGeneric
+            name={"phone_number"}
+            label={"Phone Number"}
+            errorMessage={errors.phone_number?.message || ""}
+          >
+            <TextField.Root
+              type="text"
+              {...register("phone_number")}
+              onBlur={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                const refinedPhone = value.replace(/^0+/, ""); // Remove leading zeros;
+                setValue("phone_number", refinedPhone, {
+                  shouldValidate: true,
+                });
+              }}
+            />
+          </InputGeneric>
+        </Flex>
 
         <InputGeneric
           name={"mr_number"}
@@ -197,16 +197,23 @@ const RegistrationForm = ({
                 setValue("mr_number", refinedValue, { shouldValidate: true }); // Trigger validation
                 // Clear any previous custom errors if refinement succeeds
                 clearErrors("mr_number");
-              } catch (error: any) {
+              } catch (error: unknown) {
                 // Set error message from refineMRN function
-                setError("mr_number", {
-                  type: "custom",
-                  message: error.message || "Invalid MRN format",
-                });
+                if (error instanceof Error) {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: error.message || "Invalid MRN format",
+                  });
+                } else {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: "An unknown error occurred",
+                  });
+                }
               }
             }}
             // Clear custom error when user starts typing again
-            onChange={(e) => {
+            onChange={() => {
               if (errors.mr_number?.type === "custom") {
                 clearErrors("mr_number");
               }
@@ -215,25 +222,6 @@ const RegistrationForm = ({
           />
         </InputGeneric>
 
-        {/* <TextInput
-          label={"Phone Number"}
-          name={"phone_number"}
-          type={"text"}
-          placeholder={"Enter Phone Number"}
-          errorMessage={errors.phone_number?.message?.toString() || ""}
-          register={register}
-          defaultValue={registration?.phone_number || ""}
-        />
-
-        <TextInput
-          label="MR Number"
-          name="mr_number"
-          type="text"
-          placeholder="Enter MR Number"
-          register={register}
-          errorMessage={errors.mr_number?.message?.toString() || ""}
-          defaultValue={registration?.mr_number || ""}
-        /> */}
         <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending
             ? "Submitting ..."

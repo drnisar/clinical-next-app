@@ -122,22 +122,41 @@ const RegistrationsTable = ({ registrations }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.accessor("first_name", {
-        header: "First Name",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("last_name", {
-        header: "Last Name",
-        cell: (info) => info.getValue(),
-      }),
+      columnHelper.accessor(
+        (row) =>
+          `${row.first_name.toUpperCase() || ""} ${
+            row.last_name.toUpperCase() || ""
+          }`,
+        {
+          id: "patient_name", // Need an ID for accessor functions
+          header: "Patient Name",
+          cell: (info) => info.getValue(),
+        }
+      ),
+      // columnHelper.accessor("first_name", {
+      //   header: "First Name",
+      //   cell: (info) => info.getValue(),
+      // }),
+      // columnHelper.accessor("last_name", {
+      //   header: "Last Name",
+      //   cell: (info) => info.getValue(),
+      // }),
       columnHelper.accessor("gender", {
         header: "Gender",
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue().toUpperCase(),
       }),
-      columnHelper.accessor("phone_number", {
-        header: "Phone Number",
-        cell: (info) => info.getValue() ?? "N/A",
-      }),
+      columnHelper.accessor(
+        (row) => `${row.code || ""}${row.phone_number || ""}`,
+        {
+          id: "phone_number",
+          header: "Phone Number",
+          cell: (info) => info.getValue() ?? "N/A",
+        }
+      ),
+      // columnHelper.accessor("phone_number", {
+      //   header: "Phone Number",
+      //   cell: (info) => info.getValue() ?? "N/A",
+      // }),
       columnHelper.accessor("mr_number", {
         header: "MR Number",
         cell: (info) => info.getValue() ?? "N/A",

@@ -91,6 +91,8 @@ model Registration {
   first_name          String                @db.VarChar(45)
   last_name           String                @db.VarChar(45)
   gender              String                @db.VarChar(45)
+  dob                 DateTime?             @db.Date
+  code                String?               @db.VarChar(45)
   phone_number        String?               @db.VarChar(45)
   mr_number           String?               @db.VarChar(45)
   createdAt           DateTime              @default(now())
