@@ -1,12 +1,13 @@
-import prisma from "@/prisma/client";
 import React, { Suspense } from "react";
 import ConsultationsTable from "./_components/ConsultationsTable";
 import ConsultationPageSkeleton from "./_skeletons/ConsultationPageSkeleton";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 const ConsultationsPage = async () => {
-  const consultationsFromDb = await prisma.clinic_Visit.findMany({
+  const consultationsFromDb = await prisma.consultation.findMany({
     orderBy: { visit_date: "desc" },
-    include: { Registration: true }, // Prisma includes with capital 'R'
+    include: { registration: true }, // Prisma includes with capital 'R'
   });
 
   if (!consultationsFromDb || consultationsFromDb.length === 0) {
@@ -14,10 +15,10 @@ const ConsultationsPage = async () => {
   }
 
   const consultationsForTable = consultationsFromDb.map((consultation) => {
-    const { Registration, ...restOfConsultation } = consultation;
+    const { registration, ...restOfConsultation } = consultation;
     return {
       ...restOfConsultation,
-      registration: Registration ?? null,
+      registration: registration ?? null,
     };
   });
 

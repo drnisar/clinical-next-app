@@ -1,13 +1,14 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 interface Props {
   params: { id: string };
 }
 
 export async function GET(req: NextRequest, { params: { id } }: Props) {
-  const consultation = await prisma.clinic_Visit.findUnique({
-    where: { visit_id: parseInt(id) },
+  const consultation = await prisma.consultation.findUnique({
+    where: { consultation_id: id },
   });
   if (!consultation) {
     return NextResponse.json(
@@ -21,8 +22,8 @@ export async function GET(req: NextRequest, { params: { id } }: Props) {
 
 export async function DELETE(req: NextRequest, { params }: Props) {
   const { id } = await params;
-  const consultation = await prisma.clinic_Visit.findUnique({
-    where: { visit_id: parseInt(id) },
+  const consultation = await prisma.consultation.findUnique({
+    where: { consultation_id: id },
   });
   if (!consultation) {
     return NextResponse.json(
@@ -30,8 +31,8 @@ export async function DELETE(req: NextRequest, { params }: Props) {
       { status: 404 }
     );
   }
-  await prisma.clinic_Visit.delete({
-    where: { visit_id: parseInt(id) },
+  await prisma.consultation.delete({
+    where: { consultation_id: id },
   });
   return NextResponse.json(
     { message: "Consultation deleted successfully" },
@@ -42,7 +43,6 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 export async function PATCH(req: NextRequest, { params: { id } }: Props) {
   const {
     registration_id,
-    clinical_details,
     history,
     examination,
     investigations,
@@ -50,10 +50,11 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
     visit_date,
     instructions,
     plan,
+    medications,
   } = await req.json();
 
-  const consultation = await prisma.clinic_Visit.findUnique({
-    where: { visit_id: parseInt(id) },
+  const consultation = await prisma.consultation.findUnique({
+    where: { consultation_id: id },
   });
   if (!consultation) {
     return NextResponse.json(
@@ -63,11 +64,10 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
   }
 
   try {
-    const updatedConsultation = await prisma.clinic_Visit.update({
-      where: { visit_id: parseInt(id) },
+    const updatedConsultation = await prisma.consultation.update({
+      where: { consultation_id: id },
       data: {
-        registration_id: parseInt(registration_id),
-        clinical_details,
+        registration_id,
         history,
         examination,
         investigations,
@@ -75,6 +75,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
         instructions,
         visit_date,
         plan,
+        medications,
       },
     });
 

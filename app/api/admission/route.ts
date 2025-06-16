@@ -1,6 +1,8 @@
-import prisma from "@/prisma/client";
+// import prisma from "@/prisma/client";
 import { Prisma } from "@prisma/client"; // Import Prisma namespace for error handling
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma"; // Adjust the import path as necessary
+const prisma = new PrismaClient(); // Initialize Prisma Client
 
 export async function POST(request: NextRequest) {
   // Changed export syntax
@@ -14,13 +16,13 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const registrationId = parseInt(body.registration_id);
-    if (isNaN(registrationId)) {
-      return NextResponse.json(
-        { error: "Invalid Registration ID format" },
-        { status: 400 }
-      );
-    }
+    const registrationId = body.registration_id;
+    // if (isNaN(registrationId)) {
+    //   return NextResponse.json(
+    //     { error: "Invalid Registration ID format" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // --- Check if Registration Exists ---
     const registration = await prisma.registration.findUnique({

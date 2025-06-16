@@ -1,13 +1,15 @@
-import prisma from "@/prisma/client";
 import React, { Suspense } from "react";
 import RegistrationsTable from "./_components/RegistrationsTable";
 import CreateRegistrationButton from "./_components/CreateRegistrationButton";
 import RegistrationPageSkeleton from "./_components/skeletons/RegistrationsPageSkeleton";
+import { PrismaClient } from "@/generated/prisma";
+
+const prisma = new PrismaClient();
 
 const RegistrationPage = async () => {
   const registrations = await prisma.registration.findMany({
     orderBy: {
-      createdAt: "desc",
+      created_at: "desc",
     },
   });
   return (

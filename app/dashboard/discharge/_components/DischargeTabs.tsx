@@ -14,7 +14,7 @@ import {
 } from "./DischargeNotes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import DischargeMedsTab from "./DischargeMedsTab";
+import MedicationsForm from "../../_components/MedicationsForm";
 
 const tabValues = [
   "Diagnosis / es",
@@ -28,7 +28,7 @@ const tabValues = [
   "Follow up Appointment", // Assuming this tab will have content later
 ];
 
-const DischargeTabs = ({ admission_id }: { admission_id: number }) => {
+const DischargeTabs = ({ admission_id }: { admission_id: string }) => {
   const [activeTab, setActiveTab] = useState(tabValues[0]);
   const {
     data: admission,
@@ -111,9 +111,13 @@ const DischargeTabs = ({ admission_id }: { admission_id: number }) => {
               />
             </Tabs.Content>
             <Tabs.Content value="Medications">
-              <DischargeMedsTab
+              {/* <DischargeMedsTab
                 // defaultValue={admission.therapeutic_procedures || ""}
                 admission_id={admission.admission_id}
+              /> */}
+              <MedicationsForm
+                slug="/api/admission"
+                id={admission.admission_id}
               />
             </Tabs.Content>
             <Tabs.Content value="Instructions">

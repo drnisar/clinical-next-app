@@ -5,7 +5,7 @@ import AdmissionForm from "./AdmissionForm";
 const CreateNewAdmissionButton = ({
   registration_id,
 }: {
-  registration_id: number;
+  registration_id: string;
 }) => {
   return (
     <>

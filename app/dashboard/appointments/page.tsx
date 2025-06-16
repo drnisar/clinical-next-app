@@ -1,5 +1,6 @@
-import prisma from "@/prisma/client";
 import AppointmentsTable from "./_components/AppointmentsTable";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 const AppointmentsPage = async () => {
   try {
@@ -12,8 +13,7 @@ const AppointmentsPage = async () => {
         status: true,
         notes: true,
         type: true,
-
-        Registration: {
+        registration: {
           select: {
             first_name: true,
             last_name: true,

@@ -1,4 +1,4 @@
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma/default";
 import { Card, Heading, Table } from "@radix-ui/themes";
 import React from "react";
 

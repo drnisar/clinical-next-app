@@ -1,7 +1,7 @@
 "use client";
 import { appointmentTypeOptions } from "@/app/dashboard/_components/appConstants";
 import { InputGeneric } from "@/app/dashboard/_components/FormComponents";
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,12 +12,12 @@ import { Controller, useForm } from "react-hook-form";
 type FormData = Omit<Appointment, "registration_id" | "visit_id">;
 
 interface Props {
-  registration_id: number;
-  visit_id: number;
+  registration_id: string;
+  consultation_id?: string;
   type: string;
 }
 
-const AppointmentForm = ({ registration_id, visit_id }: Props) => {
+const AppointmentForm = ({ registration_id, consultation_id }: Props) => {
   const {
     register,
     handleSubmit,
@@ -45,7 +45,7 @@ const AppointmentForm = ({ registration_id, visit_id }: Props) => {
   });
 
   const onSubmit = (data: FormData) => {
-    const submissionData = { visit_id, registration_id, ...data };
+    const submissionData = { consultation_id, registration_id, ...data };
     addMutate(submissionData);
   };
 
@@ -70,7 +70,7 @@ const AppointmentForm = ({ registration_id, visit_id }: Props) => {
                   onValueChange={(newValue) => {
                     // setType(newValue);
                     router.push(
-                      `/dashboard/consultation/edit/${visit_id}?type=${newValue}`
+                      `/dashboard/consultation/edit/${consultation_id}?type=${newValue}`
                     );
 
                     onChange(newValue);

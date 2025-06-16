@@ -4,27 +4,21 @@ import AdmissionDetailsForSingleAdmission from "../_components/AdmissionDetailsF
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
 const AdmissionDetailPage = async ({ params }: { params: { id: string } }) => {
-  const admissionId = parseInt(params.id, 10);
-  if (isNaN(admissionId)) {
-    return <div>Invalid Admission ID</div>;
-  }
+  const admissionId = params.id;
 
   const admission = await prisma.admission_Discharge.findUnique({
     where: { admission_id: admissionId },
-    include: { Registration: true },
+    include: { registration: true },
   });
 
-  const ots = admission
-    ? await prisma.ot.findMany({
-        where: { admission_id: admission.admission_id },
-        orderBy: { surgery_date: "desc" }, // Example ordering
-      })
-    : [];
+  const ots = await prisma.oT.findMany({
+    where: { admission_id: admissionId },
+  });
 
   return (
     <>
-      {admission?.Registration && (
-        <RegistrationDetailsCard registration={admission.Registration} />
+      {admission?.registration && (
+        <RegistrationDetailsCard registration={admission.registration} />
       )}
       <AdmissionDetailsForSingleAdmission admission={admission} ots={ots} />
     </>

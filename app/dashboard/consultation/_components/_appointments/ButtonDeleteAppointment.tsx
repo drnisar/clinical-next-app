@@ -4,11 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 
-const ButtonDeleteAppointment = ({ visit_id }: { visit_id: number }) => {
+const ButtonDeleteAppointment = ({
+  consultation_id,
+}: {
+  consultation_id: string;
+}) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (id: number) => {
-      await axios.delete("/api/appointment/visit_id/" + id);
+    mutationFn: async (id: string) => {
+      await axios.delete("/api/appointment/consultation_id/" + id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["appointment"] });
@@ -20,7 +24,7 @@ const ButtonDeleteAppointment = ({ visit_id }: { visit_id: number }) => {
   });
 
   const deleteAppointment = () => {
-    mutation.mutate(visit_id);
+    mutation.mutate(consultation_id);
   };
   return (
     <AlertDialog.Root>

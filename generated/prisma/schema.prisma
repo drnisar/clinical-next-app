@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admission_Discharge {
+  admission_id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  registration_id         String       @db.ObjectId
+  admission_date          DateTime?
+  admission_mode          String?
+  status                  String
+  discharge_date          DateTime?
+  discharge_mode          String?
+  admission_plan          String?
+  bed_number              Int?
+  diagnosis               String?
+  diagnostic_procedures   String?
+  discharge_instructions  String?
+  discharge_medications   Json?
+  discharge_summary       String?
+  hospital_investigations String?
+  hospital_medications    String?
+  instructions            String?
+  medical_leave           String?
+  therapeutic_procedures  String?
+  ward                    String?
+  ot                      OT[]
+  medications             Medication[]
+  created_at              DateTime     @default(now()) @db.Date
+  updated_at              DateTime     @updatedAt @db.Date
+  registration            Registration @relation(fields: [registration_id], references: [registration_id])
+}
+
+model OT {
+  ot_id               String              @id @default(auto()) @map("_id") @db.ObjectId
+  admission_id        String              @db.ObjectId
+  surgery_date        DateTime?
+  surgeon             String?
+  assistant_1         String?
+  assistant_2         String?
+  assistant_3         String?
+  anaesthetist        String?
+  anaesthesia         String?
+  procedure_name      String?
+  findings            String?
+  operative_details   String?
+  closure             String?
+  postop_instructions String?
+  finalize            Int?
+  created_at          DateTime            @default(now()) @db.Date
+  admission_discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id])
+  updated_at          DateTime            @updatedAt @db.Date
+}
+
+model Appointment {
+  appointment_id   String       @id @default(auto()) @map("_id") @db.ObjectId
+  created_at       DateTime     @default(now()) @db.Date
+  date_appointment DateTime     @db.Date
+  notes            String
+  plan             String
+  registration_id  String       @db.ObjectId
+  status           String       @default("PENDING")
+  type             String
+  updated_at       DateTime     @updatedAt @db.Date
+  registration     Registration @relation(fields: [registration_id], references: [registration_id])
+}
+
+model Consultation {
+  consultation_id String       @id @default(auto()) @map("_id") @db.ObjectId
+  created_at      DateTime     @default(now()) @db.Date
+  diagnosis       String?
+  examination     String?
+  history         String?
+  instructions    String?
+  investigations  String?
+  plan            String?
+  medications     Medication[]
+  registration_id String       @db.ObjectId
+  updated_at      DateTime     @updatedAt @db.Date
+  visit_date      DateTime     @db.Date
+  registration    Registration @relation(fields: [registration_id], references: [registration_id])
+}
+
+model Registration {
+  registration_id     String                @id @default(auto()) @map("_id") @db.ObjectId
+  code                String
+  created_at          DateTime              @default(now()) @db.Date
+  first_name          String
+  gender              String
+  last_name           String
+  mr_number           String
+  phone_number        String
+  updated_at          DateTime              @updatedAt @db.Date
+  Consultation        Consultation[]
+  Appointment         Appointment[]
+  Admission_Discharge Admission_Discharge[]
+}
+
+type Medication {
+  drug_name    String
+  drug_dose    String
+  amount       Int
+  drug_form    String?
+  frequency    String?
+  duration     Int?
+  instructions String?
+  route        String?
+  interval     String?
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

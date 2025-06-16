@@ -1,5 +1,6 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
@@ -18,13 +19,13 @@ export async function GET(
     today.getDate() + 1
   );
 
-  const todaysConsults = await prisma.clinic_Visit.findMany({
+  const todaysConsults = await prisma.consultation.findMany({
     where: {
       visit_date: {
         gte: startOfDay,
         lt: endOfDay,
       },
-      registration_id: parseInt(id),
+      registration_id: id,
     },
   });
   return NextResponse.json(todaysConsults);

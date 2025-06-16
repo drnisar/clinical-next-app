@@ -1,5 +1,4 @@
 "use client";
-import { Admission_Discharge } from "@prisma/client";
 import {
   Box,
   Button,
@@ -14,10 +13,11 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { admissionModes } from "../../_components/appConstants";
+import { Admission_Discharge } from "@/generated/prisma";
 
 type admission = Admission_Discharge;
 
-const AdmissionForm = ({ registration_id }: { registration_id: number }) => {
+const AdmissionForm = ({ registration_id }: { registration_id: string }) => {
   const { register, control, handleSubmit } = useForm<admission>();
 
   const router = useRouter();

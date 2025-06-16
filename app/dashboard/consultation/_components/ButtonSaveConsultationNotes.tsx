@@ -4,15 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 interface Props {
-  visit_id: number;
+  consultation_id: string;
   fieldData: object;
 }
 
-const ButtonSaveConsultationNotes = ({ fieldData, visit_id }: Props) => {
+const ButtonSaveConsultationNotes = ({ fieldData, consultation_id }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (dataForForm: object) =>
-      await axios.patch("/api/consultation/" + visit_id, dataForForm),
+      await axios.patch("/api/consultation/" + consultation_id, dataForForm),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["consultation"] }),
     onError: () => console.log("error"),

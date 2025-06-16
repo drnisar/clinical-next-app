@@ -53,7 +53,7 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
 };
 
 // Component for Action Buttons to manage state individually
-const ActionButtons = ({ registrationId }: { registrationId: number }) => {
+const ActionButtons = ({ registration_id }: { registration_id: string }) => {
   const router = useRouter();
   const [isNavigatingView, startViewTransition] = useTransition();
   const [isNavigatingEdit, startEditTransition] = useTransition();
@@ -77,7 +77,7 @@ const ActionButtons = ({ registrationId }: { registrationId: number }) => {
         disabled={isNavigatingView || isNavigatingEdit} // Disable both if either is navigating
         onClick={() =>
           handleNavigate(
-            `/dashboard/registration/${registrationId}`,
+            `/dashboard/registration/${registration_id}`,
             startViewTransition
           )
         }
@@ -91,7 +91,7 @@ const ActionButtons = ({ registrationId }: { registrationId: number }) => {
         disabled={isNavigatingEdit || isNavigatingView} // Disable both if either is navigating
         onClick={() =>
           handleNavigate(
-            `/dashboard/registration/edit/${registrationId}`,
+            `/dashboard/registration/edit/${registration_id}`,
             startEditTransition
           )
         }
@@ -161,7 +161,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
         header: "MR Number",
         cell: (info) => info.getValue() ?? "N/A",
       }),
-      columnHelper.accessor("createdAt", {
+      columnHelper.accessor("created_at", {
         header: "Registered Date",
         cell: (info) => <FormattedDateCell date={info.getValue()} />,
       }),
@@ -170,7 +170,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
         header: "Actions",
         enableSorting: false,
         cell: (props) => (
-          <ActionButtons registrationId={props.row.original.registration_id} />
+          <ActionButtons registration_id={props.row.original.registration_id} />
         ),
       }),
     ],

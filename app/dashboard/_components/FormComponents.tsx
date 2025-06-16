@@ -62,28 +62,32 @@ export function TextInput({
 }
 
 interface SelectInputProps {
-  label: string;
+  label?: string;
   name: string;
+  size?: "1" | "2" | "3";
   options: { label: string; value: string }[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   errorMessage?: string;
   placeholder?: string;
   defaultValue?: string;
+  className?: string;
 }
 
 export function SelectInput({
   label,
   name,
+  size,
   options,
   control,
   errorMessage,
   placeholder,
   defaultValue,
+  className,
 }: SelectInputProps) {
   return (
-    <div className="mb-4">
-      <div className="mb-2">
+    <div>
+      <div>
         <label htmlFor={name}>{label}</label>
       </div>
       <div className="w-full">
@@ -96,8 +100,9 @@ export function SelectInput({
               onValueChange={onChange}
               value={value || defaultValue || ""}
               defaultValue={defaultValue || ""}
+              size={size}
             >
-              <Select.Trigger placeholder={placeholder} />
+              <Select.Trigger placeholder={placeholder} className={className} />
 
               <Select.Content>
                 <Select.Group>

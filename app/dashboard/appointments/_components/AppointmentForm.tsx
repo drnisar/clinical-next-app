@@ -1,7 +1,6 @@
 "use client";
 import { appointmentSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Appointment } from "@prisma/client";
 import { Button, Select } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,10 +9,11 @@ import { Form } from "radix-ui";
 import { Controller, useForm } from "react-hook-form";
 import { appointmentTypeOptions } from "../../_components/appConstants";
 import { TextInput } from "../../_components/FormComponents";
+import { Appointment } from "@/generated/prisma";
 
 type FormData = Omit<Appointment, "status">;
 
-const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
+const AppointmentForm = ({ registration_id }: { registration_id: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -37,33 +37,17 @@ const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
   });
 
   const onSubmit = (data: FormData) => {
+    console.log(" Subbmittting Form Data:", data);
+    // alert("Submitting Form Data: ");
     addMutation.mutate(data);
   };
 
-  // const typeValueChange = (typeValue: string) => {
-  //   router.push(
-  //     "/dashboard/appointments/new?registration_id=" +
-  //       registration_id +
-  //       "&type=" +
-  //       typeValue
-  //   );
-  // };
   return (
     <div>
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
-        {/* <SelectInput
-          label="Type"
-          name="type"
-          control={control}
-          options={appointmentTypeOptions}
-          errorMessage={errors.type?.message?.toString() || ""}
-          placeholder="Appointment Type"
-          
-        /> */}
-
         <Controller
           control={control}
           name="type"
@@ -74,8 +58,8 @@ const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
                   onChange(newValue);
                   const params = new URLSearchParams(searchParams);
                   params.set("type", newValue);
-                  params.set("registration_id", registration_id.toString());
-                  router.push(`?${params.toString()}`);
+                  params.set("registration_id", registration_id);
+                  router.push(`?${params}`);
                 }}
                 value={value}
               >
@@ -123,15 +107,16 @@ const AppointmentForm = ({ registration_id }: { registration_id: number }) => {
         <TextInput
           label="Registration ID"
           name={"registration_id"}
-          type={"number"}
+          type={"text"}
           placeholder={"Registration ID"}
-          hidden={true}
+          // hidden={true}
           errorMessage={errors.notes?.message?.toString() || ""}
-          register={() => register("registration_id", { valueAsNumber: true })}
+          register={() => register("registration_id")}
           defaultValue={registration_id}
         />
 
         <Button type="submit">Submit</Button>
+        {/* <button type="submit">some button</button> */}
       </Form.Root>
     </div>
   );

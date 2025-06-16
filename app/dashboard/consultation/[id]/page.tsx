@@ -1,10 +1,11 @@
 import React from "react";
 import SingleConsultationDetails from "../_components/SingleConsultationDetails";
-import prisma from "@/prisma/client";
 import { Box, Flex } from "@radix-ui/themes";
 import ConsultantHeader from "../_components/ConsultantHeader";
 import ButtonPrintPage from "../_components/ButtonPrintPage";
 import ButtonEditPage from "../_components/ButtonEditPage";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 const SingleConsultationPage = async ({
   params,
@@ -12,16 +13,14 @@ const SingleConsultationPage = async ({
   params: { id: string };
 }) => {
   const id = await params.id;
-  const consultation = await prisma.clinic_Visit.findUnique({
-    where: { visit_id: parseInt(id) },
+  const consultation = await prisma.consultation.findUnique({
+    where: { consultation_id: id },
   });
   if (!consultation) {
     return <div>Consultation not found</div>;
   }
 
-  const meds = await prisma.consultationMedications.findMany({
-    where: { visit_id: parseInt(id) },
-  });
+  const meds = consultation.medications;
   if (!meds) {
     return <div>Medications not found</div>;
   }
@@ -35,7 +34,7 @@ const SingleConsultationPage = async ({
   }
 
   const appointment = await prisma.appointment.findFirst({
-    where: { visit_id: parseInt(id) },
+    where: { appointment_id: id },
   });
 
   return (
@@ -51,7 +50,7 @@ const SingleConsultationPage = async ({
       <Box>
         <SingleConsultationDetails
           registration={registration}
-          meds={meds}
+          medications={meds}
           consultation={consultation}
           appointment={appointment || null}
         />

@@ -1,5 +1,5 @@
 "use client";
-import { Clinic_Visit } from "@prisma/client";
+import { Consultation } from "@/generated/prisma";
 import { Spinner, Tabs } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -11,12 +11,12 @@ import {
   Plan,
 } from "./ConsultationNotes";
 
-const ConsultationTabs = ({ visit_id }: { visit_id: number }) => {
-  const { data: consultation } = useQuery<Clinic_Visit>({
+const ConsultationTabs = ({ consultation_id }: { consultation_id: string }) => {
+  const { data: consultation } = useQuery<Consultation>({
     queryKey: ["consultation"],
     queryFn: async () => {
       const response = await axios.get(
-        "/api/consultation/" + visit_id.toString()
+        "/api/consultation/" + consultation_id.toString()
       );
       return response.data;
     },
@@ -36,35 +36,35 @@ const ConsultationTabs = ({ visit_id }: { visit_id: number }) => {
         <Tabs.Content value="history">
           <History
             defaultValue={consultation.history || ""}
-            visit_id={consultation.visit_id}
+            consultation_id={consultation.consultation_id}
             registration_id={consultation.registration_id}
           />
         </Tabs.Content>
         <Tabs.Content value="examination">
           <Examination
             defaultValue={consultation.examination || ""}
-            visit_id={consultation.visit_id}
+            consultation_id={consultation.consultation_id}
             registration_id={consultation.registration_id}
           />
         </Tabs.Content>
         <Tabs.Content value="investigations">
           <Investigations
             defaultValue={consultation.investigations || ""}
-            visit_id={consultation.visit_id}
+            consultation_id={consultation.consultation_id}
             registration_id={consultation.registration_id}
           />
         </Tabs.Content>
         <Tabs.Content value="diagnosis">
           <Diagnosis
             defaultValue={consultation.diagnosis || ""}
-            visit_id={consultation.visit_id}
+            consultation_id={consultation.consultation_id}
             registration_id={consultation.registration_id}
           />
         </Tabs.Content>
         <Tabs.Content value="plan">
           <Plan
             defaultValue={consultation.plan || ""}
-            visit_id={consultation.visit_id}
+            consultation_id={consultation.consultation_id}
             registration_id={consultation.registration_id}
           />
         </Tabs.Content>

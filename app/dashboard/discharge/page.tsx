@@ -14,11 +14,7 @@ const DischargePage = async ({ params }: DischargePageProps) => {
   const { id } = params;
 
   // Validate and parse the ID
-  const admission_id = parseInt(id);
-  if (isNaN(admission_id)) {
-    // If ID is not a number, return 404
-    notFound();
-  }
+  const admission_id = id;
 
   // Fetch the admission using the validated ID
   const admission = await prisma.admission_Discharge.findUnique({

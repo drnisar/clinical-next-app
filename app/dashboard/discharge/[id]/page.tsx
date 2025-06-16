@@ -13,7 +13,7 @@ interface Props {
 
 const NewDischargePage = async ({ params }: Props) => {
   const admission = await prisma.admission_Discharge.findUnique({
-    where: { admission_id: parseInt(params.id) },
+    where: { admission_id: params.id },
   });
   if (!admission) return notFound();
   const registration = await prisma.registration.findUnique({
@@ -39,7 +39,7 @@ const NewDischargePage = async ({ params }: Props) => {
         </Link>
       </Flex>
       <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission_id={parseInt(params.id)} />
+      <DischargeTabs admission_id={params.id} />
     </Suspense>
   );
 };

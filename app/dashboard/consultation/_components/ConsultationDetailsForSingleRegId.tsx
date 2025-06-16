@@ -1,11 +1,11 @@
-import { Clinic_Visit } from "@prisma/client";
+import { Consultation } from "@/generated/prisma";
 import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import React from "react";
 
 const ConsultationDetailsForSingleRegId = ({
   consultation,
 }: {
-  consultation: Clinic_Visit;
+  consultation: Consultation;
 }) => {
   return (
     <Flex direction="column">

@@ -1,6 +1,8 @@
-import prisma from "@/prisma/client";
-import { Prisma } from "@prisma/client";
+// import prisma from "@/prisma/client";
+// import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma, PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 // Remove the Props interface definition if it still exists
 
@@ -20,12 +22,13 @@ export async function PATCH(
     therapeutic_procedures,
     instructions,
     medical_leave,
+    medications,
   } = await req.json();
 
   try {
     // First, check if the admission exists
     const admission = await prisma.admission_Discharge.findUnique({
-      where: { admission_id: parseInt(params.id) },
+      where: { admission_id: params.id },
     });
 
     if (!admission) {
@@ -37,7 +40,7 @@ export async function PATCH(
 
     // If it exists, proceed with the update
     const updatedAdmission = await prisma.admission_Discharge.update({
-      where: { admission_id: parseInt(params.id) },
+      where: { admission_id: params.id },
       data: {
         discharge_date: discharge_date,
         discharge_mode: discharge_mode,
@@ -49,6 +52,7 @@ export async function PATCH(
         therapeutic_procedures: therapeutic_procedures,
         instructions: instructions,
         medical_leave: medical_leave,
+        medications: medications,
       },
     });
 
@@ -81,7 +85,7 @@ export async function GET(
 ) {
   try {
     const admission = await prisma.admission_Discharge.findUnique({
-      where: { admission_id: parseInt(params.id) },
+      where: { admission_id: params.id },
     });
 
     if (!admission) {

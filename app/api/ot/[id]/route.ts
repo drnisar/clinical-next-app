@@ -7,9 +7,9 @@ export async function GET(
 ) {
   const { id } = params;
   try {
-    const ot = await prisma.ot.findUnique({
+    const ot = await prisma.oT.findUnique({
       where: {
-        ot_id: Number(id),
+        ot_id: id,
       },
     });
     if (!ot) {

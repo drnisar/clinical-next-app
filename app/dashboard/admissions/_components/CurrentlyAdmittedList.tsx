@@ -1,5 +1,5 @@
 "use client";
-import { Admission_Discharge, Registration } from "@prisma/client";
+import { Admission_Discharge, Registration } from "@/generated/prisma";
 import {
   Badge,
   Button,
@@ -57,7 +57,7 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
 
 const CurrentlyAdmittedList = ({ admissions }: Props) => {
   const router = useRouter();
-  const [navigatingId, setNavigatingId] = useState<number | null>(null);
+  const [navigatingId, setNavigatingId] = useState<string | null>(null);
   const [isNavPending, startTransition] = useTransition();
 
   // State for table features
@@ -81,7 +81,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
     }
   };
 
-  const handleDetailsClick = (admissionId: number) => {
+  const handleDetailsClick = (admissionId: string) => {
     setNavigatingId(admissionId);
     startTransition(() => {
       router.push("/dashboard/admissions/" + admissionId); // Use the correct ID passed to the function

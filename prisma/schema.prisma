@@ -1,226 +1,157 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Admission_Discharge {
-  admission_id            Int                     @id @default(autoincrement())
-  admission_date          DateTime?               @db.DateTime(0)
-  admission_mode          String?                 @db.VarChar(45)
-  status                  String                  @db.VarChar(45)
-  discharge_date          DateTime?               @db.DateTime(0)
-  discharge_mode          String?                 @db.VarChar(45)
-  registration_id         Int
-  admission_plan          String?                 @db.LongText
+  admission_id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  registration_id         String       @db.ObjectId
+  admission_date          DateTime?
+  admission_mode          String?
+  status                  String
+  discharge_date          DateTime?
+  discharge_mode          String?
+  admission_plan          String?
   bed_number              Int?
-  diagnosis               String?                 @db.LongText
-  diagnostic_procedures   String?                 @db.LongText
-  discharge_instructions  String?                 @db.LongText
+  diagnosis               String?
+  diagnostic_procedures   String?
+  discharge_instructions  String?
   discharge_medications   Json?
-  discharge_summary       String?                 @db.LongText
-  hospital_investigations String?                 @db.LongText
-  hospital_medications    String?                 @db.LongText
-  instructions            String?                 @db.LongText
-  medical_leave           String?                 @db.LongText
-  therapeutic_procedures  String?                 @db.LongText
-  ward                    String?                 @db.VarChar(45)
-  Registration            Registration            @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Admission Discharge_Registration1")
-  Discharge_Medications   Discharge_Medications[]
-  ot                      ot[]
+  discharge_summary       String?
+  hospital_investigations String?
+  hospital_medications    String?
+  instructions            String?
+  medical_leave           String?
+  therapeutic_procedures  String?
+  ward                    String?
+  ot                      OT[]
+  medications             Medication[]
+  created_at              DateTime     @default(now()) @db.Date
+  updated_at              DateTime     @updatedAt @db.Date
+  registration            Registration @relation(fields: [registration_id], references: [registration_id])
+}
 
-  @@index([registration_id], map: "fk_Admission Discharge_Registration1_idx")
-  @@map("Admission Discharge")
+model OT {
+  ot_id               String              @id @default(auto()) @map("_id") @db.ObjectId
+  admission_id        String              @db.ObjectId
+  surgery_date        DateTime?
+  surgeon             String?
+  assistant_1         String?
+  assistant_2         String?
+  assistant_3         String?
+  anaesthetist        String?
+  anaesthesia         String?
+  procedure_name      String?
+  findings            String?
+  operative_details   String?
+  closure             String?
+  postop_instructions String?
+  finalize            Int?
+  created_at          DateTime            @default(now()) @db.Date
+  admission_discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id])
+  updated_at          DateTime            @updatedAt @db.Date
 }
 
 model Appointment {
-  appointment_id   Int          @id @default(autoincrement())
-  date_appointment DateTime     @db.DateTime(0)
-  plan             String       @db.VarChar(255)
-  registration_id  Int
-  notes            String?      @db.VarChar(255)
-  status           String       @default("Pending") @db.VarChar(45)
-  type             String       @db.VarChar(45)
-  visit_id         Int?
-  Registration     Registration @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, map: "fk_Appointment_Registration1")
-
-  @@index([registration_id], map: "fk_Appointment_Registration1_idx")
+  appointment_id   String       @id @default(auto()) @map("_id") @db.ObjectId
+  created_at       DateTime     @default(now()) @db.Date
+  date_appointment DateTime     @db.Date
+  notes            String
+  plan             String
+  registration_id  String       @db.ObjectId
+  status           String       @default("PENDING")
+  type             String
+  updated_at       DateTime     @updatedAt @db.Date
+  registration     Registration @relation(fields: [registration_id], references: [registration_id])
 }
 
-model Clinic_Visit {
-  visit_id                Int                       @id @default(autoincrement())
-  clinical_details        String?                   @db.LongText
-  registration_id         Int
-  visit_date              DateTime?                 @db.Date
-  status                  String?                   @db.VarChar(45)
-  instructions            String?                   @db.LongText
-  diagnosis               String?                   @db.LongText
-  examination             String?                   @db.LongText
-  history                 String?                   @db.LongText
-  investigations          String?                   @db.LongText
-  plan                    String?                   @db.LongText
-  Registration            Registration              @relation(fields: [registration_id], references: [registration_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Clinic Visit_Registration")
-  ConsultationMedications ConsultationMedications[]
-
-  @@index([registration_id], map: "fk_Clinic Visit_Registration_idx")
-  @@map("Clinic_Visit")
-}
-
-model Discharge_Medications {
-  dc_meds_id          Int                 @id @default(autoincrement())
-  med_name            String              @db.VarChar(45)
-  route               String?             @db.VarChar(45)
-  frequency           String?             @db.VarChar(45)
-  duration            Int?                @db.TinyInt
-  interval            String?             @db.VarChar(45)
-  admission_id        Int
-  drug_form           String?             @db.VarChar(45)
-  instructions        String?             @db.LongText
-  quantity            Int?
-  Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_Discharge Medications_Admission Discharge1")
-
-  @@index([admission_id], map: "fk_Discharge Medications_Admission Discharge1_idx")
-  @@map("Discharge Medications")
+model Consultation {
+  consultation_id String       @id @default(auto()) @map("_id") @db.ObjectId
+  created_at      DateTime     @default(now()) @db.Date
+  diagnosis       String?
+  examination     String?
+  history         String?
+  instructions    String?
+  investigations  String?
+  plan            String?
+  medications     Medication[]
+  registration_id String       @db.ObjectId
+  updated_at      DateTime     @updatedAt @db.Date
+  visit_date      DateTime     @db.Date
+  registration    Registration @relation(fields: [registration_id], references: [registration_id])
 }
 
 model Registration {
-  registration_id     Int                   @id @default(autoincrement())
-  first_name          String                @db.VarChar(45)
-  last_name           String                @db.VarChar(45)
-  gender              String                @db.VarChar(45)
-  dob                 DateTime?             @db.Date
-  code                String?               @db.VarChar(45)
-  phone_number        String?               @db.VarChar(45)
-  mr_number           String?               @db.VarChar(45)
-  createdAt           DateTime              @default(now())
-  Admission_Discharge Admission_Discharge[]
+  registration_id     String                @id @default(auto()) @map("_id") @db.ObjectId
+  code                String
+  created_at          DateTime              @default(now()) @db.Date
+  first_name          String
+  gender              String
+  last_name           String
+  mr_number           String
+  phone_number        String
+  updated_at          DateTime              @updatedAt @db.Date
+  Consultation        Consultation[]
   Appointment         Appointment[]
-  Clinic_Visit        Clinic_Visit[]
+  Admission_Discharge Admission_Discharge[]
 }
 
-model drugs_list {
-  drug_id      Int     @id @default(autoincrement())
-  generic_name String? @db.VarChar(45)
-  trade_name   String? @db.VarChar(45)
-  drug_form    String? @db.VarChar(45)
-  unit         String? @db.VarChar(45)
-  dilution     String? @db.VarChar(255)
-  full_name    String? @db.VarChar(255)
-  strength     String? @db.VarChar(45)
-}
-
-model ConsultationMedications {
-  consult_med_id Int          @id @default(autoincrement())
-  visit_id       Int
-  drug_name      String       @db.VarChar(45)
-  quantity       Int?
-  drug_form      String?      @db.VarChar(45)
-  frequency      String?      @db.VarChar(45)
-  route          String?      @db.VarChar(45)
-  duration       Int?
-  interval       String?      @db.VarChar(45)
-  instructions   String?      @db.VarChar(255)
-  Clinic_Visit   Clinic_Visit @relation(fields: [visit_id], references: [visit_id], onDelete: NoAction, map: "fk_Consultation Medications_Clinic Visit1")
-
-  @@index([visit_id], map: "fk_Consultation Medications_Clinic Visit1_idx")
-}
-
-model medsTemplates {
-  medsTemplates_id  Int    @id @default(autoincrement())
-  templateName      String @db.VarChar(45)
-  medsArrayTemplate Json
+type Medication {
+  drug_name    String
+  drug_dose    String
+  amount       Int
+  drug_form    String?
+  frequency    String?
+  duration     Int?
+  instructions String?
+  route        String?
+  interval     String?
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  username      String?         @unique
-  email         String?         @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  accounts      Account?
-  Authenticator Authenticator[]
+  accounts      Account[]
   sessions      Session[]
 }
 
 model Account {
-  id                       String   @id @default(cuid())
-  userId                   String   @unique
-  type                     String
-  provider                 String
-  providerAccountId        String
-  refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
-  expires_at               Int?
-  token_type               String?
-  scope                    String?
-  id_token                 String?  @db.Text
-  session_state            String?
-  refresh_token_expires_in Int?
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
-  user                     User     @relation(fields: [userId], references: [id])
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId       String
+  userId       String   @db.ObjectId
   expires      DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
-
-  @@index([userId])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
-  token      String
+  token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model Authenticator {
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
-  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, credentialID])
-}
-
-model ot {
-  ot_id               Int                 @id @default(autoincrement())
-  admission_id        Int
-  surgery_date        DateTime?           @db.Date
-  surgeon             String?             @db.VarChar(45)
-  assistant_1         String?             @db.VarChar(45)
-  assistant_2         String?             @db.VarChar(45)
-  assistant_3         String?             @db.VarChar(45)
-  anaesthetist        String?             @db.VarChar(45)
-  anaesthesia         String?             @db.VarChar(45)
-  procedure_name      String?             @db.VarChar(255)
-  findings            String?             @db.LongText
-  operative_details   String?             @db.LongText
-  closure             String?             @db.LongText
-  postop_instructions String?             @db.LongText
-  finalize            Int?                @default(0) @db.TinyInt
-  Admission_Discharge Admission_Discharge @relation(fields: [admission_id], references: [admission_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_admission_id")
-
-  @@index([admission_id], map: "fk_admission_id")
 }

@@ -361,3 +361,19 @@ export const refinePhoneNumber = (phoneNumber: string): string => {
 
   return cleaned;
 };
+
+export const admissionModes = [
+  { label: "Emergency", value: "EMERGENCY" },
+  { label: "Elective", value: "ELECTIVE" },
+  { label: "Sehat Card", value: "SEHAT_CARD" },
+];
+
+export const dischargeStatuses = [{ label: "DISCHARGED", value: "DISCHARGED" }];
+
+export const dischargeModes = [
+  { label: "NORMAL", value: "NORMAL" },
+  { label: "LAMA", value: "LAMA" },
+  { label: "DEATH", value: "DEATH" },
+  { label: "TRANSFER", value: "TRANSFER" },
+  { label: "OTHER", value: "OTHER" },
+];

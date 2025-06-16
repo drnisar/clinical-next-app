@@ -1,20 +1,22 @@
-import { ConsultationMedications } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import React from "react";
 import { translate } from "@/app/dashboard/_components/appConstants";
+import { Medication } from "@/generated/prisma";
 
-interface medsArray {
-  meds: ConsultationMedications[];
+interface Props {
+  meds: Medication[];
 }
 
-const MedDetailsForSingleVisitId = ({ meds }: medsArray) => {
+const MedDetailsForSingleVisitId = ({ meds }: Props) => {
   return (
     <div>
       <Table.Root>
         <Table.Body>
           {meds.map((med) => (
-            <Table.Row key={med.consult_med_id}>
-              <Table.Cell>{med.drug_name.toUpperCase()}</Table.Cell>
+            <Table.Row key={med.drug_name}>
+              <Table.Cell>
+                {med.drug_name.toUpperCase()} {med.drug_form?.toUpperCase()}
+              </Table.Cell>
               <Table.Cell className="text-right">
                 {translate(med.interval)}
               </Table.Cell>
@@ -28,7 +30,7 @@ const MedDetailsForSingleVisitId = ({ meds }: medsArray) => {
               <Table.Cell className="text-right">
                 {translate(med.drug_form)}
               </Table.Cell>
-              <Table.Cell>{med.quantity}</Table.Cell>
+              <Table.Cell>{med.amount}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

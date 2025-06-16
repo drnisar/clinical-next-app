@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 import { InputGeneric } from "../../_components/FormComponents";
 import {
@@ -10,20 +9,20 @@ import {
   TextArea,
   TextField,
 } from "@radix-ui/themes";
-import { ot } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { OT } from "@/generated/prisma";
 
-type OTNotes = ot;
+type OTNotes = OT;
 
 const OTNotesForm = ({
   ot_id,
   admission_id,
 }: {
-  ot_id: number;
-  admission_id: number;
+  ot_id: string;
+  admission_id: string;
 }) => {
   const {
     data: initialData,
@@ -157,7 +156,7 @@ const OTNotesForm = ({
     <>
       <Toaster position="bottom-right" />
       <Flex>
-        <Flex className=" p-4 border-2 border-gray-200 bg-slate-50 w-full">
+        <Flex className=" p-4 border-2 w-full">
           <form className="w-full">
             <fieldset disabled={initialData.finalize === 1}>
               <Flex gap="4">

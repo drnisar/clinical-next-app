@@ -1,5 +1,5 @@
 "use client";
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import { Flex, Spinner } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -9,16 +9,18 @@ import AppointmentsTable from "./_appointments/AppointmentsTable";
 import ButtonDeleteAppointment from "./_appointments/ButtonDeleteAppointment";
 
 interface Props {
-  registration_id: number;
-  visit_id: number;
+  registration_id: string;
+  consultation_id: string;
   type: string;
 }
 
-const AppointmentsTab = ({ registration_id, visit_id, type }: Props) => {
+const AppointmentsTab = ({ registration_id, consultation_id, type }: Props) => {
   const { data: appointment, isLoading } = useQuery<Appointment>({
     queryKey: ["appointment"],
     queryFn: async () => {
-      const response = await axios.get("/api/appointment/visit_id/" + visit_id);
+      const response = await axios.get(
+        "/api/appointment/visit_id/" + consultation_id
+      );
       return response.data;
     },
 
@@ -32,7 +34,7 @@ const AppointmentsTab = ({ registration_id, visit_id, type }: Props) => {
       {appointment && (
         <>
           <AppointmentDetailsForVisitid appointment={appointment} />
-          <ButtonDeleteAppointment visit_id={visit_id} />
+          <ButtonDeleteAppointment consultation_id={consultation_id} />
         </>
       )}
 
@@ -41,7 +43,7 @@ const AppointmentsTab = ({ registration_id, visit_id, type }: Props) => {
           <Flex>
             <AppointmentForm
               registration_id={registration_id}
-              visit_id={visit_id}
+              consultation_id={consultation_id}
               type={type}
             />
           </Flex>

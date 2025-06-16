@@ -1,6 +1,8 @@
-import prisma from "@/prisma/client";
 import { registrationSchema } from "@/app/validationSchemas";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+
+const prisma = new PrismaClient();
 
 export const GET = async (
   request: NextRequest,
@@ -12,7 +14,7 @@ export const GET = async (
       return NextResponse.json({ error: "Registration ID is required" });
     }
     const reg = await prisma.registration.findUnique({
-      where: { registration_id: parseInt(id) },
+      where: { registration_id: id },
     });
 
     if (!reg) {
@@ -33,7 +35,7 @@ export const PATCH = async (
   const body = await req.json();
 
   const reg = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(id) },
+    where: { registration_id: id },
   });
 
   if (!reg) {
@@ -46,7 +48,7 @@ export const PATCH = async (
   }
 
   const updatedReg = await prisma.registration.update({
-    where: { registration_id: parseInt(id) },
+    where: { registration_id: id },
     data: body,
   });
 

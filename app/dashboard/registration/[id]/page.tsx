@@ -1,11 +1,12 @@
-import prisma from "@/prisma/client";
 import React from "react";
 import RegistrationDetailsCard from "../_components/RegistrationDetailsCard";
 import AppointmentsForSingleRegId from "../../appointments/_components/AppointmentsForSingleRegId";
 import { Box } from "@radix-ui/themes";
 import ConsultationsForSingleRegId from "../../consultation/_components/ConsultationsForSingleRegId";
 import AdmissionsForSingleRegId from "../../admissions/_components/AdmissionsForSingleRegId";
+import { PrismaClient } from "@/generated/prisma";
 
+const prisma = new PrismaClient();
 const RegistrationDetailsPage = async ({
   params,
 }: {
@@ -14,26 +15,30 @@ const RegistrationDetailsPage = async ({
   const id = await params.id;
 
   const registration = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(id) },
+    where: { registration_id: id },
   });
 
   const appointments = await prisma.appointment.findMany({
-    where: { registration_id: parseInt(id) },
+    where: { registration_id: id },
     orderBy: { date_appointment: "desc" },
   });
 
-  const consultations = await prisma.clinic_Visit.findMany({
-    where: { registration_id: parseInt(id) },
+  const consultations = await prisma.consultation.findMany({
+    where: { registration_id: id },
+  });
+
+  // if (!registration) {
+  //   return <div>Registration not found</div>;
+  // }
+
+  const admissions = await prisma.admission_Discharge.findMany({
+    where: { registration_id: id },
+    orderBy: { admission_id: "desc" },
   });
 
   if (!registration) {
     return <div>Registration not found</div>;
   }
-
-  const admissions = await prisma.admission_Discharge.findMany({
-    where: { registration_id: parseInt(id) },
-    orderBy: { admission_id: "desc" },
-  });
 
   return (
     <Box className="space-y-5">
@@ -44,13 +49,11 @@ const RegistrationDetailsPage = async ({
         registration_id={id}
       />
       <ConsultationsForSingleRegId
-        clinicVisits={consultations}
+        consultations={consultations}
         registration_id={id}
       />
-      <AdmissionsForSingleRegId
-        admissions={admissions}
-        registration_id={parseInt(id)}
-      />
+
+      <AdmissionsForSingleRegId admissions={admissions} registration_id={id} />
     </Box>
   );
 };
