@@ -5,6 +5,7 @@ import { Box } from "@radix-ui/themes";
 import ConsultationsForSingleRegId from "../../consultation/_components/ConsultationsForSingleRegId";
 import AdmissionsForSingleRegId from "../../admissions/_components/AdmissionsForSingleRegId";
 import { PrismaClient } from "@/generated/prisma";
+import SurgicalProceduresForSingleReg from "../../ot/_components/SurgicalProceduresForSingleReg";
 
 const prisma = new PrismaClient();
 const RegistrationDetailsPage = async ({
@@ -54,6 +55,7 @@ const RegistrationDetailsPage = async ({
       />
 
       <AdmissionsForSingleRegId admissions={admissions} registration_id={id} />
+      <SurgicalProceduresForSingleReg />
     </Box>
   );
 };
