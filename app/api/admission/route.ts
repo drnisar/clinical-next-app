@@ -17,12 +17,6 @@ export async function POST(request: NextRequest) {
       );
     }
     const registrationId = body.registration_id;
-    // if (isNaN(registrationId)) {
-    //   return NextResponse.json(
-    //     { error: "Invalid Registration ID format" },
-    //     { status: 400 }
-    //   );
-    // }
 
     // --- Check if Registration Exists ---
     const registration = await prisma.registration.findUnique({
@@ -50,7 +44,6 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Create New Admission ---
-    // Be specific about the data you pass to create
     const newAdmission = await prisma.admission_Discharge.create({
       data: {
         registration_id: registrationId,
@@ -60,14 +53,10 @@ export async function POST(request: NextRequest) {
         bed_number: body.bed_number,
         admission_mode: body.admission_mode,
         admission_plan: body.admission_plan,
-        // Only include fields from 'body' that are valid for creation
-        // Example: admission_mode: body.admission_mode,
-        // Avoid passing the whole 'body' if it contains extra fields
       },
     });
 
     // --- Success Response ---
-    // FIX: Use NextResponse.json here
     return NextResponse.json(newAdmission, { status: 201 }); // 201 Created
   } catch (error) {
     console.error("Error creating admission:", error);
