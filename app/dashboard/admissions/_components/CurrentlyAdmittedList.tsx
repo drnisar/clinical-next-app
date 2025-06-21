@@ -160,7 +160,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         },
       }),
     ],
-    [router, isNavPending, navigatingId] // Include dependencies used in column defs
+    [isNavPending, navigatingId, handleDetailsClick] // Include dependencies used in column defs
   );
 
   // useReactTable hook
@@ -287,23 +287,6 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
             <DoubleArrowRightIcon />
           </Button>
         </Flex>
-        {/* Optional: Page size selector */}
-        {/* <Select.Root
-            size="1"
-            value={String(table.getState().pagination.pageSize)}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <Select.Trigger placeholder="Rows per page" />
-            <Select.Content>
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <Select.Item key={pageSize} value={String(pageSize)}>
-                  Show {pageSize}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select.Root> */}
       </Flex>
     </Box>
   );

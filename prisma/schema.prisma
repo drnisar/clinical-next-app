@@ -82,6 +82,7 @@ model Consultation {
   investigations  String?
   plan            String?
   medications     Medication[]
+  status          String?
   registration_id String       @db.ObjectId
   updated_at      DateTime     @updatedAt @db.Date
   visit_date      DateTime     @db.Date

@@ -5206,6 +5206,7 @@ export namespace Prisma {
     instructions: string | null
     investigations: string | null
     plan: string | null
+    status: string | null
     registration_id: string | null
     updated_at: Date | null
     visit_date: Date | null
@@ -5220,6 +5221,7 @@ export namespace Prisma {
     instructions: string | null
     investigations: string | null
     plan: string | null
+    status: string | null
     registration_id: string | null
     updated_at: Date | null
     visit_date: Date | null
@@ -5234,6 +5236,7 @@ export namespace Prisma {
     instructions: number
     investigations: number
     plan: number
+    status: number
     registration_id: number
     updated_at: number
     visit_date: number
@@ -5250,6 +5253,7 @@ export namespace Prisma {
     instructions?: true
     investigations?: true
     plan?: true
+    status?: true
     registration_id?: true
     updated_at?: true
     visit_date?: true
@@ -5264,6 +5268,7 @@ export namespace Prisma {
     instructions?: true
     investigations?: true
     plan?: true
+    status?: true
     registration_id?: true
     updated_at?: true
     visit_date?: true
@@ -5278,6 +5283,7 @@ export namespace Prisma {
     instructions?: true
     investigations?: true
     plan?: true
+    status?: true
     registration_id?: true
     updated_at?: true
     visit_date?: true
@@ -5365,6 +5371,7 @@ export namespace Prisma {
     instructions: string | null
     investigations: string | null
     plan: string | null
+    status: string | null
     registration_id: string
     updated_at: Date
     visit_date: Date
@@ -5397,6 +5404,7 @@ export namespace Prisma {
     investigations?: boolean
     plan?: boolean
     medications?: boolean | MedicationDefaultArgs<ExtArgs>
+    status?: boolean
     registration_id?: boolean
     updated_at?: boolean
     visit_date?: boolean
@@ -5414,12 +5422,13 @@ export namespace Prisma {
     instructions?: boolean
     investigations?: boolean
     plan?: boolean
+    status?: boolean
     registration_id?: boolean
     updated_at?: boolean
     visit_date?: boolean
   }
 
-  export type ConsultationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"consultation_id" | "created_at" | "diagnosis" | "examination" | "history" | "instructions" | "investigations" | "plan" | "medications" | "registration_id" | "updated_at" | "visit_date", ExtArgs["result"]["consultation"]>
+  export type ConsultationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"consultation_id" | "created_at" | "diagnosis" | "examination" | "history" | "instructions" | "investigations" | "plan" | "medications" | "status" | "registration_id" | "updated_at" | "visit_date", ExtArgs["result"]["consultation"]>
   export type ConsultationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
   }
@@ -5438,6 +5447,7 @@ export namespace Prisma {
       instructions: string | null
       investigations: string | null
       plan: string | null
+      status: string | null
       registration_id: string
       updated_at: Date
       visit_date: Date
@@ -5844,6 +5854,7 @@ export namespace Prisma {
     readonly instructions: FieldRef<"Consultation", 'String'>
     readonly investigations: FieldRef<"Consultation", 'String'>
     readonly plan: FieldRef<"Consultation", 'String'>
+    readonly status: FieldRef<"Consultation", 'String'>
     readonly registration_id: FieldRef<"Consultation", 'String'>
     readonly updated_at: FieldRef<"Consultation", 'DateTime'>
     readonly visit_date: FieldRef<"Consultation", 'DateTime'>
@@ -11460,6 +11471,7 @@ export namespace Prisma {
     instructions: 'instructions',
     investigations: 'investigations',
     plan: 'plan',
+    status: 'status',
     registration_id: 'registration_id',
     updated_at: 'updated_at',
     visit_date: 'visit_date'
@@ -11980,6 +11992,7 @@ export namespace Prisma {
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
+    status?: StringNullableFilter<"Consultation"> | string | null
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -11996,6 +12009,7 @@ export namespace Prisma {
     investigations?: SortOrder
     plan?: SortOrder
     medications?: MedicationOrderByCompositeAggregateInput
+    status?: SortOrder
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
@@ -12015,6 +12029,7 @@ export namespace Prisma {
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
+    status?: StringNullableFilter<"Consultation"> | string | null
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -12030,6 +12045,7 @@ export namespace Prisma {
     instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
+    status?: SortOrder
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
@@ -12050,6 +12066,7 @@ export namespace Prisma {
     instructions?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     investigations?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     plan?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
+    status?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     registration_id?: StringWithAggregatesFilter<"Consultation"> | string
     updated_at?: DateTimeWithAggregatesFilter<"Consultation"> | Date | string
     visit_date?: DateTimeWithAggregatesFilter<"Consultation"> | Date | string
@@ -12798,6 +12815,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     updated_at?: Date | string
     visit_date: Date | string
     registration: RegistrationCreateNestedOneWithoutConsultationInput
@@ -12813,6 +12831,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     registration_id: string
     updated_at?: Date | string
     visit_date: Date | string
@@ -12827,6 +12846,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
     registration?: RegistrationUpdateOneRequiredWithoutConsultationNestedInput
@@ -12841,6 +12861,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     registration_id?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12856,6 +12877,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     registration_id: string
     updated_at?: Date | string
     visit_date: Date | string
@@ -12870,6 +12892,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12883,6 +12906,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     registration_id?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13651,6 +13675,7 @@ export namespace Prisma {
     instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
+    status?: SortOrder
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
@@ -13665,6 +13690,7 @@ export namespace Prisma {
     instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
+    status?: SortOrder
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
@@ -13679,6 +13705,7 @@ export namespace Prisma {
     instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
+    status?: SortOrder
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
@@ -15058,6 +15085,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -15072,6 +15100,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -15254,6 +15283,7 @@ export namespace Prisma {
     instructions?: StringNullableFilter<"Consultation"> | string | null
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
+    status?: StringNullableFilter<"Consultation"> | string | null
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -15678,6 +15708,7 @@ export namespace Prisma {
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: string | null
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -15747,6 +15778,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15760,6 +15792,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15773,6 +15806,7 @@ export namespace Prisma {
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }

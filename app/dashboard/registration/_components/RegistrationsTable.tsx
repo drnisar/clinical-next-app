@@ -174,7 +174,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
         ),
       }),
     ],
-    [] // No external dependencies needed for column definitions themselves
+    [pagination.pageIndex, pagination.pageSize] // No external dependencies needed for column definitions themselves
   );
 
   // useReactTable hook

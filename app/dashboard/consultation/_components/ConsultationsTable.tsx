@@ -31,20 +31,21 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import {
-  Clinic_Visit,
-  Registration as PrismaRegistration,
-} from "@prisma/client";
+import { Registration } from "@prisma/client";
+import { Consultation } from "@/generated/prisma";
 
-type Consultation = Omit<Clinic_Visit, "Registration"> & {
-  registration: PrismaRegistration | null;
+// type Consultation = Omit<Clinic_Visit, "Registration"> & {
+//   registration: PrismaRegistration | null;
+// };
+
+type consultation = Consultation & {
+  registration: Registration | null;
 };
-
 interface Props {
-  consultations: Consultation[];
+  consultations: consultation[];
 }
 
-const columnHelper = createColumnHelper<Consultation>();
+const columnHelper = createColumnHelper<consultation>();
 
 const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   const [formattedDate, setFormattedDate] = useState<string | null>(null);
@@ -112,10 +113,10 @@ const ConsultationsTable = ({ consultations }: Props) => {
           let color: React.ComponentProps<typeof Badge>["color"] = "gray";
           if (status === "COMPLETED") color = "green";
           if (status === "QUEUED") color = "orange";
-          return <Badge color={color}>{status ?? "N/A"}</Badge>;
+          return <Badge color={color}>{status ? String(status) : "N/A"}</Badge>;
         },
       }),
-      columnHelper.accessor("clinical_details", {
+      columnHelper.accessor("diagnosis", {
         header: "Notes",
         cell: (info) => info.getValue() ?? "N/A",
         enableSorting: false,
@@ -130,7 +131,7 @@ const ConsultationsTable = ({ consultations }: Props) => {
             variant="soft"
             onClick={() => {
               router.push(
-                `/dashboard/consultation/edit/${props.row.original.visit_id}` // Use 'visit_id'
+                `/dashboard/consultation/edit/${props.row.original.consultation_id}` // Use 'visit_id'
               );
             }}
           >
@@ -139,10 +140,10 @@ const ConsultationsTable = ({ consultations }: Props) => {
         ),
       }),
     ],
-    [router]
+    [pagination.pageIndex, pagination.pageSize, router]
   );
 
-  const table = useReactTable({
+  const table = useReactTable<consultation>({
     data: consultations || [],
     columns,
     state: {
