@@ -65,8 +65,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Corrected GET handler for this non-dynamic route
-// This will fetch ALL admissions, or you can filter by query params
 export async function GET() {
   // No second 'params' argument here
   try {
