@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 // Use the inline type annotation for the second argument
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } } // Correct type annotation here
+  { params }: { params: Promise<{ id: string }> } // Correct type annotation here
 ) {
   const {
     discharge_date,
@@ -24,11 +24,11 @@ export async function PATCH(
     medical_leave,
     medications,
   } = await req.json();
-
+  const { id } = await params; // Await the promise to get the actual id value
   try {
     // First, check if the admission exists
     const admission = await prisma.admission_Discharge.findUnique({
-      where: { admission_id: params.id },
+      where: { admission_id: id },
     });
 
     if (!admission) {
@@ -40,7 +40,7 @@ export async function PATCH(
 
     // If it exists, proceed with the update
     const updatedAdmission = await prisma.admission_Discharge.update({
-      where: { admission_id: params.id },
+      where: { admission_id: id },
       data: {
         discharge_date: discharge_date,
         discharge_mode: discharge_mode,
@@ -78,19 +78,15 @@ export async function PATCH(
   }
 }
 
-// Also apply the fix to the GET handler if you uncomment it
+// // Also apply the fix to the GET handler if you uncomment it
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } } // Correct type annotation here
+  { params }: { params: Promise<{ id: string }> } // Correct type annotation here
 ) {
-  const { params } = context;
-  const request = req;
-  if (req) {
-    console.log(request);
-  }
+  const { id } = await params; // Await the promise to get the actual id value
   try {
     const admission = await prisma.admission_Discharge.findUnique({
-      where: { admission_id: params.id },
+      where: { admission_id: id },
     });
 
     if (!admission) {

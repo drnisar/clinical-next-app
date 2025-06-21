@@ -10,9 +10,9 @@ const prisma = new PrismaClient();
 const SingleConsultationPage = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const id = await params.id;
+  const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
     where: { consultation_id: id },
   });

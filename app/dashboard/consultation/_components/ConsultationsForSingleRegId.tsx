@@ -50,7 +50,7 @@ const ConsultationsForSingleRegId = ({
                 </Link>
               </Flex>
             </Flex>
-            <p>{consultation.clinical_details}</p>
+            <p>{consultation.diagnosis}</p>
           </Box>
         ))}
       </Box>

@@ -1,4 +1,4 @@
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import { create } from "zustand";
 
 // interface Props{

@@ -1,5 +1,5 @@
 "use client";
-import { Admission_Discharge } from "@prisma/client";
+import { Admission_Discharge } from "@/generated/prisma";
 import { DataList, Flex } from "@radix-ui/themes";
 import { FormattedDateCell } from "../../_components/appConstants";
 

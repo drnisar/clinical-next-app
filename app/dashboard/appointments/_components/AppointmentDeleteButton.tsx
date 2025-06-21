@@ -8,7 +8,7 @@ import React from "react";
 const AppointmentDeleteButton = ({
   appointment_id,
 }: {
-  appointment_id: number;
+  appointment_id: string;
 }) => {
   const router = useRouter();
 

@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
-  const id = params.id;
+  const { id } = await params;
   const appointment = await prisma.appointment.findUnique({
     where: { appointment_id: id },
   });

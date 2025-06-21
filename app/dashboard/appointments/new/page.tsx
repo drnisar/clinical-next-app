@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const NewAppointmentPage = async ({
   searchParams,
 }: {
-  searchParams: { type: string; registration_id: string };
+  searchParams: Promise<{ type: string; registration_id: string }>;
 }) => {
   const { registration_id, type } = await searchParams;
   const appointments = await prisma.appointment.findMany({

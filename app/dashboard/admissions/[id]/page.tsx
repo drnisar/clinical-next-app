@@ -3,8 +3,12 @@ import prisma from "@/prisma/client";
 import AdmissionDetailsForSingleAdmission from "../_components/AdmissionDetailsForSingleAdmission";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
-const AdmissionDetailPage = async ({ params }: { params: { id: string } }) => {
-  const admissionId = params.id;
+const AdmissionDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id: admissionId } = await params;
 
   const admission = await prisma.admission_Discharge.findUnique({
     where: { admission_id: admissionId },

@@ -1,5 +1,5 @@
 "use client";
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import { Badge, Button, DataList, Flex } from "@radix-ui/themes";
 
 interface Props {

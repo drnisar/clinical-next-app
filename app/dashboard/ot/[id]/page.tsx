@@ -3,7 +3,11 @@ import OTNotesForm from "../_components/OTNotesForm";
 import prisma from "@/prisma/client";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
-const OTNotesEditPage = async ({ params }: { params: { id: string } }) => {
+const OTNotesEditPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
   const ot = await prisma.oT.findUnique({
     where: {

@@ -6,10 +6,15 @@ import ButtonPrintPage from "../../_components/ButtonPrintPage";
 import DischargeDetails from "../../_components/DischargeDetails";
 import DischargeHeader from "../../_components/DischargeHeader";
 
-const DischareSlip = async ({ params }: { params: { id: string } }) => {
+const DischareSlip = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
   const discharge = await prisma.admission_Discharge.findUnique({
     where: {
-      admission_id: params.id,
+      admission_id: id,
     },
   });
   if (!discharge) {

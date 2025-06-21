@@ -3,7 +3,7 @@ import { Box, Button, Flex, Select, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { appointmentTypeOptions } from "../../_components/appConstants";
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import { Form } from "@radix-ui/react-form";
 import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

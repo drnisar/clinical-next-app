@@ -11,9 +11,9 @@ const prisma = new PrismaClient();
 const RegistrationDetailsPage = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const id = await params.id;
+  const { id } = await params;
 
   const registration = await prisma.registration.findUnique({
     where: { registration_id: id },

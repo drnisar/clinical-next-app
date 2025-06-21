@@ -64,7 +64,7 @@ const RegistrationsDataTable = ({ registrations }: Props) => {
         header: "Phone Number",
         cell: (info) => info.getValue() ?? "N/A",
       }),
-      columnHelper.accessor("createdAt", {
+      columnHelper.accessor("created_at", {
         header: "Registered On",
         cell: (info) => <FormattedDateCell date={info.getValue()} />,
       }),

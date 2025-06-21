@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
     const { id } = await params;
@@ -28,9 +28,9 @@ export const GET = async (
 
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
-  const id = await params.id;
+  const { id } = await params;
 
   const body = await req.json();
 

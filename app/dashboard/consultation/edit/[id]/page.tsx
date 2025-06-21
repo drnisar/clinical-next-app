@@ -13,10 +13,12 @@ const ConsultationEditPage = async ({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { type: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ type: string }>;
 }) => {
   const { id } = await params;
+  const { type } = await searchParams;
+
   const consultation = await prisma.consultation.findUnique({
     where: {
       consultation_id: id,
@@ -72,7 +74,7 @@ const ConsultationEditPage = async ({
           <AppointmentsTab
             registration_id={registration.registration_id}
             consultation_id={consultation.consultation_id}
-            type={searchParams.type}
+            type={type}
           />
         </Tabs.Content>
       </Tabs.Root>

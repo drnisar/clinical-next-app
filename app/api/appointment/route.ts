@@ -57,7 +57,6 @@ export const POST = async (req: NextRequest) => {
       plan: body.plan,
       notes: body.notes,
       type: body.type, // Add the missing 'type' property
-      visit_id: body.visit_id,
     },
   });
 

@@ -3,10 +3,11 @@ import { PrismaClient } from "@/generated/prisma";
 const prisma = new PrismaClient();
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function GET(req: NextRequest, { params: { id } }: Props) {
+export async function GET(req: NextRequest, { params }: Props) {
+  const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
     where: { consultation_id: id },
   });
@@ -40,7 +41,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
   );
 }
 
-export async function PATCH(req: NextRequest, { params: { id } }: Props) {
+export async function PATCH(req: NextRequest, { params }: Props) {
   const {
     registration_id,
     history,
@@ -52,7 +53,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
     plan,
     medications,
   } = await req.json();
-
+  const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
     where: { consultation_id: id },
   });

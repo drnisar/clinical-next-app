@@ -3,7 +3,7 @@
 import React from "react";
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-dt";
-import { Appointment } from "@prisma/client";
+import { Appointment } from "@/generated/prisma";
 import styles from "./AppointmentsDatatable.module.css";
 
 interface Props {
