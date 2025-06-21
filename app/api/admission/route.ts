@@ -1,8 +1,6 @@
-// import prisma from "@/prisma/client";
+import prisma from "@/prisma/client";
+import { Prisma } from "@prisma/client"; // Import Prisma namespace for error handling
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
-
-const prisma = new PrismaClient(); // Initialize Prisma Client
 
 export async function POST(request: NextRequest) {
   // Changed export syntax
@@ -44,6 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Create New Admission ---
+    // Be specific about the data you pass to create
     const newAdmission = await prisma.admission_Discharge.create({
       data: {
         registration_id: registrationId,
@@ -53,40 +52,50 @@ export async function POST(request: NextRequest) {
         bed_number: body.bed_number,
         admission_mode: body.admission_mode,
         admission_plan: body.admission_plan,
+        // Only include fields from 'body' that are valid for creation
+        // Example: admission_mode: body.admission_mode,
+        // Avoid passing the whole 'body' if it contains extra fields
       },
     });
 
     // --- Success Response ---
+    // FIX: Use NextResponse.json here
     return NextResponse.json(newAdmission, { status: 201 }); // 201 Created
   } catch (error) {
     console.error("Error creating admission:", error);
+    // Refined error handling
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Handle specific errors if needed
+      if (error.code === "P2002") {
+        // Unique constraint violation
+        return NextResponse.json(
+          {
+            error: "Unique constraint violation, possibly duplicate data.",
+            details: error.message,
+          },
+          { status: 409 } // Conflict
+        );
+      }
+    }
+    // Generic Error Response
+    return NextResponse.json(
+      {
+        error: "Failed to create admission",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }
 
 // Corrected GET handler for this non-dynamic route
 // This will fetch ALL admissions, or you can filter by query params
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function GET(request: NextRequest) {
+export async function GET() {
   // No second 'params' argument here
   try {
-    // // Example: Check for a query parameter like /api/admission?registration_id=123
-    // const searchParams = request.nextUrl.searchParams;
-    // const registrationIdParam = searchParams.get("registration_id");
-
-    // let whereClause = {}; // Default: no filter
-
-    // if (registrationIdParam) {
-    //   const registrationId = parseInt(registrationIdParam);
-    //   if (!isNaN(registrationId)) {
-    //     whereClause = { registration_id: registrationId };
-    //   } else {
-    //     // Optional: return error if param is present but invalid
-    //     // return NextResponse.json({ error: "Invalid registration_id query parameter" }, { status: 400 });
-    //   }
-    // }
+    // Example: Check for a query parameter like /api/admission?registration_id=123
 
     const admissions = await prisma.admission_Discharge.findMany({
-      // where: whereClause,
       orderBy: {
         // Optional: order results
         admission_date: "desc",
