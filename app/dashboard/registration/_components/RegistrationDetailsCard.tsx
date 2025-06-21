@@ -1,5 +1,5 @@
 "use client";
-import { Registration } from "@prisma/client";
+import { Registration } from "@/generated/prisma";
 import { Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
