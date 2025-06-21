@@ -53,7 +53,7 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
 };
 
 // Component for Action Buttons to manage state individually
-const ActionButtons = ({ registrationId }: { registrationId: number }) => {
+const ActionButtons = ({ registration_id }: { registration_id: string }) => {
   const router = useRouter();
   const [isNavigatingView, startViewTransition] = useTransition();
   const [isNavigatingEdit, startEditTransition] = useTransition();
@@ -77,7 +77,7 @@ const ActionButtons = ({ registrationId }: { registrationId: number }) => {
         disabled={isNavigatingView || isNavigatingEdit} // Disable both if either is navigating
         onClick={() =>
           handleNavigate(
-            `/dashboard/registration/${registrationId}`,
+            `/dashboard/registration/${registration_id}`,
             startViewTransition
           )
         }
@@ -91,7 +91,7 @@ const ActionButtons = ({ registrationId }: { registrationId: number }) => {
         disabled={isNavigatingEdit || isNavigatingView} // Disable both if either is navigating
         onClick={() =>
           handleNavigate(
-            `/dashboard/registration/edit/${registrationId}`,
+            `/dashboard/registration/edit/${registration_id}`,
             startEditTransition
           )
         }
@@ -122,27 +122,46 @@ const RegistrationsTable = ({ registrations }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.accessor("first_name", {
-        header: "First Name",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("last_name", {
-        header: "Last Name",
-        cell: (info) => info.getValue(),
-      }),
+      columnHelper.accessor(
+        (row) =>
+          `${row.first_name.toUpperCase() || ""} ${
+            row.last_name.toUpperCase() || ""
+          }`,
+        {
+          id: "patient_name", // Need an ID for accessor functions
+          header: "Patient Name",
+          cell: (info) => info.getValue(),
+        }
+      ),
+      // columnHelper.accessor("first_name", {
+      //   header: "First Name",
+      //   cell: (info) => info.getValue(),
+      // }),
+      // columnHelper.accessor("last_name", {
+      //   header: "Last Name",
+      //   cell: (info) => info.getValue(),
+      // }),
       columnHelper.accessor("gender", {
         header: "Gender",
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue().toUpperCase(),
       }),
-      columnHelper.accessor("phone_number", {
-        header: "Phone Number",
-        cell: (info) => info.getValue() ?? "N/A",
-      }),
+      columnHelper.accessor(
+        (row) => `${row.code || ""}${row.phone_number || ""}`,
+        {
+          id: "phone_number",
+          header: "Phone Number",
+          cell: (info) => info.getValue() ?? "N/A",
+        }
+      ),
+      // columnHelper.accessor("phone_number", {
+      //   header: "Phone Number",
+      //   cell: (info) => info.getValue() ?? "N/A",
+      // }),
       columnHelper.accessor("mr_number", {
         header: "MR Number",
         cell: (info) => info.getValue() ?? "N/A",
       }),
-      columnHelper.accessor("createdAt", {
+      columnHelper.accessor("created_at", {
         header: "Registered Date",
         cell: (info) => <FormattedDateCell date={info.getValue()} />,
       }),
@@ -151,11 +170,11 @@ const RegistrationsTable = ({ registrations }: Props) => {
         header: "Actions",
         enableSorting: false,
         cell: (props) => (
-          <ActionButtons registrationId={props.row.original.registration_id} />
+          <ActionButtons registration_id={props.row.original.registration_id} />
         ),
       }),
     ],
-    [] // No external dependencies needed for column definitions themselves
+    [pagination.pageIndex, pagination.pageSize] // No external dependencies needed for column definitions themselves
   );
 
   // useReactTable hook

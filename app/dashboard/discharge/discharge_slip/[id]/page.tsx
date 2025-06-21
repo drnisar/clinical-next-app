@@ -6,10 +6,15 @@ import ButtonPrintPage from "../../_components/ButtonPrintPage";
 import DischargeDetails from "../../_components/DischargeDetails";
 import DischargeHeader from "../../_components/DischargeHeader";
 
-const DischareSlip = async ({ params }: { params: { id: string } }) => {
+const DischareSlip = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
   const discharge = await prisma.admission_Discharge.findUnique({
     where: {
-      admission_id: parseInt(params.id),
+      admission_id: id,
     },
   });
   if (!discharge) {
@@ -24,14 +29,6 @@ const DischareSlip = async ({ params }: { params: { id: string } }) => {
   if (!registration) {
     return <div>No registration found</div>;
   }
-  const dischargeMeds = await prisma.discharge_Medications.findMany({
-    where: {
-      admission_id: discharge.admission_id,
-    },
-  });
-  if (!dischargeMeds) {
-    return <div>No discharge medications found</div>;
-  }
   return (
     <>
       <header>
@@ -42,7 +39,7 @@ const DischareSlip = async ({ params }: { params: { id: string } }) => {
       </header>
       <RegistrationDetailsCard registration={registration} />
       <DischargeHeader admissionDischarge={discharge} />
-      <DischargeDetails discharge={discharge} dischargeMeds={dischargeMeds} />
+      <DischargeDetails discharge={discharge} />
     </>
   );
 };

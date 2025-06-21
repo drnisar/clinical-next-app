@@ -1,12 +1,11 @@
 "use client";
-import { Admission_Discharge, Discharge_Medications } from "@prisma/client";
+import { Admission_Discharge } from "@/generated/prisma";
 import { DataList } from "@radix-ui/themes";
 import React from "react";
 import DischargeMeds from "./DischargeMeds";
 
 interface Props {
   discharge: Admission_Discharge;
-  dischargeMeds: Discharge_Medications[];
 }
 
 const DischargeDetails = ({
@@ -18,8 +17,8 @@ const DischargeDetails = ({
     therapeutic_procedures,
     instructions,
     medical_leave,
+    medications,
   },
-  dischargeMeds,
 }: Props) => {
   return (
     <>
@@ -54,11 +53,11 @@ const DischargeDetails = ({
             <DataList.Value>{therapeutic_procedures}</DataList.Value>
           </DataList.Item>
         )}
-        {dischargeMeds.length > 0 && (
+        {medications.length > 0 && (
           <DataList.Item>
             <DataList.Label>Discharge Medications</DataList.Label>
             <DataList.Value>
-              <DischargeMeds dischargeMeds={dischargeMeds} />
+              <DischargeMeds dischargeMeds={medications} />
             </DataList.Value>
           </DataList.Item>
         )}

@@ -6,14 +6,15 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const NewDischargePage = async ({ params }: Props) => {
+  const { id } = await params;
   const admission = await prisma.admission_Discharge.findUnique({
-    where: { admission_id: parseInt(params.id) },
+    where: { admission_id: id },
   });
   if (!admission) return notFound();
   const registration = await prisma.registration.findUnique({
@@ -39,7 +40,7 @@ const NewDischargePage = async ({ params }: Props) => {
         </Link>
       </Flex>
       <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission_id={parseInt(params.id)} />
+      <DischargeTabs admission_id={id} />
     </Suspense>
   );
 };

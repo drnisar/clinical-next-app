@@ -11,14 +11,14 @@ import {
 } from "@radix-ui/themes";
 // Remove Link import if using Button onClick for navigation
 // import Link from "next/link";
-import { Admission_Discharge } from "@prisma/client";
 import CreateNewAdmissionButton from "./CreateNewAdmissionButton";
 import { useRouter } from "next/navigation"; // Import useRouter
 import React, { useState, useEffect, useTransition } from "react"; // Import hooks
+import { Admission_Discharge } from "@/generated/prisma";
 
 interface Props {
   admissions: Admission_Discharge[];
-  registration_id: number;
+  registration_id: string;
 }
 
 const FormattedDate = ({ date }: { date: Date | null | undefined }) => {
@@ -39,14 +39,14 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [navigatingAdmissionId, setNavigatingAdmissionId] = useState<
-    number | null
+    string | null
   >(null);
 
   const isCurrentlyAdmitted = admissions.some(
     (admission) => admission.status !== "DISCHARGED"
   );
 
-  const handleNavigation = (path: string, admissionId: number) => {
+  const handleNavigation = (path: string, admissionId: string) => {
     setNavigatingAdmissionId(admissionId); // Set the ID of the row being navigated
     startTransition(() => {
       router.push(path);
@@ -76,15 +76,7 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
               className="p-2 border-b last:border-b-0"
             >
               {" "}
-              <Flex
-                justify={"between"}
-                align="center"
-                className={
-                  admission.status === "ADMITTED"
-                    ? "bg-gray-50 rounded p-1"
-                    : "p-1"
-                }
-              >
+              <Flex justify={"between"} align="center">
                 <Flex gap="3" align="center">
                   {" "}
                   {admission.status === "ADMITTED" ? (

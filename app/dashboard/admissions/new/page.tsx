@@ -6,11 +6,11 @@ import prisma from "@/prisma/client";
 const NewAdmissionPage = async ({
   searchParams,
 }: {
-  searchParams: { registration_id: string };
+  searchParams: Promise<{ registration_id: string }>;
 }) => {
   const { registration_id } = await searchParams;
   const registration = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(registration_id) },
+    where: { registration_id: registration_id },
   });
   if (!registration) {
     return <div>Registration not found</div>;

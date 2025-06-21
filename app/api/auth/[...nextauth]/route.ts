@@ -1,18 +1,11 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "@/prisma/client";
-
-// Ensure environment variables are defined
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-  throw new Error("Missing Google OAuth environment variables");
-}
-if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error("Missing NEXTAUTH_SECRET environment variable");
-}
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import client from "@/lib/db";
+const ALLOWED_EMAILS = ["drnisaar@gmail.com", "drnisar@hotmail.com"];
 
 const handler = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: MongoDBAdapter(client),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -22,6 +15,15 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async signIn({ user }) {
+      // Only allow users whose email is in the allowed list
+      if (user?.email && ALLOWED_EMAILS.includes(user.email)) {
+        return true;
+      }
+      return false; // Deny sign in
+    },
   },
 });
 

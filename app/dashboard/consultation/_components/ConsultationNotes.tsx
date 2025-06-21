@@ -5,11 +5,15 @@ import ButtonSaveConsultationNotes from "./ButtonSaveConsultationNotes";
 
 interface Props {
   defaultValue: string;
-  visit_id: number;
-  registration_id: number;
+  consultation_id: string;
+  registration_id: string;
 }
 
-export function History({ defaultValue, visit_id, registration_id }: Props) {
+export function History({
+  defaultValue,
+  consultation_id,
+  registration_id,
+}: Props) {
   const [history, setHistory] = useState({});
 
   return (
@@ -24,13 +28,16 @@ export function History({ defaultValue, visit_id, registration_id }: Props) {
           })
         }
       />
-      <ButtonSaveConsultationNotes visit_id={visit_id} fieldData={history} />
+      <ButtonSaveConsultationNotes
+        consultation_id={consultation_id}
+        fieldData={history}
+      />
     </Flex>
   );
 }
 export function Examination({
   defaultValue,
-  visit_id,
+  consultation_id,
   registration_id,
 }: Props) {
   const [examination, setExamination] = useState({});
@@ -48,7 +55,7 @@ export function Examination({
         }
       />
       <ButtonSaveConsultationNotes
-        visit_id={visit_id}
+        consultation_id={consultation_id}
         fieldData={examination}
       />
     </Flex>
@@ -56,7 +63,7 @@ export function Examination({
 }
 export function Investigations({
   defaultValue,
-  visit_id,
+  consultation_id,
   registration_id,
 }: Props) {
   const [investigations, setInvestigations] = useState({});
@@ -74,13 +81,17 @@ export function Investigations({
         }
       />
       <ButtonSaveConsultationNotes
-        visit_id={visit_id}
+        consultation_id={consultation_id}
         fieldData={investigations}
       />
     </Flex>
   );
 }
-export function Diagnosis({ defaultValue, visit_id, registration_id }: Props) {
+export function Diagnosis({
+  defaultValue,
+  consultation_id,
+  registration_id,
+}: Props) {
   const [diagnosis, setDiagnosis] = useState({});
 
   return (
@@ -95,11 +106,18 @@ export function Diagnosis({ defaultValue, visit_id, registration_id }: Props) {
           })
         }
       />
-      <ButtonSaveConsultationNotes visit_id={visit_id} fieldData={diagnosis} />
+      <ButtonSaveConsultationNotes
+        consultation_id={consultation_id}
+        fieldData={diagnosis}
+      />
     </Flex>
   );
 }
-export function Plan({ defaultValue, visit_id, registration_id }: Props) {
+export function Plan({
+  defaultValue,
+  consultation_id,
+  registration_id,
+}: Props) {
   const [plan, setPlan] = useState({});
 
   return (
@@ -114,13 +132,16 @@ export function Plan({ defaultValue, visit_id, registration_id }: Props) {
           })
         }
       />
-      <ButtonSaveConsultationNotes visit_id={visit_id} fieldData={plan} />
+      <ButtonSaveConsultationNotes
+        consultation_id={consultation_id}
+        fieldData={plan}
+      />
     </Flex>
   );
 }
 export function Instructions({
   defaultValue,
-  visit_id,
+  consultation_id,
   registration_id,
 }: Props) {
   const [instructions, setInstructions] = useState({});
@@ -138,7 +159,7 @@ export function Instructions({
         }
       />
       <ButtonSaveConsultationNotes
-        visit_id={visit_id}
+        consultation_id={consultation_id}
         fieldData={instructions}
       />
     </Flex>

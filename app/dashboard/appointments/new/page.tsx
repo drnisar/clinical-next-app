@@ -1,14 +1,15 @@
 import React from "react";
 import AppointmentForm from "../_components/AppointmentForm";
-import prisma from "@/prisma/client";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
-import { Flex, Heading } from "@radix-ui/themes";
+import { Box, Flex, Heading } from "@radix-ui/themes";
 import RecentAppointmentsTable from "../_components/RecentAppointmentsTable";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 const NewAppointmentPage = async ({
   searchParams,
 }: {
-  searchParams: { type: string; registration_id: string };
+  searchParams: Promise<{ type: string; registration_id: string }>;
 }) => {
   const { registration_id, type } = await searchParams;
   const appointments = await prisma.appointment.findMany({
@@ -18,26 +19,30 @@ const NewAppointmentPage = async ({
   });
 
   const registration = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(registration_id) },
+    where: { registration_id: registration_id },
   });
 
   if (!registration) {
     return <div>Registration not found</div>;
   }
+  console.log("Registration ID:", registration_id);
 
   return (
     <>
       <Heading size="4">Create Appointment</Heading>
-      <Flex gap="4">
-        <Flex direction="column" gap="4" minWidth="450px">
-          <RegistrationDetailsCard registration={registration} />
-
-          <AppointmentForm registration_id={parseInt(registration_id)} />
+      <Flex gap="4" direction={"column"}>
+        <RegistrationDetailsCard registration={registration} />
+        <Flex gap="4">
+          <Box minWidth={"450px"}>
+            <AppointmentForm registration_id={registration_id} />
+          </Box>
+          <Box flexGrow={"1"}>
+            <RecentAppointmentsTable
+              appointments={appointments}
+              searchParams={{ type }}
+            />
+          </Box>
         </Flex>
-        <RecentAppointmentsTable
-          appointments={appointments}
-          searchParams={{ type }}
-        />
       </Flex>
     </>
   );

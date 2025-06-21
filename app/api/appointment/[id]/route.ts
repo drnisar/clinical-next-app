@@ -1,13 +1,15 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+
+const prisma = new PrismaClient();
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) => {
-  const id = params.id;
+  const { id } = await params;
   const appointment = await prisma.appointment.findUnique({
-    where: { appointment_id: parseInt(id) },
+    where: { appointment_id: id },
   });
   if (!appointment) {
     return NextResponse.json(
@@ -16,7 +18,7 @@ export const DELETE = async (
     );
   }
   await prisma.appointment.delete({
-    where: { appointment_id: parseInt(id as string) },
+    where: { appointment_id: id },
   });
   return NextResponse.json({ message: "Appointment deleted" });
 };

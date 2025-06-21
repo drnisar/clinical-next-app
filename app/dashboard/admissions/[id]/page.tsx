@@ -3,28 +3,26 @@ import prisma from "@/prisma/client";
 import AdmissionDetailsForSingleAdmission from "../_components/AdmissionDetailsForSingleAdmission";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
-const AdmissionDetailPage = async ({ params }: { params: { id: string } }) => {
-  const admissionId = parseInt(params.id, 10);
-  if (isNaN(admissionId)) {
-    return <div>Invalid Admission ID</div>;
-  }
+const AdmissionDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id: admissionId } = await params;
 
   const admission = await prisma.admission_Discharge.findUnique({
     where: { admission_id: admissionId },
-    include: { Registration: true },
+    include: { registration: true },
   });
 
-  const ots = admission
-    ? await prisma.ot.findMany({
-        where: { admission_id: admission.admission_id },
-        orderBy: { surgery_date: "desc" }, // Example ordering
-      })
-    : [];
+  const ots = await prisma.oT.findMany({
+    where: { admission_id: admissionId },
+  });
 
   return (
     <>
-      {admission?.Registration && (
-        <RegistrationDetailsCard registration={admission.Registration} />
+      {admission?.registration && (
+        <RegistrationDetailsCard registration={admission.registration} />
       )}
       <AdmissionDetailsForSingleAdmission admission={admission} ots={ots} />
     </>

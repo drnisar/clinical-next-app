@@ -1,5 +1,5 @@
 "use client";
-import { Admission_Discharge, Registration } from "@prisma/client";
+import { Admission_Discharge, Registration } from "@/generated/prisma";
 import {
   Badge,
   Button,
@@ -57,7 +57,7 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
 
 const CurrentlyAdmittedList = ({ admissions }: Props) => {
   const router = useRouter();
-  const [navigatingId, setNavigatingId] = useState<number | null>(null);
+  const [navigatingId, setNavigatingId] = useState<string | null>(null);
   const [isNavPending, startTransition] = useTransition();
 
   // State for table features
@@ -81,12 +81,15 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
     }
   };
 
-  const handleDetailsClick = (admissionId: number) => {
-    setNavigatingId(admissionId);
-    startTransition(() => {
-      router.push("/dashboard/admissions/" + admissionId); // Use the correct ID passed to the function
-    });
-  };
+  const handleDetailsClick = React.useCallback(
+    (admissionId: string) => {
+      setNavigatingId(admissionId);
+      startTransition(() => {
+        router.push("/dashboard/admissions/" + admissionId);
+      });
+    },
+    [router, startTransition]
+  );
 
   // Define columns
   const columns = useMemo(
@@ -160,7 +163,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         },
       }),
     ],
-    [router, isNavPending, navigatingId] // Include dependencies used in column defs
+    [isNavPending, navigatingId, handleDetailsClick] // Include dependencies used in column defs
   );
 
   // useReactTable hook
@@ -287,23 +290,6 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
             <DoubleArrowRightIcon />
           </Button>
         </Flex>
-        {/* Optional: Page size selector */}
-        {/* <Select.Root
-            size="1"
-            value={String(table.getState().pagination.pageSize)}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <Select.Trigger placeholder="Rows per page" />
-            <Select.Content>
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <Select.Item key={pageSize} value={String(pageSize)}>
-                  Show {pageSize}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select.Root> */}
       </Flex>
     </Box>
   );

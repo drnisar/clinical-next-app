@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
   try {
-    const ot = await prisma.ot.findUnique({
+    const ot = await prisma.oT.findUnique({
       where: {
-        ot_id: Number(id),
+        ot_id: id,
       },
     });
     if (!ot) {

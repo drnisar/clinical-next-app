@@ -1,12 +1,12 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { registrationSchema } from "@/app/validationSchemas";
+import { PrismaClient } from "@/generated/prisma";
+
+const prisma = new PrismaClient();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
-  const regs = await prisma.registration.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const regs = await prisma.registration.findMany();
   if (!regs) {
     return NextResponse.json({ message: "No registration found" });
   }
@@ -24,12 +24,13 @@ export async function POST(req: NextRequest) {
       error: validation.error.errors,
     });
   }
-  const { first_name, last_name, gender, phone_number, mr_number } = body;
+  const { first_name, last_name, gender, code, phone_number, mr_number } = body;
   const newRegistration = await prisma.registration.create({
     data: {
       first_name,
       last_name,
       gender,
+      code,
       phone_number,
       mr_number,
     },

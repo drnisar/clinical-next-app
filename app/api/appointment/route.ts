@@ -1,13 +1,14 @@
 import { appointmentSchema } from "@/app/validationSchemas";
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (req: NextRequest) => {
   try {
     const appointments = await prisma.appointment.findMany({
       include: {
-        Registration: {
+        registration: {
           select: { registration_id: true },
         },
       },
@@ -31,7 +32,7 @@ export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
   const registration = await prisma.registration.findUnique({
-    where: { registration_id: parseInt(body.registration_id) },
+    where: { registration_id: body.registration_id },
   });
 
   if (!registration) {
@@ -51,12 +52,11 @@ export const POST = async (req: NextRequest) => {
 
   const appointment = await prisma.appointment.create({
     data: {
-      registration_id: parseInt(body.registration_id),
+      registration_id: body.registration_id,
       date_appointment: new Date(body.date_appointment),
       plan: body.plan,
       notes: body.notes,
       type: body.type, // Add the missing 'type' property
-      visit_id: body.visit_id,
     },
   });
 

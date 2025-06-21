@@ -1,17 +1,17 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/generated/prisma";
+const prisma = new PrismaClient();
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
-  const { visit_date, registration_id, clinical_details, instructions } = body;
+  const { visit_date, registration_id, instructions } = body;
   try {
-    const consultation = await prisma.clinic_Visit.create({
+    const consultation = await prisma.consultation.create({
       data: {
         visit_date: new Date(visit_date),
-        registration_id: parseInt(registration_id),
+        registration_id: registration_id,
         instructions: instructions,
-        clinical_details: clinical_details,
       },
     });
     return NextResponse.json(consultation);
@@ -22,7 +22,7 @@ export const POST = async (req: NextRequest) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (req: NextRequest) => {
-  const consultations = await prisma.clinic_Visit.findMany();
+  const consultations = await prisma.consultation.findMany();
   if (consultations.length === 0) {
     return NextResponse.json(
       { message: "No consultations found" },

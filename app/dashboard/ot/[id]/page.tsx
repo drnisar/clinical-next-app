@@ -3,11 +3,15 @@ import OTNotesForm from "../_components/OTNotesForm";
 import prisma from "@/prisma/client";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
-const OTNotesEditPage = async ({ params }: { params: { id: number } }) => {
+const OTNotesEditPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
-  const ot = await prisma.ot.findUnique({
+  const ot = await prisma.oT.findUnique({
     where: {
-      ot_id: Number(id),
+      ot_id: id,
     },
   });
   if (!ot) {
@@ -32,7 +36,7 @@ const OTNotesEditPage = async ({ params }: { params: { id: number } }) => {
   return (
     <>
       <RegistrationDetailsCard registration={registration} />
-      <OTNotesForm ot_id={Number(id)} admission_id={ot?.admission_id} />
+      <OTNotesForm ot_id={id} admission_id={ot?.admission_id} />
     </>
   );
 };

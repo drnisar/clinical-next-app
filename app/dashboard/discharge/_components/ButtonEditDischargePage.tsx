@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 const ButtonEditDischargePage = ({
   admission_id,
 }: {
-  admission_id: number;
+  admission_id: string;
 }) => {
   const router = useRouter();
   return (

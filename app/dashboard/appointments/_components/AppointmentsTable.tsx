@@ -34,11 +34,11 @@ import {
 type Appointment = {
   plan: string;
   date_appointment: Date;
-  appointment_id: number;
+  appointment_id: string;
   status: string;
   notes: string | null;
   type: string;
-  Registration: {
+  registration: {
     first_name: string;
     last_name: string;
     gender: string;
@@ -86,12 +86,12 @@ const AppointmentsTable = ({ appointments }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.accessor((row) => row.Registration.first_name, {
+      columnHelper.accessor((row) => row.registration.first_name, {
         id: "first_name",
         header: "First Name",
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor((row) => row.Registration.last_name, {
+      columnHelper.accessor((row) => row.registration.last_name, {
         id: "last_name",
         header: "Last Name",
         cell: (info) => info.getValue(),

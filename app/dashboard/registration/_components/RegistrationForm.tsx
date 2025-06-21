@@ -1,24 +1,30 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Registration } from "@prisma/client";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Form } from "radix-ui";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { z } from "zod";
-import { genderOptions } from "../../_components/appConstants";
+import {
+  genderOptions,
+  // mr_intermediate, // Removed if not used
+  // mr_type, // Removed if not used
+  refineMRN,
+} from "../../_components/appConstants";
 import { InputGeneric, SelectInput } from "../../_components/FormComponents";
 import RegistrationSuccessDialog from "./RegistrationSuccessDialog";
-import { useState } from "react";
 
 const validation = z.object({
   first_name: z.string().min(3),
   last_name: z.string().min(3),
   gender: z.string().nonempty("please select"),
   phone_number: z.string().min(10),
-  mr_number: z.string().min(3),
+  code: z.string().min(1),
+  mr_number: z.string().min(3), // Keep basic validation
 });
 
 type FormData = z.infer<typeof validation>;
@@ -32,13 +38,24 @@ const RegistrationForm = ({
     register,
     control,
     handleSubmit,
+    setValue,
+    setError, // <-- Import setError
+    clearErrors, // <-- Import clearErrors
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(validation),
+    defaultValues: {
+      first_name: registration?.first_name || "",
+      last_name: registration?.last_name || "",
+      gender: registration?.gender || "",
+      code: registration?.code || "+92",
+      phone_number: registration?.phone_number || "",
+      mr_number: registration?.mr_number || "",
+    },
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [regId, setRegId] = useState<number>();
+  const [regId, setRegId] = useState<number>(0);
 
   const mutation = useMutation({
     mutationFn: (data: FormData) => {
@@ -70,14 +87,13 @@ const RegistrationForm = ({
         data
       );
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       toast.success("Registration Updated", {
         duration: 4000,
         position: "top-center",
       });
       setIsDialogOpen(true);
-      setRegId(registration?.registration_id);
-      // router.push("/dashboard/registration");
+      setRegId(response.data.registration_id);
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -89,9 +105,15 @@ const RegistrationForm = ({
   });
 
   const onSubmit = (data: FormData) => {
-    if (registration) editMutation.mutate(data);
-    else mutation.mutate(data);
+    try {
+      if (registration) {
+        editMutation.mutate(data); // Ensure editMutation is used for updates
+      } else mutation.mutate(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   return (
     <>
       <Toaster />
@@ -103,20 +125,12 @@ const RegistrationForm = ({
         <InputGeneric
           name={"first_name"}
           label={"First Name"}
-          errorMessage={""}
+          errorMessage={errors.first_name?.message || ""}
         >
-          <TextField.Root
-            type="text"
-            {...register("first_name")}
-            defaultValue={registration?.first_name}
-          />
+          <TextField.Root type="text" {...register("first_name")} />
         </InputGeneric>
         <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
-          <TextField.Root
-            type="text"
-            {...register("last_name")}
-            defaultValue={registration?.last_name}
-          />
+          <TextField.Root type="text" {...register("last_name")} />
         </InputGeneric>
 
         <SelectInput
@@ -126,34 +140,94 @@ const RegistrationForm = ({
           options={genderOptions}
           errorMessage={errors.gender?.message?.toString() || ""}
           placeholder="Select Gender"
-          defaultValue={registration?.gender || ""}
+          // defaultValue prop removed, use defaultValues in useForm
         />
+        <Flex gap="2">
+          <SelectInput
+            label="Code"
+            name="code"
+            control={control}
+            options={[
+              { value: "+92", label: "+92" },
+              { value: "+93", label: "+93" },
+            ]}
+            errorMessage={""}
+            placeholder="Select Code"
+          />
+          <InputGeneric
+            name={"phone_number"}
+            label={"Phone Number"}
+            errorMessage={errors.phone_number?.message || ""}
+          >
+            <TextField.Root
+              type="text"
+              {...register("phone_number")}
+              onBlur={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                const refinedPhone = value.replace(/^0+/, ""); // Remove leading zeros;
+                setValue("phone_number", refinedPhone, {
+                  shouldValidate: true,
+                });
+              }}
+            />
+          </InputGeneric>
+        </Flex>
 
         <InputGeneric
-          name={"phone_number"}
-          label={"Phone Number"}
-          errorMessage={""}
+          name={"mr_number"}
+          label={"Medical Record Number"}
+          errorMessage={errors.mr_number?.message?.toString() || ""}
         >
           <TextField.Root
             type="text"
-            {...register("phone_number")}
-            defaultValue={registration?.phone_number || ""}
+            // Register the field
+            {...register("mr_number")}
+            // Handle blur event for validation/refinement
+            onBlur={(e) => {
+              const value = e.target.value;
+              if (!value) {
+                // If field is empty, clear errors and value
+                clearErrors("mr_number");
+                setValue("mr_number", "");
+                return;
+              }
+              try {
+                const refinedValue = refineMRN(value);
+                // Set the potentially refined value
+                setValue("mr_number", refinedValue, { shouldValidate: true }); // Trigger validation
+                // Clear any previous custom errors if refinement succeeds
+                clearErrors("mr_number");
+              } catch (error: unknown) {
+                // Set error message from refineMRN function
+                if (error instanceof Error) {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: error.message || "Invalid MRN format",
+                  });
+                } else {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: "An unknown error occurred",
+                  });
+                }
+              }
+            }}
+            // Clear custom error when user starts typing again
+            onChange={() => {
+              if (errors.mr_number?.type === "custom") {
+                clearErrors("mr_number");
+              }
+              // Allow default RHF change handling to proceed
+            }}
           />
         </InputGeneric>
 
-        <InputGeneric name={"mr_number"} label={"MR Number"} errorMessage={""}>
-          <TextField.Root
-            type="text"
-            {...register("mr_number")}
-            defaultValue={registration?.mr_number || ""}
-          />
-        </InputGeneric>
         <Button type="submit" disabled={mutation.isPending}>
           {mutation.isPending
             ? "Submitting ..."
             : registration
-            ? "Update"
-            : "Submit"}
+            ? "Update Registration"
+            : "Create Registration"}
         </Button>
       </Form.Root>
     </>

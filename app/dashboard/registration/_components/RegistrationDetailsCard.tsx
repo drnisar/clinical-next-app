@@ -32,6 +32,7 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
         </Text>
       </Flex>
       <Text as="div" color="gray">
+        {registration.code}
         {registration.phone_number}
       </Text>
     </Flex>

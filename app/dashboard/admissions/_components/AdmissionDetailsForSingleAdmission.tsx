@@ -1,6 +1,5 @@
 "use client"; // Make this a Client Component
 
-import { Admission_Discharge, ot } from "@prisma/client"; // Import types if not already
 import {
   Button,
   Card,
@@ -14,11 +13,12 @@ import {
 import { useRouter } from "next/navigation"; // Import useRouter
 import React, { useState, useEffect, useTransition } from "react"; // Import hooks
 import ButtonCreateNewOTNotes from "../../ot/_components/ButtonCreateNewOTNotes"; // Keep this if needed
+import { Admission_Discharge, OT } from "@/generated/prisma";
 
 // Define props type explicitly
 interface Props {
   admission: Admission_Discharge | null;
-  ots: ot[];
+  ots: OT[];
 }
 
 // Client component for safe date formatting
@@ -40,13 +40,13 @@ const FormattedDate = ({ date }: { date: Date | null | undefined }) => {
 const AdmissionDetailsForSingleAdmission = ({ admission, ots }: Props) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [navigatingOtId, setNavigatingOtId] = useState<number | null>(null);
+  const [navigatingOtId, setNavigatingOtId] = useState<string | null>(null);
 
   useEffect(() => {
     router.prefetch(`/dashboard/discharge/${admission?.admission_id}`);
   }, [router, admission?.admission_id]);
 
-  const handleOtLinkClick = (otId: number) => {
+  const handleOtLinkClick = (otId: string) => {
     setNavigatingOtId(otId); // Track which OT item is being navigated
     startTransition(() => {
       router.push(`/dashboard/ot/${otId}`);

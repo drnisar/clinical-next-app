@@ -1,5 +1,5 @@
 "use client";
-import { Appointment, Registration } from "@prisma/client";
+import { Appointment, Registration } from "@/generated/prisma";
 import { Table } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

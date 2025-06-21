@@ -1,26 +1,27 @@
 "use client";
-import {
-  Appointment,
-  Clinic_Visit,
-  ConsultationMedications,
-  Registration,
-} from "@prisma/client";
+
 import { Box, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 import ConsultationDetailsForSingleRegId from "./ConsultationDetailsForSingleRegId";
-import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
 import AppointmentCard from "./_appointments/AppointmentCard";
+import {
+  Consultation,
+  Registration,
+  Appointment,
+  Medication,
+} from "@/generated/prisma";
+import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
 
 interface Props {
-  consultation: Clinic_Visit;
-  meds: ConsultationMedications[];
+  consultation: Consultation;
   registration: Registration;
   appointment?: Appointment | null;
+  medications: Medication[];
 }
 const SingleConsultationDetails = ({
   consultation,
-  meds,
   registration,
+  medications,
   appointment,
 }: Props) => {
   return (
@@ -41,10 +42,10 @@ const SingleConsultationDetails = ({
           {appointment && <AppointmentCard appointment={appointment} />}
         </Grid>
 
-        {meds.length > 0 && (
+        {medications.length > 0 && (
           <Box className="col-span-2 py-5 bg-purple-50 dark:bg-transparent">
             <Heading size="2">Medications</Heading>
-            <MedDetailsForSingleVisitId meds={meds} />
+            <MedDetailsForSingleVisitId meds={medications} />
           </Box>
         )}
         {consultation.instructions && (

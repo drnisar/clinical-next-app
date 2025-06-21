@@ -1,12 +1,13 @@
-import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/prisma/client";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const newOTNotes = await prisma.ot.create({
+  const newOTNotes = await prisma.oT.create({
     data: {
-      admission_id: parseInt(body.admission_id),
+      admission_id: body.admission_id,
       surgery_date: new Date(),
+      registration_id: body.registration_id,
     },
   });
   if (!newOTNotes) {
@@ -38,7 +39,7 @@ export async function PATCH(request: NextRequest) {
   } = await request.json();
 
   try {
-    const otNotes = await prisma.ot.update({
+    const otNotes = await prisma.oT.update({
       where: {
         ot_id: ot_id,
       },

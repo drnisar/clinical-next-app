@@ -4,7 +4,7 @@ import { Button } from "@radix-ui/themes";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 interface Props {
   registration_id: string;
@@ -12,6 +12,7 @@ interface Props {
 
 const CreateConsultationButton = ({ registration_id }: Props) => {
   const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
 
   const { data: todaysConsults } = useQuery({
     queryKey: ["todaysConsults"],
@@ -25,14 +26,16 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
 
   const addMutation = useMutation({
     mutationFn: async () => {
+      setDisabled(true);
       const response = await axios.post(`/api/consultation`, {
-        registration_id: parseInt(registration_id),
+        registration_id: registration_id,
         visit_date: new Date(),
       });
       return response.data;
     },
     onSuccess: (response) => {
-      router.push(`/dashboard/consultation/edit/${response.visit_id}`);
+      setDisabled(false);
+      router.push(`/dashboard/consultation/edit/${response.consultation_id}`);
     },
     onError: (error) => {
       console.log("onError", error);
@@ -57,7 +60,7 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
       variant="soft"
       color="purple"
       onClick={createConsult}
-      disabled={addMutation.isPending}
+      disabled={disabled}
     >
       Create Consultation
     </Button>

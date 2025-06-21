@@ -4,7 +4,7 @@ import CurrentlyAdmittedList from "./_components/CurrentlyAdmittedList";
 const AdmissionsPage = async () => {
   const admissionsFromDb = await prisma.admission_Discharge.findMany({
     where: { status: "ADMITTED" },
-    include: { Registration: true }, // Prisma includes with capital 'R'
+    include: { registration: true }, // Prisma includes with capital 'R'
   });
 
   if (!admissionsFromDb || admissionsFromDb.length === 0) {
@@ -12,10 +12,10 @@ const AdmissionsPage = async () => {
   }
 
   const admissionsForComponent = admissionsFromDb.map((admission) => {
-    const { Registration, ...restOfAdmission } = admission;
+    const { registration, ...restOfAdmission } = admission;
     return {
       ...restOfAdmission,
-      registration: Registration ?? null, // Assign to lowercase 'r', handle null
+      registration: registration ?? null, // Assign to lowercase 'r', handle null
     };
   });
 

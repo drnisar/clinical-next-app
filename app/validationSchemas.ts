@@ -12,7 +12,7 @@ export const appointmentSchema = z.object({
   // date_appointment: z.date().min(new Date(), "Please select a valid date"),
   date_appointment: z.string().min(1, "Please select a valid date"),
   plan: z.string().min(1, "Please write plan for the appointment").max(255),
-  registration_id: z.number().min(1),
+  registration_id: z.string().min(1, "Please select a valid registration"),
   notes: z.string().optional(),
   type: z.string().min(1, "Please select a valid appointment type").max(255),
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { Admission_Discharge } from "@prisma/client";
+import { Admission_Discharge } from "@/generated/prisma";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
