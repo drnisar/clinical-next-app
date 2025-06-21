@@ -1,5 +1,4 @@
 import prisma from "@/prisma/client";
-import { Prisma } from "@prisma/client"; // Import Prisma namespace for error handling
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
