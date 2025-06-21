@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Registration } from "@prisma/client";
+import { Registration } from "@/generated/prisma"; // Change this line
 import {
   useReactTable,
   getCoreRowModel,
