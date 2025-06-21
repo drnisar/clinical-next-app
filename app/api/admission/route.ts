@@ -1,7 +1,8 @@
 // import prisma from "@/prisma/client";
-import { Prisma } from "@prisma/client"; // Import Prisma namespace for error handling
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma"; // Adjust the import path as necessary
+import { PrismaClient } from "@/generated/prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
 export async function POST(request: NextRequest) {
@@ -72,25 +73,18 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error creating admission:", error);
     // Refined error handling
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof PrismaClientKnownRequestError) {
       // Handle specific errors if needed
       if (error.code === "P2002") {
         // Unique constraint violation
         return NextResponse.json(
-          {
-            error: "Unique constraint violation, possibly duplicate data.",
-            details: error.message,
-          },
-          { status: 409 } // Conflict
+          { error: "Admission already exists for this registration" },
+          { status: 409 }
         );
       }
     }
-    // Generic Error Response
     return NextResponse.json(
-      {
-        error: "Failed to create admission",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }
