@@ -1,5 +1,5 @@
 "use client";
-import { Registration } from "@prisma/client";
+import { Registration } from "@/generated/prisma";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

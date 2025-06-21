@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Registration } from "@prisma/client";
+import { Registration } from "@/generated/prisma";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
