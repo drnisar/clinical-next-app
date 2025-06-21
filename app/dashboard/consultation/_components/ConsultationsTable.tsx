@@ -31,8 +31,7 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { Registration } from "@prisma/client";
-import { Consultation } from "@/generated/prisma";
+import { Consultation, Registration } from "@/generated/prisma";
 
 // type Consultation = Omit<Clinic_Visit, "Registration"> & {
 //   registration: PrismaRegistration | null;
