@@ -81,8 +81,13 @@ export async function PATCH(
 // Also apply the fix to the GET handler if you uncomment it
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } } // Correct type annotation here
+  context: { params: { id: string } } // Correct type annotation here
 ) {
+  const { params } = context;
+  const request = req;
+  if (req) {
+    console.log(request);
+  }
   try {
     const admission = await prisma.admission_Discharge.findUnique({
       where: { admission_id: params.id },

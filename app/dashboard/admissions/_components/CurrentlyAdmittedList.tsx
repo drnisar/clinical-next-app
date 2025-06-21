@@ -81,12 +81,15 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
     }
   };
 
-  const handleDetailsClick = (admissionId: string) => {
-    setNavigatingId(admissionId);
-    startTransition(() => {
-      router.push("/dashboard/admissions/" + admissionId); // Use the correct ID passed to the function
-    });
-  };
+  const handleDetailsClick = React.useCallback(
+    (admissionId: string) => {
+      setNavigatingId(admissionId);
+      startTransition(() => {
+        router.push("/dashboard/admissions/" + admissionId);
+      });
+    },
+    [router, startTransition]
+  );
 
   // Define columns
   const columns = useMemo(
