@@ -65,27 +65,28 @@ export async function POST(request: NextRequest) {
 
 // Corrected GET handler for this non-dynamic route
 // This will fetch ALL admissions, or you can filter by query params
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
   // No second 'params' argument here
   try {
-    // Example: Check for a query parameter like /api/admission?registration_id=123
-    const searchParams = request.nextUrl.searchParams;
-    const registrationIdParam = searchParams.get("registration_id");
+    // // Example: Check for a query parameter like /api/admission?registration_id=123
+    // const searchParams = request.nextUrl.searchParams;
+    // const registrationIdParam = searchParams.get("registration_id");
 
-    let whereClause = {}; // Default: no filter
+    // let whereClause = {}; // Default: no filter
 
-    if (registrationIdParam) {
-      const registrationId = parseInt(registrationIdParam);
-      if (!isNaN(registrationId)) {
-        whereClause = { registration_id: registrationId };
-      } else {
-        // Optional: return error if param is present but invalid
-        // return NextResponse.json({ error: "Invalid registration_id query parameter" }, { status: 400 });
-      }
-    }
+    // if (registrationIdParam) {
+    //   const registrationId = parseInt(registrationIdParam);
+    //   if (!isNaN(registrationId)) {
+    //     whereClause = { registration_id: registrationId };
+    //   } else {
+    //     // Optional: return error if param is present but invalid
+    //     // return NextResponse.json({ error: "Invalid registration_id query parameter" }, { status: 400 });
+    //   }
+    // }
 
     const admissions = await prisma.admission_Discharge.findMany({
-      where: whereClause,
+      // where: whereClause,
       orderBy: {
         // Optional: order results
         admission_date: "desc",
