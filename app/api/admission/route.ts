@@ -1,7 +1,6 @@
 // import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
@@ -72,21 +71,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(newAdmission, { status: 201 }); // 201 Created
   } catch (error) {
     console.error("Error creating admission:", error);
-    // Refined error handling
-    if (error instanceof PrismaClientKnownRequestError) {
-      // Handle specific errors if needed
-      if (error.code === "P2002") {
-        // Unique constraint violation
-        return NextResponse.json(
-          { error: "Admission already exists for this registration" },
-          { status: 409 }
-        );
-      }
-    }
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
   }
 }
 
