@@ -55,7 +55,7 @@ const RegistrationDetailsPage = async ({
       />
 
       <AdmissionsForSingleRegId admissions={admissions} registration_id={id} />
-      <SurgicalProceduresForSingleReg />
+      <SurgicalProceduresForSingleReg registration_id={id} />
     </Box>
   );
 };

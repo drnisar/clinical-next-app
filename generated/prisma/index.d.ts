@@ -1590,12 +1590,14 @@ export namespace Prisma {
     Consultation: number
     Appointment: number
     Admission_Discharge: number
+    OT: number
   }
 
   export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Consultation?: boolean | RegistrationCountOutputTypeCountConsultationArgs
     Appointment?: boolean | RegistrationCountOutputTypeCountAppointmentArgs
     Admission_Discharge?: boolean | RegistrationCountOutputTypeCountAdmission_DischargeArgs
+    OT?: boolean | RegistrationCountOutputTypeCountOTArgs
   }
 
   // Custom InputTypes
@@ -1628,6 +1630,13 @@ export namespace Prisma {
    */
   export type RegistrationCountOutputTypeCountAdmission_DischargeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: Admission_DischargeWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountOTArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OTWhereInput
   }
 
 
@@ -3018,6 +3027,7 @@ export namespace Prisma {
   export type OTMinAggregateOutputType = {
     ot_id: string | null
     admission_id: string | null
+    registration_id: string | null
     surgery_date: Date | null
     surgeon: string | null
     assistant_1: string | null
@@ -3038,6 +3048,7 @@ export namespace Prisma {
   export type OTMaxAggregateOutputType = {
     ot_id: string | null
     admission_id: string | null
+    registration_id: string | null
     surgery_date: Date | null
     surgeon: string | null
     assistant_1: string | null
@@ -3058,6 +3069,7 @@ export namespace Prisma {
   export type OTCountAggregateOutputType = {
     ot_id: number
     admission_id: number
+    registration_id: number
     surgery_date: number
     surgeon: number
     assistant_1: number
@@ -3088,6 +3100,7 @@ export namespace Prisma {
   export type OTMinAggregateInputType = {
     ot_id?: true
     admission_id?: true
+    registration_id?: true
     surgery_date?: true
     surgeon?: true
     assistant_1?: true
@@ -3108,6 +3121,7 @@ export namespace Prisma {
   export type OTMaxAggregateInputType = {
     ot_id?: true
     admission_id?: true
+    registration_id?: true
     surgery_date?: true
     surgeon?: true
     assistant_1?: true
@@ -3128,6 +3142,7 @@ export namespace Prisma {
   export type OTCountAggregateInputType = {
     ot_id?: true
     admission_id?: true
+    registration_id?: true
     surgery_date?: true
     surgeon?: true
     assistant_1?: true
@@ -3235,6 +3250,7 @@ export namespace Prisma {
   export type OTGroupByOutputType = {
     ot_id: string
     admission_id: string
+    registration_id: string
     surgery_date: Date | null
     surgeon: string | null
     assistant_1: string | null
@@ -3274,6 +3290,7 @@ export namespace Prisma {
   export type OTSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ot_id?: boolean
     admission_id?: boolean
+    registration_id?: boolean
     surgery_date?: boolean
     surgeon?: boolean
     assistant_1?: boolean
@@ -3290,6 +3307,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     admission_discharge?: boolean | Admission_DischargeDefaultArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["oT"]>
 
 
@@ -3297,6 +3315,7 @@ export namespace Prisma {
   export type OTSelectScalar = {
     ot_id?: boolean
     admission_id?: boolean
+    registration_id?: boolean
     surgery_date?: boolean
     surgeon?: boolean
     assistant_1?: boolean
@@ -3314,19 +3333,22 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type OTOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ot_id" | "admission_id" | "surgery_date" | "surgeon" | "assistant_1" | "assistant_2" | "assistant_3" | "anaesthetist" | "anaesthesia" | "procedure_name" | "findings" | "operative_details" | "closure" | "postop_instructions" | "finalize" | "created_at" | "updated_at", ExtArgs["result"]["oT"]>
+  export type OTOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ot_id" | "admission_id" | "registration_id" | "surgery_date" | "surgeon" | "assistant_1" | "assistant_2" | "assistant_3" | "anaesthetist" | "anaesthesia" | "procedure_name" | "findings" | "operative_details" | "closure" | "postop_instructions" | "finalize" | "created_at" | "updated_at", ExtArgs["result"]["oT"]>
   export type OTInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     admission_discharge?: boolean | Admission_DischargeDefaultArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
   }
 
   export type $OTPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "OT"
     objects: {
       admission_discharge: Prisma.$Admission_DischargePayload<ExtArgs>
+      registration: Prisma.$RegistrationPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       ot_id: string
       admission_id: string
+      registration_id: string
       surgery_date: Date | null
       surgeon: string | null
       assistant_1: string | null
@@ -3706,6 +3728,7 @@ export namespace Prisma {
   export interface Prisma__OTClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     admission_discharge<T extends Admission_DischargeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, Admission_DischargeDefaultArgs<ExtArgs>>): Prisma__Admission_DischargeClient<$Result.GetResult<Prisma.$Admission_DischargePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registration<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3737,6 +3760,7 @@ export namespace Prisma {
   interface OTFieldRefs {
     readonly ot_id: FieldRef<"OT", 'String'>
     readonly admission_id: FieldRef<"OT", 'String'>
+    readonly registration_id: FieldRef<"OT", 'String'>
     readonly surgery_date: FieldRef<"OT", 'DateTime'>
     readonly surgeon: FieldRef<"OT", 'String'>
     readonly assistant_1: FieldRef<"OT", 'String'>
@@ -6410,6 +6434,7 @@ export namespace Prisma {
     Consultation?: boolean | Registration$ConsultationArgs<ExtArgs>
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
     Admission_Discharge?: boolean | Registration$Admission_DischargeArgs<ExtArgs>
+    OT?: boolean | Registration$OTArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
@@ -6432,6 +6457,7 @@ export namespace Prisma {
     Consultation?: boolean | Registration$ConsultationArgs<ExtArgs>
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
     Admission_Discharge?: boolean | Registration$Admission_DischargeArgs<ExtArgs>
+    OT?: boolean | Registration$OTArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -6441,6 +6467,7 @@ export namespace Prisma {
       Consultation: Prisma.$ConsultationPayload<ExtArgs>[]
       Appointment: Prisma.$AppointmentPayload<ExtArgs>[]
       Admission_Discharge: Prisma.$Admission_DischargePayload<ExtArgs>[]
+      OT: Prisma.$OTPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       registration_id: string
@@ -6818,6 +6845,7 @@ export namespace Prisma {
     Consultation<T extends Registration$ConsultationArgs<ExtArgs> = {}>(args?: Subset<T, Registration$ConsultationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Appointment<T extends Registration$AppointmentArgs<ExtArgs> = {}>(args?: Subset<T, Registration$AppointmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Admission_Discharge<T extends Registration$Admission_DischargeArgs<ExtArgs> = {}>(args?: Subset<T, Registration$Admission_DischargeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Admission_DischargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    OT<T extends Registration$OTArgs<ExtArgs> = {}>(args?: Subset<T, Registration$OTArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7295,6 +7323,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Admission_DischargeScalarFieldEnum | Admission_DischargeScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.OT
+   */
+  export type Registration$OTArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT
+     */
+    select?: OTSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT
+     */
+    omit?: OTOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OTInclude<ExtArgs> | null
+    where?: OTWhereInput
+    orderBy?: OTOrderByWithRelationInput | OTOrderByWithRelationInput[]
+    cursor?: OTWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OTScalarFieldEnum | OTScalarFieldEnum[]
   }
 
   /**
@@ -11363,6 +11415,7 @@ export namespace Prisma {
   export const OTScalarFieldEnum: {
     ot_id: 'ot_id',
     admission_id: 'admission_id',
+    registration_id: 'registration_id',
     surgery_date: 'surgery_date',
     surgeon: 'surgeon',
     assistant_1: 'assistant_1',
@@ -11720,6 +11773,7 @@ export namespace Prisma {
     NOT?: OTWhereInput | OTWhereInput[]
     ot_id?: StringFilter<"OT"> | string
     admission_id?: StringFilter<"OT"> | string
+    registration_id?: StringFilter<"OT"> | string
     surgery_date?: DateTimeNullableFilter<"OT"> | Date | string | null
     surgeon?: StringNullableFilter<"OT"> | string | null
     assistant_1?: StringNullableFilter<"OT"> | string | null
@@ -11736,11 +11790,13 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"OT"> | Date | string
     updated_at?: DateTimeFilter<"OT"> | Date | string
     admission_discharge?: XOR<Admission_DischargeScalarRelationFilter, Admission_DischargeWhereInput>
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
   }
 
   export type OTOrderByWithRelationInput = {
     ot_id?: SortOrder
     admission_id?: SortOrder
+    registration_id?: SortOrder
     surgery_date?: SortOrder
     surgeon?: SortOrder
     assistant_1?: SortOrder
@@ -11757,6 +11813,7 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     admission_discharge?: Admission_DischargeOrderByWithRelationInput
+    registration?: RegistrationOrderByWithRelationInput
   }
 
   export type OTWhereUniqueInput = Prisma.AtLeast<{
@@ -11765,6 +11822,7 @@ export namespace Prisma {
     OR?: OTWhereInput[]
     NOT?: OTWhereInput | OTWhereInput[]
     admission_id?: StringFilter<"OT"> | string
+    registration_id?: StringFilter<"OT"> | string
     surgery_date?: DateTimeNullableFilter<"OT"> | Date | string | null
     surgeon?: StringNullableFilter<"OT"> | string | null
     assistant_1?: StringNullableFilter<"OT"> | string | null
@@ -11781,11 +11839,13 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"OT"> | Date | string
     updated_at?: DateTimeFilter<"OT"> | Date | string
     admission_discharge?: XOR<Admission_DischargeScalarRelationFilter, Admission_DischargeWhereInput>
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
   }, "ot_id">
 
   export type OTOrderByWithAggregationInput = {
     ot_id?: SortOrder
     admission_id?: SortOrder
+    registration_id?: SortOrder
     surgery_date?: SortOrder
     surgeon?: SortOrder
     assistant_1?: SortOrder
@@ -11814,6 +11874,7 @@ export namespace Prisma {
     NOT?: OTScalarWhereWithAggregatesInput | OTScalarWhereWithAggregatesInput[]
     ot_id?: StringWithAggregatesFilter<"OT"> | string
     admission_id?: StringWithAggregatesFilter<"OT"> | string
+    registration_id?: StringWithAggregatesFilter<"OT"> | string
     surgery_date?: DateTimeNullableWithAggregatesFilter<"OT"> | Date | string | null
     surgeon?: StringNullableWithAggregatesFilter<"OT"> | string | null
     assistant_1?: StringNullableWithAggregatesFilter<"OT"> | string | null
@@ -12010,6 +12071,7 @@ export namespace Prisma {
     Consultation?: ConsultationListRelationFilter
     Appointment?: AppointmentListRelationFilter
     Admission_Discharge?: Admission_DischargeListRelationFilter
+    OT?: OTListRelationFilter
   }
 
   export type RegistrationOrderByWithRelationInput = {
@@ -12025,6 +12087,7 @@ export namespace Prisma {
     Consultation?: ConsultationOrderByRelationAggregateInput
     Appointment?: AppointmentOrderByRelationAggregateInput
     Admission_Discharge?: Admission_DischargeOrderByRelationAggregateInput
+    OT?: OTOrderByRelationAggregateInput
   }
 
   export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -12043,6 +12106,7 @@ export namespace Prisma {
     Consultation?: ConsultationListRelationFilter
     Appointment?: AppointmentListRelationFilter
     Admission_Discharge?: Admission_DischargeListRelationFilter
+    OT?: OTListRelationFilter
   }, "registration_id">
 
   export type RegistrationOrderByWithAggregationInput = {
@@ -12522,11 +12586,13 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     admission_discharge: Admission_DischargeCreateNestedOneWithoutOtInput
+    registration: RegistrationCreateNestedOneWithoutOTInput
   }
 
   export type OTUncheckedCreateInput = {
     ot_id?: string
     admission_id: string
+    registration_id: string
     surgery_date?: Date | string | null
     surgeon?: string | null
     assistant_1?: string | null
@@ -12561,10 +12627,12 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     admission_discharge?: Admission_DischargeUpdateOneRequiredWithoutOtNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutOTNestedInput
   }
 
   export type OTUncheckedUpdateInput = {
     admission_id?: StringFieldUpdateOperationsInput | string
+    registration_id?: StringFieldUpdateOperationsInput | string
     surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     surgeon?: NullableStringFieldUpdateOperationsInput | string | null
     assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12585,6 +12653,7 @@ export namespace Prisma {
   export type OTCreateManyInput = {
     ot_id?: string
     admission_id: string
+    registration_id: string
     surgery_date?: Date | string | null
     surgeon?: string | null
     assistant_1?: string | null
@@ -12622,6 +12691,7 @@ export namespace Prisma {
 
   export type OTUncheckedUpdateManyInput = {
     admission_id?: StringFieldUpdateOperationsInput | string
+    registration_id?: StringFieldUpdateOperationsInput | string
     surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     surgeon?: NullableStringFieldUpdateOperationsInput | string | null
     assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12831,6 +12901,7 @@ export namespace Prisma {
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+    OT?: OTCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateInput = {
@@ -12846,6 +12917,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+    OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUpdateInput = {
@@ -12860,6 +12932,7 @@ export namespace Prisma {
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateInput = {
@@ -12874,6 +12947,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateManyInput = {
@@ -13464,6 +13538,7 @@ export namespace Prisma {
   export type OTCountOrderByAggregateInput = {
     ot_id?: SortOrder
     admission_id?: SortOrder
+    registration_id?: SortOrder
     surgery_date?: SortOrder
     surgeon?: SortOrder
     assistant_1?: SortOrder
@@ -13488,6 +13563,7 @@ export namespace Prisma {
   export type OTMaxOrderByAggregateInput = {
     ot_id?: SortOrder
     admission_id?: SortOrder
+    registration_id?: SortOrder
     surgery_date?: SortOrder
     surgeon?: SortOrder
     assistant_1?: SortOrder
@@ -13508,6 +13584,7 @@ export namespace Prisma {
   export type OTMinOrderByAggregateInput = {
     ot_id?: SortOrder
     admission_id?: SortOrder
+    registration_id?: SortOrder
     surgery_date?: SortOrder
     surgeon?: SortOrder
     assistant_1?: SortOrder
@@ -13934,12 +14011,26 @@ export namespace Prisma {
     connect?: Admission_DischargeWhereUniqueInput
   }
 
+  export type RegistrationCreateNestedOneWithoutOTInput = {
+    create?: XOR<RegistrationCreateWithoutOTInput, RegistrationUncheckedCreateWithoutOTInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutOTInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
   export type Admission_DischargeUpdateOneRequiredWithoutOtNestedInput = {
     create?: XOR<Admission_DischargeCreateWithoutOtInput, Admission_DischargeUncheckedCreateWithoutOtInput>
     connectOrCreate?: Admission_DischargeCreateOrConnectWithoutOtInput
     upsert?: Admission_DischargeUpsertWithoutOtInput
     connect?: Admission_DischargeWhereUniqueInput
     update?: XOR<XOR<Admission_DischargeUpdateToOneWithWhereWithoutOtInput, Admission_DischargeUpdateWithoutOtInput>, Admission_DischargeUncheckedUpdateWithoutOtInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutOTNestedInput = {
+    create?: XOR<RegistrationCreateWithoutOTInput, RegistrationUncheckedCreateWithoutOTInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutOTInput
+    upsert?: RegistrationUpsertWithoutOTInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutOTInput, RegistrationUpdateWithoutOTInput>, RegistrationUncheckedUpdateWithoutOTInput>
   }
 
   export type RegistrationCreateNestedOneWithoutAppointmentInput = {
@@ -13991,6 +14082,13 @@ export namespace Prisma {
     connect?: Admission_DischargeWhereUniqueInput | Admission_DischargeWhereUniqueInput[]
   }
 
+  export type OTCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput> | OTCreateWithoutRegistrationInput[] | OTUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: OTCreateOrConnectWithoutRegistrationInput | OTCreateOrConnectWithoutRegistrationInput[]
+    createMany?: OTCreateManyRegistrationInputEnvelope
+    connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+  }
+
   export type ConsultationUncheckedCreateNestedManyWithoutRegistrationInput = {
     create?: XOR<ConsultationCreateWithoutRegistrationInput, ConsultationUncheckedCreateWithoutRegistrationInput> | ConsultationCreateWithoutRegistrationInput[] | ConsultationUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ConsultationCreateOrConnectWithoutRegistrationInput | ConsultationCreateOrConnectWithoutRegistrationInput[]
@@ -14010,6 +14108,13 @@ export namespace Prisma {
     connectOrCreate?: Admission_DischargeCreateOrConnectWithoutRegistrationInput | Admission_DischargeCreateOrConnectWithoutRegistrationInput[]
     createMany?: Admission_DischargeCreateManyRegistrationInputEnvelope
     connect?: Admission_DischargeWhereUniqueInput | Admission_DischargeWhereUniqueInput[]
+  }
+
+  export type OTUncheckedCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput> | OTCreateWithoutRegistrationInput[] | OTUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: OTCreateOrConnectWithoutRegistrationInput | OTCreateOrConnectWithoutRegistrationInput[]
+    createMany?: OTCreateManyRegistrationInputEnvelope
+    connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
   }
 
   export type ConsultationUpdateManyWithoutRegistrationNestedInput = {
@@ -14054,6 +14159,20 @@ export namespace Prisma {
     deleteMany?: Admission_DischargeScalarWhereInput | Admission_DischargeScalarWhereInput[]
   }
 
+  export type OTUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput> | OTCreateWithoutRegistrationInput[] | OTUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: OTCreateOrConnectWithoutRegistrationInput | OTCreateOrConnectWithoutRegistrationInput[]
+    upsert?: OTUpsertWithWhereUniqueWithoutRegistrationInput | OTUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: OTCreateManyRegistrationInputEnvelope
+    set?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    disconnect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    delete?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    update?: OTUpdateWithWhereUniqueWithoutRegistrationInput | OTUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: OTUpdateManyWithWhereWithoutRegistrationInput | OTUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: OTScalarWhereInput | OTScalarWhereInput[]
+  }
+
   export type ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput = {
     create?: XOR<ConsultationCreateWithoutRegistrationInput, ConsultationUncheckedCreateWithoutRegistrationInput> | ConsultationCreateWithoutRegistrationInput[] | ConsultationUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ConsultationCreateOrConnectWithoutRegistrationInput | ConsultationCreateOrConnectWithoutRegistrationInput[]
@@ -14094,6 +14213,20 @@ export namespace Prisma {
     update?: Admission_DischargeUpdateWithWhereUniqueWithoutRegistrationInput | Admission_DischargeUpdateWithWhereUniqueWithoutRegistrationInput[]
     updateMany?: Admission_DischargeUpdateManyWithWhereWithoutRegistrationInput | Admission_DischargeUpdateManyWithWhereWithoutRegistrationInput[]
     deleteMany?: Admission_DischargeScalarWhereInput | Admission_DischargeScalarWhereInput[]
+  }
+
+  export type OTUncheckedUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput> | OTCreateWithoutRegistrationInput[] | OTUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: OTCreateOrConnectWithoutRegistrationInput | OTCreateOrConnectWithoutRegistrationInput[]
+    upsert?: OTUpsertWithWhereUniqueWithoutRegistrationInput | OTUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: OTCreateManyRegistrationInputEnvelope
+    set?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    disconnect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    delete?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+    update?: OTUpdateWithWhereUniqueWithoutRegistrationInput | OTUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: OTUpdateManyWithWhereWithoutRegistrationInput | OTUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: OTScalarWhereInput | OTScalarWhereInput[]
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -14420,10 +14553,12 @@ export namespace Prisma {
     finalize?: number | null
     created_at?: Date | string
     updated_at?: Date | string
+    registration: RegistrationCreateNestedOneWithoutOTInput
   }
 
   export type OTUncheckedCreateWithoutAdmission_dischargeInput = {
     ot_id?: string
+    registration_id: string
     surgery_date?: Date | string | null
     surgeon?: string | null
     assistant_1?: string | null
@@ -14462,6 +14597,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
+    OT?: OTCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutAdmission_DischargeInput = {
@@ -14476,6 +14612,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
+    OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutAdmission_DischargeInput = {
@@ -14514,6 +14651,7 @@ export namespace Prisma {
     NOT?: OTScalarWhereInput | OTScalarWhereInput[]
     ot_id?: StringFilter<"OT"> | string
     admission_id?: StringFilter<"OT"> | string
+    registration_id?: StringFilter<"OT"> | string
     surgery_date?: DateTimeNullableFilter<"OT"> | Date | string | null
     surgeon?: StringNullableFilter<"OT"> | string | null
     assistant_1?: StringNullableFilter<"OT"> | string | null
@@ -14553,6 +14691,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutAdmission_DischargeInput = {
@@ -14566,6 +14705,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type Admission_DischargeCreateWithoutOtInput = {
@@ -14623,6 +14763,41 @@ export namespace Prisma {
   export type Admission_DischargeCreateOrConnectWithoutOtInput = {
     where: Admission_DischargeWhereUniqueInput
     create: XOR<Admission_DischargeCreateWithoutOtInput, Admission_DischargeUncheckedCreateWithoutOtInput>
+  }
+
+  export type RegistrationCreateWithoutOTInput = {
+    registration_id?: string
+    code: string
+    created_at?: Date | string
+    first_name: string
+    gender: string
+    last_name: string
+    mr_number: string
+    phone_number: string
+    updated_at?: Date | string
+    Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
+    Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
+    Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutOTInput = {
+    registration_id?: string
+    code: string
+    created_at?: Date | string
+    first_name: string
+    gender: string
+    last_name: string
+    mr_number: string
+    phone_number: string
+    updated_at?: Date | string
+    Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
+    Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
+    Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutOTInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutOTInput, RegistrationUncheckedCreateWithoutOTInput>
   }
 
   export type Admission_DischargeUpsertWithoutOtInput = {
@@ -14686,6 +14861,45 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RegistrationUpsertWithoutOTInput = {
+    update: XOR<RegistrationUpdateWithoutOTInput, RegistrationUncheckedUpdateWithoutOTInput>
+    create: XOR<RegistrationCreateWithoutOTInput, RegistrationUncheckedCreateWithoutOTInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutOTInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutOTInput, RegistrationUncheckedUpdateWithoutOTInput>
+  }
+
+  export type RegistrationUpdateWithoutOTInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    first_name?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    mr_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: StringFieldUpdateOperationsInput | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
+    Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
+    Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutOTInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    first_name?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    mr_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: StringFieldUpdateOperationsInput | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
+    Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
+  }
+
   export type RegistrationCreateWithoutAppointmentInput = {
     registration_id?: string
     code: string
@@ -14698,6 +14912,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+    OT?: OTCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutAppointmentInput = {
@@ -14712,6 +14927,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+    OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutAppointmentInput = {
@@ -14741,6 +14957,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutAppointmentInput = {
@@ -14754,6 +14971,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateWithoutConsultationInput = {
@@ -14768,6 +14986,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+    OT?: OTCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutConsultationInput = {
@@ -14782,6 +15001,7 @@ export namespace Prisma {
     updated_at?: Date | string
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+    OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutConsultationInput = {
@@ -14811,6 +15031,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutConsultationInput = {
@@ -14824,6 +15045,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type ConsultationCreateWithoutRegistrationInput = {
@@ -14955,6 +15177,55 @@ export namespace Prisma {
     data: Admission_DischargeCreateManyRegistrationInput | Admission_DischargeCreateManyRegistrationInput[]
   }
 
+  export type OTCreateWithoutRegistrationInput = {
+    ot_id?: string
+    surgery_date?: Date | string | null
+    surgeon?: string | null
+    assistant_1?: string | null
+    assistant_2?: string | null
+    assistant_3?: string | null
+    anaesthetist?: string | null
+    anaesthesia?: string | null
+    procedure_name?: string | null
+    findings?: string | null
+    operative_details?: string | null
+    closure?: string | null
+    postop_instructions?: string | null
+    finalize?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    admission_discharge: Admission_DischargeCreateNestedOneWithoutOtInput
+  }
+
+  export type OTUncheckedCreateWithoutRegistrationInput = {
+    ot_id?: string
+    admission_id: string
+    surgery_date?: Date | string | null
+    surgeon?: string | null
+    assistant_1?: string | null
+    assistant_2?: string | null
+    assistant_3?: string | null
+    anaesthetist?: string | null
+    anaesthesia?: string | null
+    procedure_name?: string | null
+    findings?: string | null
+    operative_details?: string | null
+    closure?: string | null
+    postop_instructions?: string | null
+    finalize?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type OTCreateOrConnectWithoutRegistrationInput = {
+    where: OTWhereUniqueInput
+    create: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type OTCreateManyRegistrationInputEnvelope = {
+    data: OTCreateManyRegistrationInput | OTCreateManyRegistrationInput[]
+  }
+
   export type ConsultationUpsertWithWhereUniqueWithoutRegistrationInput = {
     where: ConsultationWhereUniqueInput
     update: XOR<ConsultationUpdateWithoutRegistrationInput, ConsultationUncheckedUpdateWithoutRegistrationInput>
@@ -15061,6 +15332,22 @@ export namespace Prisma {
     ward?: StringNullableFilter<"Admission_Discharge"> | string | null
     created_at?: DateTimeFilter<"Admission_Discharge"> | Date | string
     updated_at?: DateTimeFilter<"Admission_Discharge"> | Date | string
+  }
+
+  export type OTUpsertWithWhereUniqueWithoutRegistrationInput = {
+    where: OTWhereUniqueInput
+    update: XOR<OTUpdateWithoutRegistrationInput, OTUncheckedUpdateWithoutRegistrationInput>
+    create: XOR<OTCreateWithoutRegistrationInput, OTUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type OTUpdateWithWhereUniqueWithoutRegistrationInput = {
+    where: OTWhereUniqueInput
+    data: XOR<OTUpdateWithoutRegistrationInput, OTUncheckedUpdateWithoutRegistrationInput>
+  }
+
+  export type OTUpdateManyWithWhereWithoutRegistrationInput = {
+    where: OTScalarWhereInput
+    data: XOR<OTUpdateManyMutationInput, OTUncheckedUpdateManyWithoutRegistrationInput>
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -15294,6 +15581,7 @@ export namespace Prisma {
 
   export type OTCreateManyAdmission_dischargeInput = {
     ot_id?: string
+    registration_id: string
     surgery_date?: Date | string | null
     surgeon?: string | null
     assistant_1?: string | null
@@ -15339,9 +15627,11 @@ export namespace Prisma {
     finalize?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneRequiredWithoutOTNestedInput
   }
 
   export type OTUncheckedUpdateWithoutAdmission_dischargeInput = {
+    registration_id?: StringFieldUpdateOperationsInput | string
     surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     surgeon?: NullableStringFieldUpdateOperationsInput | string | null
     assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15360,6 +15650,7 @@ export namespace Prisma {
   }
 
   export type OTUncheckedUpdateManyWithoutAdmission_dischargeInput = {
+    registration_id?: StringFieldUpdateOperationsInput | string
     surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     surgeon?: NullableStringFieldUpdateOperationsInput | string | null
     assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15423,6 +15714,26 @@ export namespace Prisma {
     therapeutic_procedures?: string | null
     ward?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type OTCreateManyRegistrationInput = {
+    ot_id?: string
+    admission_id: string
+    surgery_date?: Date | string | null
+    surgeon?: string | null
+    assistant_1?: string | null
+    assistant_2?: string | null
+    assistant_3?: string | null
+    anaesthetist?: string | null
+    anaesthesia?: string | null
+    procedure_name?: string | null
+    findings?: string | null
+    operative_details?: string | null
+    closure?: string | null
+    postop_instructions?: string | null
+    finalize?: number | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -15566,6 +15877,63 @@ export namespace Prisma {
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OTUpdateWithoutRegistrationInput = {
+    surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    surgeon?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_2?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_3?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthetist?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthesia?: NullableStringFieldUpdateOperationsInput | string | null
+    procedure_name?: NullableStringFieldUpdateOperationsInput | string | null
+    findings?: NullableStringFieldUpdateOperationsInput | string | null
+    operative_details?: NullableStringFieldUpdateOperationsInput | string | null
+    closure?: NullableStringFieldUpdateOperationsInput | string | null
+    postop_instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    finalize?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admission_discharge?: Admission_DischargeUpdateOneRequiredWithoutOtNestedInput
+  }
+
+  export type OTUncheckedUpdateWithoutRegistrationInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    surgeon?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_2?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_3?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthetist?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthesia?: NullableStringFieldUpdateOperationsInput | string | null
+    procedure_name?: NullableStringFieldUpdateOperationsInput | string | null
+    findings?: NullableStringFieldUpdateOperationsInput | string | null
+    operative_details?: NullableStringFieldUpdateOperationsInput | string | null
+    closure?: NullableStringFieldUpdateOperationsInput | string | null
+    postop_instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    finalize?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OTUncheckedUpdateManyWithoutRegistrationInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    surgery_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    surgeon?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_1?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_2?: NullableStringFieldUpdateOperationsInput | string | null
+    assistant_3?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthetist?: NullableStringFieldUpdateOperationsInput | string | null
+    anaesthesia?: NullableStringFieldUpdateOperationsInput | string | null
+    procedure_name?: NullableStringFieldUpdateOperationsInput | string | null
+    findings?: NullableStringFieldUpdateOperationsInput | string | null
+    operative_details?: NullableStringFieldUpdateOperationsInput | string | null
+    closure?: NullableStringFieldUpdateOperationsInput | string | null
+    postop_instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    finalize?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -76,15 +76,7 @@ const AdmissionsForSingleRegId = ({ admissions, registration_id }: Props) => {
               className="p-2 border-b last:border-b-0"
             >
               {" "}
-              <Flex
-                justify={"between"}
-                align="center"
-                className={
-                  admission.status === "ADMITTED"
-                    ? "bg-gray-50 rounded p-1"
-                    : "p-1"
-                }
-              >
+              <Flex justify={"between"} align="center">
                 <Flex gap="3" align="center">
                   {" "}
                   {admission.status === "ADMITTED" ? (

@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     data: {
       admission_id: body.admission_id,
       surgery_date: new Date(),
+      registration_id: body.registration_id,
     },
   });
   if (!newOTNotes) {

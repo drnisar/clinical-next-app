@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
@@ -10,10 +10,20 @@ const ButtonCreateNewOTNotes = () => {
   const { id } = useParams();
   const router = useRouter();
 
+  const { data: admission } = useQuery({
+    queryKey: ["admission"],
+    queryFn: async () => {
+      const response = await axios.get(`/api/admission/${id}`);
+      return response.data;
+    },
+  });
+
+  console.log("Admission Data:", admission);
   const addMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post("/api/ot", {
         admission_id: id,
+        registration_id: admission.registration_id,
       });
       return response.data;
     },

@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import { Card } from "@radix-ui/themes";
+import { Card, Flex, Heading } from "@radix-ui/themes";
 import React from "react";
 
 const SurgicalProceduresForSingleReg = async ({
@@ -7,19 +7,28 @@ const SurgicalProceduresForSingleReg = async ({
 }: {
   registration_id: string;
 }) => {
-  const admissions = await prisma.admission_Discharge.findMany({
+  const procedures = await prisma.oT.findMany({
     where: { registration_id: registration_id },
+    orderBy: { surgery_date: "desc" },
   });
-  const admission_ids = admissions.map((admission) => admission.admission_id);
-  const procedures = admission_ids.map(async (admission_id) => {
-    const surgical_procedures = await prisma.oT.findMany({
-      where: { admission_id: admission_id },
-    });
-    console.log("Surgical Procedures", surgical_procedures);
-  });
+  if (procedures.length === 0) {
+    return null;
+  }
   return (
     <Card>
-      <div>{JSON.stringify(procedures)}</div>
+      <Heading size="3" mb="3">
+        Surgical Procedures{" "}
+      </Heading>
+      {procedures.map((procedure) => (
+        <Flex key={procedure.ot_id} mt="3">
+          <Flex gap="3">
+            <Heading size="2">
+              {procedure.surgery_date?.toLocaleDateString()}
+            </Heading>
+            <Heading size="2">{procedure.procedure_name}</Heading>
+          </Flex>
+        </Flex>
+      ))}
     </Card>
   );
 };

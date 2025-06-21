@@ -141,6 +141,7 @@ exports.Prisma.Admission_DischargeScalarFieldEnum = {
 exports.Prisma.OTScalarFieldEnum = {
   ot_id: 'ot_id',
   admission_id: 'admission_id',
+  registration_id: 'registration_id',
   surgery_date: 'surgery_date',
   surgeon: 'surgeon',
   assistant_1: 'assistant_1',
