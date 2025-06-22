@@ -103,6 +103,7 @@ const ActionButtons = ({ registration_id }: { registration_id: string }) => {
 };
 
 const RegistrationsTable = ({ registrations }: Props) => {
+  console.log("RegistrationsTable rendered with data:", registrations);
   // State for table features
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
