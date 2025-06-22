@@ -1,9 +1,9 @@
-import { Button } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 
 export default function Home() {
   return (
     <div>
-      <Button>Click me</Button>
+      <Text>Welcome to Clinis</Text>
     </div>
   );
 }
