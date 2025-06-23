@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import client from "@/lib/db";
-const ALLOWED_EMAILS = ["drnisaar@gmail.com", "drnisar@hotmail.com"];
+const ALLOWED_EMAILS = ["drnisaar@gmail.com", "drnisar@hotmail.com", "danishkhattak145@gmail.com"];
 
 const handler = NextAuth({
   adapter: MongoDBAdapter(client),
