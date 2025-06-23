@@ -2,14 +2,10 @@ import React, { Suspense } from "react";
 import RegistrationsTable from "./_components/RegistrationsTable";
 import CreateRegistrationButton from "./_components/CreateRegistrationButton";
 import RegistrationPageSkeleton from "./_components/skeletons/RegistrationsPageSkeleton";
-import { prisma } from "@/lib/prisma"; // Adjust the import path as necessary
+import { getRegistrations } from "@/app/actions/actions";
 
 const RegistrationPage = async () => {
-  const registrations = await prisma.registration.findMany({
-    orderBy: {
-      created_at: "desc",
-    },
-  });
+  const registrations = await getRegistrations();
   return (
     <Suspense fallback={<RegistrationPageSkeleton />}>
       <CreateRegistrationButton />

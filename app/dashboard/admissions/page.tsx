@@ -1,24 +1,12 @@
-import prisma from "@/prisma/client";
+import { getAdmissions } from "@/app/actions/actions";
 import CurrentlyAdmittedList from "./_components/CurrentlyAdmittedList";
 
 const AdmissionsPage = async () => {
-  const admissionsFromDb = await prisma.admission_Discharge.findMany({
-    where: { status: "ADMITTED" },
-    include: { registration: true }, // Prisma includes with capital 'R'
-  });
-
-  if (!admissionsFromDb || admissionsFromDb.length === 0) {
-    return <div>No currently admitted patients found.</div>;
+  const admissions = await getAdmissions();
+  if (!admissions || admissions.length === 0) {
+    return <div>No admissions found</div>;
   }
 
-  const admissionsForComponent = admissionsFromDb.map((admission) => {
-    const { registration, ...restOfAdmission } = admission;
-    return {
-      ...restOfAdmission,
-      registration: registration ?? null, // Assign to lowercase 'r', handle null
-    };
-  });
-
-  return <CurrentlyAdmittedList admissions={admissionsForComponent} />;
+  return <CurrentlyAdmittedList admissions={admissions} />;
 };
 export default AdmissionsPage;
