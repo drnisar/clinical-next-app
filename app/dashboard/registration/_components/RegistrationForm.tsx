@@ -7,7 +7,7 @@ import axios from "axios";
 import { Form } from "radix-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import {
   genderOptions,
@@ -116,7 +116,6 @@ const RegistrationForm = ({
 
   return (
     <>
-      <Toaster />
       <RegistrationSuccessDialog isDialogOpen={isDialogOpen} id={regId} />
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
@@ -222,8 +221,11 @@ const RegistrationForm = ({
           />
         </InputGeneric>
 
-        <Button type="submit" disabled={mutation.isPending}>
-          {mutation.isPending
+        <Button
+          type="submit"
+          disabled={mutation.isPending || editMutation.isPending}
+        >
+          {mutation.isPending || editMutation.isPending
             ? "Submitting ..."
             : registration
             ? "Update Registration"

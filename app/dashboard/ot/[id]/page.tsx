@@ -1,6 +1,6 @@
 import React from "react";
 import OTNotesForm from "../_components/OTNotesForm";
-import prisma from "@/prisma/client";
+import { prisma } from "@/lib/prisma";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 
 const OTNotesEditPage = async ({

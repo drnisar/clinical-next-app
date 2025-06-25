@@ -9,6 +9,21 @@ export const getRegistrations = async () => {
   return registrations;
 };
 
+export const getRegistrationById = async (id: string) => {
+  const registration = await prisma.registration.findUnique({
+    where: {
+      registration_id: id,
+    },
+    include: {
+      Appointment: true,
+      Consultation: true,
+      Admission_Discharge: true,
+      OT: true,
+    },
+  });
+  return registration;
+};
+
 export const getAppointments = async () => {
   const appointments = await prisma.appointment.findMany({
     orderBy: {
@@ -46,4 +61,16 @@ export const getAdmissions = async () => {
     },
   });
   return admissions;
+};
+
+export const getConsultationById = async (id: string) => {
+  const consultation = await prisma.consultation.findUnique({
+    where: {
+      consultation_id: id,
+    },
+    include: {
+      registration: true, // Include registration details
+    },
+  });
+  return consultation;
 };

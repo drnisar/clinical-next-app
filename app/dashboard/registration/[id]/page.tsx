@@ -4,10 +4,9 @@ import AppointmentsForSingleRegId from "../../appointments/_components/Appointme
 import { Box } from "@radix-ui/themes";
 import ConsultationsForSingleRegId from "../../consultation/_components/ConsultationsForSingleRegId";
 import AdmissionsForSingleRegId from "../../admissions/_components/AdmissionsForSingleRegId";
-import { PrismaClient } from "@/generated/prisma";
 import SurgicalProceduresForSingleReg from "../../ot/_components/SurgicalProceduresForSingleReg";
+import { getRegistrationById } from "@/app/actions/actions";
 
-const prisma = new PrismaClient();
 const RegistrationDetailsPage = async ({
   params,
 }: {
@@ -15,27 +14,7 @@ const RegistrationDetailsPage = async ({
 }) => {
   const { id } = await params;
 
-  const registration = await prisma.registration.findUnique({
-    where: { registration_id: id },
-  });
-
-  const appointments = await prisma.appointment.findMany({
-    where: { registration_id: id },
-    orderBy: { date_appointment: "desc" },
-  });
-
-  const consultations = await prisma.consultation.findMany({
-    where: { registration_id: id },
-  });
-
-  // if (!registration) {
-  //   return <div>Registration not found</div>;
-  // }
-
-  const admissions = await prisma.admission_Discharge.findMany({
-    where: { registration_id: id },
-    orderBy: { admission_id: "desc" },
-  });
+  const registration = await getRegistrationById(id);
 
   if (!registration) {
     return <div>Registration not found</div>;
@@ -46,16 +25,20 @@ const RegistrationDetailsPage = async ({
       <RegistrationDetailsCard registration={registration} />
 
       <AppointmentsForSingleRegId
-        appointments={appointments}
+        appointments={registration.Appointment || []}
         registration_id={id}
       />
       <ConsultationsForSingleRegId
-        consultations={consultations}
+        consultations={registration.Consultation || []}
         registration_id={id}
       />
 
-      <AdmissionsForSingleRegId admissions={admissions} registration_id={id} />
+      <AdmissionsForSingleRegId
+        admissions={registration.Admission_Discharge || []}
+        registration_id={id}
+      />
       <SurgicalProceduresForSingleReg registration_id={id} />
+      {JSON.stringify(registration, null, 2)}
     </Box>
   );
 };

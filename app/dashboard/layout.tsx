@@ -5,6 +5,7 @@ const DashBoardLayout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <DashboardNav />
+
       <div>{children}</div>
     </>
   );

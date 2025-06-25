@@ -5,9 +5,11 @@ import { Flex, Tabs } from "@radix-ui/themes";
 import ConsultationTabs from "../../_components/ConsultationTabs";
 import { Instructions } from "../../_components/ConsultationNotes";
 import AppointmentsTab from "../../_components/AppointmentsTab";
-import { PrismaClient } from "@/generated/prisma";
 import MedicationsForm from "@/app/dashboard/_components/MedicationsForm";
-const prisma = new PrismaClient();
+import {
+  getConsultationById,
+  getRegistrationById,
+} from "@/app/actions/actions";
 
 const ConsultationEditPage = async ({
   params,
@@ -19,31 +21,21 @@ const ConsultationEditPage = async ({
   const { id } = await params;
   const { type } = await searchParams;
 
-  const consultation = await prisma.consultation.findUnique({
-    where: {
-      consultation_id: id,
-    },
-  });
-
-  const registration = await prisma.registration.findUnique({
-    where: {
-      registration_id: consultation?.registration_id,
-    },
-  });
-
+  const consultation = await getConsultationById(id);
+  if (!consultation) {
+    return <div>Consultation not found</div>;
+  }
+  const registration = await getRegistrationById(consultation?.registration_id);
   if (!registration) {
     return <div>Registration not found</div>;
   }
 
-  if (!consultation) {
-    return <div>Consultation not found</div>;
-  }
   return (
     <>
       <Flex justify="end">
         <ButtonPrintPreview consultation_id={id} />
       </Flex>
-      <RegistrationDetailsCard registration={registration} />
+      <RegistrationDetailsCard registration={consultation?.registration} />
 
       <Tabs.Root defaultValue="consultation">
         <Tabs.List>

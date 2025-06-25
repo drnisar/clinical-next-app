@@ -10,6 +10,7 @@ import QueryClProvider from "./QueryClProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthProvider from "./dashboard/auth/AuthProvider";
 import { ThemeProvider } from "./providers/ThemeProvider"; // Your provider
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
                   <main className="py-5">{children}</main>
                 </Container>
                 <ReactQueryDevtools initialIsOpen={false} />
+                <Toaster />
               </QueryClProvider>
             </Theme>
           </AuthProvider>
