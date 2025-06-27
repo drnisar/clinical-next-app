@@ -5,7 +5,9 @@ import RegistrationPageSkeleton from "./_components/skeletons/RegistrationsPageS
 import { getRegistrations } from "@/app/actions/actions";
 
 const RegistrationPage = async () => {
-  const registrations = await getRegistrations();
+  // const registrations = await getRegistrations();
+  const response = await fetch("/api/registration");
+  const registrations = await response.json();
   return (
     <Suspense fallback={<RegistrationPageSkeleton />}>
       <CreateRegistrationButton />
