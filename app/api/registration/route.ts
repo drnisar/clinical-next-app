@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   });
   revalidateTag("registrations");
   revalidateTag("registration");
-  revalidatePath("https://clinical-next-app.vercel.app/dashboard/registration");
+  revalidatePath("/dashboard/registration");
 
   return NextResponse.json(newRegistration, { status: 201 });
 }
