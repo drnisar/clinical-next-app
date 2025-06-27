@@ -2,12 +2,10 @@ import React, { Suspense } from "react";
 import RegistrationsTable from "./_components/RegistrationsTable";
 import CreateRegistrationButton from "./_components/CreateRegistrationButton";
 import RegistrationPageSkeleton from "./_components/skeletons/RegistrationsPageSkeleton";
+import { getRegistrations } from "@/app/actions/actions";
 
 const RegistrationPage = async () => {
-  // const registrations = await getRegistrations();
-  const baseURL = "https://clinical-next-app.vercel.app";
-  const response = await fetch(baseURL + "/api/registration");
-  const registrations = await response.json();
+  const registrations = await getRegistrations();
   return (
     <Suspense fallback={<RegistrationPageSkeleton />}>
       <CreateRegistrationButton />
