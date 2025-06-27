@@ -1,7 +1,6 @@
 "use client";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
 import AddToClinicQueueButton from "./AddToClinicQueueButton";
 interface Props {
   isDialogOpen: boolean;
@@ -9,9 +8,9 @@ interface Props {
 }
 const RegistrationSuccessDialog = ({ isDialogOpen, id }: Props) => {
   const router = useRouter();
-  useEffect(() => {
-    router.prefetch("/dashboard/registration");
-  }, [router]);
+  // useEffect(() => {
+  //   router.prefetch("/dashboard/registration");
+  // }, [router]);
   // const handleAddToConsultationQueue = () => {
   //   router.push("/dashboard/consultation");
   // };
