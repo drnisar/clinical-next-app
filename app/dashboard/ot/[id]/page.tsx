@@ -2,6 +2,7 @@ import React from "react";
 import OTNotesForm from "../_components/OTNotesForm";
 import { prisma } from "@/lib/prisma";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
+import OTNotesDetails from "../_components/OTNotesDetails";
 
 const OTNotesEditPage = async ({
   params,
@@ -36,7 +37,12 @@ const OTNotesEditPage = async ({
   return (
     <>
       <RegistrationDetailsCard registration={registration} />
-      <OTNotesForm ot_id={id} admission_id={ot?.admission_id} />
+
+      {ot.finalize === 1 ? (
+        <OTNotesDetails ot={ot} />
+      ) : (
+        <OTNotesForm ot_id={id} admission_id={ot?.admission_id} />
+      )}
     </>
   );
 };

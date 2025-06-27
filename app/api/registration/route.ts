@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { registrationSchema } from "@/app/validationSchemas";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
@@ -43,6 +44,9 @@ export async function POST(req: NextRequest) {
       mr_number,
     },
   });
+  revalidateTag("registrations");
+  revalidateTag("registration");
+  revalidatePath("/dashboard/registration");
 
   return NextResponse.json(newRegistration, { status: 201 });
 }

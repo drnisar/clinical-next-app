@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Registration } from "@/generated/prisma";
 import { Button, Flex, TextField } from "@radix-ui/themes";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Form } from "radix-ui";
 import { useState } from "react";
@@ -57,6 +57,7 @@ const RegistrationForm = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [regId, setRegId] = useState<string>("");
 
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: FormData) => {
       return axios.post("/api/registration", data);
@@ -66,10 +67,10 @@ const RegistrationForm = ({
         duration: 4000,
         position: "top-center",
       });
+      queryClient.invalidateQueries({ queryKey: ["registrations"] });
+      queryClient.invalidateQueries({ queryKey: ["registration"] });
       setIsDialogOpen(true);
       setRegId(response.data.registration_id);
-      // alert("Registration Successful");
-      // router.push("/dashboard/registration");
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -91,6 +92,10 @@ const RegistrationForm = ({
       toast.success("Registration Updated", {
         duration: 4000,
         position: "top-center",
+      });
+      queryClient.invalidateQueries({ queryKey: ["registrations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["registration", registration?.registration_id],
       });
       setIsDialogOpen(true);
       setRegId(response.data.registration_id);
