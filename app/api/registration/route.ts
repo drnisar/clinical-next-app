@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
   const regs = await prisma.registration.findMany({
+    orderBy: {
+      created_at: "desc",
+    },
     include: {
       Appointment: true,
       Consultation: true,
