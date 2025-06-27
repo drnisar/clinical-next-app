@@ -1,12 +1,6 @@
-// import prisma from "@/prisma/client";
-// import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma, PrismaClient } from "@/generated/prisma";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
-// Remove the Props interface definition if it still exists
-
-// Use the inline type annotation for the second argument
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> } // Correct type annotation here
@@ -56,21 +50,10 @@ export async function PATCH(
       },
     });
 
-    // The update operation itself returns the updated record or throws an error
-    // No need to check if updatedAdmission exists here unless update can return null
     return NextResponse.json(updatedAdmission, { status: 200 });
   } catch (error) {
     console.error("Error updating admission:", error);
-    // Handle potential Prisma errors like record not found during update
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2025") {
-        // Prisma code for record not found on update/delete
-        return NextResponse.json(
-          { message: "Admission not found during update" },
-          { status: 404 }
-        );
-      }
-    }
+
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }

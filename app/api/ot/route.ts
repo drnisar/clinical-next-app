@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/prisma/client";
-
+import { prisma } from "@/lib/prisma";
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const newOTNotes = await prisma.oT.create({

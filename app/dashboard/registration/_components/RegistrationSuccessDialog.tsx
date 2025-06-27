@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import AddToClinicQueueButton from "./AddToClinicQueueButton";
 interface Props {
   isDialogOpen: boolean;
-  id: number;
+  id: string;
 }
 const RegistrationSuccessDialog = ({ isDialogOpen, id }: Props) => {
   const router = useRouter();

@@ -55,7 +55,7 @@ const RegistrationForm = ({
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [regId, setRegId] = useState<number>(0);
+  const [regId, setRegId] = useState<string>("");
 
   const mutation = useMutation({
     mutationFn: (data: FormData) => {

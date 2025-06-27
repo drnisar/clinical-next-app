@@ -1,8 +1,6 @@
 import { appointmentSchema } from "@/app/validationSchemas";
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
-const prisma = new PrismaClient();
-
+import { prisma } from "@/lib/prisma";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (req: NextRequest) => {
   try {

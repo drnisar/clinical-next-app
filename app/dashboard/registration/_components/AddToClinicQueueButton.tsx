@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
-  registration_id: number;
+  registration_id: string;
 }
 
 const AddToClinicQueueButton = ({ registration_id }: Props) => {

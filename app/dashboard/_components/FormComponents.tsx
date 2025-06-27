@@ -1,5 +1,5 @@
 import { Flex, Select, TextField } from "@radix-ui/themes";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Control, Controller, UseFormRegisterReturn } from "react-hook-form";
 
 export function TextInput({
@@ -87,7 +87,7 @@ export function SelectInput({
 }: SelectInputProps) {
   return (
     <div>
-      <div>
+      <div className="mb-2">
         <label htmlFor={name}>{label}</label>
       </div>
       <div className="w-full">
@@ -147,3 +147,66 @@ export function InputGeneric({
     </Flex>
   );
 }
+
+interface SelectInputServerSideProps {
+  label: string;
+  name: string;
+  options: { value: string; label: string }[];
+  errorMessage?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  required?: boolean;
+  className?: string;
+  size?: "1" | "2" | "3";
+}
+
+export const SelectInputServerSide = ({
+  label,
+  name,
+  options,
+  errorMessage,
+  placeholder,
+  defaultValue,
+  required = false,
+  className = "",
+  size = "2",
+}: SelectInputServerSideProps) => {
+  const [selectedValue, setSelectedValue] = useState(defaultValue || "");
+
+  return (
+    <div className={`space-y-2 ${className}`}>
+      <label htmlFor={name} className="text-sm font-medium">
+        {label}
+      </label>
+
+      {/* Hidden input to capture the value for form submission */}
+      <input
+        type="hidden"
+        name={name}
+        value={selectedValue}
+        required={required}
+      />
+
+      <Select.Root
+        value={selectedValue}
+        onValueChange={(value) => setSelectedValue(value)}
+        defaultValue={defaultValue || ""}
+        size={size}
+      >
+        <Select.Trigger placeholder={placeholder} className="w-full" />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Options</Select.Label>
+            {options.map((option) => (
+              <Select.Item key={option.value} value={option.value}>
+                {option.label}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+    </div>
+  );
+};
