@@ -37,8 +37,7 @@ const RegistrationDetailsPage = async ({
         admissions={registration.Admission_Discharge || []}
         registration_id={id}
       />
-      <SurgicalProceduresForSingleReg registration_id={id} />
-      {JSON.stringify(registration, null, 2)}
+      <SurgicalProceduresForSingleReg OT={registration.OT || []} />
     </Box>
   );
 };
