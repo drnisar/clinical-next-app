@@ -4,7 +4,14 @@ import { prisma } from "@/lib/prisma";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
-  const regs = await prisma.registration.findMany();
+  const regs = await prisma.registration.findMany({
+    include: {
+      Appointment: true,
+      Consultation: true,
+      Admission_Discharge: true,
+      OT: true,
+    },
+  });
   if (!regs) {
     return NextResponse.json({ message: "No registration found" });
   }

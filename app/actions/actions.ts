@@ -1,13 +1,21 @@
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
-export const getRegistrations = async () => {
-  const registrations = await prisma.registration.findMany({
-    orderBy: {
-      created_at: "desc",
-    },
-  });
-  return registrations;
-};
+export const getRegistrations = unstable_cache(
+  async () => {
+    const registrations = await prisma.registration.findMany({
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+    return registrations;
+  },
+  ["registrations"],
+  {
+    tags: ["registrations"],
+    revalidate: 1, // Cache for 0 seconds
+  }
+);
 
 export const getRegistrationById = async (id: string) => {
   const registration = await prisma.registration.findUnique({
