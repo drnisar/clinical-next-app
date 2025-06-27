@@ -5,7 +5,8 @@ import RegistrationPageSkeleton from "./_components/skeletons/RegistrationsPageS
 
 const RegistrationPage = async () => {
   // const registrations = await getRegistrations();
-  const response = await fetch("/api/registration");
+  const baseURL = "https://clinical-next-app.vercel.app";
+  const response = await fetch(baseURL + "/api/registration");
   const registrations = await response.json();
   return (
     <Suspense fallback={<RegistrationPageSkeleton />}>
