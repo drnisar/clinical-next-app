@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
-import { unstable_cache } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 
 export const getRegistrations = unstable_cache(
   async () => {
+    revalidatePath("/dashboard/registration");
     const registrations = await prisma.registration.findMany({
       orderBy: {
         created_at: "desc",
