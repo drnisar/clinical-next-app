@@ -17,6 +17,7 @@ import {
 } from "../../_components/appConstants";
 import { InputGeneric, SelectInput } from "../../_components/FormComponents";
 import RegistrationSuccessDialog from "./RegistrationSuccessDialog";
+import { useRouter } from "next/navigation";
 
 const validation = z.object({
   first_name: z.string().min(3),
@@ -34,6 +35,7 @@ const RegistrationForm = ({
 }: {
   registration?: Registration;
 }) => {
+  const router = useRouter();
   const {
     register,
     control,
@@ -69,6 +71,7 @@ const RegistrationForm = ({
       });
       queryClient.invalidateQueries({ queryKey: ["registrations"] });
       queryClient.invalidateQueries({ queryKey: ["registration"] });
+      router.refresh();
       setIsDialogOpen(true);
       setRegId(response.data.registration_id);
     },
@@ -97,6 +100,7 @@ const RegistrationForm = ({
       queryClient.invalidateQueries({
         queryKey: ["registration", registration?.registration_id],
       });
+      router.refresh();
       setIsDialogOpen(true);
       setRegId(response.data.registration_id);
     },
