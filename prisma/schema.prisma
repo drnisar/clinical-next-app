@@ -97,7 +97,8 @@ model Registration {
   gender              String
   last_name           String
   mr_number           String
-  phone_number        String
+  phone_number        String?
+  date_of_birth       DateTime?             @db.Date
   updated_at          DateTime              @updatedAt @db.Date
   Consultation        Consultation[]
   Appointment         Appointment[]

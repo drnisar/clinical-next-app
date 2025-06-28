@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import {
+  calculateAge,
+  calculateDateOfBirth,
   genderOptions,
   // mr_intermediate, // Removed if not used
   // mr_type, // Removed if not used
@@ -20,12 +22,16 @@ import RegistrationSuccessDialog from "./RegistrationSuccessDialog";
 import { useRouter } from "next/navigation";
 
 const validation = z.object({
-  first_name: z.string().min(3),
+  first_name: z
+    .string()
+    .min(3, { message: "First name must be at least 3 characters long" }),
   last_name: z.string().min(3),
   gender: z.string().nonempty("please select"),
-  phone_number: z.string().min(10),
+  phone_number: z.string().optional(),
   code: z.string().min(1),
   mr_number: z.string().min(3), // Keep basic validation
+  date_of_birth: z.string().optional(), // Optional field for date of birth
+  age: z.string().optional(),
 });
 
 type FormData = z.infer<typeof validation>;
@@ -36,6 +42,10 @@ const RegistrationForm = ({
   registration?: Registration;
 }) => {
   const router = useRouter();
+
+  const initialAge = registration?.date_of_birth
+    ? calculateAge(registration.date_of_birth.toISOString().split("T")[0])
+    : "";
   const {
     register,
     control,
@@ -51,13 +61,20 @@ const RegistrationForm = ({
       last_name: registration?.last_name || "",
       gender: registration?.gender || "",
       code: registration?.code || "+92",
-      phone_number: registration?.phone_number || "",
+      phone_number: registration?.phone_number || "0000000000",
       mr_number: registration?.mr_number || "",
+      date_of_birth: registration?.date_of_birth
+        ? registration.date_of_birth.toISOString().split("T")[0]
+        : "",
+      age: initialAge, // Optional field for age, calculated from date_of_birth
     },
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [regId, setRegId] = useState<string>("");
+
+  // const watchedDateOfBirth = watch("date_of_birth");
+  // const watchedAge = watch("age");
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -114,10 +131,12 @@ const RegistrationForm = ({
   });
 
   const onSubmit = (data: FormData) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { age, ...submissionData } = data;
     try {
       if (registration) {
-        editMutation.mutate(data); // Ensure editMutation is used for updates
-      } else mutation.mutate(data);
+        editMutation.mutate(submissionData); // Ensure editMutation is used for updates
+      } else mutation.mutate(submissionData);
     } catch (error) {
       console.error(error);
     }
@@ -140,45 +159,81 @@ const RegistrationForm = ({
         <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
           <TextField.Root type="text" {...register("last_name")} />
         </InputGeneric>
-
-        <SelectInput
-          label="Gender"
-          name="gender"
-          control={control}
-          options={genderOptions}
-          errorMessage={errors.gender?.message?.toString() || ""}
-          placeholder="Select Gender"
-          // defaultValue prop removed, use defaultValues in useForm
-        />
         <Flex gap="2">
-          <SelectInput
-            label="Code"
-            name="code"
-            control={control}
-            options={[
-              { value: "+92", label: "+92" },
-              { value: "+93", label: "+93" },
-            ]}
-            errorMessage={""}
-            placeholder="Select Code"
-          />
           <InputGeneric
-            name={"phone_number"}
-            label={"Phone Number"}
-            errorMessage={errors.phone_number?.message || ""}
+            name={"date_of_birth"}
+            label={"Date of Birth"}
+            errorMessage={""}
           >
             <TextField.Root
-              type="text"
-              {...register("phone_number")}
-              onBlur={(e) => {
-                const value = e.target.value.replace(/\D/g, "");
-                const refinedPhone = value.replace(/^0+/, ""); // Remove leading zeros;
-                setValue("phone_number", refinedPhone, {
-                  shouldValidate: true,
-                });
+              type="date"
+              {...register("date_of_birth")}
+              onChange={(e) => {
+                const newDateOfBirth = e.target.value;
+                setValue("date_of_birth", newDateOfBirth);
+                if (newDateOfBirth) {
+                  const calculatedAge = calculateAge(newDateOfBirth);
+                  setValue("age", calculatedAge);
+                } else {
+                  setValue("age", ""); // Clear age if date of birth is empty
+                }
               }}
             />
           </InputGeneric>
+
+          <InputGeneric
+            name={"age"}
+            label={"Age (Years)"}
+            errorMessage={errors.age?.message || ""}
+          >
+            <TextField.Root
+              type="number"
+              placeholder="Enter age in years"
+              {...register("age")}
+              onChange={(e) => {
+                const newAge = e.target.value;
+                setValue("age", newAge);
+
+                // Auto-calculate and update date of birth when age changes
+                if (
+                  newAge &&
+                  !isNaN(Number(newAge)) &&
+                  Number(newAge) >= 0 &&
+                  Number(newAge) <= 120
+                ) {
+                  const calculatedDOB = calculateDateOfBirth(newAge);
+                  setValue("date_of_birth", calculatedDOB);
+                } else if (!newAge) {
+                  // Clear date of birth if age is cleared
+                  setValue("date_of_birth", "");
+                }
+              }}
+              onBlur={(e) => {
+                const age = e.target.value;
+                if (
+                  age &&
+                  (isNaN(Number(age)) || Number(age) < 0 || Number(age) > 120)
+                ) {
+                  setError("age", {
+                    type: "manual",
+                    message: "Please enter a valid age between 0 and 120",
+                  });
+                } else {
+                  clearErrors("age");
+                }
+              }}
+            />
+          </InputGeneric>
+
+          <SelectInput
+            label="Gender"
+            name="gender"
+            control={control}
+            options={genderOptions}
+            errorMessage={errors.gender?.message?.toString() || ""}
+            placeholder="Select Gender"
+            // defaultValue prop removed, use defaultValues in useForm
+          />
         </Flex>
 
         <InputGeneric
@@ -229,6 +284,37 @@ const RegistrationForm = ({
             }}
           />
         </InputGeneric>
+
+        <Flex gap="2">
+          <SelectInput
+            label="Code"
+            name="code"
+            control={control}
+            options={[
+              { value: "+92", label: "+92" },
+              { value: "+93", label: "+93" },
+            ]}
+            errorMessage={""}
+            placeholder="Select Code"
+          />
+          <InputGeneric
+            name={"phone_number"}
+            label={"Phone Number"}
+            errorMessage={errors.phone_number?.message || ""}
+          >
+            <TextField.Root
+              type="text"
+              {...register("phone_number")}
+              onBlur={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                const refinedPhone = value.replace(/^0+/, ""); // Remove leading zeros;
+                setValue("phone_number", refinedPhone, {
+                  shouldValidate: true,
+                });
+              }}
+            />
+          </InputGeneric>
+        </Flex>
 
         <Button
           type="submit"

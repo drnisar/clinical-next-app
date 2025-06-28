@@ -4,8 +4,18 @@ export const registrationSchema = z.object({
   first_name: z.string().min(1).max(20),
   last_name: z.string().min(1).max(20),
   gender: z.string().min(1).max(10),
-  phone_number: z.string().min(10).max(15),
+  phone_number: z.string().optional(),
   mr_number: z.string().min(1).max(20),
+  code: z.string().min(1).max(20),
+  date_of_birth: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return null;
+      const date = new Date(val);
+      return isNaN(date.getTime()) ? null : date;
+    })
+    .nullable(),
 });
 
 export const appointmentSchema = z.object({

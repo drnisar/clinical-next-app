@@ -3,6 +3,7 @@ import { Registration } from "@/generated/prisma";
 import { Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
+import { calculateAge } from "../../_components/appConstants";
 
 interface Props {
   registration: Registration;
@@ -24,6 +25,10 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
           {registration.first_name.toUpperCase()}{" "}
           {registration.last_name.toUpperCase()}
         </Link>
+        <Text as="div" color="gray">
+          {calculateAge(registration.date_of_birth?.toString() ?? "")}{" "}
+          {" Years"}
+        </Text>
         <Text as="div" color="gray">
           {registration.gender.toUpperCase()}
         </Text>

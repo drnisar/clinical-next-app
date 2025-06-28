@@ -6265,6 +6265,7 @@ export namespace Prisma {
     last_name: string | null
     mr_number: string | null
     phone_number: string | null
+    date_of_birth: Date | null
     updated_at: Date | null
   }
 
@@ -6277,6 +6278,7 @@ export namespace Prisma {
     last_name: string | null
     mr_number: string | null
     phone_number: string | null
+    date_of_birth: Date | null
     updated_at: Date | null
   }
 
@@ -6289,6 +6291,7 @@ export namespace Prisma {
     last_name: number
     mr_number: number
     phone_number: number
+    date_of_birth: number
     updated_at: number
     _all: number
   }
@@ -6303,6 +6306,7 @@ export namespace Prisma {
     last_name?: true
     mr_number?: true
     phone_number?: true
+    date_of_birth?: true
     updated_at?: true
   }
 
@@ -6315,6 +6319,7 @@ export namespace Prisma {
     last_name?: true
     mr_number?: true
     phone_number?: true
+    date_of_birth?: true
     updated_at?: true
   }
 
@@ -6327,6 +6332,7 @@ export namespace Prisma {
     last_name?: true
     mr_number?: true
     phone_number?: true
+    date_of_birth?: true
     updated_at?: true
     _all?: true
   }
@@ -6411,7 +6417,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number: string | null
+    date_of_birth: Date | null
     updated_at: Date
     _count: RegistrationCountAggregateOutputType | null
     _min: RegistrationMinAggregateOutputType | null
@@ -6441,6 +6448,7 @@ export namespace Prisma {
     last_name?: boolean
     mr_number?: boolean
     phone_number?: boolean
+    date_of_birth?: boolean
     updated_at?: boolean
     Consultation?: boolean | Registration$ConsultationArgs<ExtArgs>
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
@@ -6460,10 +6468,11 @@ export namespace Prisma {
     last_name?: boolean
     mr_number?: boolean
     phone_number?: boolean
+    date_of_birth?: boolean
     updated_at?: boolean
   }
 
-  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"registration_id" | "code" | "created_at" | "first_name" | "gender" | "last_name" | "mr_number" | "phone_number" | "updated_at", ExtArgs["result"]["registration"]>
+  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"registration_id" | "code" | "created_at" | "first_name" | "gender" | "last_name" | "mr_number" | "phone_number" | "date_of_birth" | "updated_at", ExtArgs["result"]["registration"]>
   export type RegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Consultation?: boolean | Registration$ConsultationArgs<ExtArgs>
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
@@ -6488,7 +6497,8 @@ export namespace Prisma {
       gender: string
       last_name: string
       mr_number: string
-      phone_number: string
+      phone_number: string | null
+      date_of_birth: Date | null
       updated_at: Date
     }, ExtArgs["result"]["registration"]>
     composites: {}
@@ -6894,6 +6904,7 @@ export namespace Prisma {
     readonly last_name: FieldRef<"Registration", 'String'>
     readonly mr_number: FieldRef<"Registration", 'String'>
     readonly phone_number: FieldRef<"Registration", 'String'>
+    readonly date_of_birth: FieldRef<"Registration", 'DateTime'>
     readonly updated_at: FieldRef<"Registration", 'DateTime'>
   }
     
@@ -11489,6 +11500,7 @@ export namespace Prisma {
     last_name: 'last_name',
     mr_number: 'mr_number',
     phone_number: 'phone_number',
+    date_of_birth: 'date_of_birth',
     updated_at: 'updated_at'
   };
 
@@ -12083,7 +12095,8 @@ export namespace Prisma {
     gender?: StringFilter<"Registration"> | string
     last_name?: StringFilter<"Registration"> | string
     mr_number?: StringFilter<"Registration"> | string
-    phone_number?: StringFilter<"Registration"> | string
+    phone_number?: StringNullableFilter<"Registration"> | string | null
+    date_of_birth?: DateTimeNullableFilter<"Registration"> | Date | string | null
     updated_at?: DateTimeFilter<"Registration"> | Date | string
     Consultation?: ConsultationListRelationFilter
     Appointment?: AppointmentListRelationFilter
@@ -12100,6 +12113,7 @@ export namespace Prisma {
     last_name?: SortOrder
     mr_number?: SortOrder
     phone_number?: SortOrder
+    date_of_birth?: SortOrder
     updated_at?: SortOrder
     Consultation?: ConsultationOrderByRelationAggregateInput
     Appointment?: AppointmentOrderByRelationAggregateInput
@@ -12118,7 +12132,8 @@ export namespace Prisma {
     gender?: StringFilter<"Registration"> | string
     last_name?: StringFilter<"Registration"> | string
     mr_number?: StringFilter<"Registration"> | string
-    phone_number?: StringFilter<"Registration"> | string
+    phone_number?: StringNullableFilter<"Registration"> | string | null
+    date_of_birth?: DateTimeNullableFilter<"Registration"> | Date | string | null
     updated_at?: DateTimeFilter<"Registration"> | Date | string
     Consultation?: ConsultationListRelationFilter
     Appointment?: AppointmentListRelationFilter
@@ -12135,6 +12150,7 @@ export namespace Prisma {
     last_name?: SortOrder
     mr_number?: SortOrder
     phone_number?: SortOrder
+    date_of_birth?: SortOrder
     updated_at?: SortOrder
     _count?: RegistrationCountOrderByAggregateInput
     _max?: RegistrationMaxOrderByAggregateInput
@@ -12152,7 +12168,8 @@ export namespace Prisma {
     gender?: StringWithAggregatesFilter<"Registration"> | string
     last_name?: StringWithAggregatesFilter<"Registration"> | string
     mr_number?: StringWithAggregatesFilter<"Registration"> | string
-    phone_number?: StringWithAggregatesFilter<"Registration"> | string
+    phone_number?: StringNullableWithAggregatesFilter<"Registration"> | string | null
+    date_of_birth?: DateTimeNullableWithAggregatesFilter<"Registration"> | Date | string | null
     updated_at?: DateTimeWithAggregatesFilter<"Registration"> | Date | string
   }
 
@@ -12920,7 +12937,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
@@ -12936,7 +12954,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
@@ -12951,7 +12970,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
@@ -12966,7 +12986,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
@@ -12982,7 +13003,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
   }
 
@@ -12993,7 +13015,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13004,7 +13027,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -13750,6 +13774,7 @@ export namespace Prisma {
     last_name?: SortOrder
     mr_number?: SortOrder
     phone_number?: SortOrder
+    date_of_birth?: SortOrder
     updated_at?: SortOrder
   }
 
@@ -13762,6 +13787,7 @@ export namespace Prisma {
     last_name?: SortOrder
     mr_number?: SortOrder
     phone_number?: SortOrder
+    date_of_birth?: SortOrder
     updated_at?: SortOrder
   }
 
@@ -13774,6 +13800,7 @@ export namespace Prisma {
     last_name?: SortOrder
     mr_number?: SortOrder
     phone_number?: SortOrder
+    date_of_birth?: SortOrder
     updated_at?: SortOrder
   }
 
@@ -14620,7 +14647,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
@@ -14635,7 +14663,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
@@ -14714,7 +14743,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
@@ -14728,7 +14758,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
@@ -14800,7 +14831,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
@@ -14815,7 +14847,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
@@ -14906,7 +14939,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
@@ -14920,7 +14954,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
@@ -14935,7 +14970,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
@@ -14950,7 +14986,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
@@ -14980,7 +15017,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
@@ -14994,7 +15032,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
@@ -15009,7 +15048,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
@@ -15024,7 +15064,8 @@ export namespace Prisma {
     gender: string
     last_name: string
     mr_number: string
-    phone_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
     updated_at?: Date | string
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
@@ -15054,7 +15095,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
@@ -15068,7 +15110,8 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     last_name?: StringFieldUpdateOperationsInput | string
     mr_number?: StringFieldUpdateOperationsInput | string
-    phone_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput

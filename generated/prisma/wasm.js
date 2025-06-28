@@ -195,6 +195,7 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   last_name: 'last_name',
   mr_number: 'mr_number',
   phone_number: 'phone_number',
+  date_of_birth: 'date_of_birth',
   updated_at: 'updated_at'
 };
 

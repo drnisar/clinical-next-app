@@ -377,3 +377,35 @@ export const dischargeModes = [
   { label: "TRANSFER", value: "TRANSFER" },
   { label: "OTHER", value: "OTHER" },
 ];
+
+// Helper function to calculate date of birth from age
+export const calculateDateOfBirth = (age: string): string => {
+  if (!age || isNaN(Number(age))) return "";
+
+  const ageNumber = Number(age);
+  if (ageNumber < 0 || ageNumber > 150) return ""; // Reasonable age bounds
+
+  const today = new Date();
+  const birthYear = today.getFullYear() - ageNumber;
+
+  // Format as YYYY-MM-DD directly to avoid timezone issues
+  return `${birthYear}-01-01`;
+};
+
+// Helper function to calculate age from date of birth
+export const calculateAge = (dateOfBirth: string): string => {
+  if (!dateOfBirth) return "";
+  const today = new Date();
+  const birthDate = new Date(dateOfBirth);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age >= 0 ? age.toString() : "";
+};

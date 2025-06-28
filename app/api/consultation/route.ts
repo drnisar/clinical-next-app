@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
@@ -12,6 +13,7 @@ export const POST = async (req: NextRequest) => {
         instructions: instructions,
       },
     });
+    revalidatePath("/dashboard/consultation");
     return NextResponse.json(consultation);
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
