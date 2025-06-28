@@ -48,6 +48,27 @@ export const getConsultations = async () => {
   return consultations;
 };
 
+export const getTodaysConsultations = async () => {
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+  const consultations = await prisma.consultation.findMany({
+    where: {
+      visit_date: {
+        gte: startOfDay,
+        lte: endOfDay,
+      },
+    },
+    orderBy: {
+      visit_date: "desc",
+    },
+    include: {
+      registration: true, // Include registration details
+    },
+  });
+  return consultations;
+};
+
 export const getAdmissions = async () => {
   const admissions = await prisma.admission_Discharge.findMany({
     where: {

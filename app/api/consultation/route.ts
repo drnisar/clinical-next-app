@@ -4,13 +4,13 @@ import { revalidatePath } from "next/cache";
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 
-  const { visit_date, registration_id, instructions } = body;
+  const { visit_date, registration_id, status } = body;
   try {
     const consultation = await prisma.consultation.create({
       data: {
         visit_date: new Date(visit_date),
         registration_id: registration_id,
-        instructions: instructions,
+        status: status,
       },
     });
     revalidatePath("/dashboard/consultation");

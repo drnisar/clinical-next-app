@@ -9,7 +9,6 @@ import {
   Button,
   Text,
   Select,
-  Badge,
 } from "@radix-ui/themes";
 import {
   useReactTable,
@@ -32,6 +31,7 @@ import {
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { Consultation, Registration } from "@/generated/prisma";
+import StatusChangeComponent from "./StatusChangeComponent";
 
 // type Consultation = Omit<Clinic_Visit, "Registration"> & {
 //   registration: PrismaRegistration | null;
@@ -82,7 +82,7 @@ const ConsultationsTable = ({ consultations }: Props) => {
         (row) =>
           `${row.registration?.first_name || ""} ${
             row.registration?.last_name || ""
-          }`,
+          }`.toUpperCase(),
         {
           id: "patient_name",
           header: "Patient Name",
@@ -94,7 +94,7 @@ const ConsultationsTable = ({ consultations }: Props) => {
         header: "MR Number",
         cell: (info) => info.getValue() ?? "N/A",
       }),
-      columnHelper.accessor((row) => row.registration?.gender, {
+      columnHelper.accessor((row) => row.registration?.gender.toUpperCase(), {
         id: "gender",
         header: "Gender",
         cell: (info) => info.getValue() ?? "N/A",
@@ -109,10 +109,8 @@ const ConsultationsTable = ({ consultations }: Props) => {
         header: "Status",
         cell: (info) => {
           const status = info.getValue();
-          let color: React.ComponentProps<typeof Badge>["color"] = "gray";
-          if (status === "COMPLETED") color = "green";
-          if (status === "QUEUED") color = "orange";
-          return <Badge color={color}>{status ? String(status) : "N/A"}</Badge>;
+
+          return <StatusChangeComponent status={status || ""} />;
         },
       }),
       columnHelper.accessor("diagnosis", {
