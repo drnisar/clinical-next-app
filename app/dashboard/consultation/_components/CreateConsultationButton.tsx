@@ -30,6 +30,7 @@ const CreateConsultationButton = ({ registration_id }: Props) => {
       const response = await axios.post(`/api/consultation`, {
         registration_id: registration_id,
         visit_date: new Date(),
+        status: "QUEUED",
       });
       return response.data;
     },

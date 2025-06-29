@@ -50,6 +50,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     instructions,
     plan,
     medications,
+    status,
   } = await req.json();
   const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
@@ -75,6 +76,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
         visit_date,
         plan,
         medications,
+        status,
       },
     });
 

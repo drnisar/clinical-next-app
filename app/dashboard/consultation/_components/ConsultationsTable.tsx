@@ -109,8 +109,14 @@ const ConsultationsTable = ({ consultations }: Props) => {
         header: "Status",
         cell: (info) => {
           const status = info.getValue();
+          const consultation_id = info.row.original.consultation_id;
 
-          return <StatusChangeComponent status={status || ""} />;
+          return (
+            <StatusChangeComponent
+              consultation_id={consultation_id}
+              status={status || ""}
+            />
+          );
         },
       }),
       columnHelper.accessor("diagnosis", {
@@ -123,17 +129,31 @@ const ConsultationsTable = ({ consultations }: Props) => {
         header: "Actions",
         enableSorting: false,
         cell: (props) => (
-          <Button
-            size="1"
-            variant="soft"
-            onClick={() => {
-              router.push(
-                `/dashboard/consultation/edit/${props.row.original.consultation_id}` // Use 'visit_id'
-              );
-            }}
-          >
-            Clinical Info
-          </Button>
+          <Flex gap="1">
+            <Button
+              size="1"
+              variant="soft"
+              onClick={() => {
+                router.push(
+                  `/dashboard/consultation/edit/${props.row.original.consultation_id}` // Use 'visit_id'
+                );
+              }}
+            >
+              Clinical Info
+            </Button>
+            <Button
+              size="1"
+              variant="soft"
+              color="blue"
+              onClick={() => {
+                router.push(
+                  `/dashboard/registration/${props.row.original.registration?.registration_id}` // Use 'visit_id'
+                );
+              }}
+            >
+              Details
+            </Button>
+          </Flex>
         ),
       }),
     ],
