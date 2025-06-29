@@ -8,7 +8,7 @@ import { Container, Theme } from "@radix-ui/themes";
 import { PropsWithChildren } from "react";
 import QueryClProvider from "./QueryClProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import AuthProvider from "./dashboard/auth/AuthProvider";
+import AuthProvider from "./providers/AuthProvider";
 import { ThemeProvider } from "./providers/ThemeProvider"; // Your provider
 import { Toaster } from "react-hot-toast";
 
