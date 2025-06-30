@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function PATCH(
   req: NextRequest,
@@ -49,7 +50,8 @@ export async function PATCH(
         medications: medications,
       },
     });
-
+    revalidatePath("/dashboard/admissions");
+    revalidatePath(`/dashboard/admission/${id}`);
     return NextResponse.json(updatedAdmission, { status: 200 });
   } catch (error) {
     console.error("Error updating admission:", error);
