@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -79,6 +80,10 @@ export async function PATCH(req: NextRequest, { params }: Props) {
         status,
       },
     });
+
+    revalidatePath("/dashboard/consultation");
+    revalidatePath(`/dashboard/consultation/${id}`);
+    revalidatePath(`/dashboard/consultation/today`);
 
     return NextResponse.json(updatedConsultation);
   } catch (error) {
