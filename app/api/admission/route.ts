@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
         // Avoid passing the whole 'body' if it contains extra fields
       },
     });
-
+    revalidatePath("/dashboard/admissions");
     // --- Success Response ---
     // FIX: Use NextResponse.json here
     return NextResponse.json(newAdmission, { status: 201 }); // 201 Created
