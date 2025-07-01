@@ -53,6 +53,7 @@ const RegistrationForm = ({
     setValue,
     setError, // <-- Import setError
     clearErrors, // <-- Import clearErrors
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(validation),
@@ -154,10 +155,18 @@ const RegistrationForm = ({
           label={"First Name"}
           errorMessage={errors.first_name?.message || ""}
         >
-          <TextField.Root type="text" {...register("first_name")} />
+          <TextField.Root
+            type="text"
+            {...register("first_name")}
+            className="uppercase"
+          />
         </InputGeneric>
         <InputGeneric name={"last_name"} label={"Last Name"} errorMessage={""}>
-          <TextField.Root type="text" {...register("last_name")} />
+          <TextField.Root
+            type="text"
+            {...register("last_name")}
+            className="uppercase"
+          />
         </InputGeneric>
         <Flex gap="2">
           <InputGeneric
@@ -315,17 +324,26 @@ const RegistrationForm = ({
             />
           </InputGeneric>
         </Flex>
-
-        <Button
-          type="submit"
-          disabled={mutation.isPending || editMutation.isPending}
-        >
-          {mutation.isPending || editMutation.isPending
-            ? "Submitting ..."
-            : registration
-            ? "Update Registration"
-            : "Create Registration"}
-        </Button>
+        <Flex justify="end" mt="4" gap="2">
+          <Button
+            type="submit"
+            disabled={mutation.isPending || editMutation.isPending}
+          >
+            {mutation.isPending || editMutation.isPending
+              ? "Submitting ..."
+              : registration
+              ? "Update Registration"
+              : "Create Registration"}
+          </Button>
+          <Button
+            type="button"
+            disabled={mutation.isPending || editMutation.isPending}
+            color="gray"
+            onClick={() => reset()}
+          >
+            Clear Form
+          </Button>
+        </Flex>
       </Form.Root>
     </>
   );
