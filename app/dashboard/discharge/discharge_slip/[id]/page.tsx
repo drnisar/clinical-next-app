@@ -5,6 +5,7 @@ import ButtonEditDischargePage from "../../_components/ButtonEditDischargePage";
 import ButtonPrintPage from "../../_components/ButtonPrintPage";
 import DischargeDetails from "../../_components/DischargeDetails";
 import DischargeHeader from "../../_components/DischargeHeader";
+import DischargeSlipHeader from "../../_components/DischargeSlipHeader";
 
 const DischareSlip = async ({
   params,
@@ -37,6 +38,7 @@ const DischareSlip = async ({
           <ButtonPrintPage disabled={discharge.status === "admitted"} />
         </Flex>
       </header>
+      <DischargeSlipHeader />
       <RegistrationDetailsCard registration={registration} />
       <DischargeHeader admissionDischarge={discharge} />
       <DischargeDetails discharge={discharge} />
