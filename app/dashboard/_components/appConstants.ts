@@ -366,6 +366,7 @@ export const admissionModes = [
   { label: "Emergency", value: "EMERGENCY" },
   { label: "Elective", value: "ELECTIVE" },
   { label: "Sehat Card", value: "SEHAT_CARD" },
+  { label: "IBP", value: "IBP" },
 ];
 
 export const dischargeStatuses = [{ label: "DISCHARGED", value: "DISCHARGED" }];
