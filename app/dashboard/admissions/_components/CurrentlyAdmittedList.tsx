@@ -70,7 +70,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
 
   const badgeColor = (admissionMode: string | null | undefined) => {
     switch (admissionMode) {
-      case "SEHAT CARD":
+      case "SEHAT_CARD":
         return "green";
       case "IBP":
         return "blue";
@@ -102,13 +102,13 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         {
           id: "patient_name", // Need an ID for accessor functions
           header: "Patient Name",
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue().toUpperCase(),
         }
       ),
       columnHelper.accessor((row) => row.registration?.gender, {
         id: "gender",
         header: "Gender",
-        cell: (info) => info.getValue() ?? "N/A",
+        cell: (info) => info.getValue()?.toUpperCase() ?? "N/A",
       }),
       columnHelper.accessor((row) => row.registration?.mr_number, {
         id: "mr_number",

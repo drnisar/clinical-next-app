@@ -32,13 +32,9 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
         <Text as="div" color="gray">
           {registration.gender.toUpperCase()}
         </Text>
-        <Text as="div" color="gray">
-          MR Number: {registration.mr_number}
-        </Text>
       </Flex>
       <Text as="div" color="gray">
-        {registration.code}
-        {registration.phone_number}
+        MR Number: {registration.mr_number}
       </Text>
     </Flex>
   );
