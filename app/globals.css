@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
-
     --background: 0 0% 100%;
 
     --foreground: 0 0% 3.9%;
@@ -55,10 +52,9 @@
 
     --chart-5: 27 87% 67%;
 
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
-
     --background: 0 0% 3.9%;
 
     --foreground: 0 0% 98%;
@@ -105,11 +101,9 @@
 
     --chart-4: 280 65% 60%;
 
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
@@ -117,5 +111,128 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Comprehensive print styles */
+@media print {
+  /* Page setup for A4 portrait */
+  @page {
+    size: A4 portrait;
+    margin: 20mm 15mm;
+    padding: 10mm 10mm;
+  }
+
+  @page :first {
+    margin-top: 25mm;
+  }
+
+  /* Body setup for A4 */
+  body {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+    line-height: 1.4;
+    color: black !important;
+    background: white !important;
+    background-color: white !important;
+  }
+
+  /* Reset all elements */
+  * {
+    color: black !important;
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Target all text elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div,
+  a,
+  button,
+  input,
+  textarea,
+  label {
+    color: black !important;
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  /* Target Radix UI components specifically */
+  [data-radix-collection-item],
+  [data-radix-select-content],
+  [data-radix-select-item],
+  [data-radix-dialog-content],
+  [data-radix-popover-content],
+  button[data-accent-color],
+  button[data-radius] {
+    color: black !important;
+    background: white !important;
+    background-color: white !important;
+    border-color: black !important;
+  }
+
+  /* Hide navigation and non-essential elements */
+  nav,
+  .print\\:hidden,
+  [class*="print:hidden"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Ensure form elements are visible and print-friendly */
+  input,
+  textarea,
+  select {
+    color: black !important;
+    background: white !important;
+    border: 1px solid black !important;
+    font-size: 12pt;
+  }
+
+  /* Make sure tables are readable */
+  table,
+  th,
+  td {
+    color: black !important;
+    background: white !important;
+    border-color: black !important;
+    border: 1px solid black !important;
+  }
+
+  /* Optimize spacing for print */
+  .container,
+  .max-w-md,
+  .max-w-lg,
+  .max-w-xl {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
+
+  /* Page break utilities */
+  .print-page-break {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  .print-no-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
