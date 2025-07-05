@@ -116,6 +116,7 @@ const DischargeTabs = ({ admission_id }: { admission_id: string }) => {
                 admission_id={admission.admission_id}
               /> */}
               <MedicationsForm
+                medications={admission.medications}
                 slug="/api/admission"
                 id={admission.admission_id}
               />
