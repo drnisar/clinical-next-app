@@ -3,24 +3,24 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { InputGeneric } from "../../_components/FormComponents";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { CrossCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import { Consultation } from "@/generated/prisma";
 import ButtonSaveNotes from "./ButtonSaveNotes";
 
 type Instruction = {
   instruction: string;
 };
 interface Props {
-  consultation: Consultation;
+  instructions: Instruction[];
   slug: string;
+  id: string;
 }
 
-const InstructionsArray = ({ consultation, slug }: Props) => {
+const InstructionsArray = ({ instructions, slug, id }: Props) => {
   const { register, getValues, control } = useForm<{
     instructions: Instruction[];
   }>({
     defaultValues: {
-      instructions: consultation.instructions
-        ? (consultation.instructions as Instruction[])
+      instructions: instructions
+        ? (instructions as Instruction[])
         : [{ instruction: "" }],
     },
   });
@@ -74,14 +74,10 @@ const InstructionsArray = ({ consultation, slug }: Props) => {
             <PlusCircledIcon className="w-6 h-6 font-bold text-emerald-500 " />
             Add Instruction
           </Button>
-          {/* <Button type="submit">Submit</Button> */}
-          {/* <ButtonSaveConsultationNotes
-            consultation_id={consultation.consultation_id}
-            fieldData={getCurrentFormData()}
-          /> */}
+
           <ButtonSaveNotes
             fieldData={getCurrentFormData()}
-            id={consultation.consultation_id}
+            id={id}
             slug={slug}
           />
         </Flex>

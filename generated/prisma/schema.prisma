@@ -25,7 +25,7 @@ model Admission_Discharge {
   discharge_summary       String?
   hospital_investigations String?
   hospital_medications    String?
-  instructions            String?
+  instructions            Json?
   medical_leave           String?
   therapeutic_procedures  String?
   ward                    String?

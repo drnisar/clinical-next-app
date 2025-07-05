@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 interface Props {
-  admission_id: number;
+  admission_id: string;
   fieldData: object;
   onSave: () => void;
 }

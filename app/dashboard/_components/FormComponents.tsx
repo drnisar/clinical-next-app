@@ -87,9 +87,11 @@ export function SelectInput({
 }: SelectInputProps) {
   return (
     <div>
-      <div className="mb-2">
-        <label htmlFor={name}>{label}</label>
-      </div>
+      {label && (
+        <div className="mb-2">
+          <label htmlFor={name}>{label}</label>
+        </div>
+      )}
       <div className="w-full">
         <Controller
           name={name}

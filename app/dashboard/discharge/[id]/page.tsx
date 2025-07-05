@@ -40,7 +40,7 @@ const NewDischargePage = async ({ params }: Props) => {
         </Link>
       </Flex>
       <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission_id={id} />
+      <DischargeTabs admission={admission} />
     </Suspense>
   );
 };

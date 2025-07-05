@@ -11,6 +11,10 @@ import {
 } from "@/app/actions/actions";
 import InstructionsArray from "../../_components/InstructionsArray";
 
+type Instruction = {
+  instruction: string;
+};
+
 const ConsultationEditPage = async ({
   params,
   searchParams,
@@ -56,7 +60,12 @@ const ConsultationEditPage = async ({
         </Tabs.Content>
         <Tabs.Content value="instructions">
           <InstructionsArray
-            consultation={consultation}
+            instructions={
+              Array.isArray(consultation.instructions)
+                ? (consultation.instructions as Instruction[])
+                : []
+            }
+            id={consultation.consultation_id}
             slug="/api/consultation"
           />
         </Tabs.Content>

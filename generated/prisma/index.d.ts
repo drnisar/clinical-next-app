@@ -1811,7 +1811,6 @@ export namespace Prisma {
     discharge_summary: string | null
     hospital_investigations: string | null
     hospital_medications: string | null
-    instructions: string | null
     medical_leave: string | null
     therapeutic_procedures: string | null
     ward: string | null
@@ -1835,7 +1834,6 @@ export namespace Prisma {
     discharge_summary: string | null
     hospital_investigations: string | null
     hospital_medications: string | null
-    instructions: string | null
     medical_leave: string | null
     therapeutic_procedures: string | null
     ward: string | null
@@ -1894,7 +1892,6 @@ export namespace Prisma {
     discharge_summary?: true
     hospital_investigations?: true
     hospital_medications?: true
-    instructions?: true
     medical_leave?: true
     therapeutic_procedures?: true
     ward?: true
@@ -1918,7 +1915,6 @@ export namespace Prisma {
     discharge_summary?: true
     hospital_investigations?: true
     hospital_medications?: true
-    instructions?: true
     medical_leave?: true
     therapeutic_procedures?: true
     ward?: true
@@ -2055,7 +2051,7 @@ export namespace Prisma {
     discharge_summary: string | null
     hospital_investigations: string | null
     hospital_medications: string | null
-    instructions: string | null
+    instructions: JsonValue | null
     medical_leave: string | null
     therapeutic_procedures: string | null
     ward: string | null
@@ -2168,7 +2164,7 @@ export namespace Prisma {
       discharge_summary: string | null
       hospital_investigations: string | null
       hospital_medications: string | null
-      instructions: string | null
+      instructions: Prisma.JsonValue | null
       medical_leave: string | null
       therapeutic_procedures: string | null
       ward: string | null
@@ -2586,7 +2582,7 @@ export namespace Prisma {
     readonly discharge_summary: FieldRef<"Admission_Discharge", 'String'>
     readonly hospital_investigations: FieldRef<"Admission_Discharge", 'String'>
     readonly hospital_medications: FieldRef<"Admission_Discharge", 'String'>
-    readonly instructions: FieldRef<"Admission_Discharge", 'String'>
+    readonly instructions: FieldRef<"Admission_Discharge", 'Json'>
     readonly medical_leave: FieldRef<"Admission_Discharge", 'String'>
     readonly therapeutic_procedures: FieldRef<"Admission_Discharge", 'String'>
     readonly ward: FieldRef<"Admission_Discharge", 'String'>
@@ -11683,7 +11679,7 @@ export namespace Prisma {
     discharge_summary?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_investigations?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_medications?: StringNullableFilter<"Admission_Discharge"> | string | null
-    instructions?: StringNullableFilter<"Admission_Discharge"> | string | null
+    instructions?: JsonNullableFilter<"Admission_Discharge">
     medical_leave?: StringNullableFilter<"Admission_Discharge"> | string | null
     therapeutic_procedures?: StringNullableFilter<"Admission_Discharge"> | string | null
     ward?: StringNullableFilter<"Admission_Discharge"> | string | null
@@ -11742,7 +11738,7 @@ export namespace Prisma {
     discharge_summary?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_investigations?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_medications?: StringNullableFilter<"Admission_Discharge"> | string | null
-    instructions?: StringNullableFilter<"Admission_Discharge"> | string | null
+    instructions?: JsonNullableFilter<"Admission_Discharge">
     medical_leave?: StringNullableFilter<"Admission_Discharge"> | string | null
     therapeutic_procedures?: StringNullableFilter<"Admission_Discharge"> | string | null
     ward?: StringNullableFilter<"Admission_Discharge"> | string | null
@@ -11803,7 +11799,7 @@ export namespace Prisma {
     discharge_summary?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
     hospital_investigations?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
     hospital_medications?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
-    instructions?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
+    instructions?: JsonNullableWithAggregatesFilter<"Admission_Discharge">
     medical_leave?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
     therapeutic_procedures?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
     ward?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
@@ -12467,7 +12463,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -12495,7 +12491,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -12520,7 +12516,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12547,7 +12543,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12574,7 +12570,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -12598,7 +12594,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12623,7 +12619,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13488,7 +13484,6 @@ export namespace Prisma {
     discharge_summary?: SortOrder
     hospital_investigations?: SortOrder
     hospital_medications?: SortOrder
-    instructions?: SortOrder
     medical_leave?: SortOrder
     therapeutic_procedures?: SortOrder
     ward?: SortOrder
@@ -13512,7 +13507,6 @@ export namespace Prisma {
     discharge_summary?: SortOrder
     hospital_investigations?: SortOrder
     hospital_medications?: SortOrder
-    instructions?: SortOrder
     medical_leave?: SortOrder
     therapeutic_procedures?: SortOrder
     ward?: SortOrder
@@ -14830,7 +14824,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -14857,7 +14851,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -14934,7 +14928,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14960,7 +14954,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15252,7 +15246,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -15278,7 +15272,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -15447,7 +15441,7 @@ export namespace Prisma {
     discharge_summary?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_investigations?: StringNullableFilter<"Admission_Discharge"> | string | null
     hospital_medications?: StringNullableFilter<"Admission_Discharge"> | string | null
-    instructions?: StringNullableFilter<"Admission_Discharge"> | string | null
+    instructions?: JsonNullableFilter<"Admission_Discharge">
     medical_leave?: StringNullableFilter<"Admission_Discharge"> | string | null
     therapeutic_procedures?: StringNullableFilter<"Admission_Discharge"> | string | null
     ward?: StringNullableFilter<"Admission_Discharge"> | string | null
@@ -15847,7 +15841,7 @@ export namespace Prisma {
     discharge_summary?: string | null
     hospital_investigations?: string | null
     hospital_medications?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     medical_leave?: string | null
     therapeutic_procedures?: string | null
     ward?: string | null
@@ -15963,7 +15957,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15988,7 +15982,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16013,7 +16007,7 @@ export namespace Prisma {
     discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
     hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null

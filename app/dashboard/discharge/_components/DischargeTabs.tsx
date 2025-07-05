@@ -1,20 +1,19 @@
 "use client";
-import { Box, Flex, Spinner, Tabs } from "@radix-ui/themes";
-import React, { useState } from "react";
+import { Box, Flex, Tabs } from "@radix-ui/themes";
+import { useState } from "react";
 import DischargeForm from "./DischargeForm";
 // import { Admission_Discharge } from "@prisma/client";
+import { Admission_Discharge } from "@/generated/prisma";
+import MedicationsForm from "../../_components/MedicationsForm";
+import InstructionsArray from "../../consultation/_components/InstructionsArray";
 import {
   Diagnosis,
   DiagnosticProcedures,
   DischargeSummary,
   HospitalInvestigations,
-  Instructions,
   MedicalRest,
   TherapeuticProcudures,
 } from "./DischargeNotes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import MedicationsForm from "../../_components/MedicationsForm";
 
 const tabValues = [
   "Diagnosis / es",
@@ -28,32 +27,23 @@ const tabValues = [
   "Follow up Appointment", // Assuming this tab will have content later
 ];
 
-const DischargeTabs = ({ admission_id }: { admission_id: string }) => {
+type Instruction = {
+  instruction: string;
+};
+interface Props {
+  admission: Admission_Discharge;
+}
+
+const DischargeTabs = ({ admission }: Props) => {
   const [activeTab, setActiveTab] = useState(tabValues[0]);
-  const {
-    data: admission,
-    isPending,
-    isError,
-  } = useQuery({
-    queryKey: ["admission"],
-    queryFn: async () => {
-      const response = await axios.get("/api/admission/" + admission_id);
-      return response.data;
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
 
   const handleSaveSuccess = () => {
-    // alert("alerted");
     const currentIndex = tabValues.indexOf(activeTab);
     if (currentIndex < tabValues.length - 1) {
-      // Check if not the last tab
       const nextTab = tabValues[currentIndex + 1];
       setActiveTab(nextTab); // Switch to the next tab
     }
   };
-  if (isPending) return <Spinner size={"3"} />;
-  if (isError) return <div>Error fetching admission</div>;
 
   return (
     <>
@@ -111,10 +101,6 @@ const DischargeTabs = ({ admission_id }: { admission_id: string }) => {
               />
             </Tabs.Content>
             <Tabs.Content value="Medications">
-              {/* <DischargeMedsTab
-                // defaultValue={admission.therapeutic_procedures || ""}
-                admission_id={admission.admission_id}
-              /> */}
               <MedicationsForm
                 medications={admission.medications}
                 slug="/api/admission"
@@ -122,10 +108,10 @@ const DischargeTabs = ({ admission_id }: { admission_id: string }) => {
               />
             </Tabs.Content>
             <Tabs.Content value="Instructions">
-              <Instructions
-                defaultValue={admission.instructions || ""}
-                admission_id={admission.admission_id}
-                onSave={handleSaveSuccess}
+              <InstructionsArray
+                instructions={admission.instructions as Instruction[]}
+                slug="/api/admission"
+                id={admission.admission_id}
               />
             </Tabs.Content>
             <Tabs.Content value="Medical Rest">

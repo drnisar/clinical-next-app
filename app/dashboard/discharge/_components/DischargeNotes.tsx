@@ -4,7 +4,7 @@ import ButtonSaveDischargeComponents from "./ButtonSaveDischargeComponents";
 
 interface Props {
   defaultValue: string;
-  admission_id: number;
+  admission_id: string;
   onSave: () => void;
 }
 

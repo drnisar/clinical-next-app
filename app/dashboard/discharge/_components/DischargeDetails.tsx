@@ -3,7 +3,10 @@ import { Admission_Discharge } from "@/generated/prisma";
 import { DataList } from "@radix-ui/themes";
 import React from "react";
 import DischargeMeds from "./DischargeMeds";
-
+import { renderInstructions } from "../../_components/appConstsJSX";
+type Instruction = {
+  instruction: string;
+};
 interface Props {
   discharge: Admission_Discharge;
 }
@@ -61,14 +64,31 @@ const DischargeDetails = ({
             </DataList.Value>
           </DataList.Item>
         )}
-        {instructions && (
-          <DataList.Item>
-            <DataList.Label>Instructions</DataList.Label>
-            <DataList.Value>
-              <div>{instructions}</div>
-            </DataList.Value>
-          </DataList.Item>
-        )}
+        {instructions &&
+          (typeof instructions === "string" ||
+            (Array.isArray(instructions) &&
+              instructions.every(
+                (item) =>
+                  typeof item === "string" ||
+                  (item !== null &&
+                    typeof item === "object" &&
+                    "instruction" in item)
+              )) ||
+            (typeof instructions === "object" &&
+              instructions !== null &&
+              "instruction" in instructions)) && (
+            <DataList.Item>
+              <DataList.Label>Instructions</DataList.Label>
+              <DataList.Value>
+                {renderInstructions(
+                  instructions as
+                    | string
+                    | { instruction: string }
+                    | Instruction[]
+                )}
+              </DataList.Value>
+            </DataList.Item>
+          )}
         {medical_leave && (
           <DataList.Item>
             <DataList.Label>Medical Leave</DataList.Label>

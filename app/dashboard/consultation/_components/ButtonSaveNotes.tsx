@@ -8,9 +8,10 @@ interface Props {
   fieldData: object;
   id: string;
   slug: string;
+  className?: string;
 }
 
-const ButtonSaveNotes = ({ fieldData, id, slug }: Props) => {
+const ButtonSaveNotes = ({ fieldData, id, slug, className }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -60,7 +61,7 @@ const ButtonSaveNotes = ({ fieldData, id, slug }: Props) => {
       color="red"
       onClick={handleSave}
       disabled={isLoading}
-      className="max-w-[100px]"
+      className={className}
     >
       {isLoading ? "Saving..." : "Save Notes"}
     </Button>

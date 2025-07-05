@@ -1,5 +1,6 @@
 "use client";
 import { Medication } from "@/generated/prisma";
+import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useFieldArray, useForm } from "react-hook-form";
 import ButtonSaveNotes from "../consultation/_components/ButtonSaveNotes";
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const MedicationsForm = ({ id, slug, medications }: Props) => {
-  const { control, register, reset, getValues } = useForm({
+  const { control, register, getValues } = useForm({
     defaultValues: {
       drugs: medications,
     },
@@ -40,7 +41,7 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
     <>
       <form onSubmit={(e) => e.preventDefault()}>
         {fields.map((field, index) => (
-          <Flex gap="2" key={field.id} my="2" className="flex-1">
+          <Flex gap="2" key={field.id} my="2" className="flex-1 align-middle">
             <TextField.Root
               {...register(`drugs.${index}.drug_name`)}
               placeholder="Drug Name"
@@ -109,22 +110,18 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
               className="min-w-20"
               placeholder="Interval"
             />
-            <Button
-              size="1"
-              variant="soft"
+
+            <Cross2Icon
               onClick={() => remove(index)}
-              type="button"
-            >
-              Remove
-            </Button>
+              className="w-5 h-5 font-bold text-red-500 bg-none align-middle items-center cursor-pointer"
+            />
           </Flex>
         ))}
-        <Flex gap="2" mt="2">
+        <Flex gap="2" mt="2" direction="column">
           <Button
             type="button"
-            variant="soft"
+            variant="ghost"
             color="green"
-            size="1"
             onClick={() =>
               append({
                 drug_name: "",
@@ -139,16 +136,17 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
               })
             }
           >
-            Add Medication
+            <PlusIcon /> Add Medication
           </Button>
-          <Button variant="soft" size="1" type="button" onClick={() => reset()}>
-            Reset
-          </Button>
+
+          <ButtonSaveNotes
+            fieldData={getCurrentFormData()}
+            id={id}
+            slug={slug}
+            // className="w-full max-w-none"
+          />
         </Flex>
       </form>
-      <Flex>
-        <ButtonSaveNotes fieldData={getCurrentFormData()} id={id} slug={slug} />
-      </Flex>
     </>
   );
 };
