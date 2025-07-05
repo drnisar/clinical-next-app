@@ -3,7 +3,6 @@ import ButtonPrintPreview from "../../_components/ButtonPrintPreview";
 import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
 import { Flex, Tabs } from "@radix-ui/themes";
 import ConsultationTabs from "../../_components/ConsultationTabs";
-// import { Instructions } from "../../_components/ConsultationNotes";
 import AppointmentsTab from "../../_components/AppointmentsTab";
 import MedicationsForm from "@/app/dashboard/_components/MedicationsForm";
 import {
@@ -52,17 +51,14 @@ const ConsultationEditPage = async ({
           <MedicationsForm
             slug="/api/consultation"
             id={consultation.consultation_id}
-            // defDrugs={consultation.medications}
+            medications={consultation.medications || []}
           />
-          {/* <MedsForm visit_id={parseInt(id)} /> */}
         </Tabs.Content>
         <Tabs.Content value="instructions">
-          {/* <Instructions
-            defaultValue={consultation.instructions || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          /> */}
-          <InstructionsArray consultation={consultation} />
+          <InstructionsArray
+            consultation={consultation}
+            slug="/api/consultation"
+          />
         </Tabs.Content>
         <Tabs.Content value="appointment">
           <AppointmentsTab

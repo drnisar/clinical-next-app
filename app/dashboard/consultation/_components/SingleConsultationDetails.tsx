@@ -52,9 +52,34 @@ const SingleConsultationDetails = ({
           <Box className="col-span-2 py-5 bg-amber-50 dark:bg-transparent">
             <Heading size="2">Instructions</Heading>
             <Box px="2">
-              <Text size="2" style={{ whiteSpace: "pre-line" }}>
-                {consultation.instructions}
-              </Text>
+              {/* Handle string instructions */}
+              {typeof consultation.instructions === "string" && (
+                <Text size="2" style={{ whiteSpace: "pre-line" }}>
+                  {consultation.instructions}
+                </Text>
+              )}
+
+              {/* Handle array instructions */}
+              {Array.isArray(consultation.instructions) && (
+                <Box>
+                  {consultation.instructions
+                    .filter(
+                      (item): item is string | { instruction: string } =>
+                        item !== null && item !== undefined
+                    )
+                    .map(
+                      (
+                        item: string | { instruction: string },
+                        index: number
+                      ) => (
+                        <Text key={index} size="2" as="p" mb="1">
+                          {index + 1} .{" "}
+                          {typeof item === "string" ? item : item.instruction}
+                        </Text>
+                      )
+                    )}
+                </Box>
+              )}
             </Box>
           </Box>
         )}

@@ -7,9 +7,10 @@ import toast from "react-hot-toast";
 interface Props {
   fieldData: object;
   id: string;
+  slug: string;
 }
 
-const ButtonSaveNotes = ({ fieldData, id }: Props) => {
+const ButtonSaveNotes = ({ fieldData, id, slug }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -23,7 +24,7 @@ const ButtonSaveNotes = ({ fieldData, id }: Props) => {
     try {
       console.log("Saving data:", fieldData);
 
-      const response = await fetch(`/api/consultation/${id}`, {
+      const response = await fetch(`${slug}/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

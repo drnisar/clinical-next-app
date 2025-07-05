@@ -11,9 +11,10 @@ type Instruction = {
 };
 interface Props {
   consultation: Consultation;
+  slug: string;
 }
 
-const InstructionsArray = ({ consultation }: Props) => {
+const InstructionsArray = ({ consultation, slug }: Props) => {
   const { register, getValues, control } = useForm<{
     instructions: Instruction[];
   }>({
@@ -81,6 +82,7 @@ const InstructionsArray = ({ consultation }: Props) => {
           <ButtonSaveNotes
             fieldData={getCurrentFormData()}
             id={consultation.consultation_id}
+            slug={slug}
           />
         </Flex>
       </form>

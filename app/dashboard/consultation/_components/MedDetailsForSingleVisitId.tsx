@@ -12,10 +12,14 @@ const MedDetailsForSingleVisitId = ({ meds }: Props) => {
     <div>
       <Table.Root>
         <Table.Body>
-          {meds.map((med) => (
+          {meds.map((med, index) => (
             <Table.Row key={med.drug_name}>
+              <Table.Cell>{index + 1}.</Table.Cell>
               <Table.Cell>
-                {med.drug_name.toUpperCase()} {med.drug_form?.toUpperCase()}
+                {med.drug_name.toUpperCase() + " "}
+                {med.drug_dose && med.drug_dose + " "}
+
+                {med.drug_form?.toUpperCase()}
               </Table.Cell>
               <Table.Cell className="text-right">
                 {translate(med.interval)}

@@ -1,11 +1,8 @@
 "use client";
-import toast, { Toaster } from "react-hot-toast";
 import { Medication } from "@/generated/prisma";
 import { Button, Flex, TextField } from "@radix-ui/themes";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
+import ButtonSaveNotes from "../consultation/_components/ButtonSaveNotes";
 import { SelectInput } from "./FormComponents";
 import {
   drugForms,
@@ -13,38 +10,18 @@ import {
   drugsFrequency,
   intervals,
 } from "./appConstants";
-import { useRouter } from "next/navigation";
 
 interface Props {
   slug: string; // /api/consultation/[id]
   id: string;
+  medications: Medication[];
   //   defDrugs?: Medication[];
 }
 
-const MedicationsForm = ({ id, slug }: Props) => {
-  const router = useRouter();
-
-  const queryClient = useQueryClient();
-
-  const {
-    data: medicationsData,
-    isSuccess,
-    isError,
-    error,
-    isPending: loadingMedications,
-  } = useQuery({
-    queryKey: ["medications", id],
-    queryFn: async () => {
-      const response = await axios.get(`${slug}/${id}`);
-      return response.data.medications ?? [];
-    },
-  });
-
-  //   const router = useRouter();
-
-  const { control, register, handleSubmit, reset } = useForm({
+const MedicationsForm = ({ id, slug, medications }: Props) => {
+  const { control, register, reset, getValues } = useForm({
     defaultValues: {
-      drugs: medicationsData,
+      drugs: medications,
     },
   });
 
@@ -53,50 +30,15 @@ const MedicationsForm = ({ id, slug }: Props) => {
     name: "drugs",
   });
 
-  useEffect(() => {
-    if (isSuccess && medicationsData) {
-      console.log("Fetched Medications:", medicationsData);
-      reset({ drugs: medicationsData });
-    }
-    if (isError) {
-      console.error("Error fetching medications:", error);
-    }
-  }, [isSuccess, medicationsData, reset, isError, error]);
-  type Medications = Medication[];
-
-  const mutation = useMutation({
-    mutationFn: async (data: { medications: Medications }) =>
-      await axios.patch(`${slug}/${id}`, data),
-    onSuccess: (response) => {
-      toast.success("Medications updated successfully");
-
-      const updatedMedications =
-        response?.data?.consultation?.medications || [];
-      reset({ drugs: updatedMedications });
-      queryClient.invalidateQueries({
-        queryKey: ["medications", id],
-      });
-    },
-    onError: (error) => {
-      console.error("Error updating drugs:", error);
-      toast.error("Failed to update drugs. Please try again.");
-    },
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
-    const formattedData = { medications: data.drugs };
-    console.log("Submitted Data:", formattedData);
-
-    mutation.mutate(formattedData);
-    router.refresh();
+  const getCurrentFormData = () => {
+    const currentData = getValues("drugs");
+    console.log("Current Form Data:", currentData);
+    return { medications: currentData };
   };
 
   return (
     <>
-      <Toaster />
-      {mutation.isPending || (loadingMedications && <p>Loading...</p>)}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e) => e.preventDefault()}>
         {fields.map((field, index) => (
           <Flex gap="2" key={field.id} my="2" className="flex-1">
             <TextField.Root
@@ -187,11 +129,11 @@ const MedicationsForm = ({ id, slug }: Props) => {
               append({
                 drug_name: "",
                 drug_dose: "",
-                amount: "",
+                amount: 1,
                 drug_form: "",
                 route: "",
                 frequency: "",
-                duration: "",
+                duration: 0,
                 interval: "",
                 instructions: "",
               })
@@ -203,21 +145,10 @@ const MedicationsForm = ({ id, slug }: Props) => {
             Reset
           </Button>
         </Flex>
-        <Flex direction={"column"} gap="2" mt="4">
-          {mutation.isPending && <p>Saving...</p>}
-          {mutation.isError && <p>Error updating medications.</p>}
-          {mutation.isSuccess && <p>Medications updated successfully!</p>}
-          <Button
-            variant="soft"
-            color="red"
-            type="submit"
-            disabled={mutation.isPending}
-            className="max-w-[100px]"
-          >
-            {mutation.isPending ? "Saving..." : "Save Medications"}
-          </Button>
-        </Flex>
       </form>
+      <Flex>
+        <ButtonSaveNotes fieldData={getCurrentFormData()} id={id} slug={slug} />
+      </Flex>
     </>
   );
 };
