@@ -78,7 +78,7 @@ model Consultation {
   diagnosis       String?
   examination     String?
   history         String?
-  instructions    String?
+  instructions    Json?
   investigations  String?
   plan            String?
   medications     Medication[]
@@ -87,6 +87,10 @@ model Consultation {
   updated_at      DateTime     @updatedAt @db.Date
   visit_date      DateTime     @db.Date
   registration    Registration @relation(fields: [registration_id], references: [registration_id])
+}
+
+type Instruction {
+  instruction String
 }
 
 model Registration {

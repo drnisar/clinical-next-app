@@ -5203,7 +5203,6 @@ export namespace Prisma {
     diagnosis: string | null
     examination: string | null
     history: string | null
-    instructions: string | null
     investigations: string | null
     plan: string | null
     status: string | null
@@ -5218,7 +5217,6 @@ export namespace Prisma {
     diagnosis: string | null
     examination: string | null
     history: string | null
-    instructions: string | null
     investigations: string | null
     plan: string | null
     status: string | null
@@ -5250,7 +5248,6 @@ export namespace Prisma {
     diagnosis?: true
     examination?: true
     history?: true
-    instructions?: true
     investigations?: true
     plan?: true
     status?: true
@@ -5265,7 +5262,6 @@ export namespace Prisma {
     diagnosis?: true
     examination?: true
     history?: true
-    instructions?: true
     investigations?: true
     plan?: true
     status?: true
@@ -5368,7 +5364,7 @@ export namespace Prisma {
     diagnosis: string | null
     examination: string | null
     history: string | null
-    instructions: string | null
+    instructions: JsonValue | null
     investigations: string | null
     plan: string | null
     status: string | null
@@ -5444,7 +5440,7 @@ export namespace Prisma {
       diagnosis: string | null
       examination: string | null
       history: string | null
-      instructions: string | null
+      instructions: Prisma.JsonValue | null
       investigations: string | null
       plan: string | null
       status: string | null
@@ -5851,7 +5847,7 @@ export namespace Prisma {
     readonly diagnosis: FieldRef<"Consultation", 'String'>
     readonly examination: FieldRef<"Consultation", 'String'>
     readonly history: FieldRef<"Consultation", 'String'>
-    readonly instructions: FieldRef<"Consultation", 'String'>
+    readonly instructions: FieldRef<"Consultation", 'Json'>
     readonly investigations: FieldRef<"Consultation", 'String'>
     readonly plan: FieldRef<"Consultation", 'String'>
     readonly status: FieldRef<"Consultation", 'String'>
@@ -12024,7 +12020,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     examination?: StringNullableFilter<"Consultation"> | string | null
     history?: StringNullableFilter<"Consultation"> | string | null
-    instructions?: StringNullableFilter<"Consultation"> | string | null
+    instructions?: JsonNullableFilter<"Consultation">
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
@@ -12061,7 +12057,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     examination?: StringNullableFilter<"Consultation"> | string | null
     history?: StringNullableFilter<"Consultation"> | string | null
-    instructions?: StringNullableFilter<"Consultation"> | string | null
+    instructions?: JsonNullableFilter<"Consultation">
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
@@ -12099,7 +12095,7 @@ export namespace Prisma {
     diagnosis?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     examination?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     history?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
-    instructions?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
+    instructions?: JsonNullableWithAggregatesFilter<"Consultation">
     investigations?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     plan?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     status?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
@@ -12862,7 +12858,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12878,7 +12874,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12893,7 +12889,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12908,7 +12904,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12924,7 +12920,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12939,7 +12935,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -12953,7 +12949,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -13759,7 +13755,6 @@ export namespace Prisma {
     diagnosis?: SortOrder
     examination?: SortOrder
     history?: SortOrder
-    instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
     status?: SortOrder
@@ -13774,7 +13769,6 @@ export namespace Prisma {
     diagnosis?: SortOrder
     examination?: SortOrder
     history?: SortOrder
-    instructions?: SortOrder
     investigations?: SortOrder
     plan?: SortOrder
     status?: SortOrder
@@ -15178,7 +15172,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -15193,7 +15187,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -15377,7 +15371,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     examination?: StringNullableFilter<"Consultation"> | string | null
     history?: StringNullableFilter<"Consultation"> | string | null
-    instructions?: StringNullableFilter<"Consultation"> | string | null
+    instructions?: JsonNullableFilter<"Consultation">
     investigations?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
     status?: StringNullableFilter<"Consultation"> | string | null
@@ -15817,7 +15811,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: string | null
     history?: string | null
-    instructions?: string | null
+    instructions?: InputJsonValue | null
     investigations?: string | null
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -15887,7 +15881,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -15901,7 +15895,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
@@ -15915,7 +15909,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: NullableStringFieldUpdateOperationsInput | string | null
     history?: NullableStringFieldUpdateOperationsInput | string | null
-    instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
     investigations?: NullableStringFieldUpdateOperationsInput | string | null
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]

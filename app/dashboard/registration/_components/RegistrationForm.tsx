@@ -151,6 +151,54 @@ const RegistrationForm = ({
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
       >
         <InputGeneric
+          name={"mr_number"}
+          label={"Medical Record Number"}
+          errorMessage={errors.mr_number?.message?.toString() || ""}
+        >
+          <TextField.Root
+            type="text"
+            // Register the field
+            {...register("mr_number")}
+            // Handle blur event for validation/refinement
+            onBlur={(e) => {
+              const value = e.target.value;
+              if (!value) {
+                // If field is empty, clear errors and value
+                clearErrors("mr_number");
+                setValue("mr_number", "");
+                return;
+              }
+              try {
+                const refinedValue = refineMRN(value);
+                // Set the potentially refined value
+                setValue("mr_number", refinedValue, { shouldValidate: true }); // Trigger validation
+                // Clear any previous custom errors if refinement succeeds
+                clearErrors("mr_number");
+              } catch (error: unknown) {
+                // Set error message from refineMRN function
+                if (error instanceof Error) {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: error.message || "Invalid MRN format",
+                  });
+                } else {
+                  setError("mr_number", {
+                    type: "custom",
+                    message: "An unknown error occurred",
+                  });
+                }
+              }
+            }}
+            // Clear custom error when user starts typing again
+            onChange={() => {
+              if (errors.mr_number?.type === "custom") {
+                clearErrors("mr_number");
+              }
+              // Allow default RHF change handling to proceed
+            }}
+          />
+        </InputGeneric>
+        <InputGeneric
           name={"first_name"}
           label={"First Name"}
           errorMessage={errors.first_name?.message || ""}
@@ -244,55 +292,6 @@ const RegistrationForm = ({
             // defaultValue prop removed, use defaultValues in useForm
           />
         </Flex>
-
-        <InputGeneric
-          name={"mr_number"}
-          label={"Medical Record Number"}
-          errorMessage={errors.mr_number?.message?.toString() || ""}
-        >
-          <TextField.Root
-            type="text"
-            // Register the field
-            {...register("mr_number")}
-            // Handle blur event for validation/refinement
-            onBlur={(e) => {
-              const value = e.target.value;
-              if (!value) {
-                // If field is empty, clear errors and value
-                clearErrors("mr_number");
-                setValue("mr_number", "");
-                return;
-              }
-              try {
-                const refinedValue = refineMRN(value);
-                // Set the potentially refined value
-                setValue("mr_number", refinedValue, { shouldValidate: true }); // Trigger validation
-                // Clear any previous custom errors if refinement succeeds
-                clearErrors("mr_number");
-              } catch (error: unknown) {
-                // Set error message from refineMRN function
-                if (error instanceof Error) {
-                  setError("mr_number", {
-                    type: "custom",
-                    message: error.message || "Invalid MRN format",
-                  });
-                } else {
-                  setError("mr_number", {
-                    type: "custom",
-                    message: "An unknown error occurred",
-                  });
-                }
-              }
-            }}
-            // Clear custom error when user starts typing again
-            onChange={() => {
-              if (errors.mr_number?.type === "custom") {
-                clearErrors("mr_number");
-              }
-              // Allow default RHF change handling to proceed
-            }}
-          />
-        </InputGeneric>
 
         <Flex gap="2">
           <SelectInput

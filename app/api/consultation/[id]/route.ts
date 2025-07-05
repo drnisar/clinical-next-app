@@ -9,6 +9,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
     where: { consultation_id: id },
+    include: { registration: true },
   });
   if (!consultation) {
     return NextResponse.json(
@@ -16,6 +17,11 @@ export async function GET(req: NextRequest, { params }: Props) {
       { status: 404 }
     );
   }
+  // Revalidate paths and tags
+  revalidatePath("/dashboard/consultation");
+  revalidatePath(`/dashboard/consultation/${id}`);
+  revalidatePath(`/dashboard/consultation/today`);
+  revalidateTag("consultation");
 
   return NextResponse.json(consultation);
 }
@@ -85,6 +91,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     revalidatePath(`/dashboard/consultation/${id}`);
     revalidatePath(`/dashboard/consultation/today`);
     revalidateTag("consultation");
+    revalidateTag("consultation-" + id);
 
     return NextResponse.json(updatedConsultation);
   } catch (error) {

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
 export const getRegistrations = async () => {
   const registrations = await prisma.registration.findMany({
@@ -84,14 +85,18 @@ export const getAdmissions = async () => {
   return admissions;
 };
 
-export const getConsultationById = async (id: string) => {
-  const consultation = await prisma.consultation.findUnique({
-    where: {
-      consultation_id: id,
-    },
-    include: {
-      registration: true, // Include registration details
-    },
-  });
-  return consultation;
-};
+export const getConsultationById = unstable_cache(
+  async (id: string) => {
+    const consultation = await prisma.consultation.findUnique({
+      where: {
+        consultation_id: id,
+      },
+      include: {
+        registration: true, // Include registration details
+      },
+    });
+    return consultation;
+  },
+  ["consultation-by-id"],
+  { tags: ["consultation", "consultation-by-id"], revalidate: 3600 }
+);
