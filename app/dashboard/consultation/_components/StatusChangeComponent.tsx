@@ -1,5 +1,6 @@
 import { Badge, Select, Spinner } from "@radix-ui/themes";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
@@ -11,6 +12,7 @@ interface Props {
 const StatusChangeComponent = ({ status, consultation_id }: Props) => {
   const [value, setValue] = useState(status);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   // Determine badge color based on status
   let color: React.ComponentProps<typeof Badge>["color"] = "gray";
   if (value === "COMPLETED") color = "green";
@@ -25,6 +27,7 @@ const StatusChangeComponent = ({ status, consultation_id }: Props) => {
         .patch(`/api/consultation/${consultation_id}`, { status: value })
         .then((response) => {
           console.log("Status updated successfully:", response.data);
+          router.refresh();
           toast.success(`Status changed to ${value}`);
         })
         .catch((error) => {
