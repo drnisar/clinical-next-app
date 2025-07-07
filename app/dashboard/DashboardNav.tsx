@@ -14,6 +14,7 @@ const DashboardNav = () => {
     { name: "Appointments", href: "/dashboard/appointments" },
     { name: "Admissions", href: "/dashboard/admissions" },
     { name: "Consultations", href: "/dashboard/consultation" },
+    { name: "Todays Patients", href: "/dashboard/consultation/today" },
   ];
 
   const router = useRouter();
@@ -24,7 +25,7 @@ const DashboardNav = () => {
   return (
     <Flex gap="4" className="border-b shadow-sm mb-4 pb-4 print:!hidden">
       {links.map((link) => {
-        const isActive = currentPath.startsWith(link.href);
+        const isActive = currentPath === link.href;
 
         return (
           <Button

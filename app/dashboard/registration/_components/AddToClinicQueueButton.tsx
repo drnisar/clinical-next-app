@@ -33,7 +33,8 @@ const AddToClinicQueueButton = ({ registration_id }: Props) => {
       return response.data;
     },
     onSuccess: () => {
-      router.push(`/dashboard/consultation`);
+      router.refresh();
+      router.push(`/dashboard/consultation/today`);
     },
     onError: (error) => {
       console.log("onError", error);
