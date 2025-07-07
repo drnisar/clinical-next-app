@@ -10,10 +10,11 @@ import {
 } from "@radix-ui/themes";
 // Remove Link import if only using Button onClick
 // import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter
-import React, { useState, useEffect, useTransition } from "react"; // Import hooks
-import ButtonCreateNewOTNotes from "../../ot/_components/ButtonCreateNewOTNotes"; // Keep this if needed
 import { Admission_Discharge, OT } from "@/generated/prisma";
+import { useRouter } from "next/navigation"; // Import useRouter
+import { useEffect, useState, useTransition } from "react"; // Import hooks
+import ButtonCreateNewOTNotes from "../../ot/_components/ButtonCreateNewOTNotes"; // Keep this if needed
+import ChangeBedNumberForm from "./ChangeBedNumberForm";
 
 // Define props type explicitly
 interface Props {
@@ -41,6 +42,7 @@ const AdmissionDetailsForSingleAdmission = ({ admission, ots }: Props) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [navigatingOtId, setNavigatingOtId] = useState<string | null>(null);
+  const [formVisible, setFormVisible] = useState(false);
 
   useEffect(() => {
     router.prefetch(`/dashboard/discharge/${admission?.admission_id}`);
@@ -103,7 +105,29 @@ const AdmissionDetailsForSingleAdmission = ({ admission, ots }: Props) => {
           </DataList.Item>
           <DataList.Item>
             <DataList.Label>Bed Number</DataList.Label>
-            <DataList.Value>{admission.bed_number ?? "N/A"}</DataList.Value>
+            <DataList.Value>
+              {!formVisible && (admission.bed_number ?? "N/A")}
+              <Flex gap="2" align="center" ml="3">
+                {formVisible && (
+                  <ChangeBedNumberForm
+                    location={{
+                      bed_number: admission.bed_number ?? 0,
+                      ward: admission.ward ?? "",
+                      admission_id: admission.admission_id,
+                    }}
+                    formVisibility={() => setFormVisible(false)}
+                  />
+                )}
+
+                <Button
+                  size="1"
+                  variant="ghost"
+                  onClick={() => setFormVisible(!formVisible)}
+                >
+                  {formVisible ? "Cancel" : "Change"}
+                </Button>
+              </Flex>
+            </DataList.Value>
           </DataList.Item>
           <DataList.Item>
             <DataList.Label>Ward</DataList.Label>

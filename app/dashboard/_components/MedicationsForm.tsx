@@ -41,7 +41,12 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
     <>
       <form onSubmit={(e) => e.preventDefault()}>
         {fields.map((field, index) => (
-          <Flex gap="2" key={field.id} my="2" className="flex-1 align-middle">
+          <Flex
+            gap="2"
+            key={field.id}
+            my="2"
+            className="flex-1 align-middle flex-col md:flex-row items-start justify-between medications-table"
+          >
             <TextField.Root
               {...register(`drugs.${index}.drug_name`)}
               placeholder="Drug Name"

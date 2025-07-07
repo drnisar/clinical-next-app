@@ -3,7 +3,6 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  // Changed export syntax
   try {
     const body = await request.json();
 
@@ -31,62 +30,62 @@ export async function POST(request: NextRequest) {
     const existingActiveAdmission = await prisma.admission_Discharge.findFirst({
       where: {
         registration_id: registrationId,
-        status: { not: "DISCHARGED" }, // Adjust if your final status differs
+        status: { not: "DISCHARGED" },
       },
     });
     if (existingActiveAdmission) {
       return NextResponse.json(
         { error: "Patient is already admitted and not discharged" },
-        { status: 409 } // Conflict
+        { status: 409 }
       );
     }
 
-    // --- Create New Admission ---
-    // Be specific about the data you pass to create
-    const newAdmission = await prisma.admission_Discharge.create({
-      data: {
-        registration_id: registrationId,
-        status: "ADMITTED", // Set initial status explicitly
-        admission_date: new Date(),
-        ward: body.ward,
-        bed_number: body.bed_number,
-        admission_mode: body.admission_mode,
-        admission_plan: body.admission_plan,
-        // Only include fields from 'body' that are valid for creation
-        // Example: admission_mode: body.admission_mode,
-        // Avoid passing the whole 'body' if it contains extra fields
-      },
+    // Use transaction to ensure both operations succeed or fail together
+    const result = await prisma.$transaction(async (prisma) => {
+      // Create admission first
+      const newAdmission = await prisma.admission_Discharge.create({
+        data: {
+          registration_id: registrationId,
+          status: "ADMITTED",
+          admission_date: new Date(),
+          ward: body.ward,
+          bed_number: body.bed_number,
+          admission_mode: body.admission_mode,
+          admission_plan: body.admission_plan,
+        },
+      });
+
+      // Create location using the admission_id from newAdmission
+      const newLocation = await prisma.admitted_Location.create({
+        data: {
+          admission_id: newAdmission.admission_id,
+          registration_id: newAdmission.registration_id,
+          ward: body.ward,
+          bed_no: body.bed_number,
+        },
+      });
+
+      return {
+        admission: newAdmission,
+        location: newLocation,
+      };
     });
+
     revalidatePath("/dashboard/admissions");
-    // --- Success Response ---
-    // FIX: Use NextResponse.json here
-    return NextResponse.json(newAdmission, { status: 201 }); // 201 Created
-  } catch (error) {
-    console.error("Error creating admission:", error);
-  }
-}
 
-// Corrected GET handler for this non-dynamic route
-// This will fetch ALL admissions, or you can filter by query params
-export async function GET() {
-  // No second 'params' argument here
-  try {
-    // Example: Check for a query parameter like /api/admission?registration_id=123
-
-    const admissions = await prisma.admission_Discharge.findMany({
-      orderBy: {
-        // Optional: order results
-        admission_date: "desc",
-      },
-    });
-
-    // It's okay if findMany returns an empty array, not necessarily an error
-    return NextResponse.json(admissions, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching admissions:", error);
     return NextResponse.json(
       {
-        error: "Failed to fetch admissions",
+        message: "Admission created successfully",
+        admission: result.admission,
+        location: result.location,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating admission:", error);
+    return NextResponse.json(
+      {
+        error: "Failed to create admission",
         details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }

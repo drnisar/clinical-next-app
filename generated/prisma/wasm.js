@@ -138,6 +138,16 @@ exports.Prisma.Admission_DischargeScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.Admitted_LocationScalarFieldEnum = {
+  admitted_location_id: 'admitted_location_id',
+  admission_id: 'admission_id',
+  registration_id: 'registration_id',
+  bed_no: 'bed_no',
+  ward: 'ward',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.OTScalarFieldEnum = {
   ot_id: 'ot_id',
   admission_id: 'admission_id',
@@ -251,6 +261,7 @@ exports.Prisma.QueryMode = {
 
 exports.Prisma.ModelName = {
   Admission_Discharge: 'Admission_Discharge',
+  Admitted_Location: 'Admitted_Location',
   OT: 'OT',
   Appointment: 'Appointment',
   Consultation: 'Consultation',

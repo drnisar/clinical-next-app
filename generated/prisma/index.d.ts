@@ -24,6 +24,11 @@ export type Medication = $Result.DefaultSelection<Prisma.$MedicationPayload>
  */
 export type Admission_Discharge = $Result.DefaultSelection<Prisma.$Admission_DischargePayload>
 /**
+ * Model Admitted_Location
+ * 
+ */
+export type Admitted_Location = $Result.DefaultSelection<Prisma.$Admitted_LocationPayload>
+/**
  * Model OT
  * 
  */
@@ -165,6 +170,16 @@ export class PrismaClient<
     * ```
     */
   get admission_Discharge(): Prisma.Admission_DischargeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.admitted_Location`: Exposes CRUD operations for the **Admitted_Location** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Admitted_Locations
+    * const admitted_Locations = await prisma.admitted_Location.findMany()
+    * ```
+    */
+  get admitted_Location(): Prisma.Admitted_LocationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.oT`: Exposes CRUD operations for the **OT** model.
@@ -686,6 +701,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Admission_Discharge: 'Admission_Discharge',
+    Admitted_Location: 'Admitted_Location',
     OT: 'OT',
     Appointment: 'Appointment',
     Consultation: 'Consultation',
@@ -712,7 +728,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admission_Discharge" | "oT" | "appointment" | "consultation" | "registration" | "user" | "account" | "session" | "verificationToken"
+      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "appointment" | "consultation" | "registration" | "user" | "account" | "session" | "verificationToken"
       txIsolationLevel: never
     }
     model: {
@@ -787,6 +803,80 @@ export namespace Prisma {
           count: {
             args: Prisma.Admission_DischargeCountArgs<ExtArgs>
             result: $Utils.Optional<Admission_DischargeCountAggregateOutputType> | number
+          }
+        }
+      }
+      Admitted_Location: {
+        payload: Prisma.$Admitted_LocationPayload<ExtArgs>
+        fields: Prisma.Admitted_LocationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.Admitted_LocationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.Admitted_LocationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          findFirst: {
+            args: Prisma.Admitted_LocationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.Admitted_LocationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          findMany: {
+            args: Prisma.Admitted_LocationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>[]
+          }
+          create: {
+            args: Prisma.Admitted_LocationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          createMany: {
+            args: Prisma.Admitted_LocationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.Admitted_LocationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          update: {
+            args: Prisma.Admitted_LocationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          deleteMany: {
+            args: Prisma.Admitted_LocationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.Admitted_LocationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.Admitted_LocationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$Admitted_LocationPayload>
+          }
+          aggregate: {
+            args: Prisma.Admitted_LocationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdmitted_Location>
+          }
+          groupBy: {
+            args: Prisma.Admitted_LocationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Admitted_LocationGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.Admitted_LocationFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.Admitted_LocationAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.Admitted_LocationCountArgs<ExtArgs>
+            result: $Utils.Optional<Admitted_LocationCountAggregateOutputType> | number
           }
         }
       }
@@ -1454,6 +1544,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     admission_Discharge?: Admission_DischargeOmit
+    admitted_Location?: Admitted_LocationOmit
     oT?: OTOmit
     appointment?: AppointmentOmit
     consultation?: ConsultationOmit
@@ -1557,10 +1648,12 @@ export namespace Prisma {
 
   export type Admission_DischargeCountOutputType = {
     ot: number
+    Admitted_Location: number
   }
 
   export type Admission_DischargeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ot?: boolean | Admission_DischargeCountOutputTypeCountOtArgs
+    Admitted_Location?: boolean | Admission_DischargeCountOutputTypeCountAdmitted_LocationArgs
   }
 
   // Custom InputTypes
@@ -1581,6 +1674,13 @@ export namespace Prisma {
     where?: OTWhereInput
   }
 
+  /**
+   * Admission_DischargeCountOutputType without action
+   */
+  export type Admission_DischargeCountOutputTypeCountAdmitted_LocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Admitted_LocationWhereInput
+  }
+
 
   /**
    * Count Type RegistrationCountOutputType
@@ -1591,6 +1691,7 @@ export namespace Prisma {
     Appointment: number
     Admission_Discharge: number
     OT: number
+    Admitted_Location: number
   }
 
   export type RegistrationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1598,6 +1699,7 @@ export namespace Prisma {
     Appointment?: boolean | RegistrationCountOutputTypeCountAppointmentArgs
     Admission_Discharge?: boolean | RegistrationCountOutputTypeCountAdmission_DischargeArgs
     OT?: boolean | RegistrationCountOutputTypeCountOTArgs
+    Admitted_Location?: boolean | RegistrationCountOutputTypeCountAdmitted_LocationArgs
   }
 
   // Custom InputTypes
@@ -1637,6 +1739,13 @@ export namespace Prisma {
    */
   export type RegistrationCountOutputTypeCountOTArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OTWhereInput
+  }
+
+  /**
+   * RegistrationCountOutputType without action
+   */
+  export type RegistrationCountOutputTypeCountAdmitted_LocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Admitted_LocationWhereInput
   }
 
 
@@ -2104,6 +2213,7 @@ export namespace Prisma {
     updated_at?: boolean
     ot?: boolean | Admission_Discharge$otArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    Admitted_Location?: boolean | Admission_Discharge$Admitted_LocationArgs<ExtArgs>
     _count?: boolean | Admission_DischargeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["admission_Discharge"]>
 
@@ -2138,6 +2248,7 @@ export namespace Prisma {
   export type Admission_DischargeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ot?: boolean | Admission_Discharge$otArgs<ExtArgs>
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+    Admitted_Location?: boolean | Admission_Discharge$Admitted_LocationArgs<ExtArgs>
     _count?: boolean | Admission_DischargeCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2146,6 +2257,7 @@ export namespace Prisma {
     objects: {
       ot: Prisma.$OTPayload<ExtArgs>[]
       registration: Prisma.$RegistrationPayload<ExtArgs>
+      Admitted_Location: Prisma.$Admitted_LocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       admission_id: string
@@ -2537,6 +2649,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     ot<T extends Admission_Discharge$otArgs<ExtArgs> = {}>(args?: Subset<T, Admission_Discharge$otArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     registration<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Admitted_Location<T extends Admission_Discharge$Admitted_LocationArgs<ExtArgs> = {}>(args?: Subset<T, Admission_Discharge$Admitted_LocationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2982,6 +3095,30 @@ export namespace Prisma {
   }
 
   /**
+   * Admission_Discharge.Admitted_Location
+   */
+  export type Admission_Discharge$Admitted_LocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    where?: Admitted_LocationWhereInput
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    cursor?: Admitted_LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Admitted_LocationScalarFieldEnum | Admitted_LocationScalarFieldEnum[]
+  }
+
+  /**
    * Admission_Discharge without action
    */
   export type Admission_DischargeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2997,6 +3134,1045 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: Admission_DischargeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Admitted_Location
+   */
+
+  export type AggregateAdmitted_Location = {
+    _count: Admitted_LocationCountAggregateOutputType | null
+    _avg: Admitted_LocationAvgAggregateOutputType | null
+    _sum: Admitted_LocationSumAggregateOutputType | null
+    _min: Admitted_LocationMinAggregateOutputType | null
+    _max: Admitted_LocationMaxAggregateOutputType | null
+  }
+
+  export type Admitted_LocationAvgAggregateOutputType = {
+    bed_no: number | null
+  }
+
+  export type Admitted_LocationSumAggregateOutputType = {
+    bed_no: number | null
+  }
+
+  export type Admitted_LocationMinAggregateOutputType = {
+    admitted_location_id: string | null
+    admission_id: string | null
+    registration_id: string | null
+    bed_no: number | null
+    ward: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Admitted_LocationMaxAggregateOutputType = {
+    admitted_location_id: string | null
+    admission_id: string | null
+    registration_id: string | null
+    bed_no: number | null
+    ward: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Admitted_LocationCountAggregateOutputType = {
+    admitted_location_id: number
+    admission_id: number
+    registration_id: number
+    bed_no: number
+    ward: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Admitted_LocationAvgAggregateInputType = {
+    bed_no?: true
+  }
+
+  export type Admitted_LocationSumAggregateInputType = {
+    bed_no?: true
+  }
+
+  export type Admitted_LocationMinAggregateInputType = {
+    admitted_location_id?: true
+    admission_id?: true
+    registration_id?: true
+    bed_no?: true
+    ward?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Admitted_LocationMaxAggregateInputType = {
+    admitted_location_id?: true
+    admission_id?: true
+    registration_id?: true
+    bed_no?: true
+    ward?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Admitted_LocationCountAggregateInputType = {
+    admitted_location_id?: true
+    admission_id?: true
+    registration_id?: true
+    bed_no?: true
+    ward?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Admitted_LocationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Admitted_Location to aggregate.
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admitted_Locations to fetch.
+     */
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: Admitted_LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admitted_Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admitted_Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Admitted_Locations
+    **/
+    _count?: true | Admitted_LocationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Admitted_LocationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Admitted_LocationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Admitted_LocationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Admitted_LocationMaxAggregateInputType
+  }
+
+  export type GetAdmitted_LocationAggregateType<T extends Admitted_LocationAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdmitted_Location]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdmitted_Location[P]>
+      : GetScalarType<T[P], AggregateAdmitted_Location[P]>
+  }
+
+
+
+
+  export type Admitted_LocationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Admitted_LocationWhereInput
+    orderBy?: Admitted_LocationOrderByWithAggregationInput | Admitted_LocationOrderByWithAggregationInput[]
+    by: Admitted_LocationScalarFieldEnum[] | Admitted_LocationScalarFieldEnum
+    having?: Admitted_LocationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Admitted_LocationCountAggregateInputType | true
+    _avg?: Admitted_LocationAvgAggregateInputType
+    _sum?: Admitted_LocationSumAggregateInputType
+    _min?: Admitted_LocationMinAggregateInputType
+    _max?: Admitted_LocationMaxAggregateInputType
+  }
+
+  export type Admitted_LocationGroupByOutputType = {
+    admitted_location_id: string
+    admission_id: string
+    registration_id: string
+    bed_no: number | null
+    ward: string | null
+    created_at: Date
+    updated_at: Date
+    _count: Admitted_LocationCountAggregateOutputType | null
+    _avg: Admitted_LocationAvgAggregateOutputType | null
+    _sum: Admitted_LocationSumAggregateOutputType | null
+    _min: Admitted_LocationMinAggregateOutputType | null
+    _max: Admitted_LocationMaxAggregateOutputType | null
+  }
+
+  type GetAdmitted_LocationGroupByPayload<T extends Admitted_LocationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Admitted_LocationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Admitted_LocationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Admitted_LocationGroupByOutputType[P]>
+            : GetScalarType<T[P], Admitted_LocationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type Admitted_LocationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    admitted_location_id?: boolean
+    admission_id?: boolean
+    registration_id?: boolean
+    bed_no?: boolean
+    ward?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    admission_discharge?: boolean | Admission_DischargeDefaultArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["admitted_Location"]>
+
+
+
+  export type Admitted_LocationSelectScalar = {
+    admitted_location_id?: boolean
+    admission_id?: boolean
+    registration_id?: boolean
+    bed_no?: boolean
+    ward?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type Admitted_LocationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"admitted_location_id" | "admission_id" | "registration_id" | "bed_no" | "ward" | "created_at" | "updated_at", ExtArgs["result"]["admitted_Location"]>
+  export type Admitted_LocationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admission_discharge?: boolean | Admission_DischargeDefaultArgs<ExtArgs>
+    registration?: boolean | RegistrationDefaultArgs<ExtArgs>
+  }
+
+  export type $Admitted_LocationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Admitted_Location"
+    objects: {
+      admission_discharge: Prisma.$Admission_DischargePayload<ExtArgs>
+      registration: Prisma.$RegistrationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      admitted_location_id: string
+      admission_id: string
+      registration_id: string
+      bed_no: number | null
+      ward: string | null
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["admitted_Location"]>
+    composites: {}
+  }
+
+  type Admitted_LocationGetPayload<S extends boolean | null | undefined | Admitted_LocationDefaultArgs> = $Result.GetResult<Prisma.$Admitted_LocationPayload, S>
+
+  type Admitted_LocationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<Admitted_LocationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Admitted_LocationCountAggregateInputType | true
+    }
+
+  export interface Admitted_LocationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Admitted_Location'], meta: { name: 'Admitted_Location' } }
+    /**
+     * Find zero or one Admitted_Location that matches the filter.
+     * @param {Admitted_LocationFindUniqueArgs} args - Arguments to find a Admitted_Location
+     * @example
+     * // Get one Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends Admitted_LocationFindUniqueArgs>(args: SelectSubset<T, Admitted_LocationFindUniqueArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Admitted_Location that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {Admitted_LocationFindUniqueOrThrowArgs} args - Arguments to find a Admitted_Location
+     * @example
+     * // Get one Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends Admitted_LocationFindUniqueOrThrowArgs>(args: SelectSubset<T, Admitted_LocationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admitted_Location that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationFindFirstArgs} args - Arguments to find a Admitted_Location
+     * @example
+     * // Get one Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends Admitted_LocationFindFirstArgs>(args?: SelectSubset<T, Admitted_LocationFindFirstArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Admitted_Location that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationFindFirstOrThrowArgs} args - Arguments to find a Admitted_Location
+     * @example
+     * // Get one Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends Admitted_LocationFindFirstOrThrowArgs>(args?: SelectSubset<T, Admitted_LocationFindFirstOrThrowArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Admitted_Locations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Admitted_Locations
+     * const admitted_Locations = await prisma.admitted_Location.findMany()
+     * 
+     * // Get first 10 Admitted_Locations
+     * const admitted_Locations = await prisma.admitted_Location.findMany({ take: 10 })
+     * 
+     * // Only select the `admitted_location_id`
+     * const admitted_LocationWithAdmitted_location_idOnly = await prisma.admitted_Location.findMany({ select: { admitted_location_id: true } })
+     * 
+     */
+    findMany<T extends Admitted_LocationFindManyArgs>(args?: SelectSubset<T, Admitted_LocationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Admitted_Location.
+     * @param {Admitted_LocationCreateArgs} args - Arguments to create a Admitted_Location.
+     * @example
+     * // Create one Admitted_Location
+     * const Admitted_Location = await prisma.admitted_Location.create({
+     *   data: {
+     *     // ... data to create a Admitted_Location
+     *   }
+     * })
+     * 
+     */
+    create<T extends Admitted_LocationCreateArgs>(args: SelectSubset<T, Admitted_LocationCreateArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Admitted_Locations.
+     * @param {Admitted_LocationCreateManyArgs} args - Arguments to create many Admitted_Locations.
+     * @example
+     * // Create many Admitted_Locations
+     * const admitted_Location = await prisma.admitted_Location.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends Admitted_LocationCreateManyArgs>(args?: SelectSubset<T, Admitted_LocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Admitted_Location.
+     * @param {Admitted_LocationDeleteArgs} args - Arguments to delete one Admitted_Location.
+     * @example
+     * // Delete one Admitted_Location
+     * const Admitted_Location = await prisma.admitted_Location.delete({
+     *   where: {
+     *     // ... filter to delete one Admitted_Location
+     *   }
+     * })
+     * 
+     */
+    delete<T extends Admitted_LocationDeleteArgs>(args: SelectSubset<T, Admitted_LocationDeleteArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Admitted_Location.
+     * @param {Admitted_LocationUpdateArgs} args - Arguments to update one Admitted_Location.
+     * @example
+     * // Update one Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends Admitted_LocationUpdateArgs>(args: SelectSubset<T, Admitted_LocationUpdateArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Admitted_Locations.
+     * @param {Admitted_LocationDeleteManyArgs} args - Arguments to filter Admitted_Locations to delete.
+     * @example
+     * // Delete a few Admitted_Locations
+     * const { count } = await prisma.admitted_Location.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends Admitted_LocationDeleteManyArgs>(args?: SelectSubset<T, Admitted_LocationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Admitted_Locations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Admitted_Locations
+     * const admitted_Location = await prisma.admitted_Location.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends Admitted_LocationUpdateManyArgs>(args: SelectSubset<T, Admitted_LocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Admitted_Location.
+     * @param {Admitted_LocationUpsertArgs} args - Arguments to update or create a Admitted_Location.
+     * @example
+     * // Update or create a Admitted_Location
+     * const admitted_Location = await prisma.admitted_Location.upsert({
+     *   create: {
+     *     // ... data to create a Admitted_Location
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Admitted_Location we want to update
+     *   }
+     * })
+     */
+    upsert<T extends Admitted_LocationUpsertArgs>(args: SelectSubset<T, Admitted_LocationUpsertArgs<ExtArgs>>): Prisma__Admitted_LocationClient<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Admitted_Locations that matches the filter.
+     * @param {Admitted_LocationFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const admitted_Location = await prisma.admitted_Location.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: Admitted_LocationFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Admitted_Location.
+     * @param {Admitted_LocationAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const admitted_Location = await prisma.admitted_Location.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: Admitted_LocationAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Admitted_Locations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationCountArgs} args - Arguments to filter Admitted_Locations to count.
+     * @example
+     * // Count the number of Admitted_Locations
+     * const count = await prisma.admitted_Location.count({
+     *   where: {
+     *     // ... the filter for the Admitted_Locations we want to count
+     *   }
+     * })
+    **/
+    count<T extends Admitted_LocationCountArgs>(
+      args?: Subset<T, Admitted_LocationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Admitted_LocationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Admitted_Location.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Admitted_LocationAggregateArgs>(args: Subset<T, Admitted_LocationAggregateArgs>): Prisma.PrismaPromise<GetAdmitted_LocationAggregateType<T>>
+
+    /**
+     * Group by Admitted_Location.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Admitted_LocationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Admitted_LocationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Admitted_LocationGroupByArgs['orderBy'] }
+        : { orderBy?: Admitted_LocationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Admitted_LocationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdmitted_LocationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Admitted_Location model
+   */
+  readonly fields: Admitted_LocationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Admitted_Location.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__Admitted_LocationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    admission_discharge<T extends Admission_DischargeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, Admission_DischargeDefaultArgs<ExtArgs>>): Prisma__Admission_DischargeClient<$Result.GetResult<Prisma.$Admission_DischargePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registration<T extends RegistrationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RegistrationDefaultArgs<ExtArgs>>): Prisma__RegistrationClient<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Admitted_Location model
+   */
+  interface Admitted_LocationFieldRefs {
+    readonly admitted_location_id: FieldRef<"Admitted_Location", 'String'>
+    readonly admission_id: FieldRef<"Admitted_Location", 'String'>
+    readonly registration_id: FieldRef<"Admitted_Location", 'String'>
+    readonly bed_no: FieldRef<"Admitted_Location", 'Int'>
+    readonly ward: FieldRef<"Admitted_Location", 'String'>
+    readonly created_at: FieldRef<"Admitted_Location", 'DateTime'>
+    readonly updated_at: FieldRef<"Admitted_Location", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Admitted_Location findUnique
+   */
+  export type Admitted_LocationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Admitted_Location to fetch.
+     */
+    where: Admitted_LocationWhereUniqueInput
+  }
+
+  /**
+   * Admitted_Location findUniqueOrThrow
+   */
+  export type Admitted_LocationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Admitted_Location to fetch.
+     */
+    where: Admitted_LocationWhereUniqueInput
+  }
+
+  /**
+   * Admitted_Location findFirst
+   */
+  export type Admitted_LocationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Admitted_Location to fetch.
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admitted_Locations to fetch.
+     */
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Admitted_Locations.
+     */
+    cursor?: Admitted_LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admitted_Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admitted_Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Admitted_Locations.
+     */
+    distinct?: Admitted_LocationScalarFieldEnum | Admitted_LocationScalarFieldEnum[]
+  }
+
+  /**
+   * Admitted_Location findFirstOrThrow
+   */
+  export type Admitted_LocationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Admitted_Location to fetch.
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admitted_Locations to fetch.
+     */
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Admitted_Locations.
+     */
+    cursor?: Admitted_LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admitted_Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admitted_Locations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Admitted_Locations.
+     */
+    distinct?: Admitted_LocationScalarFieldEnum | Admitted_LocationScalarFieldEnum[]
+  }
+
+  /**
+   * Admitted_Location findMany
+   */
+  export type Admitted_LocationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter, which Admitted_Locations to fetch.
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Admitted_Locations to fetch.
+     */
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Admitted_Locations.
+     */
+    cursor?: Admitted_LocationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Admitted_Locations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Admitted_Locations.
+     */
+    skip?: number
+    distinct?: Admitted_LocationScalarFieldEnum | Admitted_LocationScalarFieldEnum[]
+  }
+
+  /**
+   * Admitted_Location create
+   */
+  export type Admitted_LocationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Admitted_Location.
+     */
+    data: XOR<Admitted_LocationCreateInput, Admitted_LocationUncheckedCreateInput>
+  }
+
+  /**
+   * Admitted_Location createMany
+   */
+  export type Admitted_LocationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Admitted_Locations.
+     */
+    data: Admitted_LocationCreateManyInput | Admitted_LocationCreateManyInput[]
+  }
+
+  /**
+   * Admitted_Location update
+   */
+  export type Admitted_LocationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Admitted_Location.
+     */
+    data: XOR<Admitted_LocationUpdateInput, Admitted_LocationUncheckedUpdateInput>
+    /**
+     * Choose, which Admitted_Location to update.
+     */
+    where: Admitted_LocationWhereUniqueInput
+  }
+
+  /**
+   * Admitted_Location updateMany
+   */
+  export type Admitted_LocationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Admitted_Locations.
+     */
+    data: XOR<Admitted_LocationUpdateManyMutationInput, Admitted_LocationUncheckedUpdateManyInput>
+    /**
+     * Filter which Admitted_Locations to update
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * Limit how many Admitted_Locations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Admitted_Location upsert
+   */
+  export type Admitted_LocationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Admitted_Location to update in case it exists.
+     */
+    where: Admitted_LocationWhereUniqueInput
+    /**
+     * In case the Admitted_Location found by the `where` argument doesn't exist, create a new Admitted_Location with this data.
+     */
+    create: XOR<Admitted_LocationCreateInput, Admitted_LocationUncheckedCreateInput>
+    /**
+     * In case the Admitted_Location was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<Admitted_LocationUpdateInput, Admitted_LocationUncheckedUpdateInput>
+  }
+
+  /**
+   * Admitted_Location delete
+   */
+  export type Admitted_LocationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    /**
+     * Filter which Admitted_Location to delete.
+     */
+    where: Admitted_LocationWhereUniqueInput
+  }
+
+  /**
+   * Admitted_Location deleteMany
+   */
+  export type Admitted_LocationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Admitted_Locations to delete
+     */
+    where?: Admitted_LocationWhereInput
+    /**
+     * Limit how many Admitted_Locations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Admitted_Location findRaw
+   */
+  export type Admitted_LocationFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Admitted_Location aggregateRaw
+   */
+  export type Admitted_LocationAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Admitted_Location without action
+   */
+  export type Admitted_LocationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
   }
 
 
@@ -6446,6 +7622,7 @@ export namespace Prisma {
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
     Admission_Discharge?: boolean | Registration$Admission_DischargeArgs<ExtArgs>
     OT?: boolean | Registration$OTArgs<ExtArgs>
+    Admitted_Location?: boolean | Registration$Admitted_LocationArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["registration"]>
 
@@ -6470,6 +7647,7 @@ export namespace Prisma {
     Appointment?: boolean | Registration$AppointmentArgs<ExtArgs>
     Admission_Discharge?: boolean | Registration$Admission_DischargeArgs<ExtArgs>
     OT?: boolean | Registration$OTArgs<ExtArgs>
+    Admitted_Location?: boolean | Registration$Admitted_LocationArgs<ExtArgs>
     _count?: boolean | RegistrationCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -6480,6 +7658,7 @@ export namespace Prisma {
       Appointment: Prisma.$AppointmentPayload<ExtArgs>[]
       Admission_Discharge: Prisma.$Admission_DischargePayload<ExtArgs>[]
       OT: Prisma.$OTPayload<ExtArgs>[]
+      Admitted_Location: Prisma.$Admitted_LocationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       registration_id: string
@@ -6859,6 +8038,7 @@ export namespace Prisma {
     Appointment<T extends Registration$AppointmentArgs<ExtArgs> = {}>(args?: Subset<T, Registration$AppointmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Admission_Discharge<T extends Registration$Admission_DischargeArgs<ExtArgs> = {}>(args?: Subset<T, Registration$Admission_DischargeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Admission_DischargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     OT<T extends Registration$OTArgs<ExtArgs> = {}>(args?: Subset<T, Registration$OTArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Admitted_Location<T extends Registration$Admitted_LocationArgs<ExtArgs> = {}>(args?: Subset<T, Registration$Admitted_LocationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Admitted_LocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7361,6 +8541,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OTScalarFieldEnum | OTScalarFieldEnum[]
+  }
+
+  /**
+   * Registration.Admitted_Location
+   */
+  export type Registration$Admitted_LocationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admitted_Location
+     */
+    select?: Admitted_LocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admitted_Location
+     */
+    omit?: Admitted_LocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Admitted_LocationInclude<ExtArgs> | null
+    where?: Admitted_LocationWhereInput
+    orderBy?: Admitted_LocationOrderByWithRelationInput | Admitted_LocationOrderByWithRelationInput[]
+    cursor?: Admitted_LocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Admitted_LocationScalarFieldEnum | Admitted_LocationScalarFieldEnum[]
   }
 
   /**
@@ -11448,6 +12652,19 @@ export namespace Prisma {
   export type Admission_DischargeScalarFieldEnum = (typeof Admission_DischargeScalarFieldEnum)[keyof typeof Admission_DischargeScalarFieldEnum]
 
 
+  export const Admitted_LocationScalarFieldEnum: {
+    admitted_location_id: 'admitted_location_id',
+    admission_id: 'admission_id',
+    registration_id: 'registration_id',
+    bed_no: 'bed_no',
+    ward: 'ward',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Admitted_LocationScalarFieldEnum = (typeof Admitted_LocationScalarFieldEnum)[keyof typeof Admitted_LocationScalarFieldEnum]
+
+
   export const OTScalarFieldEnum: {
     ot_id: 'ot_id',
     admission_id: 'admission_id',
@@ -11688,6 +12905,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Admission_Discharge"> | Date | string
     ot?: OTListRelationFilter
     registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    Admitted_Location?: Admitted_LocationListRelationFilter
   }
 
   export type Admission_DischargeOrderByWithRelationInput = {
@@ -11716,6 +12934,7 @@ export namespace Prisma {
     updated_at?: SortOrder
     ot?: OTOrderByRelationAggregateInput
     registration?: RegistrationOrderByWithRelationInput
+    Admitted_Location?: Admitted_LocationOrderByRelationAggregateInput
   }
 
   export type Admission_DischargeWhereUniqueInput = Prisma.AtLeast<{
@@ -11747,6 +12966,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"Admission_Discharge"> | Date | string
     ot?: OTListRelationFilter
     registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+    Admitted_Location?: Admitted_LocationListRelationFilter
   }, "admission_id">
 
   export type Admission_DischargeOrderByWithAggregationInput = {
@@ -11805,6 +13025,76 @@ export namespace Prisma {
     ward?: StringNullableWithAggregatesFilter<"Admission_Discharge"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"Admission_Discharge"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"Admission_Discharge"> | Date | string
+  }
+
+  export type Admitted_LocationWhereInput = {
+    AND?: Admitted_LocationWhereInput | Admitted_LocationWhereInput[]
+    OR?: Admitted_LocationWhereInput[]
+    NOT?: Admitted_LocationWhereInput | Admitted_LocationWhereInput[]
+    admitted_location_id?: StringFilter<"Admitted_Location"> | string
+    admission_id?: StringFilter<"Admitted_Location"> | string
+    registration_id?: StringFilter<"Admitted_Location"> | string
+    bed_no?: IntNullableFilter<"Admitted_Location"> | number | null
+    ward?: StringNullableFilter<"Admitted_Location"> | string | null
+    created_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+    updated_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+    admission_discharge?: XOR<Admission_DischargeScalarRelationFilter, Admission_DischargeWhereInput>
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }
+
+  export type Admitted_LocationOrderByWithRelationInput = {
+    admitted_location_id?: SortOrder
+    admission_id?: SortOrder
+    registration_id?: SortOrder
+    bed_no?: SortOrder
+    ward?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    admission_discharge?: Admission_DischargeOrderByWithRelationInput
+    registration?: RegistrationOrderByWithRelationInput
+  }
+
+  export type Admitted_LocationWhereUniqueInput = Prisma.AtLeast<{
+    admitted_location_id?: string
+    AND?: Admitted_LocationWhereInput | Admitted_LocationWhereInput[]
+    OR?: Admitted_LocationWhereInput[]
+    NOT?: Admitted_LocationWhereInput | Admitted_LocationWhereInput[]
+    admission_id?: StringFilter<"Admitted_Location"> | string
+    registration_id?: StringFilter<"Admitted_Location"> | string
+    bed_no?: IntNullableFilter<"Admitted_Location"> | number | null
+    ward?: StringNullableFilter<"Admitted_Location"> | string | null
+    created_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+    updated_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+    admission_discharge?: XOR<Admission_DischargeScalarRelationFilter, Admission_DischargeWhereInput>
+    registration?: XOR<RegistrationScalarRelationFilter, RegistrationWhereInput>
+  }, "admitted_location_id">
+
+  export type Admitted_LocationOrderByWithAggregationInput = {
+    admitted_location_id?: SortOrder
+    admission_id?: SortOrder
+    registration_id?: SortOrder
+    bed_no?: SortOrder
+    ward?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: Admitted_LocationCountOrderByAggregateInput
+    _avg?: Admitted_LocationAvgOrderByAggregateInput
+    _max?: Admitted_LocationMaxOrderByAggregateInput
+    _min?: Admitted_LocationMinOrderByAggregateInput
+    _sum?: Admitted_LocationSumOrderByAggregateInput
+  }
+
+  export type Admitted_LocationScalarWhereWithAggregatesInput = {
+    AND?: Admitted_LocationScalarWhereWithAggregatesInput | Admitted_LocationScalarWhereWithAggregatesInput[]
+    OR?: Admitted_LocationScalarWhereWithAggregatesInput[]
+    NOT?: Admitted_LocationScalarWhereWithAggregatesInput | Admitted_LocationScalarWhereWithAggregatesInput[]
+    admitted_location_id?: StringWithAggregatesFilter<"Admitted_Location"> | string
+    admission_id?: StringWithAggregatesFilter<"Admitted_Location"> | string
+    registration_id?: StringWithAggregatesFilter<"Admitted_Location"> | string
+    bed_no?: IntNullableWithAggregatesFilter<"Admitted_Location"> | number | null
+    ward?: StringNullableWithAggregatesFilter<"Admitted_Location"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"Admitted_Location"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Admitted_Location"> | Date | string
   }
 
   export type OTWhereInput = {
@@ -12118,6 +13408,7 @@ export namespace Prisma {
     Appointment?: AppointmentListRelationFilter
     Admission_Discharge?: Admission_DischargeListRelationFilter
     OT?: OTListRelationFilter
+    Admitted_Location?: Admitted_LocationListRelationFilter
   }
 
   export type RegistrationOrderByWithRelationInput = {
@@ -12135,6 +13426,7 @@ export namespace Prisma {
     Appointment?: AppointmentOrderByRelationAggregateInput
     Admission_Discharge?: Admission_DischargeOrderByRelationAggregateInput
     OT?: OTOrderByRelationAggregateInput
+    Admitted_Location?: Admitted_LocationOrderByRelationAggregateInput
   }
 
   export type RegistrationWhereUniqueInput = Prisma.AtLeast<{
@@ -12155,6 +13447,7 @@ export namespace Prisma {
     Appointment?: AppointmentListRelationFilter
     Admission_Discharge?: Admission_DischargeListRelationFilter
     OT?: OTListRelationFilter
+    Admitted_Location?: Admitted_LocationListRelationFilter
   }, "registration_id">
 
   export type RegistrationOrderByWithAggregationInput = {
@@ -12472,6 +13765,7 @@ export namespace Prisma {
     updated_at?: Date | string
     ot?: OTCreateNestedManyWithoutAdmission_dischargeInput
     registration: RegistrationCreateNestedOneWithoutAdmission_DischargeInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeUncheckedCreateInput = {
@@ -12499,6 +13793,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     ot?: OTUncheckedCreateNestedManyWithoutAdmission_dischargeInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeUpdateInput = {
@@ -12525,6 +13820,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     ot?: OTUpdateManyWithoutAdmission_dischargeNestedInput
     registration?: RegistrationUpdateOneRequiredWithoutAdmission_DischargeNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type Admission_DischargeUncheckedUpdateInput = {
@@ -12551,6 +13847,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     ot?: OTUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type Admission_DischargeCreateManyInput = {
@@ -12624,6 +13921,70 @@ export namespace Prisma {
     therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
     ward?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationCreateInput = {
+    admitted_location_id?: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    admission_discharge: Admission_DischargeCreateNestedOneWithoutAdmitted_LocationInput
+    registration: RegistrationCreateNestedOneWithoutAdmitted_LocationInput
+  }
+
+  export type Admitted_LocationUncheckedCreateInput = {
+    admitted_location_id?: string
+    admission_id: string
+    registration_id: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type Admitted_LocationUpdateInput = {
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admission_discharge?: Admission_DischargeUpdateOneRequiredWithoutAdmitted_LocationNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutAdmitted_LocationNestedInput
+  }
+
+  export type Admitted_LocationUncheckedUpdateInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    registration_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationCreateManyInput = {
+    admitted_location_id?: string
+    admission_id: string
+    registration_id: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type Admitted_LocationUpdateManyMutationInput = {
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationUncheckedUpdateManyInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    registration_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12970,6 +14331,7 @@ export namespace Prisma {
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
     OT?: OTCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateInput = {
@@ -12987,6 +14349,7 @@ export namespace Prisma {
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
     OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUpdateInput = {
@@ -13003,6 +14366,7 @@ export namespace Prisma {
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
     OT?: OTUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateInput = {
@@ -13019,6 +14383,7 @@ export namespace Prisma {
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
     OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateManyInput = {
@@ -13431,11 +14796,21 @@ export namespace Prisma {
     isNot?: RegistrationWhereInput
   }
 
+  export type Admitted_LocationListRelationFilter = {
+    every?: Admitted_LocationWhereInput
+    some?: Admitted_LocationWhereInput
+    none?: Admitted_LocationWhereInput
+  }
+
   export type MedicationOrderByCompositeAggregateInput = {
     _count?: SortOrder
   }
 
   export type OTOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type Admitted_LocationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13619,6 +14994,44 @@ export namespace Prisma {
   export type Admission_DischargeScalarRelationFilter = {
     is?: Admission_DischargeWhereInput
     isNot?: Admission_DischargeWhereInput
+  }
+
+  export type Admitted_LocationCountOrderByAggregateInput = {
+    admitted_location_id?: SortOrder
+    admission_id?: SortOrder
+    registration_id?: SortOrder
+    bed_no?: SortOrder
+    ward?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type Admitted_LocationAvgOrderByAggregateInput = {
+    bed_no?: SortOrder
+  }
+
+  export type Admitted_LocationMaxOrderByAggregateInput = {
+    admitted_location_id?: SortOrder
+    admission_id?: SortOrder
+    registration_id?: SortOrder
+    bed_no?: SortOrder
+    ward?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type Admitted_LocationMinOrderByAggregateInput = {
+    admitted_location_id?: SortOrder
+    admission_id?: SortOrder
+    registration_id?: SortOrder
+    bed_no?: SortOrder
+    ward?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type Admitted_LocationSumOrderByAggregateInput = {
+    bed_no?: SortOrder
   }
 
   export type OTCountOrderByAggregateInput = {
@@ -14024,11 +15437,25 @@ export namespace Prisma {
     connect?: RegistrationWhereUniqueInput
   }
 
+  export type Admitted_LocationCreateNestedManyWithoutAdmission_dischargeInput = {
+    create?: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput> | Admitted_LocationCreateWithoutAdmission_dischargeInput[] | Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput | Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput[]
+    createMany?: Admitted_LocationCreateManyAdmission_dischargeInputEnvelope
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+  }
+
   export type OTUncheckedCreateNestedManyWithoutAdmission_dischargeInput = {
     create?: XOR<OTCreateWithoutAdmission_dischargeInput, OTUncheckedCreateWithoutAdmission_dischargeInput> | OTCreateWithoutAdmission_dischargeInput[] | OTUncheckedCreateWithoutAdmission_dischargeInput[]
     connectOrCreate?: OTCreateOrConnectWithoutAdmission_dischargeInput | OTCreateOrConnectWithoutAdmission_dischargeInput[]
     createMany?: OTCreateManyAdmission_dischargeInputEnvelope
     connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+  }
+
+  export type Admitted_LocationUncheckedCreateNestedManyWithoutAdmission_dischargeInput = {
+    create?: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput> | Admitted_LocationCreateWithoutAdmission_dischargeInput[] | Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput | Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput[]
+    createMany?: Admitted_LocationCreateManyAdmission_dischargeInputEnvelope
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -14087,6 +15514,20 @@ export namespace Prisma {
     update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutAdmission_DischargeInput, RegistrationUpdateWithoutAdmission_DischargeInput>, RegistrationUncheckedUpdateWithoutAdmission_DischargeInput>
   }
 
+  export type Admitted_LocationUpdateManyWithoutAdmission_dischargeNestedInput = {
+    create?: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput> | Admitted_LocationCreateWithoutAdmission_dischargeInput[] | Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput | Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput[]
+    upsert?: Admitted_LocationUpsertWithWhereUniqueWithoutAdmission_dischargeInput | Admitted_LocationUpsertWithWhereUniqueWithoutAdmission_dischargeInput[]
+    createMany?: Admitted_LocationCreateManyAdmission_dischargeInputEnvelope
+    set?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    disconnect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    delete?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    update?: Admitted_LocationUpdateWithWhereUniqueWithoutAdmission_dischargeInput | Admitted_LocationUpdateWithWhereUniqueWithoutAdmission_dischargeInput[]
+    updateMany?: Admitted_LocationUpdateManyWithWhereWithoutAdmission_dischargeInput | Admitted_LocationUpdateManyWithWhereWithoutAdmission_dischargeInput[]
+    deleteMany?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
+  }
+
   export type OTUncheckedUpdateManyWithoutAdmission_dischargeNestedInput = {
     create?: XOR<OTCreateWithoutAdmission_dischargeInput, OTUncheckedCreateWithoutAdmission_dischargeInput> | OTCreateWithoutAdmission_dischargeInput[] | OTUncheckedCreateWithoutAdmission_dischargeInput[]
     connectOrCreate?: OTCreateOrConnectWithoutAdmission_dischargeInput | OTCreateOrConnectWithoutAdmission_dischargeInput[]
@@ -14099,6 +15540,48 @@ export namespace Prisma {
     update?: OTUpdateWithWhereUniqueWithoutAdmission_dischargeInput | OTUpdateWithWhereUniqueWithoutAdmission_dischargeInput[]
     updateMany?: OTUpdateManyWithWhereWithoutAdmission_dischargeInput | OTUpdateManyWithWhereWithoutAdmission_dischargeInput[]
     deleteMany?: OTScalarWhereInput | OTScalarWhereInput[]
+  }
+
+  export type Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeNestedInput = {
+    create?: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput> | Admitted_LocationCreateWithoutAdmission_dischargeInput[] | Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput | Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput[]
+    upsert?: Admitted_LocationUpsertWithWhereUniqueWithoutAdmission_dischargeInput | Admitted_LocationUpsertWithWhereUniqueWithoutAdmission_dischargeInput[]
+    createMany?: Admitted_LocationCreateManyAdmission_dischargeInputEnvelope
+    set?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    disconnect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    delete?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    update?: Admitted_LocationUpdateWithWhereUniqueWithoutAdmission_dischargeInput | Admitted_LocationUpdateWithWhereUniqueWithoutAdmission_dischargeInput[]
+    updateMany?: Admitted_LocationUpdateManyWithWhereWithoutAdmission_dischargeInput | Admitted_LocationUpdateManyWithWhereWithoutAdmission_dischargeInput[]
+    deleteMany?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
+  }
+
+  export type Admission_DischargeCreateNestedOneWithoutAdmitted_LocationInput = {
+    create?: XOR<Admission_DischargeCreateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedCreateWithoutAdmitted_LocationInput>
+    connectOrCreate?: Admission_DischargeCreateOrConnectWithoutAdmitted_LocationInput
+    connect?: Admission_DischargeWhereUniqueInput
+  }
+
+  export type RegistrationCreateNestedOneWithoutAdmitted_LocationInput = {
+    create?: XOR<RegistrationCreateWithoutAdmitted_LocationInput, RegistrationUncheckedCreateWithoutAdmitted_LocationInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutAdmitted_LocationInput
+    connect?: RegistrationWhereUniqueInput
+  }
+
+  export type Admission_DischargeUpdateOneRequiredWithoutAdmitted_LocationNestedInput = {
+    create?: XOR<Admission_DischargeCreateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedCreateWithoutAdmitted_LocationInput>
+    connectOrCreate?: Admission_DischargeCreateOrConnectWithoutAdmitted_LocationInput
+    upsert?: Admission_DischargeUpsertWithoutAdmitted_LocationInput
+    connect?: Admission_DischargeWhereUniqueInput
+    update?: XOR<XOR<Admission_DischargeUpdateToOneWithWhereWithoutAdmitted_LocationInput, Admission_DischargeUpdateWithoutAdmitted_LocationInput>, Admission_DischargeUncheckedUpdateWithoutAdmitted_LocationInput>
+  }
+
+  export type RegistrationUpdateOneRequiredWithoutAdmitted_LocationNestedInput = {
+    create?: XOR<RegistrationCreateWithoutAdmitted_LocationInput, RegistrationUncheckedCreateWithoutAdmitted_LocationInput>
+    connectOrCreate?: RegistrationCreateOrConnectWithoutAdmitted_LocationInput
+    upsert?: RegistrationUpsertWithoutAdmitted_LocationInput
+    connect?: RegistrationWhereUniqueInput
+    update?: XOR<XOR<RegistrationUpdateToOneWithWhereWithoutAdmitted_LocationInput, RegistrationUpdateWithoutAdmitted_LocationInput>, RegistrationUncheckedUpdateWithoutAdmitted_LocationInput>
   }
 
   export type Admission_DischargeCreateNestedOneWithoutOtInput = {
@@ -14185,6 +15668,13 @@ export namespace Prisma {
     connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
   }
 
+  export type Admitted_LocationCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput> | Admitted_LocationCreateWithoutRegistrationInput[] | Admitted_LocationUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutRegistrationInput | Admitted_LocationCreateOrConnectWithoutRegistrationInput[]
+    createMany?: Admitted_LocationCreateManyRegistrationInputEnvelope
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+  }
+
   export type ConsultationUncheckedCreateNestedManyWithoutRegistrationInput = {
     create?: XOR<ConsultationCreateWithoutRegistrationInput, ConsultationUncheckedCreateWithoutRegistrationInput> | ConsultationCreateWithoutRegistrationInput[] | ConsultationUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ConsultationCreateOrConnectWithoutRegistrationInput | ConsultationCreateOrConnectWithoutRegistrationInput[]
@@ -14211,6 +15701,13 @@ export namespace Prisma {
     connectOrCreate?: OTCreateOrConnectWithoutRegistrationInput | OTCreateOrConnectWithoutRegistrationInput[]
     createMany?: OTCreateManyRegistrationInputEnvelope
     connect?: OTWhereUniqueInput | OTWhereUniqueInput[]
+  }
+
+  export type Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput = {
+    create?: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput> | Admitted_LocationCreateWithoutRegistrationInput[] | Admitted_LocationUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutRegistrationInput | Admitted_LocationCreateOrConnectWithoutRegistrationInput[]
+    createMany?: Admitted_LocationCreateManyRegistrationInputEnvelope
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
   }
 
   export type ConsultationUpdateManyWithoutRegistrationNestedInput = {
@@ -14269,6 +15766,20 @@ export namespace Prisma {
     deleteMany?: OTScalarWhereInput | OTScalarWhereInput[]
   }
 
+  export type Admitted_LocationUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput> | Admitted_LocationCreateWithoutRegistrationInput[] | Admitted_LocationUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutRegistrationInput | Admitted_LocationCreateOrConnectWithoutRegistrationInput[]
+    upsert?: Admitted_LocationUpsertWithWhereUniqueWithoutRegistrationInput | Admitted_LocationUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: Admitted_LocationCreateManyRegistrationInputEnvelope
+    set?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    disconnect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    delete?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    update?: Admitted_LocationUpdateWithWhereUniqueWithoutRegistrationInput | Admitted_LocationUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: Admitted_LocationUpdateManyWithWhereWithoutRegistrationInput | Admitted_LocationUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
+  }
+
   export type ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput = {
     create?: XOR<ConsultationCreateWithoutRegistrationInput, ConsultationUncheckedCreateWithoutRegistrationInput> | ConsultationCreateWithoutRegistrationInput[] | ConsultationUncheckedCreateWithoutRegistrationInput[]
     connectOrCreate?: ConsultationCreateOrConnectWithoutRegistrationInput | ConsultationCreateOrConnectWithoutRegistrationInput[]
@@ -14323,6 +15834,20 @@ export namespace Prisma {
     update?: OTUpdateWithWhereUniqueWithoutRegistrationInput | OTUpdateWithWhereUniqueWithoutRegistrationInput[]
     updateMany?: OTUpdateManyWithWhereWithoutRegistrationInput | OTUpdateManyWithWhereWithoutRegistrationInput[]
     deleteMany?: OTScalarWhereInput | OTScalarWhereInput[]
+  }
+
+  export type Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput = {
+    create?: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput> | Admitted_LocationCreateWithoutRegistrationInput[] | Admitted_LocationUncheckedCreateWithoutRegistrationInput[]
+    connectOrCreate?: Admitted_LocationCreateOrConnectWithoutRegistrationInput | Admitted_LocationCreateOrConnectWithoutRegistrationInput[]
+    upsert?: Admitted_LocationUpsertWithWhereUniqueWithoutRegistrationInput | Admitted_LocationUpsertWithWhereUniqueWithoutRegistrationInput[]
+    createMany?: Admitted_LocationCreateManyRegistrationInputEnvelope
+    set?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    disconnect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    delete?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    connect?: Admitted_LocationWhereUniqueInput | Admitted_LocationWhereUniqueInput[]
+    update?: Admitted_LocationUpdateWithWhereUniqueWithoutRegistrationInput | Admitted_LocationUpdateWithWhereUniqueWithoutRegistrationInput[]
+    updateMany?: Admitted_LocationUpdateManyWithWhereWithoutRegistrationInput | Admitted_LocationUpdateManyWithWhereWithoutRegistrationInput[]
+    deleteMany?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -14695,6 +16220,7 @@ export namespace Prisma {
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     OT?: OTCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutAdmission_DischargeInput = {
@@ -14711,11 +16237,39 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutAdmission_DischargeInput = {
     where: RegistrationWhereUniqueInput
     create: XOR<RegistrationCreateWithoutAdmission_DischargeInput, RegistrationUncheckedCreateWithoutAdmission_DischargeInput>
+  }
+
+  export type Admitted_LocationCreateWithoutAdmission_dischargeInput = {
+    admitted_location_id?: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    registration: RegistrationCreateNestedOneWithoutAdmitted_LocationInput
+  }
+
+  export type Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput = {
+    admitted_location_id?: string
+    registration_id: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type Admitted_LocationCreateOrConnectWithoutAdmission_dischargeInput = {
+    where: Admitted_LocationWhereUniqueInput
+    create: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput>
+  }
+
+  export type Admitted_LocationCreateManyAdmission_dischargeInputEnvelope = {
+    data: Admitted_LocationCreateManyAdmission_dischargeInput | Admitted_LocationCreateManyAdmission_dischargeInput[]
   }
 
   export type MedicationUpdateManyInput = {
@@ -14791,6 +16345,7 @@ export namespace Prisma {
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     OT?: OTUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutAdmission_DischargeInput = {
@@ -14805,6 +16360,240 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type Admitted_LocationUpsertWithWhereUniqueWithoutAdmission_dischargeInput = {
+    where: Admitted_LocationWhereUniqueInput
+    update: XOR<Admitted_LocationUpdateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedUpdateWithoutAdmission_dischargeInput>
+    create: XOR<Admitted_LocationCreateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedCreateWithoutAdmission_dischargeInput>
+  }
+
+  export type Admitted_LocationUpdateWithWhereUniqueWithoutAdmission_dischargeInput = {
+    where: Admitted_LocationWhereUniqueInput
+    data: XOR<Admitted_LocationUpdateWithoutAdmission_dischargeInput, Admitted_LocationUncheckedUpdateWithoutAdmission_dischargeInput>
+  }
+
+  export type Admitted_LocationUpdateManyWithWhereWithoutAdmission_dischargeInput = {
+    where: Admitted_LocationScalarWhereInput
+    data: XOR<Admitted_LocationUpdateManyMutationInput, Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeInput>
+  }
+
+  export type Admitted_LocationScalarWhereInput = {
+    AND?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
+    OR?: Admitted_LocationScalarWhereInput[]
+    NOT?: Admitted_LocationScalarWhereInput | Admitted_LocationScalarWhereInput[]
+    admitted_location_id?: StringFilter<"Admitted_Location"> | string
+    admission_id?: StringFilter<"Admitted_Location"> | string
+    registration_id?: StringFilter<"Admitted_Location"> | string
+    bed_no?: IntNullableFilter<"Admitted_Location"> | number | null
+    ward?: StringNullableFilter<"Admitted_Location"> | string | null
+    created_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+    updated_at?: DateTimeFilter<"Admitted_Location"> | Date | string
+  }
+
+  export type Admission_DischargeCreateWithoutAdmitted_LocationInput = {
+    admission_id?: string
+    admission_date?: Date | string | null
+    admission_mode?: string | null
+    status: string
+    discharge_date?: Date | string | null
+    discharge_mode?: string | null
+    admission_plan?: string | null
+    bed_number?: number | null
+    diagnosis?: string | null
+    diagnostic_procedures?: string | null
+    discharge_instructions?: string | null
+    discharge_medications?: InputJsonValue | null
+    discharge_summary?: string | null
+    hospital_investigations?: string | null
+    hospital_medications?: string | null
+    instructions?: InputJsonValue | null
+    medical_leave?: string | null
+    therapeutic_procedures?: string | null
+    ward?: string | null
+    medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: Date | string
+    updated_at?: Date | string
+    ot?: OTCreateNestedManyWithoutAdmission_dischargeInput
+    registration: RegistrationCreateNestedOneWithoutAdmission_DischargeInput
+  }
+
+  export type Admission_DischargeUncheckedCreateWithoutAdmitted_LocationInput = {
+    admission_id?: string
+    registration_id: string
+    admission_date?: Date | string | null
+    admission_mode?: string | null
+    status: string
+    discharge_date?: Date | string | null
+    discharge_mode?: string | null
+    admission_plan?: string | null
+    bed_number?: number | null
+    diagnosis?: string | null
+    diagnostic_procedures?: string | null
+    discharge_instructions?: string | null
+    discharge_medications?: InputJsonValue | null
+    discharge_summary?: string | null
+    hospital_investigations?: string | null
+    hospital_medications?: string | null
+    instructions?: InputJsonValue | null
+    medical_leave?: string | null
+    therapeutic_procedures?: string | null
+    ward?: string | null
+    medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: Date | string
+    updated_at?: Date | string
+    ot?: OTUncheckedCreateNestedManyWithoutAdmission_dischargeInput
+  }
+
+  export type Admission_DischargeCreateOrConnectWithoutAdmitted_LocationInput = {
+    where: Admission_DischargeWhereUniqueInput
+    create: XOR<Admission_DischargeCreateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedCreateWithoutAdmitted_LocationInput>
+  }
+
+  export type RegistrationCreateWithoutAdmitted_LocationInput = {
+    registration_id?: string
+    code: string
+    created_at?: Date | string
+    first_name: string
+    gender: string
+    last_name: string
+    mr_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
+    updated_at?: Date | string
+    Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
+    Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
+    Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+    OT?: OTCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationUncheckedCreateWithoutAdmitted_LocationInput = {
+    registration_id?: string
+    code: string
+    created_at?: Date | string
+    first_name: string
+    gender: string
+    last_name: string
+    mr_number: string
+    phone_number?: string | null
+    date_of_birth?: Date | string | null
+    updated_at?: Date | string
+    Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
+    Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
+    Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+    OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
+  }
+
+  export type RegistrationCreateOrConnectWithoutAdmitted_LocationInput = {
+    where: RegistrationWhereUniqueInput
+    create: XOR<RegistrationCreateWithoutAdmitted_LocationInput, RegistrationUncheckedCreateWithoutAdmitted_LocationInput>
+  }
+
+  export type Admission_DischargeUpsertWithoutAdmitted_LocationInput = {
+    update: XOR<Admission_DischargeUpdateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedUpdateWithoutAdmitted_LocationInput>
+    create: XOR<Admission_DischargeCreateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedCreateWithoutAdmitted_LocationInput>
+    where?: Admission_DischargeWhereInput
+  }
+
+  export type Admission_DischargeUpdateToOneWithWhereWithoutAdmitted_LocationInput = {
+    where?: Admission_DischargeWhereInput
+    data: XOR<Admission_DischargeUpdateWithoutAdmitted_LocationInput, Admission_DischargeUncheckedUpdateWithoutAdmitted_LocationInput>
+  }
+
+  export type Admission_DischargeUpdateWithoutAdmitted_LocationInput = {
+    admission_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admission_mode?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    discharge_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    discharge_mode?: NullableStringFieldUpdateOperationsInput | string | null
+    admission_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    bed_number?: NullableIntFieldUpdateOperationsInput | number | null
+    diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
+    discharge_instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    discharge_medications?: InputJsonValue | InputJsonValue | null
+    discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
+    hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
+    medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
+    therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ot?: OTUpdateManyWithoutAdmission_dischargeNestedInput
+    registration?: RegistrationUpdateOneRequiredWithoutAdmission_DischargeNestedInput
+  }
+
+  export type Admission_DischargeUncheckedUpdateWithoutAdmitted_LocationInput = {
+    registration_id?: StringFieldUpdateOperationsInput | string
+    admission_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admission_mode?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    discharge_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    discharge_mode?: NullableStringFieldUpdateOperationsInput | string | null
+    admission_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    bed_number?: NullableIntFieldUpdateOperationsInput | number | null
+    diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
+    discharge_instructions?: NullableStringFieldUpdateOperationsInput | string | null
+    discharge_medications?: InputJsonValue | InputJsonValue | null
+    discharge_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    hospital_investigations?: NullableStringFieldUpdateOperationsInput | string | null
+    hospital_medications?: NullableStringFieldUpdateOperationsInput | string | null
+    instructions?: InputJsonValue | InputJsonValue | null
+    medical_leave?: NullableStringFieldUpdateOperationsInput | string | null
+    therapeutic_procedures?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ot?: OTUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
+  }
+
+  export type RegistrationUpsertWithoutAdmitted_LocationInput = {
+    update: XOR<RegistrationUpdateWithoutAdmitted_LocationInput, RegistrationUncheckedUpdateWithoutAdmitted_LocationInput>
+    create: XOR<RegistrationCreateWithoutAdmitted_LocationInput, RegistrationUncheckedCreateWithoutAdmitted_LocationInput>
+    where?: RegistrationWhereInput
+  }
+
+  export type RegistrationUpdateToOneWithWhereWithoutAdmitted_LocationInput = {
+    where?: RegistrationWhereInput
+    data: XOR<RegistrationUpdateWithoutAdmitted_LocationInput, RegistrationUncheckedUpdateWithoutAdmitted_LocationInput>
+  }
+
+  export type RegistrationUpdateWithoutAdmitted_LocationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    first_name?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    mr_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
+    Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
+    Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+    OT?: OTUpdateManyWithoutRegistrationNestedInput
+  }
+
+  export type RegistrationUncheckedUpdateWithoutAdmitted_LocationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    first_name?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    mr_number?: StringFieldUpdateOperationsInput | string
+    phone_number?: NullableStringFieldUpdateOperationsInput | string | null
+    date_of_birth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
+    Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
     OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
@@ -14832,6 +16621,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     registration: RegistrationCreateNestedOneWithoutAdmission_DischargeInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeUncheckedCreateWithoutOtInput = {
@@ -14858,6 +16648,7 @@ export namespace Prisma {
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
     created_at?: Date | string
     updated_at?: Date | string
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeCreateOrConnectWithoutOtInput = {
@@ -14879,6 +16670,7 @@ export namespace Prisma {
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutOTInput = {
@@ -14895,6 +16687,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutOTInput = {
@@ -14936,6 +16729,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     registration?: RegistrationUpdateOneRequiredWithoutAdmission_DischargeNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type Admission_DischargeUncheckedUpdateWithoutOtInput = {
@@ -14961,6 +16755,7 @@ export namespace Prisma {
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type RegistrationUpsertWithoutOTInput = {
@@ -14987,6 +16782,7 @@ export namespace Prisma {
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutOTInput = {
@@ -15002,6 +16798,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateWithoutAppointmentInput = {
@@ -15018,6 +16815,7 @@ export namespace Prisma {
     Consultation?: ConsultationCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
     OT?: OTCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutAppointmentInput = {
@@ -15034,6 +16832,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
     OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutAppointmentInput = {
@@ -15065,6 +16864,7 @@ export namespace Prisma {
     Consultation?: ConsultationUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
     OT?: OTUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutAppointmentInput = {
@@ -15080,6 +16880,7 @@ export namespace Prisma {
     Consultation?: ConsultationUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
     OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationCreateWithoutConsultationInput = {
@@ -15096,6 +16897,7 @@ export namespace Prisma {
     Appointment?: AppointmentCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeCreateNestedManyWithoutRegistrationInput
     OT?: OTCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationUncheckedCreateWithoutConsultationInput = {
@@ -15112,6 +16914,7 @@ export namespace Prisma {
     Appointment?: AppointmentUncheckedCreateNestedManyWithoutRegistrationInput
     Admission_Discharge?: Admission_DischargeUncheckedCreateNestedManyWithoutRegistrationInput
     OT?: OTUncheckedCreateNestedManyWithoutRegistrationInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutRegistrationInput
   }
 
   export type RegistrationCreateOrConnectWithoutConsultationInput = {
@@ -15143,6 +16946,7 @@ export namespace Prisma {
     Appointment?: AppointmentUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUpdateManyWithoutRegistrationNestedInput
     OT?: OTUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutRegistrationNestedInput
   }
 
   export type RegistrationUncheckedUpdateWithoutConsultationInput = {
@@ -15158,6 +16962,7 @@ export namespace Prisma {
     Appointment?: AppointmentUncheckedUpdateManyWithoutRegistrationNestedInput
     Admission_Discharge?: Admission_DischargeUncheckedUpdateManyWithoutRegistrationNestedInput
     OT?: OTUncheckedUpdateManyWithoutRegistrationNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutRegistrationNestedInput
   }
 
   export type ConsultationCreateWithoutRegistrationInput = {
@@ -15254,6 +17059,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     ot?: OTCreateNestedManyWithoutAdmission_dischargeInput
+    Admitted_Location?: Admitted_LocationCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeUncheckedCreateWithoutRegistrationInput = {
@@ -15280,6 +17086,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     ot?: OTUncheckedCreateNestedManyWithoutAdmission_dischargeInput
+    Admitted_Location?: Admitted_LocationUncheckedCreateNestedManyWithoutAdmission_dischargeInput
   }
 
   export type Admission_DischargeCreateOrConnectWithoutRegistrationInput = {
@@ -15338,6 +17145,33 @@ export namespace Prisma {
 
   export type OTCreateManyRegistrationInputEnvelope = {
     data: OTCreateManyRegistrationInput | OTCreateManyRegistrationInput[]
+  }
+
+  export type Admitted_LocationCreateWithoutRegistrationInput = {
+    admitted_location_id?: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    admission_discharge: Admission_DischargeCreateNestedOneWithoutAdmitted_LocationInput
+  }
+
+  export type Admitted_LocationUncheckedCreateWithoutRegistrationInput = {
+    admitted_location_id?: string
+    admission_id: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type Admitted_LocationCreateOrConnectWithoutRegistrationInput = {
+    where: Admitted_LocationWhereUniqueInput
+    create: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type Admitted_LocationCreateManyRegistrationInputEnvelope = {
+    data: Admitted_LocationCreateManyRegistrationInput | Admitted_LocationCreateManyRegistrationInput[]
   }
 
   export type ConsultationUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -15463,6 +17297,22 @@ export namespace Prisma {
   export type OTUpdateManyWithWhereWithoutRegistrationInput = {
     where: OTScalarWhereInput
     data: XOR<OTUpdateManyMutationInput, OTUncheckedUpdateManyWithoutRegistrationInput>
+  }
+
+  export type Admitted_LocationUpsertWithWhereUniqueWithoutRegistrationInput = {
+    where: Admitted_LocationWhereUniqueInput
+    update: XOR<Admitted_LocationUpdateWithoutRegistrationInput, Admitted_LocationUncheckedUpdateWithoutRegistrationInput>
+    create: XOR<Admitted_LocationCreateWithoutRegistrationInput, Admitted_LocationUncheckedCreateWithoutRegistrationInput>
+  }
+
+  export type Admitted_LocationUpdateWithWhereUniqueWithoutRegistrationInput = {
+    where: Admitted_LocationWhereUniqueInput
+    data: XOR<Admitted_LocationUpdateWithoutRegistrationInput, Admitted_LocationUncheckedUpdateWithoutRegistrationInput>
+  }
+
+  export type Admitted_LocationUpdateManyWithWhereWithoutRegistrationInput = {
+    where: Admitted_LocationScalarWhereInput
+    data: XOR<Admitted_LocationUpdateManyMutationInput, Admitted_LocationUncheckedUpdateManyWithoutRegistrationInput>
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -15730,6 +17580,15 @@ export namespace Prisma {
     updated_at?: Date | string
   }
 
+  export type Admitted_LocationCreateManyAdmission_dischargeInput = {
+    admitted_location_id?: string
+    registration_id: string
+    bed_no?: number | null
+    ward?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
   export type MedicationUpdateInput = {
     drug_name?: StringFieldUpdateOperationsInput | string
     drug_dose?: StringFieldUpdateOperationsInput | string
@@ -15795,6 +17654,30 @@ export namespace Prisma {
     closure?: NullableStringFieldUpdateOperationsInput | string | null
     postop_instructions?: NullableStringFieldUpdateOperationsInput | string | null
     finalize?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationUpdateWithoutAdmission_dischargeInput = {
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    registration?: RegistrationUpdateOneRequiredWithoutAdmitted_LocationNestedInput
+  }
+
+  export type Admitted_LocationUncheckedUpdateWithoutAdmission_dischargeInput = {
+    registration_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeInput = {
+    registration_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15866,6 +17749,15 @@ export namespace Prisma {
     closure?: string | null
     postop_instructions?: string | null
     finalize?: number | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type Admitted_LocationCreateManyRegistrationInput = {
+    admitted_location_id?: string
+    admission_id: string
+    bed_no?: number | null
+    ward?: string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -15965,6 +17857,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     ot?: OTUpdateManyWithoutAdmission_dischargeNestedInput
+    Admitted_Location?: Admitted_LocationUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type Admission_DischargeUncheckedUpdateWithoutRegistrationInput = {
@@ -15990,6 +17883,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     ot?: OTUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
+    Admitted_Location?: Admitted_LocationUncheckedUpdateManyWithoutAdmission_dischargeNestedInput
   }
 
   export type Admission_DischargeUncheckedUpdateManyWithoutRegistrationInput = {
@@ -16069,6 +17963,30 @@ export namespace Prisma {
     closure?: NullableStringFieldUpdateOperationsInput | string | null
     postop_instructions?: NullableStringFieldUpdateOperationsInput | string | null
     finalize?: NullableIntFieldUpdateOperationsInput | number | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationUpdateWithoutRegistrationInput = {
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admission_discharge?: Admission_DischargeUpdateOneRequiredWithoutAdmitted_LocationNestedInput
+  }
+
+  export type Admitted_LocationUncheckedUpdateWithoutRegistrationInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type Admitted_LocationUncheckedUpdateManyWithoutRegistrationInput = {
+    admission_id?: StringFieldUpdateOperationsInput | string
+    bed_no?: NullableIntFieldUpdateOperationsInput | number | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }

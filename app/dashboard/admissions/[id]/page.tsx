@@ -12,7 +12,7 @@ const AdmissionDetailPage = async ({
 
   const admission = await prisma.admission_Discharge.findUnique({
     where: { admission_id: admissionId },
-    include: { registration: true },
+    include: { registration: true, Admitted_Location: true },
   });
 
   const ots = await prisma.oT.findMany({
