@@ -1,49 +1,41 @@
 "use client";
-import React, { useEffect } from "react";
-import { InputGeneric } from "../../_components/FormComponents";
-import {
-  Button,
-  Callout,
-  Flex,
-  Spinner,
-  TextArea,
-  TextField,
-} from "@radix-ui/themes";
-import { useForm } from "react-hook-form";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
 import { OT } from "@/generated/prisma";
+import { Button, Flex, TextArea, TextField } from "@radix-ui/themes";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { InputGeneric } from "../../_components/FormComponents";
+import { useRouter } from "next/navigation";
 
 type OTNotes = OT;
+interface Props {
+  ot: OT;
+}
 
-const OTNotesForm = ({
-  ot_id,
-  admission_id,
-}: {
-  ot_id: string;
-  admission_id: string;
-}) => {
-  const {
-    data: initialData,
-    isLoading: isLoadingData,
-    isError: isFetchError,
-  } = useQuery({
-    queryKey: ["ot", ot_id],
-    queryFn: async () => {
-      try {
-        const response = await axios.get(`/api/ot/${ot_id}`);
-        console.log("Fetched OT Notes successfully", response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching OT Notes", error);
-        throw error;
-      }
-    },
-    enabled: !!ot_id,
-  });
+const OTNotesForm = ({ ot }: Props) => {
+  // const {
+  //   data: initialData,
+  //   isLoading: isLoadingData,
+  //   isError: isFetchError,
+  // } = useQuery({
+  //   queryKey: ["ot", ot.ot_id],
+  //   queryFn: async () => {
+  //     try {
+  //       const response = await axios.get(`/api/ot/${ot.ot_id}`);
+  //       console.log("Fetched OT Notes successfully", response.data);
+  //       return response.data;
+  //     } catch (error) {
+  //       console.error("Error fetching OT Notes", error);
+  //       throw error;
+  //     }
+  //   },
+  //   enabled: !!ot.ot_id,
+  // });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm<OTNotes>({
     defaultValues: {
@@ -67,6 +59,7 @@ const OTNotesForm = ({
 
     onSuccess: (data) => {
       console.log("OT Notes updated successfully", data);
+
       toast.success("OT Notes updated successfully");
     },
     onError: (error) => {
@@ -84,6 +77,7 @@ const OTNotesForm = ({
     onSuccess: (data) => {
       console.log("OT Notes finalized successfully", data);
       toast.success("OT Notes finalized successfully");
+      router.refresh(); // Refresh the page to reflect changes
     },
     onError: (error) => {
       console.error("Error finalizing OT Notes", error);
@@ -92,32 +86,30 @@ const OTNotesForm = ({
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (ot) {
       // Format data before resetting
       const formattedData = {
-        ...initialData,
-        // Format date for input type="date"
-        surgery_date: initialData.surgery_date
-          ? new Date(initialData.surgery_date).toISOString().split("T")[0]
-          : "",
+        ...ot,
+        // Keep surgery_date as Date or null for react-hook-form type compatibility
+        surgery_date: ot.surgery_date ? new Date(ot.surgery_date) : null,
         // Ensure null values become empty strings if needed by inputs
-        surgeon: initialData.surgeon ?? "",
-        assistant_1: initialData.assistant_1 ?? "",
-        assistant_2: initialData.assistant_2 ?? "",
-        assistant_3: initialData.assistant_3 ?? "",
-        anaesthesia: initialData.anaesthesia ?? "",
-        anaesthetist: initialData.anaesthetist ?? "",
-        findings: initialData.findings ?? "",
-        operative_details: initialData.operative_details ?? "",
-        closure: initialData.closure ?? "",
-        postop_instructions: initialData.postop_instructions ?? "",
+        surgeon: ot.surgeon ?? "",
+        assistant_1: ot.assistant_1 ?? "",
+        assistant_2: ot.assistant_2 ?? "",
+        assistant_3: ot.assistant_3 ?? "",
+        anaesthesia: ot.anaesthesia ?? "",
+        anaesthetist: ot.anaesthetist ?? "",
+        findings: ot.findings ?? "",
+        operative_details: ot.operative_details ?? "",
+        closure: ot.closure ?? "",
+        postop_instructions: ot.postop_instructions ?? "",
       };
       reset(formattedData); // <-- Reset the form with fetched data
     }
-  }, [initialData, reset]);
+  }, [ot, reset]);
 
   const onSubmit = (data: OTNotes) => {
-    const payLoad = { ...data, ot_id: ot_id, admission_id: admission_id };
+    const payLoad = { ...data, ot_id: ot.ot_id, admission_id: ot.admission_id };
     console.log("Payload", payLoad);
     mutation.mutate(payLoad);
   };
@@ -125,40 +117,26 @@ const OTNotesForm = ({
   const onFinalize = (data: OTNotes) => {
     const payLoad = {
       ...data,
-      ot_id: ot_id,
-      admission_id: admission_id,
+      ot_id: ot.ot_id,
+      admission_id: ot.admission_id,
       finalize: 1,
     };
     console.log("Payload", payLoad);
     finalizeMutation.mutate(payLoad);
-    queryClient.invalidateQueries({ queryKey: ["ot"] });
   };
 
-  if (isLoadingData)
-    return (
-      <Flex justify="center" align="center" p="5">
-        <Spinner size="3" />
-      </Flex>
-    );
-  if (isFetchError)
-    return (
-      <Callout.Root color="red" m="5">
-        <Callout.Text>Error fetching OT Note details.</Callout.Text>
-      </Callout.Root>
-    );
   const finalizeButtonText = () => {
     if (mutation.isPending) return "Finalizing";
-    else if (initialData.finalize === 1) return "Finalized";
+    else if (ot.finalize === 1) return "Finalized";
     else return "Finalize";
   };
 
   return (
     <>
-      <Toaster position="bottom-right" />
       <Flex>
         <Flex className=" p-4 border-2 w-full">
           <form className="w-full">
-            <fieldset disabled={initialData.finalize === 1}>
+            <fieldset disabled={ot.finalize === 1}>
               <Flex gap="4">
                 <InputGeneric
                   label="Procedure Name"
@@ -336,7 +314,7 @@ const OTNotesForm = ({
             variant="soft"
             className="w-full mt-4"
             onClick={handleSubmit(onSubmit)}
-            disabled={mutation.isPending || initialData.finalize === 1}
+            disabled={mutation.isPending || ot.finalize === 1}
           >
             {mutation.isPending ? "Saving..." : "Save"}
           </Button>
@@ -344,7 +322,7 @@ const OTNotesForm = ({
             variant="soft"
             className="w-full mt-4"
             onClick={handleSubmit(onFinalize)}
-            disabled={mutation.isPending || initialData.finalize === 1}
+            disabled={mutation.isPending || ot.finalize === 1}
             color="red"
           >
             {finalizeButtonText()}

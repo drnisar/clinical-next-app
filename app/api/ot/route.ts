@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const newOTNotes = await prisma.oT.create({
@@ -59,6 +60,7 @@ export async function PATCH(request: NextRequest) {
         finalize,
       },
     });
+    revalidatePath(`/dashboard/ot/${ot_id}`);
     return NextResponse.json(otNotes);
   } catch (error) {
     return NextResponse.json(error);

@@ -38,11 +38,7 @@ const OTNotesEditPage = async ({
     <>
       <RegistrationDetailsCard registration={registration} />
 
-      {ot.finalize === 1 ? (
-        <OTNotesDetails ot={ot} />
-      ) : (
-        <OTNotesForm ot_id={id} admission_id={ot?.admission_id} />
-      )}
+      {ot.finalize === 1 ? <OTNotesDetails ot={ot} /> : <OTNotesForm ot={ot} />}
     </>
   );
 };
