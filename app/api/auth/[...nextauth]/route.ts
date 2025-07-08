@@ -31,6 +31,7 @@ const ALLOWED_EMAILS = [
   "drnisar@hotmail.com",
   "danishkhattak145@gmail.com",
   "am12a32r@gmail.com",
+  "msohaila1992@gmail.com",
 ];
 
 const handler = NextAuth({

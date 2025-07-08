@@ -144,6 +144,18 @@ const ConsultationsTable = ({ consultations }: Props) => {
             <Button
               size="1"
               variant="soft"
+              color="green"
+              onClick={() => {
+                router.push(
+                  `/dashboard/consultation/${props.row.original.consultation_id}` // Use 'visit_id'
+                );
+              }}
+            >
+              View Report
+            </Button>
+            <Button
+              size="1"
+              variant="soft"
               color="blue"
               onClick={() => {
                 router.push(
