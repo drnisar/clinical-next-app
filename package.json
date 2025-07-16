@@ -7,6 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "db:cleanup": "tsx scripts/fix-examination-data.ts",
+    "db:backup": "mongodump --uri=\"your-connection-string\" --out ./backup",
     "postinstall": "prisma generate"
   },
   "dependencies": {

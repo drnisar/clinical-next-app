@@ -1,4 +1,4 @@
-import { Table } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import React from "react";
 import { translate } from "@/app/dashboard/_components/appConstants";
 import { Medication } from "@/generated/prisma";
@@ -10,35 +10,25 @@ interface Props {
 const MedDetailsForSingleVisitId = ({ meds }: Props) => {
   return (
     <div>
-      <Table.Root>
-        <Table.Body>
-          {meds.map((med, index) => (
-            <Table.Row key={med.drug_name}>
-              <Table.Cell>{index + 1}.</Table.Cell>
-              <Table.Cell>
-                {med.drug_name.toUpperCase() + " "}
-                {med.drug_dose && med.drug_dose + " "}
-
-                {med.drug_form?.toUpperCase()}
-              </Table.Cell>
-              <Table.Cell className="text-right">
-                {translate(med.interval)}
-              </Table.Cell>
-              <Table.Cell>{med.duration}</Table.Cell>
-              <Table.Cell className="text-right">
-                {translate(med.frequency)}
-              </Table.Cell>
-              <Table.Cell className="text-right">
-                {translate(med.route)}
-              </Table.Cell>
-              <Table.Cell className="text-right">
-                {translate(med.drug_form)}
-              </Table.Cell>
-              <Table.Cell>{med.amount}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+      {meds.map((med, index) => (
+        <Flex
+          key={med.drug_name}
+          gap="2"
+          justify="between"
+          direction="column"
+          bottom={"2"}
+          className="border-b border-jade-200 p-2 w-full"
+        >
+          <span>
+            {index + 1} {med.drug_name.toUpperCase()}{" "}
+            {med.drug_form?.toUpperCase()}
+          </span>
+          <div dir="rtl">
+            {med.amount} {translate(med.drug_form)} {translate(med.route)}{" "}
+            {translate(med.frequency)} {med.duration} {translate(med.interval)}{" "}
+          </div>
+        </Flex>
+      ))}
     </div>
   );
 };

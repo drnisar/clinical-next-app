@@ -1,74 +1,111 @@
 "use client";
 import { Consultation } from "@/generated/prisma";
-import { Spinner, Tabs } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import {
-  Diagnosis,
-  Examination,
-  History,
-  Investigations,
-  Plan,
-} from "./ConsultationNotes";
+import { Flex, Tabs } from "@radix-ui/themes";
+import MedicationsForm from "../../_components/MedicationsForm";
+import AppointmentsTab from "./AppointmentsTab";
+import ConsultationExaminationForm from "./ConsultationExaminationForm";
+import ConsultationInvestigationsForm from "./ConsultationInvestigationsForm";
+import InstructionsArray from "./InstructionsArray";
+import ConsultationHistoryForm from "./ConsultationHistoryForm";
+import ConsultationDiagnosisForm from "./ConsultationDiagnosisForm";
+import ConsultationPlanForm from "./ConsultationPlanForm";
 
-const ConsultationTabs = ({ consultation_id }: { consultation_id: string }) => {
-  const { data: consultation } = useQuery<Consultation>({
-    queryKey: ["consultation"],
-    queryFn: async () => {
-      const response = await axios.get(
-        "/api/consultation/" + consultation_id.toString()
-      );
-      return response.data;
-    },
-    staleTime: 1000 * 60 * 60,
-  });
-  if (!consultation) return <Spinner />;
+interface Props {
+  consultation: Consultation;
+  type: string;
+}
+
+type Instruction = {
+  instruction: string;
+};
+const ConsultationTabs = ({ consultation, type }: Props) => {
   return (
     <>
-      <Tabs.Root defaultValue="history">
-        <Tabs.List highContrast>
-          <Tabs.Trigger value="history">History</Tabs.Trigger>
-          <Tabs.Trigger value="examination">Examination</Tabs.Trigger>
-          <Tabs.Trigger value="investigations">Investigations</Tabs.Trigger>
-          <Tabs.Trigger value="diagnosis">Diagnosis</Tabs.Trigger>
-          <Tabs.Trigger value="plan">Plan</Tabs.Trigger>
-        </Tabs.List>
-        <Tabs.Content value="history">
-          <History
-            defaultValue={consultation.history || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          />
-        </Tabs.Content>
-        <Tabs.Content value="examination">
-          <Examination
-            defaultValue={consultation.examination || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          />
-        </Tabs.Content>
-        <Tabs.Content value="investigations">
-          <Investigations
-            defaultValue={consultation.investigations || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          />
-        </Tabs.Content>
-        <Tabs.Content value="diagnosis">
-          <Diagnosis
-            defaultValue={consultation.diagnosis || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          />
-        </Tabs.Content>
-        <Tabs.Content value="plan">
-          <Plan
-            defaultValue={consultation.plan || ""}
-            consultation_id={consultation.consultation_id}
-            registration_id={consultation.registration_id}
-          />
-        </Tabs.Content>
-      </Tabs.Root>
+      <Flex gap={"8"}>
+        <Tabs.Root defaultValue="history">
+          <Tabs.List>
+            <Flex direction={"column"}>
+              <Flex>
+                <Tabs.Trigger value="history">History</Tabs.Trigger>
+                <Tabs.Trigger value="examinations">Examinations</Tabs.Trigger>
+                <Tabs.Trigger value="investigations">
+                  Investigations
+                </Tabs.Trigger>
+                <Tabs.Trigger value="diagnosis">Diagnosis</Tabs.Trigger>
+                <Tabs.Trigger value="plan">Plan</Tabs.Trigger>
+                <Tabs.Trigger value="medications">Medications</Tabs.Trigger>
+              </Flex>
+              <Flex>
+                <Tabs.Trigger value="instructions">Instructions</Tabs.Trigger>
+                <Tabs.Trigger value="appointment">Appointment</Tabs.Trigger>
+              </Flex>
+            </Flex>
+          </Tabs.List>
+          <Tabs.Content value="history">
+            <ConsultationHistoryForm
+              defaultValue={consultation.history || ""}
+              consultation_id={consultation.consultation_id}
+              registration_id={consultation.registration_id}
+              slug={"/api/consultation"}
+            />
+          </Tabs.Content>
+          <Tabs.Content value="examinations">
+            <ConsultationExaminationForm
+              examinations={consultation.examination}
+              slug="/api/consultation"
+              id={consultation.consultation_id}
+            />
+          </Tabs.Content>
+          <Tabs.Content value="investigations">
+            <ConsultationInvestigationsForm
+              investigations={consultation.investigations}
+              slug="/api/consultation"
+              id={consultation.consultation_id}
+            />
+          </Tabs.Content>
+          <Tabs.Content value="diagnosis">
+            <ConsultationDiagnosisForm
+              defaultValue={consultation.diagnosis || ""}
+              consultation_id={consultation.consultation_id}
+              registration_id={consultation.registration_id}
+              slug="/api/consultation"
+            />
+          </Tabs.Content>
+          <Tabs.Content value="plan">
+            <ConsultationPlanForm
+              defaultValue={consultation.plan || ""}
+              consultation_id={consultation.consultation_id}
+              registration_id={consultation.registration_id}
+              slug="/api/consultation"
+            />
+          </Tabs.Content>
+          <Tabs.Content value="medications">
+            <MedicationsForm
+              slug="/api/consultation"
+              id={consultation.consultation_id}
+              medications={consultation.medications || []}
+            />
+          </Tabs.Content>
+          <Tabs.Content value="instructions">
+            <InstructionsArray
+              instructions={
+                Array.isArray(consultation.instructions)
+                  ? (consultation.instructions as Instruction[])
+                  : []
+              }
+              id={consultation.consultation_id}
+              slug="/api/consultation"
+            />
+          </Tabs.Content>
+          <Tabs.Content value="appointment">
+            <AppointmentsTab
+              registration_id={consultation.registration_id}
+              consultation_id={consultation.consultation_id}
+              type={type}
+            />
+          </Tabs.Content>
+        </Tabs.Root>
+      </Flex>
     </>
   );
 };

@@ -410,3 +410,51 @@ export const calculateAge = (dateOfBirth: string): string => {
 
   return age >= 0 ? age.toString() : "";
 };
+
+export const investigationsArray = [
+  { label: "CBC", value: "CBC" },
+  { label: "LFTs", value: "LFTs" },
+  { label: "RFTs", value: "RFTs" },
+  { label: "Lipid Profile", value: "Lipid Profile" },
+  { label: "TFTs", value: "TFTs" },
+  { label: "Blood Sugar", value: "Blood Sugar" },
+  { label: "Urine Routine", value: "Urine Routine" },
+  { label: "Stool Routine", value: "Stool Routine" },
+  { label: "X-Ray", value: "X-Ray" },
+  { label: "Ultrasound", value: "Ultrasound" },
+  { label: "CT Scan", value: "CT Scan" },
+  { label: "MRI", value: "MRI" },
+  { label: "ECG", value: "ECG" },
+  { label: "Echocardiogram", value: "Echocardiogram" },
+  { label: "Endoscopy", value: "Endoscopy" },
+  { label: "Colonoscopy", value: "Colonoscopy" },
+];
+
+export const formatDate = (date: Date | string | null | undefined): string => {
+  if (!date) return "";
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  // Use a consistent format that works on both server and client
+  return dateObj.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+};
+
+export const examinationTypes = [
+  { label: "Vital Signs", value: "vital_signs" },
+  { label: "General Examination", value: "general_examination" },
+  { label: "Abdomen", value: "abdomen" },
+  { label: "Cardiovascular", value: "cardiovascular" },
+  { label: "Respiratory", value: "respiratory" },
+  { label: "Neurological", value: "neurological" },
+  { label: "Musculoskeletal", value: "musculoskeletal" },
+  { label: "Skin", value: "skin" },
+  { label: "ENT", value: "ent" },
+  { label: "Eyes", value: "eyes" },
+  { label: "Rectal", value: "rectal" },
+  { label: "Gynaecological", value: "gynaecological" },
+  { label: "Other", value: "other" },
+];

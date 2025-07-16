@@ -2,6 +2,7 @@
 import { Button } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface Props {
   consultation_id: string;
@@ -9,12 +10,16 @@ interface Props {
 }
 
 const ButtonSaveConsultationNotes = ({ fieldData, consultation_id }: Props) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (dataForForm: object) =>
       await axios.patch("/api/consultation/" + consultation_id, dataForForm),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["consultation"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["consultation"] });
+      router.refresh();
+    },
+
     onError: () => console.log("error"),
   });
 

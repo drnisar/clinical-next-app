@@ -1,6 +1,12 @@
 import { Flex, Select, TextField } from "@radix-ui/themes";
 import { ReactNode, useState } from "react";
-import { Control, Controller, UseFormRegisterReturn } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  UseFormRegister,
+  UseFormRegisterReturn,
+} from "react-hook-form";
 
 export function TextInput({
   label,
@@ -210,5 +216,37 @@ export const SelectInputServerSide = ({
 
       {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </div>
+  );
+};
+
+interface SelectOptionsProps<TFieldValues extends FieldValues = FieldValues> {
+  register: UseFormRegister<TFieldValues>;
+  name: string;
+  defaultValue?: string;
+  placeholder: string;
+  options: { label: string; value: string }[];
+  className?: string;
+}
+export const SelectOptions = ({
+  register,
+  name,
+  defaultValue,
+  placeholder,
+  options,
+  className,
+}: SelectOptionsProps) => {
+  return (
+    <select
+      {...register(name)}
+      className={className}
+      defaultValue={defaultValue || ""}
+    >
+      <option value="">{placeholder || ""}</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
   );
 };

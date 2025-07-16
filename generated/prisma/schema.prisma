@@ -86,24 +86,34 @@ model Appointment {
 }
 
 model Consultation {
-  consultation_id String       @id @default(auto()) @map("_id") @db.ObjectId
-  created_at      DateTime     @default(now()) @db.Date
+  consultation_id String          @id @default(auto()) @map("_id") @db.ObjectId
+  created_at      DateTime        @default(now()) @db.Date
   diagnosis       String?
-  examination     String?
+  examination     Examination[]
   history         String?
   instructions    Json?
-  investigations  String?
+  investigations  Investigation[]
   plan            String?
   medications     Medication[]
   status          String?
-  registration_id String       @db.ObjectId
-  updated_at      DateTime     @updatedAt @db.Date
-  visit_date      DateTime     @db.Date
-  registration    Registration @relation(fields: [registration_id], references: [registration_id])
+  registration_id String          @db.ObjectId
+  updated_at      DateTime        @updatedAt @db.Date
+  visit_date      DateTime        @db.Date
+  registration    Registration    @relation(fields: [registration_id], references: [registration_id])
 }
 
 type Instruction {
   instruction String
+}
+
+type Investigation {
+  investigation String
+  result        String?
+}
+
+type Examination {
+  examination String
+  findings    String?
 }
 
 model Registration {

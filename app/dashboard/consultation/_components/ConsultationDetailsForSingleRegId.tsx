@@ -1,5 +1,5 @@
 import { Consultation } from "@/generated/prisma";
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, DataList, Flex, Heading, Text } from "@radix-ui/themes";
 import React from "react";
 
 const ConsultationDetailsForSingleRegId = ({
@@ -19,26 +19,39 @@ const ConsultationDetailsForSingleRegId = ({
           </Box>
         </Box>
       )}
-      {consultation.examination && (
+      {consultation.examination && Array.isArray(consultation.examination) && (
         <Box py="1">
           <Heading size="2">Examination</Heading>
-          <Box px="4">
-            <Text size="2" style={{ whiteSpace: "pre-line" }}>
-              {consultation.examination}
-            </Text>
-          </Box>
+          <DataList.Root ml="2">
+            {consultation.examination.map((examination, index) => (
+              <DataList.Item key={index}>
+                <DataList.Label className="capitalize">
+                  {examination.examination}
+                </DataList.Label>
+                <DataList.Value>{examination.findings}</DataList.Value>
+              </DataList.Item>
+            ))}
+          </DataList.Root>
         </Box>
       )}
-      {consultation.investigations && (
-        <Box py="1">
-          <Heading size="2">Investigations</Heading>
-          <Box px="4">
-            <Text size="2" style={{ whiteSpace: "pre-line" }}>
-              {consultation.investigations}
-            </Text>
+      {consultation.investigations &&
+        Array.isArray(consultation.investigations) && (
+          <Box py="1">
+            <Heading size="2">Investigations</Heading>
+            <DataList.Root ml="2">
+              {consultation.investigations.map((investigation) => (
+                <DataList.Item key={investigation.investigation}>
+                  <DataList.Label>
+                    {investigation.investigation.toUpperCase()}
+                  </DataList.Label>
+                  <DataList.Value>
+                    {investigation.result ? investigation.result : "No result"}
+                  </DataList.Value>
+                </DataList.Item>
+              ))}
+            </DataList.Root>
           </Box>
-        </Box>
-      )}
+        )}
       {consultation.diagnosis && (
         <Box py="1">
           <Heading size="2">Diagnosis</Heading>
@@ -59,6 +72,18 @@ const ConsultationDetailsForSingleRegId = ({
           </Box>
         </Box>
       )}
+      {/* {consultation.instructions && Array.isArray(consultation.instructions) && (
+        <Box py="1">
+          <Heading size="2">Instructions</Heading>
+          <DataList.Root>
+            {consultation.instructions.map((instruction, index) => (
+              <DataList.Item key={index}>
+                <DataList.Label>{instruction[index]}</DataList.Label>
+              </DataList.Item>
+            ))}
+          </DataList.Root>
+        </Box>
+      )} */}
     </Flex>
   );
 };

@@ -89,12 +89,20 @@ export async function PATCH(req: NextRequest, { params }: Props) {
 
     revalidatePath("/dashboard/consultation");
     revalidatePath(`/dashboard/consultation/${id}`);
+    revalidatePath(`/dashboard/consultation/edit/${id}`);
     revalidatePath(`/dashboard/consultation/today`);
     revalidateTag("consultation");
     revalidateTag("consultation-" + id);
 
     return NextResponse.json(updatedConsultation);
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    console.error("Error updating consultation:", error);
+    return NextResponse.json(
+      {
+        message: "Failed to update consultation",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }
