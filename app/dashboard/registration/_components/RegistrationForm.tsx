@@ -19,7 +19,7 @@ import {
 } from "../../_components/appConstants";
 import { InputGeneric, SelectInput } from "../../_components/FormComponents";
 import RegistrationSuccessDialog from "./RegistrationSuccessDialog";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const validation = z.object({
   first_name: z
@@ -42,6 +42,8 @@ const RegistrationForm = ({
   registration?: Registration;
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const [reg, setReg] = useState<Registration | null>(registration || null);
 
   const initialAge = registration?.date_of_birth
     ? calculateAge(registration.date_of_birth.toISOString().split("T")[0])
@@ -143,9 +145,70 @@ const RegistrationForm = ({
     }
   };
 
+  const searchByField = async (mrNumber: string) => {
+    if (!mrNumber?.trim()) {
+      toast.error("Please enter a valid MRN");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`/api/registration/search/${mrNumber}`);
+
+      // if (
+      //   response.data &&
+      //   Array.isArray(response.data) &&
+      //   response.data.length > 0
+      // ) {
+      const regData = response.data[0] as Registration;
+
+      if (!regData?.registration_id) {
+        toast.error("Invalid registration data received");
+        return;
+      }
+
+      console.log("Registration found:", regData);
+      if (pathname === "/dashboard/registration/new") {
+        // Only show success message if on the new registration page
+        // Show success message first
+        toast.success("Registration already exists", {
+          duration: 2000,
+        });
+
+        // Navigate after a short delay
+        setTimeout(() => {
+          const targetPath = `/dashboard/registration/${regData.registration_id}`;
+          console.log("Navigating to:", targetPath);
+          // router.push(targetPath);
+          setIsDialogOpen(true);
+          setRegId(regData.registration_id);
+          setReg(regData); // Update local state with found registration data
+          // Reset form values to the found registration dat
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || "Error fetching registration"
+        );
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+      reset();
+    }
+  };
+
   return (
     <>
-      <RegistrationSuccessDialog isDialogOpen={isDialogOpen} id={regId} />
+      <RegistrationSuccessDialog
+        isDialogOpen={isDialogOpen}
+        id={regId}
+        regDataForDialog={{
+          first_name: reg?.first_name + " " + reg?.last_name || "",
+          mr_number: reg?.mr_number || "",
+        }}
+      />
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
         className="border p-6 shadow-md rounded-md max-w-md mx-auto"
@@ -168,12 +231,15 @@ const RegistrationForm = ({
                 setValue("mr_number", "");
                 return;
               }
+
               try {
                 const refinedValue = refineMRN(value);
                 // Set the potentially refined value
                 setValue("mr_number", refinedValue, { shouldValidate: true }); // Trigger validation
                 // Clear any previous custom errors if refinement succeeds
                 clearErrors("mr_number");
+                // toast.success(JSON.stringify(refinedValue));
+                searchByField(refinedValue);
               } catch (error: unknown) {
                 // Set error message from refineMRN function
                 if (error instanceof Error) {

@@ -5,8 +5,13 @@ import AddToClinicQueueButton from "./AddToClinicQueueButton";
 interface Props {
   isDialogOpen: boolean;
   id: string;
+  regDataForDialog?: { first_name: string; mr_number: string };
 }
-const RegistrationSuccessDialog = ({ isDialogOpen, id }: Props) => {
+const RegistrationSuccessDialog = ({
+  isDialogOpen,
+  id,
+  regDataForDialog,
+}: Props) => {
   const router = useRouter();
   // useEffect(() => {
   //   router.prefetch("/dashboard/registration");
@@ -18,9 +23,16 @@ const RegistrationSuccessDialog = ({ isDialogOpen, id }: Props) => {
     <Dialog.Root open={isDialogOpen}>
       <Dialog.Content>
         <Dialog.Title color="blue">Further Actions</Dialog.Title>
+        {regDataForDialog && (
+          <div className="mb-4">
+            <strong>Name:</strong> {regDataForDialog.first_name} <br />
+            <strong>MR Number:</strong> {regDataForDialog.mr_number}
+          </div>
+        )}
         <Dialog.Description>
           Click one of the options below to proceed:
         </Dialog.Description>
+
         <Flex justify={"between"} className="mt-5">
           <AddToClinicQueueButton registration_id={id} />
           <Button

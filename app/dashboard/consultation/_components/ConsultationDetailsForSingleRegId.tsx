@@ -19,22 +19,24 @@ const ConsultationDetailsForSingleRegId = ({
           </Box>
         </Box>
       )}
-      {consultation.examination && Array.isArray(consultation.examination) && (
-        <Box py="1">
-          <Heading size="2">Examination</Heading>
-          <DataList.Root ml="2">
-            {consultation.examination.map((examination, index) => (
-              <DataList.Item key={index}>
-                <DataList.Label className="capitalize">
-                  {examination.examination}
-                </DataList.Label>
-                <DataList.Value>{examination.findings}</DataList.Value>
-              </DataList.Item>
-            ))}
-          </DataList.Root>
-        </Box>
-      )}
-      {consultation.investigations &&
+
+      {consultation.examination.length > 0 &&
+        Array.isArray(consultation.examination) && (
+          <Box py="1">
+            <Heading size="2">Examination</Heading>
+            <DataList.Root ml="2">
+              {consultation.examination.map((examination, index) => (
+                <DataList.Item key={index}>
+                  <DataList.Label className="capitalize">
+                    {examination.examination}
+                  </DataList.Label>
+                  <DataList.Value>{examination.findings}</DataList.Value>
+                </DataList.Item>
+              ))}
+            </DataList.Root>
+          </Box>
+        )}
+      {consultation.investigations.length > 0 &&
         Array.isArray(consultation.investigations) && (
           <Box py="1">
             <Heading size="2">Investigations</Heading>
