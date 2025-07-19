@@ -123,6 +123,7 @@ const RegistrationForm = ({
       router.refresh();
       setIsDialogOpen(true);
       setRegId(response.data.registration_id);
+      setReg(response.data); // Update local state with updated registration data
     },
     onError: (error) => {
       if (error instanceof Error) {
