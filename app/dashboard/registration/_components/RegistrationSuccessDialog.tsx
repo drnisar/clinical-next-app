@@ -13,12 +13,7 @@ const RegistrationSuccessDialog = ({
   regDataForDialog,
 }: Props) => {
   const router = useRouter();
-  // useEffect(() => {
-  //   router.prefetch("/dashboard/registration");
-  // }, [router]);
-  // const handleAddToConsultationQueue = () => {
-  //   router.push("/dashboard/consultation");
-  // };
+
   return (
     <Dialog.Root open={isDialogOpen}>
       <Dialog.Content>

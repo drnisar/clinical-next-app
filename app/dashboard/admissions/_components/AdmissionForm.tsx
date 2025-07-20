@@ -14,10 +14,16 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { admissionModes } from "../../_components/appConstants";
 import { Admission_Discharge } from "@/generated/prisma";
+import toast from "react-hot-toast";
 
 type admission = Admission_Discharge;
 
-const AdmissionForm = ({ registration_id }: { registration_id: string }) => {
+interface Props {
+  registration_id: string;
+  onSuccess?: () => void;
+}
+
+const AdmissionForm = ({ registration_id, onSuccess }: Props) => {
   const { register, control, handleSubmit } = useForm<admission>();
 
   const router = useRouter();
@@ -26,8 +32,15 @@ const AdmissionForm = ({ registration_id }: { registration_id: string }) => {
     mutationFn: async (data: admission) =>
       await axios.post("/api/admission", data),
     onMutate: () => {
+      toast.success("Admission details added successfully");
+      onSuccess?.();
       router.push(`/dashboard/registration/${registration_id}`);
     },
+    // onSuccess: (response)=>{
+    //   toast.success("Admission details added successfully");
+    //   onSuccess?.(response.data);
+    //   router.push(`/dashboard/registration/${registration_id}`);
+    // }
   });
 
   const onSubmit = async (data: admission) => {

@@ -90,6 +90,15 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
     },
     [router, startTransition]
   );
+  const handleDischargeClick = React.useCallback(
+    (admissionId: string) => {
+      setNavigatingId(admissionId);
+      startTransition(() => {
+        router.push("/dashboard/discharge/" + admissionId);
+      });
+    },
+    [router, startTransition]
+  );
 
   // Define columns
   const columns = useMemo(
@@ -148,22 +157,35 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
           const isButtonDisabled =
             isNavPending && navigatingId === props.row.original.admission_id;
           return (
-            <Button
-              size={"1"}
-              variant="soft"
-              color="grass"
-              onClick={() =>
-                handleDetailsClick(props.row.original.admission_id)
-              }
-              disabled={isButtonDisabled}
-            >
-              {isButtonDisabled ? "Loading..." : "Details"}
-            </Button>
+            <Flex gap="1">
+              <Button
+                size={"1"}
+                variant="soft"
+                color="grass"
+                onClick={() =>
+                  handleDetailsClick(props.row.original.admission_id)
+                }
+                disabled={isButtonDisabled}
+              >
+                {isButtonDisabled ? "Loading..." : "Details"}
+              </Button>
+              <Button
+                size={"1"}
+                variant="soft"
+                color="blue"
+                onClick={() =>
+                  handleDischargeClick(props.row.original.admission_id)
+                }
+                disabled={isButtonDisabled}
+              >
+                {isButtonDisabled ? "Loading..." : "Discharge"}
+              </Button>
+            </Flex>
           );
         },
       }),
     ],
-    [isNavPending, navigatingId, handleDetailsClick] // Include dependencies used in column defs
+    [isNavPending, navigatingId, handleDetailsClick, handleDischargeClick] // Include dependencies used in column defs
   );
 
   // useReactTable hook
