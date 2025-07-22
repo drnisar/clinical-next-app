@@ -44,6 +44,11 @@ export type Admitted_Location = $Result.DefaultSelection<Prisma.$Admitted_Locati
  */
 export type OT = $Result.DefaultSelection<Prisma.$OTPayload>
 /**
+ * Model OT_Templates
+ * 
+ */
+export type OT_Templates = $Result.DefaultSelection<Prisma.$OT_TemplatesPayload>
+/**
  * Model Appointment
  * 
  */
@@ -200,6 +205,16 @@ export class PrismaClient<
     * ```
     */
   get oT(): Prisma.OTDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.oT_Templates`: Exposes CRUD operations for the **OT_Templates** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OT_Templates
+    * const oT_Templates = await prisma.oT_Templates.findMany()
+    * ```
+    */
+  get oT_Templates(): Prisma.OT_TemplatesDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.appointment`: Exposes CRUD operations for the **Appointment** model.
@@ -713,6 +728,7 @@ export namespace Prisma {
     Admission_Discharge: 'Admission_Discharge',
     Admitted_Location: 'Admitted_Location',
     OT: 'OT',
+    OT_Templates: 'OT_Templates',
     Appointment: 'Appointment',
     Consultation: 'Consultation',
     Registration: 'Registration',
@@ -738,7 +754,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "appointment" | "consultation" | "registration" | "user" | "account" | "session" | "verificationToken"
+      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "oT_Templates" | "appointment" | "consultation" | "registration" | "user" | "account" | "session" | "verificationToken"
       txIsolationLevel: never
     }
     model: {
@@ -961,6 +977,80 @@ export namespace Prisma {
           count: {
             args: Prisma.OTCountArgs<ExtArgs>
             result: $Utils.Optional<OTCountAggregateOutputType> | number
+          }
+        }
+      }
+      OT_Templates: {
+        payload: Prisma.$OT_TemplatesPayload<ExtArgs>
+        fields: Prisma.OT_TemplatesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OT_TemplatesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OT_TemplatesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          findFirst: {
+            args: Prisma.OT_TemplatesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OT_TemplatesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          findMany: {
+            args: Prisma.OT_TemplatesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>[]
+          }
+          create: {
+            args: Prisma.OT_TemplatesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          createMany: {
+            args: Prisma.OT_TemplatesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.OT_TemplatesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          update: {
+            args: Prisma.OT_TemplatesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          deleteMany: {
+            args: Prisma.OT_TemplatesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OT_TemplatesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.OT_TemplatesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OT_TemplatesPayload>
+          }
+          aggregate: {
+            args: Prisma.OT_TemplatesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOT_Templates>
+          }
+          groupBy: {
+            args: Prisma.OT_TemplatesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OT_TemplatesGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.OT_TemplatesFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.OT_TemplatesAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.OT_TemplatesCountArgs<ExtArgs>
+            result: $Utils.Optional<OT_TemplatesCountAggregateOutputType> | number
           }
         }
       }
@@ -1556,6 +1646,7 @@ export namespace Prisma {
     admission_Discharge?: Admission_DischargeOmit
     admitted_Location?: Admitted_LocationOmit
     oT?: OTOmit
+    oT_Templates?: OT_TemplatesOmit
     appointment?: AppointmentOmit
     consultation?: ConsultationOmit
     registration?: RegistrationOmit
@@ -5469,6 +5560,960 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OTInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OT_Templates
+   */
+
+  export type AggregateOT_Templates = {
+    _count: OT_TemplatesCountAggregateOutputType | null
+    _min: OT_TemplatesMinAggregateOutputType | null
+    _max: OT_TemplatesMaxAggregateOutputType | null
+  }
+
+  export type OT_TemplatesMinAggregateOutputType = {
+    ot_template_id: string | null
+    template_name: string | null
+    procedure: string | null
+    findings: string | null
+    operative_details: string | null
+    closure: string | null
+    instructions: string | null
+  }
+
+  export type OT_TemplatesMaxAggregateOutputType = {
+    ot_template_id: string | null
+    template_name: string | null
+    procedure: string | null
+    findings: string | null
+    operative_details: string | null
+    closure: string | null
+    instructions: string | null
+  }
+
+  export type OT_TemplatesCountAggregateOutputType = {
+    ot_template_id: number
+    template_name: number
+    procedure: number
+    findings: number
+    operative_details: number
+    closure: number
+    instructions: number
+    _all: number
+  }
+
+
+  export type OT_TemplatesMinAggregateInputType = {
+    ot_template_id?: true
+    template_name?: true
+    procedure?: true
+    findings?: true
+    operative_details?: true
+    closure?: true
+    instructions?: true
+  }
+
+  export type OT_TemplatesMaxAggregateInputType = {
+    ot_template_id?: true
+    template_name?: true
+    procedure?: true
+    findings?: true
+    operative_details?: true
+    closure?: true
+    instructions?: true
+  }
+
+  export type OT_TemplatesCountAggregateInputType = {
+    ot_template_id?: true
+    template_name?: true
+    procedure?: true
+    findings?: true
+    operative_details?: true
+    closure?: true
+    instructions?: true
+    _all?: true
+  }
+
+  export type OT_TemplatesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OT_Templates to aggregate.
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OT_Templates to fetch.
+     */
+    orderBy?: OT_TemplatesOrderByWithRelationInput | OT_TemplatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OT_TemplatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OT_Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OT_Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OT_Templates
+    **/
+    _count?: true | OT_TemplatesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OT_TemplatesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OT_TemplatesMaxAggregateInputType
+  }
+
+  export type GetOT_TemplatesAggregateType<T extends OT_TemplatesAggregateArgs> = {
+        [P in keyof T & keyof AggregateOT_Templates]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOT_Templates[P]>
+      : GetScalarType<T[P], AggregateOT_Templates[P]>
+  }
+
+
+
+
+  export type OT_TemplatesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OT_TemplatesWhereInput
+    orderBy?: OT_TemplatesOrderByWithAggregationInput | OT_TemplatesOrderByWithAggregationInput[]
+    by: OT_TemplatesScalarFieldEnum[] | OT_TemplatesScalarFieldEnum
+    having?: OT_TemplatesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OT_TemplatesCountAggregateInputType | true
+    _min?: OT_TemplatesMinAggregateInputType
+    _max?: OT_TemplatesMaxAggregateInputType
+  }
+
+  export type OT_TemplatesGroupByOutputType = {
+    ot_template_id: string
+    template_name: string
+    procedure: string
+    findings: string
+    operative_details: string
+    closure: string
+    instructions: string
+    _count: OT_TemplatesCountAggregateOutputType | null
+    _min: OT_TemplatesMinAggregateOutputType | null
+    _max: OT_TemplatesMaxAggregateOutputType | null
+  }
+
+  type GetOT_TemplatesGroupByPayload<T extends OT_TemplatesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OT_TemplatesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OT_TemplatesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OT_TemplatesGroupByOutputType[P]>
+            : GetScalarType<T[P], OT_TemplatesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OT_TemplatesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ot_template_id?: boolean
+    template_name?: boolean
+    procedure?: boolean
+    findings?: boolean
+    operative_details?: boolean
+    closure?: boolean
+    instructions?: boolean
+  }, ExtArgs["result"]["oT_Templates"]>
+
+
+
+  export type OT_TemplatesSelectScalar = {
+    ot_template_id?: boolean
+    template_name?: boolean
+    procedure?: boolean
+    findings?: boolean
+    operative_details?: boolean
+    closure?: boolean
+    instructions?: boolean
+  }
+
+  export type OT_TemplatesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ot_template_id" | "template_name" | "procedure" | "findings" | "operative_details" | "closure" | "instructions", ExtArgs["result"]["oT_Templates"]>
+
+  export type $OT_TemplatesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OT_Templates"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      ot_template_id: string
+      template_name: string
+      procedure: string
+      findings: string
+      operative_details: string
+      closure: string
+      instructions: string
+    }, ExtArgs["result"]["oT_Templates"]>
+    composites: {}
+  }
+
+  type OT_TemplatesGetPayload<S extends boolean | null | undefined | OT_TemplatesDefaultArgs> = $Result.GetResult<Prisma.$OT_TemplatesPayload, S>
+
+  type OT_TemplatesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OT_TemplatesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OT_TemplatesCountAggregateInputType | true
+    }
+
+  export interface OT_TemplatesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OT_Templates'], meta: { name: 'OT_Templates' } }
+    /**
+     * Find zero or one OT_Templates that matches the filter.
+     * @param {OT_TemplatesFindUniqueArgs} args - Arguments to find a OT_Templates
+     * @example
+     * // Get one OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OT_TemplatesFindUniqueArgs>(args: SelectSubset<T, OT_TemplatesFindUniqueArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OT_Templates that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OT_TemplatesFindUniqueOrThrowArgs} args - Arguments to find a OT_Templates
+     * @example
+     * // Get one OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OT_TemplatesFindUniqueOrThrowArgs>(args: SelectSubset<T, OT_TemplatesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OT_Templates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesFindFirstArgs} args - Arguments to find a OT_Templates
+     * @example
+     * // Get one OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OT_TemplatesFindFirstArgs>(args?: SelectSubset<T, OT_TemplatesFindFirstArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OT_Templates that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesFindFirstOrThrowArgs} args - Arguments to find a OT_Templates
+     * @example
+     * // Get one OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OT_TemplatesFindFirstOrThrowArgs>(args?: SelectSubset<T, OT_TemplatesFindFirstOrThrowArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OT_Templates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findMany()
+     * 
+     * // Get first 10 OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.findMany({ take: 10 })
+     * 
+     * // Only select the `ot_template_id`
+     * const oT_TemplatesWithOt_template_idOnly = await prisma.oT_Templates.findMany({ select: { ot_template_id: true } })
+     * 
+     */
+    findMany<T extends OT_TemplatesFindManyArgs>(args?: SelectSubset<T, OT_TemplatesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OT_Templates.
+     * @param {OT_TemplatesCreateArgs} args - Arguments to create a OT_Templates.
+     * @example
+     * // Create one OT_Templates
+     * const OT_Templates = await prisma.oT_Templates.create({
+     *   data: {
+     *     // ... data to create a OT_Templates
+     *   }
+     * })
+     * 
+     */
+    create<T extends OT_TemplatesCreateArgs>(args: SelectSubset<T, OT_TemplatesCreateArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OT_Templates.
+     * @param {OT_TemplatesCreateManyArgs} args - Arguments to create many OT_Templates.
+     * @example
+     * // Create many OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OT_TemplatesCreateManyArgs>(args?: SelectSubset<T, OT_TemplatesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a OT_Templates.
+     * @param {OT_TemplatesDeleteArgs} args - Arguments to delete one OT_Templates.
+     * @example
+     * // Delete one OT_Templates
+     * const OT_Templates = await prisma.oT_Templates.delete({
+     *   where: {
+     *     // ... filter to delete one OT_Templates
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OT_TemplatesDeleteArgs>(args: SelectSubset<T, OT_TemplatesDeleteArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OT_Templates.
+     * @param {OT_TemplatesUpdateArgs} args - Arguments to update one OT_Templates.
+     * @example
+     * // Update one OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OT_TemplatesUpdateArgs>(args: SelectSubset<T, OT_TemplatesUpdateArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OT_Templates.
+     * @param {OT_TemplatesDeleteManyArgs} args - Arguments to filter OT_Templates to delete.
+     * @example
+     * // Delete a few OT_Templates
+     * const { count } = await prisma.oT_Templates.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OT_TemplatesDeleteManyArgs>(args?: SelectSubset<T, OT_TemplatesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OT_Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OT_TemplatesUpdateManyArgs>(args: SelectSubset<T, OT_TemplatesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one OT_Templates.
+     * @param {OT_TemplatesUpsertArgs} args - Arguments to update or create a OT_Templates.
+     * @example
+     * // Update or create a OT_Templates
+     * const oT_Templates = await prisma.oT_Templates.upsert({
+     *   create: {
+     *     // ... data to create a OT_Templates
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OT_Templates we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OT_TemplatesUpsertArgs>(args: SelectSubset<T, OT_TemplatesUpsertArgs<ExtArgs>>): Prisma__OT_TemplatesClient<$Result.GetResult<Prisma.$OT_TemplatesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OT_Templates that matches the filter.
+     * @param {OT_TemplatesFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const oT_Templates = await prisma.oT_Templates.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: OT_TemplatesFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a OT_Templates.
+     * @param {OT_TemplatesAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const oT_Templates = await prisma.oT_Templates.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: OT_TemplatesAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of OT_Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesCountArgs} args - Arguments to filter OT_Templates to count.
+     * @example
+     * // Count the number of OT_Templates
+     * const count = await prisma.oT_Templates.count({
+     *   where: {
+     *     // ... the filter for the OT_Templates we want to count
+     *   }
+     * })
+    **/
+    count<T extends OT_TemplatesCountArgs>(
+      args?: Subset<T, OT_TemplatesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OT_TemplatesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OT_Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OT_TemplatesAggregateArgs>(args: Subset<T, OT_TemplatesAggregateArgs>): Prisma.PrismaPromise<GetOT_TemplatesAggregateType<T>>
+
+    /**
+     * Group by OT_Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OT_TemplatesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OT_TemplatesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OT_TemplatesGroupByArgs['orderBy'] }
+        : { orderBy?: OT_TemplatesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OT_TemplatesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOT_TemplatesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OT_Templates model
+   */
+  readonly fields: OT_TemplatesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OT_Templates.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OT_TemplatesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OT_Templates model
+   */
+  interface OT_TemplatesFieldRefs {
+    readonly ot_template_id: FieldRef<"OT_Templates", 'String'>
+    readonly template_name: FieldRef<"OT_Templates", 'String'>
+    readonly procedure: FieldRef<"OT_Templates", 'String'>
+    readonly findings: FieldRef<"OT_Templates", 'String'>
+    readonly operative_details: FieldRef<"OT_Templates", 'String'>
+    readonly closure: FieldRef<"OT_Templates", 'String'>
+    readonly instructions: FieldRef<"OT_Templates", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OT_Templates findUnique
+   */
+  export type OT_TemplatesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter, which OT_Templates to fetch.
+     */
+    where: OT_TemplatesWhereUniqueInput
+  }
+
+  /**
+   * OT_Templates findUniqueOrThrow
+   */
+  export type OT_TemplatesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter, which OT_Templates to fetch.
+     */
+    where: OT_TemplatesWhereUniqueInput
+  }
+
+  /**
+   * OT_Templates findFirst
+   */
+  export type OT_TemplatesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter, which OT_Templates to fetch.
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OT_Templates to fetch.
+     */
+    orderBy?: OT_TemplatesOrderByWithRelationInput | OT_TemplatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OT_Templates.
+     */
+    cursor?: OT_TemplatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OT_Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OT_Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OT_Templates.
+     */
+    distinct?: OT_TemplatesScalarFieldEnum | OT_TemplatesScalarFieldEnum[]
+  }
+
+  /**
+   * OT_Templates findFirstOrThrow
+   */
+  export type OT_TemplatesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter, which OT_Templates to fetch.
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OT_Templates to fetch.
+     */
+    orderBy?: OT_TemplatesOrderByWithRelationInput | OT_TemplatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OT_Templates.
+     */
+    cursor?: OT_TemplatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OT_Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OT_Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OT_Templates.
+     */
+    distinct?: OT_TemplatesScalarFieldEnum | OT_TemplatesScalarFieldEnum[]
+  }
+
+  /**
+   * OT_Templates findMany
+   */
+  export type OT_TemplatesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter, which OT_Templates to fetch.
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OT_Templates to fetch.
+     */
+    orderBy?: OT_TemplatesOrderByWithRelationInput | OT_TemplatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OT_Templates.
+     */
+    cursor?: OT_TemplatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OT_Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OT_Templates.
+     */
+    skip?: number
+    distinct?: OT_TemplatesScalarFieldEnum | OT_TemplatesScalarFieldEnum[]
+  }
+
+  /**
+   * OT_Templates create
+   */
+  export type OT_TemplatesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * The data needed to create a OT_Templates.
+     */
+    data: XOR<OT_TemplatesCreateInput, OT_TemplatesUncheckedCreateInput>
+  }
+
+  /**
+   * OT_Templates createMany
+   */
+  export type OT_TemplatesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OT_Templates.
+     */
+    data: OT_TemplatesCreateManyInput | OT_TemplatesCreateManyInput[]
+  }
+
+  /**
+   * OT_Templates update
+   */
+  export type OT_TemplatesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * The data needed to update a OT_Templates.
+     */
+    data: XOR<OT_TemplatesUpdateInput, OT_TemplatesUncheckedUpdateInput>
+    /**
+     * Choose, which OT_Templates to update.
+     */
+    where: OT_TemplatesWhereUniqueInput
+  }
+
+  /**
+   * OT_Templates updateMany
+   */
+  export type OT_TemplatesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OT_Templates.
+     */
+    data: XOR<OT_TemplatesUpdateManyMutationInput, OT_TemplatesUncheckedUpdateManyInput>
+    /**
+     * Filter which OT_Templates to update
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * Limit how many OT_Templates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OT_Templates upsert
+   */
+  export type OT_TemplatesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * The filter to search for the OT_Templates to update in case it exists.
+     */
+    where: OT_TemplatesWhereUniqueInput
+    /**
+     * In case the OT_Templates found by the `where` argument doesn't exist, create a new OT_Templates with this data.
+     */
+    create: XOR<OT_TemplatesCreateInput, OT_TemplatesUncheckedCreateInput>
+    /**
+     * In case the OT_Templates was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OT_TemplatesUpdateInput, OT_TemplatesUncheckedUpdateInput>
+  }
+
+  /**
+   * OT_Templates delete
+   */
+  export type OT_TemplatesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
+    /**
+     * Filter which OT_Templates to delete.
+     */
+    where: OT_TemplatesWhereUniqueInput
+  }
+
+  /**
+   * OT_Templates deleteMany
+   */
+  export type OT_TemplatesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OT_Templates to delete
+     */
+    where?: OT_TemplatesWhereInput
+    /**
+     * Limit how many OT_Templates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OT_Templates findRaw
+   */
+  export type OT_TemplatesFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * OT_Templates aggregateRaw
+   */
+  export type OT_TemplatesAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * OT_Templates without action
+   */
+  export type OT_TemplatesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OT_Templates
+     */
+    select?: OT_TemplatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OT_Templates
+     */
+    omit?: OT_TemplatesOmit<ExtArgs> | null
   }
 
 
@@ -12807,6 +13852,19 @@ export namespace Prisma {
   export type OTScalarFieldEnum = (typeof OTScalarFieldEnum)[keyof typeof OTScalarFieldEnum]
 
 
+  export const OT_TemplatesScalarFieldEnum: {
+    ot_template_id: 'ot_template_id',
+    template_name: 'template_name',
+    procedure: 'procedure',
+    findings: 'findings',
+    operative_details: 'operative_details',
+    closure: 'closure',
+    instructions: 'instructions'
+  };
+
+  export type OT_TemplatesScalarFieldEnum = (typeof OT_TemplatesScalarFieldEnum)[keyof typeof OT_TemplatesScalarFieldEnum]
+
+
   export const AppointmentScalarFieldEnum: {
     appointment_id: 'appointment_id',
     created_at: 'created_at',
@@ -13336,6 +14394,68 @@ export namespace Prisma {
     finalize?: IntNullableWithAggregatesFilter<"OT"> | number | null
     created_at?: DateTimeWithAggregatesFilter<"OT"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"OT"> | Date | string
+  }
+
+  export type OT_TemplatesWhereInput = {
+    AND?: OT_TemplatesWhereInput | OT_TemplatesWhereInput[]
+    OR?: OT_TemplatesWhereInput[]
+    NOT?: OT_TemplatesWhereInput | OT_TemplatesWhereInput[]
+    ot_template_id?: StringFilter<"OT_Templates"> | string
+    template_name?: StringFilter<"OT_Templates"> | string
+    procedure?: StringFilter<"OT_Templates"> | string
+    findings?: StringFilter<"OT_Templates"> | string
+    operative_details?: StringFilter<"OT_Templates"> | string
+    closure?: StringFilter<"OT_Templates"> | string
+    instructions?: StringFilter<"OT_Templates"> | string
+  }
+
+  export type OT_TemplatesOrderByWithRelationInput = {
+    ot_template_id?: SortOrder
+    template_name?: SortOrder
+    procedure?: SortOrder
+    findings?: SortOrder
+    operative_details?: SortOrder
+    closure?: SortOrder
+    instructions?: SortOrder
+  }
+
+  export type OT_TemplatesWhereUniqueInput = Prisma.AtLeast<{
+    ot_template_id?: string
+    AND?: OT_TemplatesWhereInput | OT_TemplatesWhereInput[]
+    OR?: OT_TemplatesWhereInput[]
+    NOT?: OT_TemplatesWhereInput | OT_TemplatesWhereInput[]
+    template_name?: StringFilter<"OT_Templates"> | string
+    procedure?: StringFilter<"OT_Templates"> | string
+    findings?: StringFilter<"OT_Templates"> | string
+    operative_details?: StringFilter<"OT_Templates"> | string
+    closure?: StringFilter<"OT_Templates"> | string
+    instructions?: StringFilter<"OT_Templates"> | string
+  }, "ot_template_id">
+
+  export type OT_TemplatesOrderByWithAggregationInput = {
+    ot_template_id?: SortOrder
+    template_name?: SortOrder
+    procedure?: SortOrder
+    findings?: SortOrder
+    operative_details?: SortOrder
+    closure?: SortOrder
+    instructions?: SortOrder
+    _count?: OT_TemplatesCountOrderByAggregateInput
+    _max?: OT_TemplatesMaxOrderByAggregateInput
+    _min?: OT_TemplatesMinOrderByAggregateInput
+  }
+
+  export type OT_TemplatesScalarWhereWithAggregatesInput = {
+    AND?: OT_TemplatesScalarWhereWithAggregatesInput | OT_TemplatesScalarWhereWithAggregatesInput[]
+    OR?: OT_TemplatesScalarWhereWithAggregatesInput[]
+    NOT?: OT_TemplatesScalarWhereWithAggregatesInput | OT_TemplatesScalarWhereWithAggregatesInput[]
+    ot_template_id?: StringWithAggregatesFilter<"OT_Templates"> | string
+    template_name?: StringWithAggregatesFilter<"OT_Templates"> | string
+    procedure?: StringWithAggregatesFilter<"OT_Templates"> | string
+    findings?: StringWithAggregatesFilter<"OT_Templates"> | string
+    operative_details?: StringWithAggregatesFilter<"OT_Templates"> | string
+    closure?: StringWithAggregatesFilter<"OT_Templates"> | string
+    instructions?: StringWithAggregatesFilter<"OT_Templates"> | string
   }
 
   export type AppointmentWhereInput = {
@@ -14240,6 +15360,72 @@ export namespace Prisma {
     finalize?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OT_TemplatesCreateInput = {
+    ot_template_id?: string
+    template_name: string
+    procedure: string
+    findings: string
+    operative_details: string
+    closure: string
+    instructions: string
+  }
+
+  export type OT_TemplatesUncheckedCreateInput = {
+    ot_template_id?: string
+    template_name: string
+    procedure: string
+    findings: string
+    operative_details: string
+    closure: string
+    instructions: string
+  }
+
+  export type OT_TemplatesUpdateInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    procedure?: StringFieldUpdateOperationsInput | string
+    findings?: StringFieldUpdateOperationsInput | string
+    operative_details?: StringFieldUpdateOperationsInput | string
+    closure?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OT_TemplatesUncheckedUpdateInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    procedure?: StringFieldUpdateOperationsInput | string
+    findings?: StringFieldUpdateOperationsInput | string
+    operative_details?: StringFieldUpdateOperationsInput | string
+    closure?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OT_TemplatesCreateManyInput = {
+    ot_template_id?: string
+    template_name: string
+    procedure: string
+    findings: string
+    operative_details: string
+    closure: string
+    instructions: string
+  }
+
+  export type OT_TemplatesUpdateManyMutationInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    procedure?: StringFieldUpdateOperationsInput | string
+    findings?: StringFieldUpdateOperationsInput | string
+    operative_details?: StringFieldUpdateOperationsInput | string
+    closure?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OT_TemplatesUncheckedUpdateManyInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    procedure?: StringFieldUpdateOperationsInput | string
+    findings?: StringFieldUpdateOperationsInput | string
+    operative_details?: StringFieldUpdateOperationsInput | string
+    closure?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
   }
 
   export type AppointmentCreateInput = {
@@ -15215,6 +16401,36 @@ export namespace Prisma {
 
   export type OTSumOrderByAggregateInput = {
     finalize?: SortOrder
+  }
+
+  export type OT_TemplatesCountOrderByAggregateInput = {
+    ot_template_id?: SortOrder
+    template_name?: SortOrder
+    procedure?: SortOrder
+    findings?: SortOrder
+    operative_details?: SortOrder
+    closure?: SortOrder
+    instructions?: SortOrder
+  }
+
+  export type OT_TemplatesMaxOrderByAggregateInput = {
+    ot_template_id?: SortOrder
+    template_name?: SortOrder
+    procedure?: SortOrder
+    findings?: SortOrder
+    operative_details?: SortOrder
+    closure?: SortOrder
+    instructions?: SortOrder
+  }
+
+  export type OT_TemplatesMinOrderByAggregateInput = {
+    ot_template_id?: SortOrder
+    template_name?: SortOrder
+    procedure?: SortOrder
+    findings?: SortOrder
+    operative_details?: SortOrder
+    closure?: SortOrder
+    instructions?: SortOrder
   }
 
   export type AppointmentCountOrderByAggregateInput = {

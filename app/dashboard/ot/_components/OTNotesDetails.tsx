@@ -1,70 +1,119 @@
 import { OT } from "@/generated/prisma";
-import { DataList } from "@radix-ui/themes";
+import { Grid, Text } from "@radix-ui/themes";
 import React from "react";
 
 interface Props {
   ot: OT;
 }
+
 const OTNotesDetails = ({ ot }: Props) => {
   return (
-    <>
-      <DataList.Root className="w-full bg-jade-50 p-4">
-        <DataList.Item>
-          <DataList.Label>Procedure</DataList.Label>
-          <DataList.Value>{ot.procedure_name}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Procedure Date</DataList.Label>
-          <DataList.Value>
-            {ot.surgery_date?.toLocaleDateString("en-GB")}
-          </DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Surgeon</DataList.Label>
-          <DataList.Value>{ot.surgeon}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Assistant 1</DataList.Label>
-          <DataList.Value>{ot.assistant_1}</DataList.Value>
-        </DataList.Item>
-        {ot.assistant_2 && (
-          <DataList.Item>
-            <DataList.Label>Assistant 2</DataList.Label>
-            <DataList.Value>{ot.assistant_2}</DataList.Value>
-          </DataList.Item>
+    <div className="container">
+      <Grid columns="8" gap="4" className="w-full">
+        {/* Row 1: Procedure and Date */}
+        <Text size="2" color="gray" className="col-span-1">
+          Procedure
+        </Text>
+        <Text size="2" className="col-span-5">
+          {ot.procedure_name}
+        </Text>
+        <Text size="2" color="gray" className="col-span-1 text-right">
+          Date
+        </Text>
+        <Text size="2" className="col-span-1">
+          {ot.surgery_date?.toLocaleDateString("en-GB")}
+        </Text>
+
+        {/* Row 2: Surgeon and Assistant 1 */}
+        <Text size="2" color="gray" className="col-span-1">
+          Surgeon
+        </Text>
+        <Text size="2" className="col-span-1">
+          {ot.surgeon}
+        </Text>
+        <Text size="2" color="gray" className="col-span-1 text-right">
+          Assistant 1
+        </Text>
+        <Text size="2" className="col-span-1">
+          {ot.assistant_1}
+        </Text>
+
+        {ot.assistant_2 ? (
+          <>
+            {" "}
+            <Text size="2" color="gray" className="col-span-1 text-right">
+              {ot.assistant_2 ? "Assistant 2" : ""}
+            </Text>
+            <Text size="2" className="col-span-1">
+              {ot.assistant_2 || ""}
+            </Text>
+          </>
+        ) : (
+          <div className="col-span-2"></div>
         )}
-        {ot.assistant_3 && (
-          <DataList.Item>
-            <DataList.Label>Assistant 3</DataList.Label>
-            <DataList.Value>{ot.assistant_3}</DataList.Value>
-          </DataList.Item>
+        {ot.assistant_3 ? (
+          <>
+            {" "}
+            <Text size="2" color="gray" className="col-span-1 text-right">
+              {ot.assistant_3 ? "Assistant 3" : ""}
+            </Text>
+            <Text size="2" className="col-span-1">
+              {ot.assistant_3 || ""}
+            </Text>
+          </>
+        ) : (
+          <div className="col-span-2"></div>
         )}
-        <DataList.Item>
-          <DataList.Label>Anaesthesia</DataList.Label>
-          <DataList.Value>{ot.anaesthesia}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Anaesthetist</DataList.Label>
-          <DataList.Value>{ot.anaesthetist}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Findings</DataList.Label>
-          <DataList.Value>{ot.findings}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Procedure Details</DataList.Label>
-          <DataList.Value>{ot.operative_details}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Closure</DataList.Label>
-          <DataList.Value>{ot.closure}</DataList.Value>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>Post Op Instructions</DataList.Label>
-          <DataList.Value>{ot.postop_instructions}</DataList.Value>
-        </DataList.Item>
-      </DataList.Root>
-    </>
+
+        {/* Row 4: Anaesthesia and Anaesthetist */}
+        <div className="col-span-8 grid grid-cols-8 gap-4">
+          <Text size="2" color="gray" className="col-span-1">
+            Anaesthesia
+          </Text>
+          <Text size="2" className="col-span-1">
+            {ot.anaesthesia}
+          </Text>
+          <Text size="2" color="gray" className="col-span-1 text-right">
+            Anaesthetist
+          </Text>
+          <Text size="2" className="col-span-1">
+            {ot.anaesthetist}
+          </Text>
+        </div>
+
+        {/* Row 5: Findings */}
+        <Text size="2" color="gray" className="col-span-1">
+          Findings
+        </Text>
+        <Text size="2" className="col-span-7">
+          {ot.findings}
+        </Text>
+
+        {/* Row 6: Operative Details */}
+        <Text size="2" color="gray" className="col-span-1">
+          Operative Details
+        </Text>
+        <Text size="2" className="col-span-7">
+          {ot.operative_details}
+        </Text>
+
+        {/* Row 7: Closure */}
+        <Text size="2" color="gray" className="col-span-1">
+          Closure
+        </Text>
+        <Text size="2" className="col-span-7">
+          {ot.closure}
+        </Text>
+
+        {/* Row 8: Postoperative Instructions */}
+        <Text size="2" color="gray" className="col-span-1">
+          Postoperative Instructions
+        </Text>
+        <Text size="2" className="col-span-7">
+          {ot.postop_instructions}
+        </Text>
+      </Grid>
+    </div>
   );
 };
 

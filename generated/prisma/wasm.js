@@ -169,6 +169,16 @@ exports.Prisma.OTScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.OT_TemplatesScalarFieldEnum = {
+  ot_template_id: 'ot_template_id',
+  template_name: 'template_name',
+  procedure: 'procedure',
+  findings: 'findings',
+  operative_details: 'operative_details',
+  closure: 'closure',
+  instructions: 'instructions'
+};
+
 exports.Prisma.AppointmentScalarFieldEnum = {
   appointment_id: 'appointment_id',
   created_at: 'created_at',
@@ -261,6 +271,7 @@ exports.Prisma.ModelName = {
   Admission_Discharge: 'Admission_Discharge',
   Admitted_Location: 'Admitted_Location',
   OT: 'OT',
+  OT_Templates: 'OT_Templates',
   Appointment: 'Appointment',
   Consultation: 'Consultation',
   Registration: 'Registration',
