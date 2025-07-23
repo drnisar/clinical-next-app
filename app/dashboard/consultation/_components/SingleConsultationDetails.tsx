@@ -52,22 +52,17 @@ const SingleConsultationDetails = ({
                 {/* Handle array instructions */}
                 {Array.isArray(consultation.instructions) && (
                   <Box>
-                    {consultation.instructions
-                      .filter(
-                        (item): item is string | { instruction: string } =>
-                          item !== null && item !== undefined
+                    {consultation.instructions.map(
+                      (
+                        item: string | { instruction: string },
+                        index: number
+                      ) => (
+                        <Text key={index} size="2" as="p" mb="1">
+                          {index + 1} .{" "}
+                          {typeof item === "string" ? item : item.instruction}
+                        </Text>
                       )
-                      .map(
-                        (
-                          item: string | { instruction: string },
-                          index: number
-                        ) => (
-                          <Text key={index} size="2" as="p" mb="1">
-                            {index + 1} .{" "}
-                            {typeof item === "string" ? item : item.instruction}
-                          </Text>
-                        )
-                      )}
+                    )}
                   </Box>
                 )}
               </Box>
