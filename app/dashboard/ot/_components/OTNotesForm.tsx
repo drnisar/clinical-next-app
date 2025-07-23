@@ -48,9 +48,9 @@ const OTNotesForm = ({ ot }: Props) => {
     register,
     handleSubmit,
     reset,
-    watch,
     setValue,
     getValues,
+    watch,
     // formState: { errors },
   } = useForm<OTNotes>({
     defaultValues: {

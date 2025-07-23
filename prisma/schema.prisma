@@ -101,7 +101,7 @@ model Consultation {
   diagnosis       String?
   examination     Examination[]
   history         String?
-  instructions    Json?
+  instructions    Instruction[]
   investigations  Investigation[]
   plan            String?
   medications     Medication[]

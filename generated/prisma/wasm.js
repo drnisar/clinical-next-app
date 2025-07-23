@@ -196,7 +196,6 @@ exports.Prisma.ConsultationScalarFieldEnum = {
   created_at: 'created_at',
   diagnosis: 'diagnosis',
   history: 'history',
-  instructions: 'instructions',
   plan: 'plan',
   status: 'status',
   registration_id: 'registration_id',

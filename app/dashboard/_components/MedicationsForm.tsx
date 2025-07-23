@@ -11,6 +11,7 @@ import {
   drugsFrequency,
   intervals,
 } from "./appConstants";
+import AddToMedsTemplateDialog from "./AddToMedsTemplateDialog";
 
 interface Props {
   slug: string; // /api/consultation/[id]
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const MedicationsForm = ({ id, slug, medications }: Props) => {
-  const { control, register, getValues } = useForm({
+  const { control, register, getValues, watch } = useForm({
     defaultValues: {
       drugs: medications,
     },
@@ -36,6 +37,8 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
     console.log("Current Form Data:", currentData);
     return { medications: currentData };
   };
+
+  const { drugs: drugsArray } = watch();
 
   return (
     <>
@@ -150,6 +153,7 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
             slug={slug}
             // className="w-full max-w-none"
           />
+          <AddToMedsTemplateDialog drugsArray={drugsArray} />
         </Flex>
       </form>
     </>
