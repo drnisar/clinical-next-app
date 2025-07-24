@@ -144,6 +144,12 @@ model Registration {
   Admitted_Location   Admitted_Location[]
 }
 
+model MedsTemplate {
+  meds_template_id String       @id @default(auto()) @map("_id") @db.ObjectId
+  template_name    String
+  meds             Medication[]
+}
+
 type Medication {
   drug_name    String
   drug_dose    String

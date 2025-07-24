@@ -1,5 +1,6 @@
 import {
   getConsultationById,
+  getMedsTemplates,
   getRegistrationById,
 } from "@/app/actions/actions";
 import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
@@ -29,6 +30,11 @@ const ConsultationEditPage = async ({
     return <div>Registration not found</div>;
   }
 
+  const templates = await getMedsTemplates();
+  if (!templates) {
+    return <div>No medication templates found</div>;
+  }
+
   return (
     <>
       <Flex direction="column" gap="4" p="4">
@@ -37,7 +43,11 @@ const ConsultationEditPage = async ({
         </Flex>
         <RegistrationDetailsCard registration={consultation?.registration} />
         <Flex gap={"8"}>
-          <ConsultationTabs consultation={consultation} type={type || ""} />
+          <ConsultationTabs
+            consultation={consultation}
+            type={type || ""}
+            templates={templates}
+          />
           <Flex direction="column" gap="4">
             <ConsultationDetailsForSingleRegId consultation={consultation} />
             <MedsDisplayEnglish meds={consultation.medications} />

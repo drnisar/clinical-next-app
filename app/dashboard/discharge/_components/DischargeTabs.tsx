@@ -3,7 +3,7 @@ import { Box, Flex, Tabs } from "@radix-ui/themes";
 import { useState } from "react";
 import DischargeForm from "./DischargeForm";
 // import { Admission_Discharge } from "@prisma/client";
-import { Admission_Discharge } from "@/generated/prisma";
+import { Admission_Discharge, MedsTemplate } from "@/generated/prisma";
 import MedicationsForm from "../../_components/MedicationsForm";
 import InstructionsArray from "../../consultation/_components/InstructionsArray";
 import {
@@ -32,9 +32,10 @@ type Instruction = {
 };
 interface Props {
   admission: Admission_Discharge;
+  templates: MedsTemplate[];
 }
 
-const DischargeTabs = ({ admission }: Props) => {
+const DischargeTabs = ({ admission, templates }: Props) => {
   const [activeTab, setActiveTab] = useState(tabValues[0]);
 
   const handleSaveSuccess = () => {
@@ -105,6 +106,7 @@ const DischargeTabs = ({ admission }: Props) => {
                 medications={admission.medications}
                 slug="/api/admission"
                 id={admission.admission_id}
+                templates={templates || []}
               />
             </Tabs.Content>
             <Tabs.Content value="Instructions">

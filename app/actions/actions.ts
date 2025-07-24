@@ -100,3 +100,8 @@ export const getConsultationById = unstable_cache(
   ["consultation-by-id"],
   { tags: ["consultation", "consultation-by-id"], revalidate: 3600 }
 );
+
+export const getMedsTemplates = async () => {
+  const templates = await prisma.medsTemplate.findMany();
+  return templates;
+};

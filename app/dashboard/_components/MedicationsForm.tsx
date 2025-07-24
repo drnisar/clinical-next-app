@@ -1,5 +1,5 @@
 "use client";
-import { Medication } from "@/generated/prisma";
+import { Medication, MedsTemplate } from "@/generated/prisma";
 import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -12,16 +12,19 @@ import {
   intervals,
 } from "./appConstants";
 import AddToMedsTemplateDialog from "./AddToMedsTemplateDialog";
+import MedsTemplateSelectionDialog from "./MedsTemplateSelectionDialog";
+import { useCallback } from "react";
 
 interface Props {
   slug: string; // /api/consultation/[id]
   id: string;
   medications: Medication[];
+  templates: MedsTemplate[];
   //   defDrugs?: Medication[];
 }
 
-const MedicationsForm = ({ id, slug, medications }: Props) => {
-  const { control, register, getValues, watch } = useForm({
+const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
+  const { control, register, getValues, watch, reset } = useForm({
     defaultValues: {
       drugs: medications,
     },
@@ -34,14 +37,38 @@ const MedicationsForm = ({ id, slug, medications }: Props) => {
 
   const getCurrentFormData = () => {
     const currentData = getValues("drugs");
-    console.log("Current Form Data:", currentData);
     return { medications: currentData };
   };
 
   const { drugs: drugsArray } = watch();
 
+  const handleTemplateSelect = useCallback((templates: MedsTemplate[]) => {
+    if (!templates || templates.length === 0) return;
+    // For example, use the first template in the array
+    const template = templates[0];
+    if (!template || !template.meds || template.meds.length === 0) return;
+    console.log("Selected Template:", template.meds);
+    reset({
+      drugs: template.meds.map((drug) => ({
+        drug_name: drug.drug_name,
+        drug_dose: drug.drug_dose,
+        amount: drug.amount,
+        drug_form: drug.drug_form,
+        route: drug.route,
+        frequency: drug.frequency,
+        duration: drug.duration,
+        interval: drug.interval,
+        instructions: drug.instructions || "",
+      })),
+    });
+  }, []);
+
   return (
     <>
+      <MedsTemplateSelectionDialog
+        templates={templates}
+        onTemplateSelect={handleTemplateSelect}
+      />
       <form onSubmit={(e) => e.preventDefault()}>
         {fields.map((field, index) => (
           <Flex

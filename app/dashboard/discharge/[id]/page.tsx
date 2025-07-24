@@ -4,6 +4,7 @@ import RegistrationDetailsCard from "../../registration/_components/Registration
 import { Button, Flex, Link, Spinner } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { getMedsTemplates } from "@/app/actions/actions";
 
 interface Props {
   params: Promise<{
@@ -24,6 +25,8 @@ const NewDischargePage = async ({ params }: Props) => {
   });
   if (!registration) return null;
 
+  const templates = await getMedsTemplates();
+
   return (
     <Suspense fallback={<Spinner />}>
       <Flex gap={"2"} justify={"end"}>
@@ -40,7 +43,7 @@ const NewDischargePage = async ({ params }: Props) => {
         </Link>
       </Flex>
       <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission={admission} />
+      <DischargeTabs admission={admission} templates={templates} />
     </Suspense>
   );
 };

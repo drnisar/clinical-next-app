@@ -69,6 +69,11 @@ export type Consultation = $Result.DefaultSelection<Prisma.$ConsultationPayload>
  */
 export type Registration = $Result.DefaultSelection<Prisma.$RegistrationPayload>
 /**
+ * Model MedsTemplate
+ * 
+ */
+export type MedsTemplate = $Result.DefaultSelection<Prisma.$MedsTemplatePayload>
+/**
  * Model User
  * 
  */
@@ -250,6 +255,16 @@ export class PrismaClient<
     * ```
     */
   get registration(): Prisma.RegistrationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.medsTemplate`: Exposes CRUD operations for the **MedsTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MedsTemplates
+    * const medsTemplates = await prisma.medsTemplate.findMany()
+    * ```
+    */
+  get medsTemplate(): Prisma.MedsTemplateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -737,6 +752,7 @@ export namespace Prisma {
     Appointment: 'Appointment',
     Consultation: 'Consultation',
     Registration: 'Registration',
+    MedsTemplate: 'MedsTemplate',
     User: 'User',
     Account: 'Account',
     Session: 'Session',
@@ -759,7 +775,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "oT_Templates" | "appointment" | "consultation" | "registration" | "user" | "account" | "session" | "verificationToken"
+      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "oT_Templates" | "appointment" | "consultation" | "registration" | "medsTemplate" | "user" | "account" | "session" | "verificationToken"
       txIsolationLevel: never
     }
     model: {
@@ -1281,6 +1297,80 @@ export namespace Prisma {
           }
         }
       }
+      MedsTemplate: {
+        payload: Prisma.$MedsTemplatePayload<ExtArgs>
+        fields: Prisma.MedsTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MedsTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MedsTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.MedsTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MedsTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.MedsTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.MedsTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.MedsTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MedsTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          update: {
+            args: Prisma.MedsTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.MedsTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MedsTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MedsTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MedsTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.MedsTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMedsTemplate>
+          }
+          groupBy: {
+            args: Prisma.MedsTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MedsTemplateGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.MedsTemplateFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.MedsTemplateAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.MedsTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<MedsTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1655,6 +1745,7 @@ export namespace Prisma {
     appointment?: AppointmentOmit
     consultation?: ConsultationOmit
     registration?: RegistrationOmit
+    medsTemplate?: MedsTemplateOmit
     user?: UserOmit
     account?: AccountOmit
     session?: SessionOmit
@@ -9809,6 +9900,949 @@ export namespace Prisma {
 
 
   /**
+   * Model MedsTemplate
+   */
+
+  export type AggregateMedsTemplate = {
+    _count: MedsTemplateCountAggregateOutputType | null
+    _min: MedsTemplateMinAggregateOutputType | null
+    _max: MedsTemplateMaxAggregateOutputType | null
+  }
+
+  export type MedsTemplateMinAggregateOutputType = {
+    meds_template_id: string | null
+    template_name: string | null
+  }
+
+  export type MedsTemplateMaxAggregateOutputType = {
+    meds_template_id: string | null
+    template_name: string | null
+  }
+
+  export type MedsTemplateCountAggregateOutputType = {
+    meds_template_id: number
+    template_name: number
+    _all: number
+  }
+
+
+  export type MedsTemplateMinAggregateInputType = {
+    meds_template_id?: true
+    template_name?: true
+  }
+
+  export type MedsTemplateMaxAggregateInputType = {
+    meds_template_id?: true
+    template_name?: true
+  }
+
+  export type MedsTemplateCountAggregateInputType = {
+    meds_template_id?: true
+    template_name?: true
+    _all?: true
+  }
+
+  export type MedsTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MedsTemplate to aggregate.
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MedsTemplates to fetch.
+     */
+    orderBy?: MedsTemplateOrderByWithRelationInput | MedsTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MedsTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MedsTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MedsTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MedsTemplates
+    **/
+    _count?: true | MedsTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MedsTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MedsTemplateMaxAggregateInputType
+  }
+
+  export type GetMedsTemplateAggregateType<T extends MedsTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateMedsTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMedsTemplate[P]>
+      : GetScalarType<T[P], AggregateMedsTemplate[P]>
+  }
+
+
+
+
+  export type MedsTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MedsTemplateWhereInput
+    orderBy?: MedsTemplateOrderByWithAggregationInput | MedsTemplateOrderByWithAggregationInput[]
+    by: MedsTemplateScalarFieldEnum[] | MedsTemplateScalarFieldEnum
+    having?: MedsTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MedsTemplateCountAggregateInputType | true
+    _min?: MedsTemplateMinAggregateInputType
+    _max?: MedsTemplateMaxAggregateInputType
+  }
+
+  export type MedsTemplateGroupByOutputType = {
+    meds_template_id: string
+    template_name: string
+    _count: MedsTemplateCountAggregateOutputType | null
+    _min: MedsTemplateMinAggregateOutputType | null
+    _max: MedsTemplateMaxAggregateOutputType | null
+  }
+
+  type GetMedsTemplateGroupByPayload<T extends MedsTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MedsTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MedsTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MedsTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], MedsTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MedsTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    meds_template_id?: boolean
+    template_name?: boolean
+    meds?: boolean | MedicationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["medsTemplate"]>
+
+
+
+  export type MedsTemplateSelectScalar = {
+    meds_template_id?: boolean
+    template_name?: boolean
+  }
+
+  export type MedsTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"meds_template_id" | "template_name" | "meds", ExtArgs["result"]["medsTemplate"]>
+  export type MedsTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $MedsTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MedsTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      meds_template_id: string
+      template_name: string
+    }, ExtArgs["result"]["medsTemplate"]>
+    composites: {
+      meds: Prisma.$MedicationPayload[]
+    }
+  }
+
+  type MedsTemplateGetPayload<S extends boolean | null | undefined | MedsTemplateDefaultArgs> = $Result.GetResult<Prisma.$MedsTemplatePayload, S>
+
+  type MedsTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MedsTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MedsTemplateCountAggregateInputType | true
+    }
+
+  export interface MedsTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MedsTemplate'], meta: { name: 'MedsTemplate' } }
+    /**
+     * Find zero or one MedsTemplate that matches the filter.
+     * @param {MedsTemplateFindUniqueArgs} args - Arguments to find a MedsTemplate
+     * @example
+     * // Get one MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MedsTemplateFindUniqueArgs>(args: SelectSubset<T, MedsTemplateFindUniqueArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MedsTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MedsTemplateFindUniqueOrThrowArgs} args - Arguments to find a MedsTemplate
+     * @example
+     * // Get one MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MedsTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, MedsTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MedsTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateFindFirstArgs} args - Arguments to find a MedsTemplate
+     * @example
+     * // Get one MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MedsTemplateFindFirstArgs>(args?: SelectSubset<T, MedsTemplateFindFirstArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MedsTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateFindFirstOrThrowArgs} args - Arguments to find a MedsTemplate
+     * @example
+     * // Get one MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MedsTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, MedsTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MedsTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MedsTemplates
+     * const medsTemplates = await prisma.medsTemplate.findMany()
+     * 
+     * // Get first 10 MedsTemplates
+     * const medsTemplates = await prisma.medsTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `meds_template_id`
+     * const medsTemplateWithMeds_template_idOnly = await prisma.medsTemplate.findMany({ select: { meds_template_id: true } })
+     * 
+     */
+    findMany<T extends MedsTemplateFindManyArgs>(args?: SelectSubset<T, MedsTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MedsTemplate.
+     * @param {MedsTemplateCreateArgs} args - Arguments to create a MedsTemplate.
+     * @example
+     * // Create one MedsTemplate
+     * const MedsTemplate = await prisma.medsTemplate.create({
+     *   data: {
+     *     // ... data to create a MedsTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends MedsTemplateCreateArgs>(args: SelectSubset<T, MedsTemplateCreateArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MedsTemplates.
+     * @param {MedsTemplateCreateManyArgs} args - Arguments to create many MedsTemplates.
+     * @example
+     * // Create many MedsTemplates
+     * const medsTemplate = await prisma.medsTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MedsTemplateCreateManyArgs>(args?: SelectSubset<T, MedsTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MedsTemplate.
+     * @param {MedsTemplateDeleteArgs} args - Arguments to delete one MedsTemplate.
+     * @example
+     * // Delete one MedsTemplate
+     * const MedsTemplate = await prisma.medsTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one MedsTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MedsTemplateDeleteArgs>(args: SelectSubset<T, MedsTemplateDeleteArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MedsTemplate.
+     * @param {MedsTemplateUpdateArgs} args - Arguments to update one MedsTemplate.
+     * @example
+     * // Update one MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MedsTemplateUpdateArgs>(args: SelectSubset<T, MedsTemplateUpdateArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MedsTemplates.
+     * @param {MedsTemplateDeleteManyArgs} args - Arguments to filter MedsTemplates to delete.
+     * @example
+     * // Delete a few MedsTemplates
+     * const { count } = await prisma.medsTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MedsTemplateDeleteManyArgs>(args?: SelectSubset<T, MedsTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MedsTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MedsTemplates
+     * const medsTemplate = await prisma.medsTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MedsTemplateUpdateManyArgs>(args: SelectSubset<T, MedsTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MedsTemplate.
+     * @param {MedsTemplateUpsertArgs} args - Arguments to update or create a MedsTemplate.
+     * @example
+     * // Update or create a MedsTemplate
+     * const medsTemplate = await prisma.medsTemplate.upsert({
+     *   create: {
+     *     // ... data to create a MedsTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MedsTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MedsTemplateUpsertArgs>(args: SelectSubset<T, MedsTemplateUpsertArgs<ExtArgs>>): Prisma__MedsTemplateClient<$Result.GetResult<Prisma.$MedsTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MedsTemplates that matches the filter.
+     * @param {MedsTemplateFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const medsTemplate = await prisma.medsTemplate.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: MedsTemplateFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a MedsTemplate.
+     * @param {MedsTemplateAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const medsTemplate = await prisma.medsTemplate.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: MedsTemplateAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of MedsTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateCountArgs} args - Arguments to filter MedsTemplates to count.
+     * @example
+     * // Count the number of MedsTemplates
+     * const count = await prisma.medsTemplate.count({
+     *   where: {
+     *     // ... the filter for the MedsTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends MedsTemplateCountArgs>(
+      args?: Subset<T, MedsTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MedsTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MedsTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MedsTemplateAggregateArgs>(args: Subset<T, MedsTemplateAggregateArgs>): Prisma.PrismaPromise<GetMedsTemplateAggregateType<T>>
+
+    /**
+     * Group by MedsTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MedsTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MedsTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MedsTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: MedsTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MedsTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMedsTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MedsTemplate model
+   */
+  readonly fields: MedsTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MedsTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MedsTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MedsTemplate model
+   */
+  interface MedsTemplateFieldRefs {
+    readonly meds_template_id: FieldRef<"MedsTemplate", 'String'>
+    readonly template_name: FieldRef<"MedsTemplate", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MedsTemplate findUnique
+   */
+  export type MedsTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MedsTemplate to fetch.
+     */
+    where: MedsTemplateWhereUniqueInput
+  }
+
+  /**
+   * MedsTemplate findUniqueOrThrow
+   */
+  export type MedsTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MedsTemplate to fetch.
+     */
+    where: MedsTemplateWhereUniqueInput
+  }
+
+  /**
+   * MedsTemplate findFirst
+   */
+  export type MedsTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MedsTemplate to fetch.
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MedsTemplates to fetch.
+     */
+    orderBy?: MedsTemplateOrderByWithRelationInput | MedsTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MedsTemplates.
+     */
+    cursor?: MedsTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MedsTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MedsTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MedsTemplates.
+     */
+    distinct?: MedsTemplateScalarFieldEnum | MedsTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MedsTemplate findFirstOrThrow
+   */
+  export type MedsTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MedsTemplate to fetch.
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MedsTemplates to fetch.
+     */
+    orderBy?: MedsTemplateOrderByWithRelationInput | MedsTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MedsTemplates.
+     */
+    cursor?: MedsTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MedsTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MedsTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MedsTemplates.
+     */
+    distinct?: MedsTemplateScalarFieldEnum | MedsTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MedsTemplate findMany
+   */
+  export type MedsTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which MedsTemplates to fetch.
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MedsTemplates to fetch.
+     */
+    orderBy?: MedsTemplateOrderByWithRelationInput | MedsTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MedsTemplates.
+     */
+    cursor?: MedsTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MedsTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MedsTemplates.
+     */
+    skip?: number
+    distinct?: MedsTemplateScalarFieldEnum | MedsTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * MedsTemplate create
+   */
+  export type MedsTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MedsTemplate.
+     */
+    data: XOR<MedsTemplateCreateInput, MedsTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * MedsTemplate createMany
+   */
+  export type MedsTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MedsTemplates.
+     */
+    data: MedsTemplateCreateManyInput | MedsTemplateCreateManyInput[]
+  }
+
+  /**
+   * MedsTemplate update
+   */
+  export type MedsTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MedsTemplate.
+     */
+    data: XOR<MedsTemplateUpdateInput, MedsTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which MedsTemplate to update.
+     */
+    where: MedsTemplateWhereUniqueInput
+  }
+
+  /**
+   * MedsTemplate updateMany
+   */
+  export type MedsTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MedsTemplates.
+     */
+    data: XOR<MedsTemplateUpdateManyMutationInput, MedsTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which MedsTemplates to update
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * Limit how many MedsTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MedsTemplate upsert
+   */
+  export type MedsTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MedsTemplate to update in case it exists.
+     */
+    where: MedsTemplateWhereUniqueInput
+    /**
+     * In case the MedsTemplate found by the `where` argument doesn't exist, create a new MedsTemplate with this data.
+     */
+    create: XOR<MedsTemplateCreateInput, MedsTemplateUncheckedCreateInput>
+    /**
+     * In case the MedsTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MedsTemplateUpdateInput, MedsTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * MedsTemplate delete
+   */
+  export type MedsTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which MedsTemplate to delete.
+     */
+    where: MedsTemplateWhereUniqueInput
+  }
+
+  /**
+   * MedsTemplate deleteMany
+   */
+  export type MedsTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MedsTemplates to delete
+     */
+    where?: MedsTemplateWhereInput
+    /**
+     * Limit how many MedsTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MedsTemplate findRaw
+   */
+  export type MedsTemplateFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * MedsTemplate aggregateRaw
+   */
+  export type MedsTemplateAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * MedsTemplate without action
+   */
+  export type MedsTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MedsTemplate
+     */
+    select?: MedsTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MedsTemplate
+     */
+    omit?: MedsTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MedsTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -13970,6 +15004,14 @@ export namespace Prisma {
   export type RegistrationScalarFieldEnum = (typeof RegistrationScalarFieldEnum)[keyof typeof RegistrationScalarFieldEnum]
 
 
+  export const MedsTemplateScalarFieldEnum: {
+    meds_template_id: 'meds_template_id',
+    template_name: 'template_name'
+  };
+
+  export type MedsTemplateScalarFieldEnum = (typeof MedsTemplateScalarFieldEnum)[keyof typeof MedsTemplateScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -14768,6 +15810,46 @@ export namespace Prisma {
     phone_number?: StringNullableWithAggregatesFilter<"Registration"> | string | null
     date_of_birth?: DateTimeNullableWithAggregatesFilter<"Registration"> | Date | string | null
     updated_at?: DateTimeWithAggregatesFilter<"Registration"> | Date | string
+  }
+
+  export type MedsTemplateWhereInput = {
+    AND?: MedsTemplateWhereInput | MedsTemplateWhereInput[]
+    OR?: MedsTemplateWhereInput[]
+    NOT?: MedsTemplateWhereInput | MedsTemplateWhereInput[]
+    meds_template_id?: StringFilter<"MedsTemplate"> | string
+    template_name?: StringFilter<"MedsTemplate"> | string
+    meds?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
+  }
+
+  export type MedsTemplateOrderByWithRelationInput = {
+    meds_template_id?: SortOrder
+    template_name?: SortOrder
+    meds?: MedicationOrderByCompositeAggregateInput
+  }
+
+  export type MedsTemplateWhereUniqueInput = Prisma.AtLeast<{
+    meds_template_id?: string
+    AND?: MedsTemplateWhereInput | MedsTemplateWhereInput[]
+    OR?: MedsTemplateWhereInput[]
+    NOT?: MedsTemplateWhereInput | MedsTemplateWhereInput[]
+    template_name?: StringFilter<"MedsTemplate"> | string
+    meds?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
+  }, "meds_template_id">
+
+  export type MedsTemplateOrderByWithAggregationInput = {
+    meds_template_id?: SortOrder
+    template_name?: SortOrder
+    _count?: MedsTemplateCountOrderByAggregateInput
+    _max?: MedsTemplateMaxOrderByAggregateInput
+    _min?: MedsTemplateMinOrderByAggregateInput
+  }
+
+  export type MedsTemplateScalarWhereWithAggregatesInput = {
+    AND?: MedsTemplateScalarWhereWithAggregatesInput | MedsTemplateScalarWhereWithAggregatesInput[]
+    OR?: MedsTemplateScalarWhereWithAggregatesInput[]
+    NOT?: MedsTemplateScalarWhereWithAggregatesInput | MedsTemplateScalarWhereWithAggregatesInput[]
+    meds_template_id?: StringWithAggregatesFilter<"MedsTemplate"> | string
+    template_name?: StringWithAggregatesFilter<"MedsTemplate"> | string
   }
 
   export type UserWhereInput = {
@@ -15777,6 +16859,44 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MedsTemplateCreateInput = {
+    meds_template_id?: string
+    template_name: string
+    meds?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateUncheckedCreateInput = {
+    meds_template_id?: string
+    template_name: string
+    meds?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateUpdateInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    meds?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateUncheckedUpdateInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    meds?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateCreateManyInput = {
+    meds_template_id?: string
+    template_name: string
+    meds?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateUpdateManyMutationInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    meds?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
+  export type MedsTemplateUncheckedUpdateManyInput = {
+    template_name?: StringFieldUpdateOperationsInput | string
+    meds?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -16681,6 +17801,21 @@ export namespace Prisma {
     phone_number?: SortOrder
     date_of_birth?: SortOrder
     updated_at?: SortOrder
+  }
+
+  export type MedsTemplateCountOrderByAggregateInput = {
+    meds_template_id?: SortOrder
+    template_name?: SortOrder
+  }
+
+  export type MedsTemplateMaxOrderByAggregateInput = {
+    meds_template_id?: SortOrder
+    template_name?: SortOrder
+  }
+
+  export type MedsTemplateMinOrderByAggregateInput = {
+    meds_template_id?: SortOrder
+    template_name?: SortOrder
   }
 
   export type AccountListRelationFilter = {

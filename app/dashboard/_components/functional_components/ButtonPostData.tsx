@@ -46,6 +46,7 @@ const ButtonPostData = ({
     try {
       const response = await axios.post(slug, fieldData);
 
+      console.log("ButtonPostData response:", response);
       setStatus("success");
 
       let successMessage = "";
@@ -100,7 +101,7 @@ const ButtonPostData = ({
               errorMessage = "Resource not found";
               break;
             case 409:
-              errorMessage = responseData?.message || "Data conflict";
+              errorMessage = JSON.stringify(responseData) || "Data conflict";
               break;
             case 422:
               errorMessage = responseData?.message || "Validation error";

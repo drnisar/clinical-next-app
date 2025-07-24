@@ -216,6 +216,11 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.MedsTemplateScalarFieldEnum = {
+  meds_template_id: 'meds_template_id',
+  template_name: 'template_name'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -274,6 +279,7 @@ exports.Prisma.ModelName = {
   Appointment: 'Appointment',
   Consultation: 'Consultation',
   Registration: 'Registration',
+  MedsTemplate: 'MedsTemplate',
   User: 'User',
   Account: 'Account',
   Session: 'Session',
