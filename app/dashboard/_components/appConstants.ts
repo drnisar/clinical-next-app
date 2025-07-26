@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { StylesConfig, GroupBase, CSSObjectWithLabel } from "react-select";
 
 export const FormattedDateCell = ({
   date,
@@ -458,3 +459,167 @@ export const examinationTypes = [
   { label: "Gynaecological", value: "gynaecological" },
   { label: "Other", value: "other" },
 ];
+
+// Custom styles for React Select to match Radix UI size="1" and dark mode
+export const react_select_styles: StylesConfig<
+  { label: string; value: string },
+  boolean,
+  GroupBase<{ label: string; value: string }>
+> = {
+  control: (provided: CSSObjectWithLabel, state) => ({
+    ...provided,
+    minHeight: "28px", // Radix UI size="1" height
+    height: "28px",
+    fontSize: "12px", // Smaller font size to match size="1"
+    border: "1px solid",
+    borderColor: state.isFocused
+      ? "rgb(59 130 246)" // blue-500 for focus
+      : "rgb(209 213 219)", // gray-300 for normal
+    borderRadius: "6px",
+    boxShadow: state.isFocused ? "0 0 0 2px rgba(59, 130, 246, 0.1)" : "none",
+    backgroundColor: "rgb(255 255 255)", // white in light mode
+    "&:hover": {
+      borderColor: "rgb(156 163 175)", // gray-400 on hover
+    },
+    // Dark mode styles
+    "@media (prefers-color-scheme: dark)": {
+      backgroundColor: "rgb(31 41 55)", // gray-800
+      borderColor: state.isFocused
+        ? "rgb(59 130 246)" // blue-500
+        : "rgb(75 85 99)", // gray-600
+      "&:hover": {
+        borderColor: "rgb(107 114 128)", // gray-500
+      },
+    },
+  }),
+  valueContainer: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    height: "26px",
+    padding: "0 6px",
+    fontSize: "12px",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0px",
+    padding: "0px",
+    fontSize: "12px",
+    color: "rgb(17 24 39)", // gray-900
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(243 244 246)", // gray-100
+    },
+  }),
+  indicatorSeparator: () => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    height: "26px",
+  }),
+  dropdownIndicator: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    padding: "0 4px",
+    color: "rgb(107 114 128)", // gray-500
+    "&:hover": {
+      color: "rgb(75 85 99)", // gray-600
+    },
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(156 163 175)", // gray-400
+      "&:hover": {
+        color: "rgb(209 213 219)", // gray-300
+      },
+    },
+  }),
+  clearIndicator: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    padding: "0 4px",
+    color: "rgb(107 114 128)", // gray-500
+    "&:hover": {
+      color: "rgb(75 85 99)", // gray-600
+    },
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(156 163 175)", // gray-400
+      "&:hover": {
+        color: "rgb(209 213 219)", // gray-300
+      },
+    },
+  }),
+  singleValue: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    fontSize: "12px",
+    color: "rgb(17 24 39)", // gray-900
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(243 244 246)", // gray-100
+    },
+  }),
+  placeholder: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    fontSize: "12px",
+    color: "rgb(156 163 175)", // gray-400
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(107 114 128)", // gray-500
+    },
+  }),
+  menu: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    fontSize: "12px",
+    backgroundColor: "rgb(255 255 255)", // white
+    border: "1px solid rgb(209 213 219)", // gray-300
+    boxShadow:
+      "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    "@media (prefers-color-scheme: dark)": {
+      backgroundColor: "rgb(31 41 55)", // gray-800
+      border: "1px solid rgb(75 85 99)", // gray-600
+    },
+  }),
+  menuList: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    padding: "4px",
+    maxHeight: "160px", // Limit height for better UX
+  }),
+  option: (
+    provided: CSSObjectWithLabel,
+    state: import("react-select").OptionProps<
+      { label: string; value: string },
+      boolean,
+      GroupBase<{ label: string; value: string }>
+    >
+  ) => ({
+    ...provided,
+    fontSize: "12px",
+    padding: "6px 8px",
+    borderRadius: "4px",
+    margin: "1px 0",
+    backgroundColor: state.isSelected
+      ? "rgb(59 130 246)" // blue-500
+      : state.isFocused
+      ? "rgb(243 244 246)" // gray-100
+      : "transparent",
+    color: state.isSelected ? "white" : "rgb(17 24 39)", // gray-900
+    "&:hover": {
+      backgroundColor: state.isSelected
+        ? "rgb(59 130 246)" // blue-500
+        : "rgb(243 244 246)", // gray-100
+    },
+    "@media (prefers-color-scheme: dark)": {
+      color: state.isSelected ? "white" : "rgb(243 244 246)", // gray-100
+      backgroundColor: state.isSelected
+        ? "rgb(59 130 246)" // blue-500
+        : state.isFocused
+        ? "rgb(55 65 81)" // gray-700
+        : "transparent",
+      "&:hover": {
+        backgroundColor: state.isSelected
+          ? "rgb(59 130 246)" // blue-500
+          : "rgb(55 65 81)", // gray-700
+      },
+    },
+  }),
+  noOptionsMessage: (provided: CSSObjectWithLabel) => ({
+    ...provided,
+    fontSize: "12px",
+    color: "rgb(107 114 128)", // gray-500
+    "@media (prefers-color-scheme: dark)": {
+      color: "rgb(156 163 175)", // gray-400
+    },
+  }),
+};

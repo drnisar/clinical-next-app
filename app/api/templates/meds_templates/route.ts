@@ -26,7 +26,7 @@ export const POST = async (request: NextRequest) => {
     });
 
     revalidatePath("/dashboard/meds_templates");
-    revalidatePath("/dashboard/discharge", "layout");
+    revalidatePath("/dashboard/discharge", "page");
     if (!newTemplate) {
       return new Response("Failed to create template", { status: 500 });
     }

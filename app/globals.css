@@ -249,3 +249,30 @@
     break-inside: avoid;
   }
 }
+
+/* Add to your global.css or tailwind.css */
+:root {
+  --select-bg: rgb(255 255 255);
+  --select-border: rgb(209 213 219);
+  --select-text: rgb(17 24 39);
+  --select-placeholder: rgb(156 163 175);
+  --select-hover: rgb(243 244 246);
+  --select-focus: rgb(59 130 246);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --select-bg: rgb(31 41 55);
+    --select-border: rgb(75 85 99);
+    --select-text: rgb(243 244 246);
+    --select-placeholder: rgb(107 114 128);
+    --select-hover: rgb(55 65 81);
+    --select-focus: rgb(59 130 246);
+  }
+}
+
+.react-select__control {
+  background-color: var(--select-bg) !important;
+  border-color: var(--select-border) !important;
+  color: var(--select-text) !important;
+}
