@@ -10,26 +10,11 @@ import { InputGeneric } from "../../_components/FormComponents";
 import { useRouter } from "next/navigation";
 import AddToOTTemplateDialog from "./AddToOTTemplateDialog";
 import TemplateSelectionDialog from "./TemplateSelectionDialog";
+import { OT } from "@/generated/prisma";
 
-type OTNotes = {
-  ot_id: string;
-  admission_id: string;
-  procedure_name: string;
-  surgery_date: string;
-  surgeon: string;
-  assistant_1: string;
-  assistant_2: string;
-  assistant_3: string;
-  anaesthesia: string;
-  anaesthetist: string;
-  findings: string;
-  operative_details: string;
-  closure: string;
-  postop_instructions: string;
-  finalize?: number; // Optional, used for finalization state
-};
+type OTNotesForm = Omit<OT, "surgery_date"> & { surgery_date: string };
 interface Props {
-  ot: OTNotes;
+  ot: OT;
 }
 
 interface OTTemplate {
@@ -67,7 +52,7 @@ const OTNotesForm = ({ ot }: Props) => {
     getValues,
     watch,
     // formState: { errors },
-  } = useForm<OTNotes>({
+  } = useForm<OTNotesForm>({
     defaultValues: {
       procedure_name: "",
       surgery_date: "",
@@ -97,7 +82,7 @@ const OTNotesForm = ({ ot }: Props) => {
   };
 
   const mutation = useMutation({
-    mutationFn: async (data: OTNotes) => await axios.patch("/api/ot", data),
+    mutationFn: async (data: OTNotesForm) => await axios.patch("/api/ot", data),
     onSuccess: (data) => {
       console.log("OT Notes updated successfully", data);
       toast.success("OT Notes updated successfully");
@@ -110,7 +95,7 @@ const OTNotesForm = ({ ot }: Props) => {
   });
 
   const finalizeMutation = useMutation({
-    mutationFn: async (data: OTNotes) =>
+    mutationFn: async (data: OTNotesForm) =>
       await axios.patch("/api/ot", {
         ...data,
         finalize: 1,
@@ -129,9 +114,11 @@ const OTNotesForm = ({ ot }: Props) => {
 
   useEffect(() => {
     if (ot) {
-      const formattedData = {
+      reset({
         procedure_name: ot.procedure_name || "",
-        surgery_date: formatDateForInput(ot.surgery_date),
+        surgery_date: ot.surgery_date
+          ? formatDateForInput(ot.surgery_date)
+          : "",
         surgeon: ot.surgeon || "",
         assistant_1: ot.assistant_1 || "",
         assistant_2: ot.assistant_2 || "",
@@ -142,19 +129,17 @@ const OTNotesForm = ({ ot }: Props) => {
         operative_details: ot.operative_details || "",
         closure: ot.closure || "",
         postop_instructions: ot.postop_instructions || "",
-      };
-
-      reset(formattedData);
+      });
     }
   }, [ot, reset]);
 
   // Validation function for mandatory fields
-  const validateMandatoryFields = (data: OTNotes): string[] => {
+  const validateMandatoryFields = (data: OTNotesForm): string[] => {
     const errors: string[] = [];
 
     Object.entries(MANDATORY_FINALIZE_FIELDS).forEach(
       ([fieldKey, fieldLabel]) => {
-        const value = data[fieldKey as keyof OTNotes];
+        const value = data[fieldKey as keyof OTNotesForm];
         if (!value || (typeof value === "string" && value.trim() === "")) {
           errors.push(`${fieldLabel} is required for finalization`);
         }
@@ -164,7 +149,7 @@ const OTNotesForm = ({ ot }: Props) => {
     return errors;
   };
 
-  const onSubmit = (data: OTNotes) => {
+  const onSubmit = (data: OTNotesForm) => {
     const payLoad = {
       ...data,
       ot_id: ot.ot_id,
@@ -177,7 +162,7 @@ const OTNotesForm = ({ ot }: Props) => {
     mutation.mutate(payLoad);
   };
 
-  const onFinalize = (data: OTNotes) => {
+  const onFinalize = (data: OTNotesForm) => {
     // Validate mandatory fields before finalizing
     const mandatoryFieldErrors = validateMandatoryFields(data);
 
