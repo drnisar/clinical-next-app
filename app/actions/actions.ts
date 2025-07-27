@@ -105,3 +105,29 @@ export const getMedsTemplates = async () => {
   const templates = await prisma.medsTemplate.findMany();
   return templates;
 };
+
+export // Create a custom date conversion hook
+const useDateHandling = () => {
+  const formatDateForInput = (date: Date | string | null): string => {
+    if (!date) return "";
+    try {
+      const dateObj = typeof date === "string" ? new Date(date) : date;
+      if (isNaN(dateObj.getTime())) return "";
+      return dateObj.toISOString().split("T")[0];
+    } catch {
+      return "";
+    }
+  };
+
+  const parseInputDate = (dateString: string): Date | null => {
+    if (!dateString) return null;
+    try {
+      const date = new Date(dateString);
+      return isNaN(date.getTime()) ? null : date;
+    } catch {
+      return null;
+    }
+  };
+
+  return { formatDateForInput, parseInputDate };
+};

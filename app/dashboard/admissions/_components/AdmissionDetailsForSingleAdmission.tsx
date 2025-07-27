@@ -13,8 +13,9 @@ import {
 import { Admission_Discharge, OT } from "@/generated/prisma";
 import { useRouter } from "next/navigation"; // Import useRouter
 import { useEffect, useState, useTransition } from "react"; // Import hooks
-import ButtonCreateNewOTNotes from "../../ot/_components/ButtonCreateNewOTNotes"; // Keep this if needed
 import ChangeBedNumberForm from "./ChangeBedNumberForm";
+// import CreateOTNotesDialog from "../../ot/_components/CreateOTNotesDialog";
+import ButtonCreateNewOTNotes from "../../ot/_components/ButtonCreateNewOTNotes";
 
 // Define props type explicitly
 interface Props {
@@ -140,7 +141,8 @@ const AdmissionDetailsForSingleAdmission = ({ admission, ots }: Props) => {
           <>
             <Flex justify={"between"} align="center" mt="4" mb="2">
               <Heading size={"2"}>Procedures / Operation Notes</Heading>
-              <ButtonCreateNewOTNotes />
+              <ButtonCreateNewOTNotes otNotes={ots} admission={admission} />
+              {/* <CreateOTNotesDialog otNotes={ots} admission={admission} /> */}
             </Flex>
             <DataList.Root>
               {ots.map((ot) => {
@@ -184,8 +186,8 @@ const AdmissionDetailsForSingleAdmission = ({ admission, ots }: Props) => {
           <Flex justify={"between"} align="center" mt="4" mb="2">
             <Heading size={"2"}>Procedures / Operation Notes</Heading>
             {/* Show create button even if no OTs exist */}
-            <ButtonCreateNewOTNotes /* admissionId={admission.admission_id} */
-            />
+            <ButtonCreateNewOTNotes otNotes={ots} admission={admission} />
+            {/* <CreateOTNotesDialog otNotes={ots} admission={admission} /> */}
           </Flex>
         )}
       </Card>

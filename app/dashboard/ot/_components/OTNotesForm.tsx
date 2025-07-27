@@ -1,5 +1,4 @@
 "use client";
-import { OT } from "@/generated/prisma";
 import { Button, Flex, TextArea, TextField, Callout } from "@radix-ui/themes";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useMutation } from "@tanstack/react-query";
@@ -12,9 +11,25 @@ import { useRouter } from "next/navigation";
 import AddToOTTemplateDialog from "./AddToOTTemplateDialog";
 import TemplateSelectionDialog from "./TemplateSelectionDialog";
 
-type OTNotes = OT;
+type OTNotes = {
+  ot_id: string;
+  admission_id: string;
+  procedure_name: string;
+  surgery_date: string;
+  surgeon: string;
+  assistant_1: string;
+  assistant_2: string;
+  assistant_3: string;
+  anaesthesia: string;
+  anaesthetist: string;
+  findings: string;
+  operative_details: string;
+  closure: string;
+  postop_instructions: string;
+  finalize?: number; // Optional, used for finalization state
+};
 interface Props {
-  ot: OT;
+  ot: OTNotes;
 }
 
 interface OTTemplate {
@@ -55,7 +70,7 @@ const OTNotesForm = ({ ot }: Props) => {
   } = useForm<OTNotes>({
     defaultValues: {
       procedure_name: "",
-      surgery_date: null,
+      surgery_date: "",
       surgeon: "",
       assistant_1: "",
       assistant_2: "",
@@ -68,6 +83,18 @@ const OTNotesForm = ({ ot }: Props) => {
       postop_instructions: "",
     },
   });
+
+  // Helper function to format date
+  const formatDateForInput = (date: Date | string | null): string => {
+    if (!date) return "";
+    try {
+      const dateObj = typeof date === "string" ? new Date(date) : date;
+      if (isNaN(dateObj.getTime())) return "";
+      return dateObj.toISOString().split("T")[0];
+    } catch {
+      return "";
+    }
+  };
 
   const mutation = useMutation({
     mutationFn: async (data: OTNotes) => await axios.patch("/api/ot", data),
@@ -103,19 +130,20 @@ const OTNotesForm = ({ ot }: Props) => {
   useEffect(() => {
     if (ot) {
       const formattedData = {
-        ...ot,
-        surgery_date: ot.surgery_date ? new Date(ot.surgery_date) : null,
-        surgeon: ot.surgeon ?? "",
-        assistant_1: ot.assistant_1 ?? "",
-        assistant_2: ot.assistant_2 ?? "",
-        assistant_3: ot.assistant_3 ?? "",
-        anaesthesia: ot.anaesthesia ?? "",
-        anaesthetist: ot.anaesthetist ?? "",
-        findings: ot.findings ?? "",
-        operative_details: ot.operative_details ?? "",
-        closure: ot.closure ?? "",
-        postop_instructions: ot.postop_instructions ?? "",
+        procedure_name: ot.procedure_name || "",
+        surgery_date: formatDateForInput(ot.surgery_date),
+        surgeon: ot.surgeon || "",
+        assistant_1: ot.assistant_1 || "",
+        assistant_2: ot.assistant_2 || "",
+        assistant_3: ot.assistant_3 || "",
+        anaesthesia: ot.anaesthesia || "",
+        anaesthetist: ot.anaesthetist || "",
+        findings: ot.findings || "",
+        operative_details: ot.operative_details || "",
+        closure: ot.closure || "",
+        postop_instructions: ot.postop_instructions || "",
       };
+
       reset(formattedData);
     }
   }, [ot, reset]);
@@ -137,9 +165,15 @@ const OTNotesForm = ({ ot }: Props) => {
   };
 
   const onSubmit = (data: OTNotes) => {
-    const payLoad = { ...data, ot_id: ot.ot_id, admission_id: ot.admission_id };
+    const payLoad = {
+      ...data,
+      ot_id: ot.ot_id,
+      admission_id: ot.admission_id,
+      // Convert string back to Date for API
+    };
+
     console.log("Payload", payLoad);
-    setValidationErrors([]); // Clear validation errors for regular save
+    setValidationErrors([]);
     mutation.mutate(payLoad);
   };
 

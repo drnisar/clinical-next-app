@@ -6,7 +6,6 @@ export async function POST(request: NextRequest) {
   const newOTNotes = await prisma.oT.create({
     data: {
       admission_id: body.admission_id,
-      surgery_date: new Date(),
       registration_id: body.registration_id,
     },
   });
@@ -61,6 +60,8 @@ export async function PATCH(request: NextRequest) {
       },
     });
     revalidatePath(`/dashboard/ot/${ot_id}`);
+    revalidatePath(`/dashboard/admissions/${admission_id}`);
+    revalidatePath("/dashboard/admissions", "page");
     return NextResponse.json(otNotes);
   } catch (error) {
     return NextResponse.json(error);
