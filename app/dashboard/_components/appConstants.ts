@@ -639,3 +639,21 @@ export const badgeColorForAppointments = (
       return "yellow";
   }
 };
+
+export const datedddDDMMMYY = (
+  date: Date | string | null | undefined
+): string => {
+  if (!date) return "";
+
+  const weekDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  const ddd = weekDay[dateObj.getDay()];
+  const dd = dateObj.getDate().toString().padStart(2, "0");
+  const mmm = dateObj.toLocaleString("default", { month: "short" });
+  const yy = dateObj.getFullYear().toString().slice(-2);
+
+  // Use a consistent format that works on both server and client
+  return `${ddd} ${dd}-${mmm}-${yy}`;
+};

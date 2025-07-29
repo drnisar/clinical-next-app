@@ -11,6 +11,7 @@ import ConsultationDetailsForSingleRegId from "../../_components/ConsultationDet
 import ConsultationTabs from "../../_components/ConsultationTabs";
 import MedsDisplayEnglish from "@/app/dashboard/_components/MedsDisplayEnglish";
 import InstructionsDisplayEnglish from "@/app/dashboard/_components/InstructionsDisplayEnglish";
+import AppointmentsTableForSingleRegId from "@/app/dashboard/appointments/_components/AppointmentsTableForSingleRegId";
 
 const ConsultationEditPage = async ({
   params,
@@ -40,6 +41,10 @@ const ConsultationEditPage = async ({
   if (!appointments) {
     return <div>No appointments found</div>;
   }
+  const appointmentsForRegistration = await appointments.filter(
+    (appointment) =>
+      appointment.registration_id === consultation.registration_id
+  );
 
   return (
     <>
@@ -60,6 +65,9 @@ const ConsultationEditPage = async ({
             <MedsDisplayEnglish meds={consultation.medications} />
             <InstructionsDisplayEnglish
               instructions={consultation.instructions}
+            />
+            <AppointmentsTableForSingleRegId
+              appointmentsForRegistration={appointmentsForRegistration}
             />
           </Flex>
         </Flex>
