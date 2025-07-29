@@ -1,9 +1,10 @@
-import { Appointment } from "@/generated/prisma/default";
-import { Card, Heading, Table } from "@radix-ui/themes";
+import { Appointment, Registration } from "@/generated/prisma/default";
+import { Badge, Card, Heading, Table } from "@radix-ui/themes";
 import React from "react";
+import { badgeColorForAppointments } from "../../_components/appConstants";
 
 interface Props {
-  appointments: Appointment[];
+  appointments: ({ registration: Registration } & Appointment)[];
   searchParams: { type: string };
 }
 
@@ -16,13 +17,18 @@ const RecentAppointmentsTable = ({ appointments, searchParams }: Props) => {
   }
   return (
     <Card>
-      <Heading size="2">Recent Appointments (For Reference)</Heading>
+      <Heading size="2" className="mb-4 mx-auto">
+        <Badge color={badgeColorForAppointments(searchParams.type)}>
+          {searchParams.type}
+        </Badge>{" "}
+        Appointments{" "}
+      </Heading>
       <Table.Root>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>Appointment Date</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Patient</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Plan</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -31,8 +37,11 @@ const RecentAppointmentsTable = ({ appointments, searchParams }: Props) => {
               <Table.Cell>
                 {new Date(appointment.date_appointment).toDateString()}
               </Table.Cell>
-              <Table.Cell>{appointment.plan}</Table.Cell>
-              <Table.Cell>{appointment.type}</Table.Cell>
+              <Table.Cell>
+                {appointment.registration.first_name.toUpperCase()}{" "}
+                {appointment.registration.last_name.toUpperCase()}
+              </Table.Cell>
+              <Table.Cell>{appointment.plan.toUpperCase()}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>

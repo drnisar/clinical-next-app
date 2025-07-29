@@ -1,4 +1,5 @@
 "use client";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -30,8 +31,8 @@ const AppointmentDeleteButton = ({
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <Button color="red" variant="soft">
-          Delete Appointment
+        <Button color="red" variant="ghost" size="1">
+          <CrossCircledIcon /> Delete
         </Button>
       </AlertDialog.Trigger>
 

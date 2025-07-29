@@ -3,9 +3,7 @@ import { appointmentTypeOptions } from "@/app/dashboard/_components/appConstants
 import { InputGeneric } from "@/app/dashboard/_components/FormComponents";
 import { Appointment } from "@/generated/prisma";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -26,33 +24,35 @@ const AppointmentForm = ({ registration_id, consultation_id }: Props) => {
     formState: { errors },
   } = useForm<FormData>();
 
+  const [isPending, setIsPending] = useState(false);
+
   const router = useRouter();
+  const params = useSearchParams();
+  const queryType = params.get("type") || "";
 
-  const [type, setType] = useState("");
+  const onSubmit = async (data: FormData) => {
+    try {
+      setIsPending(true);
+      const response = await fetch("/api/appointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ registration_id, ...data }),
+      });
 
-  const queryClient = useQueryClient();
-  const { mutate: addMutate, isPending } = useMutation({
-    mutationFn: async (data: FormData) => {
-      const response = await axios.post("/api/appointment", data);
-      return response.data;
-    },
-    onSuccess: () => {
-      queryClient.resetQueries({ queryKey: ["appointment"] });
-      queryClient.invalidateQueries({ queryKey: ["appointment"] });
-      queryClient.invalidateQueries({ queryKey: ["appointments"] });
-    },
-    onError: () => alert("Error adding appointment"),
-  });
-
-  const onSubmit = (data: FormData) => {
-    const submissionData = { consultation_id, registration_id, ...data };
-    addMutate(submissionData);
+      if (!response.ok) {
+        throw new Error("Error adding appointment");
+      }
+      reset();
+      router.refresh();
+    } catch (error) {
+      console.error("Error adding appointment:", error);
+    } finally {
+      setIsPending(false);
+    }
   };
 
-  const onReset = () => {
-    setType("");
-    reset();
-  };
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,14 +70,16 @@ const AppointmentForm = ({ registration_id, consultation_id }: Props) => {
                   onValueChange={(newValue) => {
                     // setType(newValue);
                     router.push(
-                      `/dashboard/consultation/edit/${consultation_id}?type=${newValue}`
+                      `/dashboard/consultation/edit/${consultation_id}?type=${encodeURIComponent(
+                        newValue
+                      )}`
                     );
 
                     onChange(newValue);
                   }}
                   value={value}
                 >
-                  <Select.Trigger>{type || "Select Type"}</Select.Trigger>
+                  <Select.Trigger>{queryType || "Select Type"}</Select.Trigger>
 
                   <Select.Content>
                     <Select.Group>
@@ -129,7 +131,12 @@ const AppointmentForm = ({ registration_id, consultation_id }: Props) => {
             {isPending ? "Saving..." : "Save"}
           </Button>
 
-          <Button type="button" color="gray" variant="soft" onClick={onReset}>
+          <Button
+            type="button"
+            color="gray"
+            variant="soft"
+            onClick={() => reset()}
+          >
             Reset
           </Button>
         </Flex>

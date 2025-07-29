@@ -1,4 +1,5 @@
 import {
+  getAppointments,
   getConsultationById,
   getMedsTemplates,
   getRegistrationById,
@@ -35,6 +36,11 @@ const ConsultationEditPage = async ({
     return <div>No medication templates found</div>;
   }
 
+  const appointments = await getAppointments();
+  if (!appointments) {
+    return <div>No appointments found</div>;
+  }
+
   return (
     <>
       <Flex direction="column" gap="4" p="4">
@@ -47,6 +53,7 @@ const ConsultationEditPage = async ({
             consultation={consultation}
             type={type || ""}
             templates={templates}
+            appointments={appointments}
           />
           <Flex direction="column" gap="4">
             <ConsultationDetailsForSingleRegId consultation={consultation} />

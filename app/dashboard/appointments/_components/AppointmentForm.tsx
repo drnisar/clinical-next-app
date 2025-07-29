@@ -1,7 +1,7 @@
 "use client";
 import { appointmentSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Select } from "@radix-ui/themes";
+import { Button, Flex, Select } from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,7 +13,13 @@ import { Appointment } from "@/generated/prisma";
 
 type FormData = Omit<Appointment, "status">;
 
-const AppointmentForm = ({ registration_id }: { registration_id: string }) => {
+const AppointmentForm = ({
+  registration_id,
+  successFn,
+}: {
+  registration_id: string;
+  successFn: () => void;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -27,7 +33,8 @@ const AppointmentForm = ({ registration_id }: { registration_id: string }) => {
     mutationFn: (data: FormData) => axios.post("/api/appointment", data),
     onSuccess: () => {
       alert("Appointment added successfully");
-      router.push("/dashboard/registration/" + registration_id);
+      successFn();
+      // router.push("/dashboard/registration/" + registration_id);
       router.refresh();
     },
     onError: () => {
@@ -46,77 +53,96 @@ const AppointmentForm = ({ registration_id }: { registration_id: string }) => {
     <div>
       <Form.Root
         onSubmit={handleSubmit(onSubmit)}
-        className="border p-6 shadow-md rounded-md max-w-md mx-auto"
+        className="border p-6 shadow-md rounded-md w-full mx-auto"
       >
-        <Controller
-          control={control}
-          name="type"
-          render={({ field: { onChange, value } }) => {
-            return (
-              <Select.Root
-                onValueChange={(newValue) => {
-                  onChange(newValue);
-                  const params = new URLSearchParams(searchParams);
-                  params.set("type", newValue);
-                  params.set("registration_id", registration_id);
-                  router.push(`?${params}`);
-                }}
-                value={value}
-              >
-                <Select.Trigger placeholder={`options`} />
+        <Flex gap="3" align="baseline" className="items-baseline flex-wrap">
+          <div className="min-w-0 flex-1">
+            <Controller
+              control={control}
+              name="type"
+              render={({ field: { onChange, value } }) => (
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium mb-3 leading-none">
+                    Type
+                  </label>
+                  <Select.Root
+                    onValueChange={(newValue) => {
+                      onChange(newValue);
+                      const params = new URLSearchParams(searchParams);
+                      params.set("type", newValue);
+                      params.set("registration_id", registration_id);
+                      router.replace(`?${params}`, { scroll: false });
+                    }}
+                    value={value}
+                  >
+                    <Select.Trigger placeholder="Select type" />
+                    <Select.Content>
+                      <Select.Group>
+                        <Select.Label>Options</Select.Label>
+                        {appointmentTypeOptions.map((option) => (
+                          <Select.Item key={option.value} value={option.value}>
+                            {option.label}
+                          </Select.Item>
+                        ))}
+                      </Select.Group>
+                    </Select.Content>
+                  </Select.Root>
+                </div>
+              )}
+            />
+          </div>
 
-                <Select.Content>
-                  <Select.Group>
-                    <Select.Label>Options</Select.Label>
-                    {appointmentTypeOptions.map((option) => (
-                      <Select.Item key={option.value} value={option.value}>
-                        {option.label}
-                      </Select.Item>
-                    ))}
-                  </Select.Group>
-                </Select.Content>
-              </Select.Root>
-            );
-          }}
-        />
+          <div className="min-w-0 flex-1">
+            <TextInput
+              label="Date"
+              name="date_appointment"
+              type="date"
+              placeholder="Date"
+              errorMessage={errors.date_appointment?.message?.toString() || ""}
+              register={() => register("date_appointment")}
+            />
+          </div>
 
-        <TextInput
-          label="Appointment Date"
-          name={"date_appointment"}
-          type={"date"}
-          placeholder={"Date"}
-          errorMessage={errors.date_appointment?.message?.toString() || ""}
-          register={() => register("date_appointment")}
-        />
-        <TextInput
-          label="Appointment Plan"
-          name={"plan"}
-          type={"text"}
-          placeholder={"Appointment Plan"}
-          errorMessage={errors.plan?.message?.toString() || ""}
-          register={() => register("plan")}
-        />
-        <TextInput
-          label="Notes"
-          name={"notes"}
-          type={"text"}
-          placeholder={"Notes"}
-          errorMessage={errors.notes?.message?.toString() || ""}
-          register={() => register("notes")}
-        />
-        <TextInput
-          label="Registration ID"
-          name={"registration_id"}
-          type={"text"}
-          placeholder={"Registration ID"}
-          // hidden={true}
-          errorMessage={errors.notes?.message?.toString() || ""}
-          register={() => register("registration_id")}
-          defaultValue={registration_id}
-        />
+          <div className="min-w-0 flex-1">
+            <TextInput
+              label="Plan"
+              name="plan"
+              type="text"
+              placeholder="Appointment Plan"
+              errorMessage={errors.plan?.message?.toString() || ""}
+              register={() => register("plan")}
+            />
+          </div>
 
-        <Button type="submit">Submit</Button>
-        {/* <button type="submit">some button</button> */}
+          <div className="min-w-0 flex-1">
+            <TextInput
+              label="Notes"
+              name="notes"
+              type="text"
+              placeholder="Notes"
+              errorMessage={errors.notes?.message?.toString() || ""}
+              register={() => register("notes")}
+            />
+          </div>
+
+          <div className="flex items-end flex-col ">
+            <label className="mb-3"></label>
+            <Button type="submit" disabled={addMutation.isPending}>
+              {addMutation.isPending ? "Submitting..." : "Submit"}
+            </Button>
+          </div>
+
+          <TextInput
+            label="Registration ID"
+            name="registration_id"
+            type="text"
+            placeholder="Registration ID"
+            hidden={true}
+            errorMessage=""
+            register={() => register("registration_id")}
+            defaultValue={registration_id}
+          />
+        </Flex>
       </Form.Root>
     </div>
   );

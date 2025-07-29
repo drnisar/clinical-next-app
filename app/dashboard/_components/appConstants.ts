@@ -27,9 +27,10 @@ export const genderOptions = [
 ];
 
 export const appointmentTypeOptions = [
-  { label: "Regular", value: "regular" },
-  { label: "Sehat Card", value: "sehat_card" },
-  { label: "IBP", value: "ibp" },
+  { label: "REGULAR", value: "REGULAR" },
+  { label: "SEHAT CARD", value: "SEHAT CARD" },
+  { label: "IBP", value: "IBP" },
+  { label: "OPD", value: "OPD" },
 ];
 export const appointmentStatusOptions = [
   { label: "Waiting", value: "waiting" },
@@ -622,4 +623,19 @@ export const react_select_styles: StylesConfig<
       color: "rgb(156 163 175)", // gray-400
     },
   }),
+};
+
+export const badgeColorForAppointments = (
+  type: string | "SEHAT CARD" | "IBP" | "OPD" | "REGULAR"
+) => {
+  switch (type) {
+    case "SEHAT CARD":
+      return "green";
+    case "IBP":
+      return "blue";
+    case "OPD":
+      return "red";
+    case "REGULAR":
+      return "yellow";
+  }
 };

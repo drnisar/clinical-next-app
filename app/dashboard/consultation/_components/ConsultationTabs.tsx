@@ -1,5 +1,10 @@
 "use client";
-import { Consultation, MedsTemplate } from "@/generated/prisma";
+import {
+  Appointment,
+  Consultation,
+  MedsTemplate,
+  Registration,
+} from "@/generated/prisma";
 import { Flex, Tabs } from "@radix-ui/themes";
 import MedicationsForm from "../../_components/MedicationsForm";
 import AppointmentsTab from "./AppointmentsTab";
@@ -9,17 +14,24 @@ import InstructionsArray from "./InstructionsArray";
 import ConsultationHistoryForm from "./ConsultationHistoryForm";
 import ConsultationDiagnosisForm from "./ConsultationDiagnosisForm";
 import ConsultationPlanForm from "./ConsultationPlanForm";
-
 interface Props {
   consultation: Consultation;
   type: string;
   templates: MedsTemplate[];
+  appointments: ({
+    registration: Registration;
+  } & Appointment)[];
 }
 
 type Instruction = {
   instruction: string;
 };
-const ConsultationTabs = ({ consultation, type, templates }: Props) => {
+const ConsultationTabs = ({
+  consultation,
+  type,
+  templates,
+  appointments,
+}: Props) => {
   return (
     <>
       <Flex gap={"8"}>
@@ -104,6 +116,7 @@ const ConsultationTabs = ({ consultation, type, templates }: Props) => {
               registration_id={consultation.registration_id}
               consultation_id={consultation.consultation_id}
               type={type}
+              appointments={appointments}
             />
           </Tabs.Content>
         </Tabs.Root>
