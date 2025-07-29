@@ -9,7 +9,6 @@ import { InputGeneric } from "../../_components/FormComponents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ConsultationAppointmentsTable from "./ConsultationAppointmentsTable";
-import { useRouter } from "next/navigation";
 
 type FormData = Omit<Appointment, "registration_id" | "visit_id">;
 
@@ -29,8 +28,6 @@ const ConsultationAppointmentForm = ({
   } = useForm<FormData>();
 
   const [type, setType] = useState("");
-
-  const router = useRouter();
 
   const queryClient = useQueryClient();
   const { mutate: addMutate, isPending } = useMutation({
@@ -73,7 +70,6 @@ const ConsultationAppointmentForm = ({
     setType("");
     reset();
   };
-  const params = new URLSearchParams();
   return (
     <>
       <Flex justify="between">
