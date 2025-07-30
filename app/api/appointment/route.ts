@@ -1,6 +1,7 @@
 import { appointmentSchema } from "@/app/validationSchemas";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (req: NextRequest) => {
   try {
@@ -57,6 +58,10 @@ export const POST = async (req: NextRequest) => {
       type: body.type, // Add the missing 'type' property
     },
   });
+
+  revalidatePath("/dashboard/appointments");
+  revalidatePath("/dashboard/consultation/edit/" + body.registration_id);
+  revalidatePath("/dashboard/consultation/edit", "page");
 
   return NextResponse.json(appointment);
 };
