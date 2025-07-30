@@ -1,11 +1,11 @@
 "use client";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Card, TextField, Heading, Text, Link } from "@radix-ui/themes";
 import toast from "react-hot-toast";
 
-export default function SignIn() {
+function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,8 @@ export default function SignIn() {
   };
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+    const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
+    signIn("google", { callbackUrl: callbackURL });
   };
 
   return (
@@ -98,6 +99,7 @@ export default function SignIn() {
           >
             Sign in with Google
           </Button>
+
           <div style={{ textAlign: "center" }}>
             <Text size="2" color="gray">
               Don&apos;t have an account?{" "}
@@ -109,5 +111,28 @@ export default function SignIn() {
         </div>
       </Card>
     </div>
+  );
+}
+
+function SignInLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md p-6">
+        <Heading size="6" className="text-center mb-6">
+          Clinical App Login
+        </Heading>
+        <div className="flex justify-center">
+          <Text>Loading...</Text>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+export default function SignIn() {
+  return (
+    <Suspense fallback={<SignInLoading />}>
+      <SignInForm />
+    </Suspense>
   );
 }
