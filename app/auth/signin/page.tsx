@@ -1,7 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Card, TextField, Heading, Text, Link } from "@radix-ui/themes";
 import toast from "react-hot-toast";
 
@@ -10,6 +10,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +27,8 @@ export default function SignIn() {
         toast.error(result.error);
       } else {
         toast.success("Signed in successfully!");
-        router.push("/dashboard");
+        const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
+        router.push(callbackURL);
       }
     } catch (error) {
       toast.error("An unexpected error occurred");

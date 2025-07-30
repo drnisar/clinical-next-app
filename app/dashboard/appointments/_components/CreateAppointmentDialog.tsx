@@ -34,7 +34,9 @@ const CreateAppointmentDialog = ({
         <Flex gap="4" width={"100%"} direction="column">
           <AppointmentForm
             registration_id={registration_id}
-            successFn={() => setOpen(false)}
+            successFn={() => {
+              setOpen(false);
+            }}
           />
           {/* <AppointmentsTable appointments={appointments} /> */}
           {appointments && appointments.length > 0 && (
