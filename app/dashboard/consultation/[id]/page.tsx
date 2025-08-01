@@ -4,8 +4,7 @@ import { Box, Flex } from "@radix-ui/themes";
 import ConsultantHeader from "../_components/ConsultantHeader";
 import ButtonPrintPage from "../_components/ButtonPrintPage";
 import ButtonEditPage from "../_components/ButtonEditPage";
-import { PrismaClient } from "@/generated/prisma";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 const SingleConsultationPage = async ({
   params,
@@ -38,7 +37,7 @@ const SingleConsultationPage = async ({
   });
 
   return (
-    <main>
+    <main className="print-container ">
       <header>
         <Flex gap="2" justify="end">
           <ButtonEditPage params={id} />
@@ -47,7 +46,7 @@ const SingleConsultationPage = async ({
         <ConsultantHeader />
       </header>
 
-      <Box>
+      <Box className="">
         <SingleConsultationDetails
           registration={registration}
           medications={meds}

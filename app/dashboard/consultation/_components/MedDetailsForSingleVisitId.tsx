@@ -19,9 +19,9 @@ const MedDetailsForSingleVisitId = ({ meds }: Props) => {
           bottom={"2"}
           className="border-b border-jade-200 p-2 w-full"
         >
-          <span>
-            {index + 1} {med.drug_name.toUpperCase()}{" "}
-            {med.drug_form?.toUpperCase()}
+          <span className="text-sm font-semibold">
+            {index + 1 + ". "} {med.drug_name.toUpperCase()}{" "}
+            {med.drug_form?.toUpperCase()} {med.drug_dose}
           </span>
           <div dir="rtl">
             {med.amount} {translate(med.drug_form)} {translate(med.route)}{" "}

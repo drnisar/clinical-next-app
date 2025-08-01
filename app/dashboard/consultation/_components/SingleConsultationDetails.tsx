@@ -25,57 +25,60 @@ const SingleConsultationDetails = ({
 }: Props) => {
   return (
     <>
-      <Flex gap="2" justify="between">
+      <div className="flex justify-end pr-6">
         <Heading size="3" className="justify-end">
           Date: {formatDate(consultation.visit_date)}
         </Heading>
-      </Flex>
+      </div>
 
       <RegistrationDetailsCard registration={registration} />
-      <Flex justify="start" gap="2" className="mb-4">
-        <Flex direction="column" gap="2" width={"300px"}>
-          <Box className="bg-teal-50 dark:bg-transparent py-2 col-span-6">
-            <ConsultationDetailsForSingleRegId consultation={consultation} />
-          </Box>
-
-          {consultation.instructions && (
-            <Box className="col-span-2 py-5 bg-amber-50 dark:bg-transparent">
-              <Heading size="2">Instructions</Heading>
-              <Box px="2">
-                {/* Handle string instructions */}
-                {typeof consultation.instructions === "string" && (
-                  <Text size="2" style={{ whiteSpace: "pre-line" }}>
-                    {consultation.instructions}
-                  </Text>
-                )}
-
-                {/* Handle array instructions */}
-                {Array.isArray(consultation.instructions) && (
-                  <Box>
-                    {consultation.instructions.map(
-                      (
-                        item: string | { instruction: string },
-                        index: number
-                      ) => (
-                        <Text key={index} size="2" as="p" mb="1">
-                          {index + 1} .{" "}
-                          {typeof item === "string" ? item : item.instruction}
-                        </Text>
-                      )
-                    )}
-                  </Box>
-                )}
+      <div className="grid grid-cols-12 gap-4 mb-4">
+        <div className="col-span-4 text-xs border-r">
+          <Heading size="3">Clinical Details</Heading>
+          <ConsultationDetailsForSingleRegId consultation={consultation} />
+        </div>
+        <div className="col-span-8 px-4">
+          <Heading size="3">For Patient</Heading>
+          <Flex direction="column" gap="2" className="flex-grow">
+            {medications.length > 0 && (
+              <Box className="flex-grow py-5 bg-purple-50 dark:bg-transparent">
+                <Heading size="2">Medications</Heading>
+                <MedDetailsForSingleVisitId meds={medications} />
               </Box>
-            </Box>
-          )}
-        </Flex>
-        {medications.length > 0 && (
-          <Box className="flex-grow py-5 bg-purple-50 dark:bg-transparent">
-            <Heading size="2">Medications</Heading>
-            <MedDetailsForSingleVisitId meds={medications} />
-          </Box>
-        )}
-      </Flex>
+            )}
+            {consultation.instructions.length > 0 && (
+              <Box className="col-span-2 py-5 bg-amber-50 dark:bg-transparent">
+                <Heading size="2">Instructions</Heading>
+                <Box px="2">
+                  {/* Handle string instructions */}
+                  {typeof consultation.instructions === "string" && (
+                    <Text size="2" style={{ whiteSpace: "pre-line" }}>
+                      {consultation.instructions}
+                    </Text>
+                  )}
+
+                  {/* Handle array instructions */}
+                  {Array.isArray(consultation.instructions) && (
+                    <Box>
+                      {consultation.instructions.map(
+                        (
+                          item: string | { instruction: string },
+                          index: number
+                        ) => (
+                          <Text key={index} size="2" as="p" mb="1">
+                            {index + 1} .{" "}
+                            {typeof item === "string" ? item : item.instruction}
+                          </Text>
+                        )
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </Flex>
+        </div>
+      </div>
     </>
   );
 };

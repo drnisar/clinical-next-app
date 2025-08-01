@@ -114,139 +114,19 @@
   }
 }
 
-/* Comprehensive print styles */
+/* In your globals.css */
 @media print {
-  /* Page setup for A4 portrait - Remove padding and set proper margins */
-  @page {
-    size: A4 portrait;
-    margin: 20mm; /* This creates white margins, not black borders */
-    padding: 0; /* Remove padding to eliminate black borders */
-  }
-
-  @page :first {
-    margin-top: 25mm;
-  }
-
-  /* Body setup for A4 */
-  body {
-    width: auto;
-    max-width: none;
+  .print-container {
     margin: 0 !important;
-    padding: 0 !important; /* Remove body padding */
-    font-size: 12pt;
-    line-height: 1.4;
-    color: black !important;
-    background: white !important;
-    background-color: white !important;
-    border: none !important; /* Ensure no border on body */
-  }
-
-  /* Reset all elements - Add border: none */
-  * {
-    color: black !important;
-    background: white !important;
-    background-color: white !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    border: none !important; /* Remove all borders */
-    outline: none !important; /* Remove outlines */
-    -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
-
-  /* Target all text elements */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span,
-  div,
-  a,
-  button,
-  input,
-  textarea,
-  label {
-    color: black !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important; /* Remove borders from text elements */
-  }
-
-  /* Target Radix UI components specifically */
-  [data-radix-collection-item],
-  [data-radix-select-content],
-  [data-radix-select-item],
-  [data-radix-dialog-content],
-  [data-radix-popover-content],
-  button[data-accent-color],
-  button[data-radius] {
-    color: black !important;
-    background: white !important;
-    background-color: white !important;
-    border: none !important; /* Remove borders from Radix components */
-  }
-
-  /* Hide navigation and non-essential elements */
-  nav,
-  .print\\:hidden,
-  [class*="print:hidden"] {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  /* Ensure form elements are visible and print-friendly */
-  input,
-  textarea,
-  select {
-    color: black !important;
-    background: white !important;
-    border: 1px solid #ccc !important; /* Light border for form elements only */
-    font-size: 12pt;
-  }
-
-  /* Make sure tables are readable - Only tables should have borders */
-  table,
-  th,
-  td {
-    color: black !important;
-    background: white !important;
-    border: 1px solid black !important; /* Keep table borders for readability */
-  }
-
-  /* Optimize spacing for print */
-  .container,
-  .max-w-md,
-  .max-w-lg,
-  .max-w-xl {
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 10px !important;
-    border: none !important; /* Remove container borders */
-  }
-
-  /* Remove any potential borders from common elements */
-  .border,
-  .border-b,
-  .border-t,
-  .border-l,
-  .border-r,
-  [class*="border"] {
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     border: none !important;
+    box-shadow: none !important;
   }
 
-  /* Page break utilities */
-  .print-page-break {
-    page-break-after: always;
-    break-after: always;
-  }
-
-  .print-no-break {
-    page-break-inside: avoid;
-    break-inside: avoid;
+  .print-hidden {
+    display: none !important;
   }
 }
 

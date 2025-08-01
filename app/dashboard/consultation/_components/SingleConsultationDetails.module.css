@@ -71,6 +71,6 @@
 
 @media print {
   .markdownContent {
-    font-size: 12pt !important;
+    font-size: 8pt !important;
   }
 }
