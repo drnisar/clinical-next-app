@@ -131,3 +131,13 @@ const useDateHandling = () => {
 
   return { formatDateForInput, parseInputDate };
 };
+
+export const getAppointmentTypes = async () => {
+  try {
+    const appointmentTypes = await prisma.appointmentType.findMany();
+    return appointmentTypes;
+  } catch (error) {
+    console.error("Error fetching appointment types:", error);
+    return [];
+  }
+};

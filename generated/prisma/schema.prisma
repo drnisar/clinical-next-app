@@ -206,3 +206,11 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model AppointmentType {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  value     String?
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
+}
