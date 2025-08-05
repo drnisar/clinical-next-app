@@ -46,7 +46,7 @@ const ConsultantHeader = () => {
           </Flex>
         </Flex>
       ) : (
-        <div className="min-h-48"></div>
+        <div className="min-h-36"></div>
       )}
     </>
   );
