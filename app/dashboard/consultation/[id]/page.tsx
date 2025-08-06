@@ -33,7 +33,7 @@ const SingleConsultationPage = async ({
   }
 
   const appointment = await prisma.appointment.findFirst({
-    where: { appointment_id: id },
+    where: { registration_id: registration.registration_id },
   });
 
   return (
@@ -51,7 +51,7 @@ const SingleConsultationPage = async ({
           registration={registration}
           medications={meds}
           consultation={consultation}
-          appointment={appointment || null}
+          appointment={appointment || undefined}
         />
       </Box>
     </main>

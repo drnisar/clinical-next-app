@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import AddToOTTemplateDialog from "./AddToOTTemplateDialog";
 import TemplateSelectionDialog from "./TemplateSelectionDialog";
 import { OT } from "@/generated/prisma";
+import { dateYYYYMMDD } from "../../_components/appConstants";
 
 type OTNotesForm = Omit<OT, "surgery_date"> & { surgery_date: string };
 interface Props {
@@ -69,17 +70,17 @@ const OTNotesForm = ({ ot }: Props) => {
     },
   });
 
-  // Helper function to format date
-  const formatDateForInput = (date: Date | string | null): string => {
-    if (!date) return "";
-    try {
-      const dateObj = typeof date === "string" ? new Date(date) : date;
-      if (isNaN(dateObj.getTime())) return "";
-      return dateObj.toISOString().split("T")[0];
-    } catch {
-      return "";
-    }
-  };
+  // // Helper function to format date
+  // const formatDateForInput = (date: Date | string | null): string => {
+  //   if (!date) return "";
+  //   try {
+  //     const dateObj = typeof date === "string" ? new Date(date) : date;
+  //     if (isNaN(dateObj.getTime())) return "";
+  //     return dateObj.toISOString().split("T")[0];
+  //   } catch {
+  //     return "";
+  //   }
+  // };
 
   const mutation = useMutation({
     mutationFn: async (data: OTNotesForm) => await axios.patch("/api/ot", data),
@@ -116,9 +117,7 @@ const OTNotesForm = ({ ot }: Props) => {
     if (ot) {
       reset({
         procedure_name: ot.procedure_name || "",
-        surgery_date: ot.surgery_date
-          ? formatDateForInput(ot.surgery_date)
-          : "",
+        surgery_date: dateYYYYMMDD(ot.surgery_date) || "",
         surgeon: ot.surgeon || "",
         assistant_1: ot.assistant_1 || "",
         assistant_2: ot.assistant_2 || "",
@@ -281,8 +280,8 @@ const OTNotesForm = ({ ot }: Props) => {
                   />
                 </InputGeneric>
                 <InputGeneric
-                  label="Date"
-                  name="date"
+                  label="Surgery Date"
+                  name="surgery_date"
                   className="w-1/4"
                   errorMessage={""}
                 >

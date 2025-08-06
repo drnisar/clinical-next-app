@@ -657,3 +657,30 @@ export const datedddDDMMMYY = (
   // Use a consistent format that works on both server and client
   return `${ddd} ${dd}-${mmm}-${yy}`;
 };
+export const dateDDMMMYY = (date: Date | string | null | undefined): string => {
+  if (!date) return "";
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  const dd = dateObj.getDate().toString().padStart(2, "0");
+  const mmm = dateObj.toLocaleString("default", { month: "short" });
+  const yy = dateObj.getFullYear().toString().slice(-2);
+
+  // Use a consistent format that works on both server and client
+  return `${dd}-${mmm}-${yy}`;
+};
+
+export const dateYYYYMMDD = (
+  date: Date | string | null | undefined
+): string => {
+  if (!date) return "";
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  const yyyy = dateObj.getFullYear();
+  const mm = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+  const dd = dateObj.getDate().toString().padStart(2, "0");
+
+  // Use a consistent format that works on both server and client
+  return `${yyyy}-${mm}-${dd}`;
+};

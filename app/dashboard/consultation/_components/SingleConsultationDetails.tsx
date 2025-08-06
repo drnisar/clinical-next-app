@@ -11,17 +11,19 @@ import {
 } from "@/generated/prisma";
 import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
 import { formatDate } from "../../_components/appConstants";
+import AppointmentComponent from "../../_components/AppointmentComponent";
 
 interface Props {
   consultation: Consultation;
   registration: Registration;
-  appointment?: Appointment | null;
+  appointment?: Appointment;
   medications: Medication[];
 }
 const SingleConsultationDetails = ({
   consultation,
   registration,
   medications,
+  appointment,
 }: Props) => {
   return (
     <>
@@ -76,6 +78,7 @@ const SingleConsultationDetails = ({
                 </Box>
               </Box>
             )}
+            {appointment && <AppointmentComponent appointment={appointment} />}
           </Flex>
         </div>
       </div>
