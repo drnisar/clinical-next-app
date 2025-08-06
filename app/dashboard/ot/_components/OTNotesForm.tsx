@@ -69,19 +69,6 @@ const OTNotesForm = ({ ot }: Props) => {
       postop_instructions: "",
     },
   });
-
-  // // Helper function to format date
-  // const formatDateForInput = (date: Date | string | null): string => {
-  //   if (!date) return "";
-  //   try {
-  //     const dateObj = typeof date === "string" ? new Date(date) : date;
-  //     if (isNaN(dateObj.getTime())) return "";
-  //     return dateObj.toISOString().split("T")[0];
-  //   } catch {
-  //     return "";
-  //   }
-  // };
-
   const mutation = useMutation({
     mutationFn: async (data: OTNotesForm) => await axios.patch("/api/ot", data),
     onSuccess: (data) => {

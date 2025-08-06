@@ -82,7 +82,7 @@ const OTNotesDetails = ({ ot }: Props) => {
         </div>
 
         {/* Row 5: Findings */}
-        <Text size="2" color="gray" className="col-span-1">
+        <Text size="2" color="gray" className="col-span-1 whitespace-pre-line">
           Findings
         </Text>
         <Text size="2" className="col-span-7">
@@ -90,7 +90,7 @@ const OTNotesDetails = ({ ot }: Props) => {
         </Text>
 
         {/* Row 6: Operative Details */}
-        <Text size="2" color="gray" className="col-span-1">
+        <Text size="2" color="gray" className="col-span-1 whitespace-pre-line">
           Operative Details
         </Text>
         <Text size="2" className="col-span-7">
@@ -109,7 +109,7 @@ const OTNotesDetails = ({ ot }: Props) => {
         <Text size="2" color="gray" className="col-span-1">
           Postoperative Instructions
         </Text>
-        <Text size="2" className="col-span-7">
+        <Text size="2" className="col-span-7 whitespace-pre-line">
           {ot.postop_instructions}
         </Text>
       </Grid>
