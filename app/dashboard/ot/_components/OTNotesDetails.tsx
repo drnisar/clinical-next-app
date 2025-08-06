@@ -82,18 +82,18 @@ const OTNotesDetails = ({ ot }: Props) => {
         </div>
 
         {/* Row 5: Findings */}
-        <Text size="2" color="gray" className="col-span-1 whitespace-pre-line">
+        <Text size="2" color="gray" className="col-span-1 ">
           Findings
         </Text>
-        <Text size="2" className="col-span-7">
+        <Text size="2" className="col-span-7 whitespace-pre-line">
           {ot.findings}
         </Text>
 
         {/* Row 6: Operative Details */}
-        <Text size="2" color="gray" className="col-span-1 whitespace-pre-line">
+        <Text size="2" color="gray" className="col-span-1 ">
           Operative Details
         </Text>
-        <Text size="2" className="col-span-7">
+        <Text size="2" className="col-span-7 whitespace-pre-line">
           {ot.operative_details}
         </Text>
 
