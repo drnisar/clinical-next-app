@@ -1,3 +1,4 @@
+"use client";
 import { Badge, Select, Spinner } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";

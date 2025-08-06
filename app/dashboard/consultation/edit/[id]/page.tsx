@@ -12,6 +12,7 @@ import ConsultationTabs from "../../_components/ConsultationTabs";
 import MedsDisplayEnglish from "@/app/dashboard/_components/MedsDisplayEnglish";
 import InstructionsDisplayEnglish from "@/app/dashboard/_components/InstructionsDisplayEnglish";
 import AppointmentsTableForSingleRegId from "@/app/dashboard/appointments/_components/AppointmentsTableForSingleRegId";
+import StatusChangeComponent from "../../_components/StatusChangeComponent";
 
 const ConsultationEditPage = async ({
   params,
@@ -49,7 +50,11 @@ const ConsultationEditPage = async ({
   return (
     <>
       <Flex direction="column" gap="4" p="4">
-        <Flex justify="end">
+        <Flex justify="between">
+          <StatusChangeComponent
+            status={consultation.status ?? ""}
+            consultation_id={id}
+          />
           <ButtonPrintPreview consultation_id={id} />
         </Flex>
         <RegistrationDetailsCard registration={consultation?.registration} />
