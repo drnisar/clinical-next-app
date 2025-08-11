@@ -12,8 +12,10 @@ import {
   DischargeSummary,
   HospitalInvestigations,
   MedicalRest,
-  TherapeuticProcudures,
+  // TherapeuticProcudures,
 } from "./DischargeNotes";
+import { TherapeuticProceduresTab } from "../_tabs/TherapeuticProceduresTab";
+// import OTNotesForDischargeSlip from "../../ot/_components/OTNotesForDischargeSlip";
 
 const tabValues = [
   "Diagnosis / es",
@@ -33,6 +35,7 @@ type Instruction = {
 interface Props {
   admission: Admission_Discharge;
   templates: MedsTemplate[];
+  otNotes?: string;
 }
 
 const DischargeTabs = ({ admission, templates }: Props) => {
@@ -95,11 +98,12 @@ const DischargeTabs = ({ admission, templates }: Props) => {
               />
             </Tabs.Content>
             <Tabs.Content value="Therapeutic Procedures">
-              <TherapeuticProcudures
+              <TherapeuticProceduresTab
                 defaultValue={admission.therapeutic_procedures || ""}
                 admission_id={admission.admission_id}
                 onSave={handleSaveSuccess}
               />
+              {/* <OTNotesForDischargeSlip otNotesArray={otNotesArray ?? []} /> */}
             </Tabs.Content>
             <Tabs.Content value="Medications">
               <MedicationsForm

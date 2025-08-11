@@ -1,6 +1,8 @@
+"use client";
 import { OT } from "@/generated/prisma";
 import { Grid, Text } from "@radix-ui/themes";
 import React from "react";
+import { datedddDDMMMYY } from "../../_components/appConstants";
 
 interface Props {
   ot: OT;
@@ -21,7 +23,7 @@ const OTNotesDetails = ({ ot }: Props) => {
           Date
         </Text>
         <Text size="2" className="col-span-1">
-          {ot.surgery_date?.toLocaleDateString("en-GB")}
+          {datedddDDMMMYY(ot.surgery_date)}
         </Text>
 
         {/* Row 2: Surgeon and Assistant 1 */}

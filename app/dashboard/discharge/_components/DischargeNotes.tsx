@@ -145,41 +145,41 @@ export function DiagnosticProcedures({
     </Flex>
   );
 }
-export function TherapeuticProcudures({
-  defaultValue,
-  admission_id,
-  onSave,
-}: Props) {
-  const [therapeuticProcedures, setTherapeuticProcedures] = useState({});
+// export function TherapeuticProcudures({
+//   defaultValue,
+//   admission_id,
+//   onSave,
+// }: Props) {
+//   const [therapeuticProcedures, setTherapeuticProcedures] = useState({});
 
-  return (
-    <Flex direction="column" mt="2" className="h-full flex-grow">
-      <Box className="flex-grow h-[calc(100vh-400px)]">
-        <TextArea
-          style={{
-            minHeight: "100%",
-            maxHeight: "100%",
-            boxSizing: "border-box",
-          }}
-          placeholder="Therapeutic Procedures like Surgery, Plasmapharesis, Dialysis etc"
-          defaultValue={defaultValue}
-          onChange={(e) =>
-            setTherapeuticProcedures({
-              therapeutic_procedures: e.target.value,
-            })
-          }
-        />
-      </Box>
-      <Box className="mt-4">
-        <ButtonSaveDischargeComponents
-          admission_id={admission_id}
-          fieldData={therapeuticProcedures}
-          onSave={onSave}
-        />
-      </Box>
-    </Flex>
-  );
-}
+//   return (
+//     <Flex direction="column" mt="2" className="h-full flex-grow">
+//       <Box className="flex-grow h-[calc(100vh-400px)]">
+//         <TextArea
+//           style={{
+//             minHeight: "100%",
+//             maxHeight: "100%",
+//             boxSizing: "border-box",
+//           }}
+//           placeholder="Therapeutic Procedures like Surgery, Plasmapharesis, Dialysis etc"
+//           defaultValue={defaultValue}
+//           onChange={(e) =>
+//             setTherapeuticProcedures({
+//               therapeutic_procedures: e.target.value,
+//             })
+//           }
+//         />
+//       </Box>
+//       <Box className="mt-4">
+//         <ButtonSaveDischargeComponents
+//           admission_id={admission_id}
+//           fieldData={therapeuticProcedures}
+//           onSave={onSave}
+//         />
+//       </Box>
+//     </Flex>
+//   );
+// }
 export function Instructions({ defaultValue, admission_id, onSave }: Props) {
   const [instructions, setInstructions] = useState({});
 

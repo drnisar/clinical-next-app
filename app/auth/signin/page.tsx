@@ -27,7 +27,9 @@ function SignInForm() {
         toast.error(result.error);
       } else {
         toast.success("Signed in successfully!");
-        const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
+        const callbackURL =
+          searchParams.get("callbackUrl") ||
+          "https://clinical-next-app.vercel.app/dashboard";
         router.push(callbackURL);
       }
     } catch (error) {

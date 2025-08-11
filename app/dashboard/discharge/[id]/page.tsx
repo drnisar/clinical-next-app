@@ -5,6 +5,7 @@ import { Button, Flex, Link, Spinner } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getMedsTemplates } from "@/app/actions/actions";
+import DischargePageProvider from "./_components/DischargePageProvider";
 
 interface Props {
   params: Promise<{
@@ -27,24 +28,43 @@ const NewDischargePage = async ({ params }: Props) => {
 
   const templates = await getMedsTemplates();
 
+  const otNotesArray = await prisma.oT.findMany({
+    where: {
+      admission_id: admission.admission_id,
+    },
+  });
+
+  if (!otNotesArray) return null;
+
   return (
-    <Suspense fallback={<Spinner />}>
-      <Flex gap={"2"} justify={"end"}>
-        <Link
-          href={`/dashboard/discharge/discharge_slip/${admission.admission_id}`}
-        >
-          <Button
-            variant="soft"
-            color="grass"
-            disabled={admission.status !== "DISCHARGED"}
+    <DischargePageProvider
+      admission={admission}
+      registration={registration}
+      templates={templates}
+      otNotesArray={otNotesArray}
+    >
+      <Suspense fallback={<Spinner />}>
+        <Flex gap={"2"} justify={"end"}>
+          <Link
+            href={`/dashboard/discharge/discharge_slip/${admission.admission_id}`}
           >
-            Print Discharge Slip
-          </Button>
-        </Link>
-      </Flex>
-      <RegistrationDetailsCard registration={registration} />
-      <DischargeTabs admission={admission} templates={templates} />
-    </Suspense>
+            <Button
+              variant="soft"
+              color="grass"
+              disabled={admission.status !== "DISCHARGED"}
+            >
+              Print Discharge Slip
+            </Button>
+          </Link>
+        </Flex>
+        <RegistrationDetailsCard registration={registration} />
+        <DischargeTabs
+          admission={admission}
+          templates={templates}
+          // otNotes={otNotes || ""}
+        />
+      </Suspense>
+    </DischargePageProvider>
   );
 };
 

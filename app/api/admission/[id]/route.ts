@@ -56,6 +56,7 @@ export async function PATCH(
     });
     revalidatePath("/dashboard/admissions");
     revalidatePath(`/dashboard/admission/${id}`);
+    revalidatePath(`/dashboard/discharge/${id}`);
     return NextResponse.json(updatedAdmission, { status: 200 });
   } catch (error) {
     console.error("Error updating admission:", error);
