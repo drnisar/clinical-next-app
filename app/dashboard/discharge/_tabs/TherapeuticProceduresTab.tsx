@@ -23,9 +23,10 @@ export function TherapeuticProceduresTab({
   const otNotes =
     otNotesArray.length > 0
       ? otNotesArray
-          .map((ot, index) => {
-            return `OT Note ${index + 1}:
-Surgery Date: ${ot.surgery_date?.toLocaleDateString("en-GB") || "Not recorded"}
+          .map((ot) => {
+            return `Surgery Date: ${
+              ot.surgery_date?.toLocaleDateString("en-GB") || "Not recorded"
+            }
 Procedure: ${ot.procedure_name || "Not specified"}
 Findings: ${ot.findings || "Not recorded"}
 Operative Details: ${ot.operative_details || "Not recorded"}`;

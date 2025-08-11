@@ -58,11 +58,7 @@ const NewDischargePage = async ({ params }: Props) => {
           </Link>
         </Flex>
         <RegistrationDetailsCard registration={registration} />
-        <DischargeTabs
-          admission={admission}
-          templates={templates}
-          // otNotes={otNotes || ""}
-        />
+        <DischargeTabs admission={admission} templates={templates} />
       </Suspense>
     </DischargePageProvider>
   );

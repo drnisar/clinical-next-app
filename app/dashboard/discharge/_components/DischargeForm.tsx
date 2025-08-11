@@ -5,6 +5,7 @@ import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
+  dateYYYYMMDD,
   dischargeModes,
   dischargeStatuses,
 } from "../../_components/appConstants";
@@ -125,7 +126,7 @@ const DischargeForm = ({ admission }: Props) => {
               <TextField.Root
                 type="date"
                 size={"1"}
-                defaultValue={disDate && disDate.toString().split("T")[0]}
+                defaultValue={disDate && dateYYYYMMDD(disDate)}
                 onBlur={(e) => {
                   setDisDate(new Date(e.target.value));
                 }}
