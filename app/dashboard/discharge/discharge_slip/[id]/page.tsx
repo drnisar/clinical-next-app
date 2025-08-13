@@ -42,6 +42,9 @@ const DischareSlip = async ({
       <RegistrationDetailsCard registration={registration} />
       <DischargeHeader admissionDischarge={discharge} />
       <DischargeDetails discharge={discharge} />
+      <footer className="print:flex print:fixed print:bottom-0 print:left-0 print:w-full print:justify-center print:text-sm print:text-gray-500">
+        Page <span className="print:ml-1 print:counter-page"></span>
+      </footer>
     </>
   );
 };

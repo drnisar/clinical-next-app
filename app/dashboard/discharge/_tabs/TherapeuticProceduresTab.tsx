@@ -26,10 +26,10 @@ export function TherapeuticProceduresTab({
           .map((ot) => {
             return `Surgery Date: ${
               ot.surgery_date?.toLocaleDateString("en-GB") || "Not recorded"
-            }
-Procedure: ${ot.procedure_name || "Not specified"}
-Findings: ${ot.findings || "Not recorded"}
-Operative Details: ${ot.operative_details || "Not recorded"}`;
+            } \n
+Procedure: ${ot.procedure_name || "Not specified"} \n
+Findings: ${ot.findings || "Not recorded"} \n
+ `;
           })
           .join("\n\n" + "─".repeat(50) + "\n\n")
       : "";
