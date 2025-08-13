@@ -268,6 +268,23 @@ exports.Prisma.AppointmentTypeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GenericNameScalarFieldEnum = {
+  generic_id: 'generic_id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BrandNameScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  form: 'form',
+  strength: 'strength',
+  generic_id: 'generic_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -292,7 +309,9 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  AppointmentType: 'AppointmentType'
+  AppointmentType: 'AppointmentType',
+  GenericName: 'GenericName',
+  BrandName: 'BrandName'
 };
 
 /**

@@ -98,6 +98,16 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  * 
  */
 export type AppointmentType = $Result.DefaultSelection<Prisma.$AppointmentTypePayload>
+/**
+ * Model GenericName
+ * 
+ */
+export type GenericName = $Result.DefaultSelection<Prisma.$GenericNamePayload>
+/**
+ * Model BrandName
+ * 
+ */
+export type BrandName = $Result.DefaultSelection<Prisma.$BrandNamePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -320,6 +330,26 @@ export class PrismaClient<
     * ```
     */
   get appointmentType(): Prisma.AppointmentTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.genericName`: Exposes CRUD operations for the **GenericName** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GenericNames
+    * const genericNames = await prisma.genericName.findMany()
+    * ```
+    */
+  get genericName(): Prisma.GenericNameDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.brandName`: Exposes CRUD operations for the **BrandName** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BrandNames
+    * const brandNames = await prisma.brandName.findMany()
+    * ```
+    */
+  get brandName(): Prisma.BrandNameDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -772,7 +802,9 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
-    AppointmentType: 'AppointmentType'
+    AppointmentType: 'AppointmentType',
+    GenericName: 'GenericName',
+    BrandName: 'BrandName'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -791,7 +823,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "oT_Templates" | "appointment" | "consultation" | "registration" | "medsTemplate" | "user" | "account" | "session" | "verificationToken" | "appointmentType"
+      modelProps: "admission_Discharge" | "admitted_Location" | "oT" | "oT_Templates" | "appointment" | "consultation" | "registration" | "medsTemplate" | "user" | "account" | "session" | "verificationToken" | "appointmentType" | "genericName" | "brandName"
       txIsolationLevel: never
     }
     model: {
@@ -1757,6 +1789,154 @@ export namespace Prisma {
           }
         }
       }
+      GenericName: {
+        payload: Prisma.$GenericNamePayload<ExtArgs>
+        fields: Prisma.GenericNameFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GenericNameFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GenericNameFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          findFirst: {
+            args: Prisma.GenericNameFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GenericNameFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          findMany: {
+            args: Prisma.GenericNameFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>[]
+          }
+          create: {
+            args: Prisma.GenericNameCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          createMany: {
+            args: Prisma.GenericNameCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.GenericNameDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          update: {
+            args: Prisma.GenericNameUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          deleteMany: {
+            args: Prisma.GenericNameDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GenericNameUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.GenericNameUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GenericNamePayload>
+          }
+          aggregate: {
+            args: Prisma.GenericNameAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGenericName>
+          }
+          groupBy: {
+            args: Prisma.GenericNameGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GenericNameGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.GenericNameFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.GenericNameAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.GenericNameCountArgs<ExtArgs>
+            result: $Utils.Optional<GenericNameCountAggregateOutputType> | number
+          }
+        }
+      }
+      BrandName: {
+        payload: Prisma.$BrandNamePayload<ExtArgs>
+        fields: Prisma.BrandNameFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BrandNameFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BrandNameFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          findFirst: {
+            args: Prisma.BrandNameFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BrandNameFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          findMany: {
+            args: Prisma.BrandNameFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>[]
+          }
+          create: {
+            args: Prisma.BrandNameCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          createMany: {
+            args: Prisma.BrandNameCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.BrandNameDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          update: {
+            args: Prisma.BrandNameUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          deleteMany: {
+            args: Prisma.BrandNameDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BrandNameUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.BrandNameUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BrandNamePayload>
+          }
+          aggregate: {
+            args: Prisma.BrandNameAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBrandName>
+          }
+          groupBy: {
+            args: Prisma.BrandNameGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BrandNameGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.BrandNameFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.BrandNameAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.BrandNameCountArgs<ExtArgs>
+            result: $Utils.Optional<BrandNameCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1841,6 +2021,8 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     appointmentType?: AppointmentTypeOmit
+    genericName?: GenericNameOmit
+    brandName?: BrandNameOmit
   }
 
   /* Types for Logging */
@@ -2074,6 +2256,37 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+
+  /**
+   * Count Type GenericNameCountOutputType
+   */
+
+  export type GenericNameCountOutputType = {
+    brandNames: number
+  }
+
+  export type GenericNameCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    brandNames?: boolean | GenericNameCountOutputTypeCountBrandNamesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GenericNameCountOutputType without action
+   */
+  export type GenericNameCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericNameCountOutputType
+     */
+    select?: GenericNameCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GenericNameCountOutputType without action
+   */
+  export type GenericNameCountOutputTypeCountBrandNamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BrandNameWhereInput
   }
 
 
@@ -15900,6 +16113,2001 @@ export namespace Prisma {
 
 
   /**
+   * Model GenericName
+   */
+
+  export type AggregateGenericName = {
+    _count: GenericNameCountAggregateOutputType | null
+    _min: GenericNameMinAggregateOutputType | null
+    _max: GenericNameMaxAggregateOutputType | null
+  }
+
+  export type GenericNameMinAggregateOutputType = {
+    generic_id: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GenericNameMaxAggregateOutputType = {
+    generic_id: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GenericNameCountAggregateOutputType = {
+    generic_id: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GenericNameMinAggregateInputType = {
+    generic_id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GenericNameMaxAggregateInputType = {
+    generic_id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GenericNameCountAggregateInputType = {
+    generic_id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GenericNameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenericName to aggregate.
+     */
+    where?: GenericNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenericNames to fetch.
+     */
+    orderBy?: GenericNameOrderByWithRelationInput | GenericNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GenericNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenericNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenericNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GenericNames
+    **/
+    _count?: true | GenericNameCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GenericNameMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GenericNameMaxAggregateInputType
+  }
+
+  export type GetGenericNameAggregateType<T extends GenericNameAggregateArgs> = {
+        [P in keyof T & keyof AggregateGenericName]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGenericName[P]>
+      : GetScalarType<T[P], AggregateGenericName[P]>
+  }
+
+
+
+
+  export type GenericNameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GenericNameWhereInput
+    orderBy?: GenericNameOrderByWithAggregationInput | GenericNameOrderByWithAggregationInput[]
+    by: GenericNameScalarFieldEnum[] | GenericNameScalarFieldEnum
+    having?: GenericNameScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GenericNameCountAggregateInputType | true
+    _min?: GenericNameMinAggregateInputType
+    _max?: GenericNameMaxAggregateInputType
+  }
+
+  export type GenericNameGroupByOutputType = {
+    generic_id: string
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: GenericNameCountAggregateOutputType | null
+    _min: GenericNameMinAggregateOutputType | null
+    _max: GenericNameMaxAggregateOutputType | null
+  }
+
+  type GetGenericNameGroupByPayload<T extends GenericNameGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GenericNameGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GenericNameGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GenericNameGroupByOutputType[P]>
+            : GetScalarType<T[P], GenericNameGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GenericNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    generic_id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    brandNames?: boolean | GenericName$brandNamesArgs<ExtArgs>
+    _count?: boolean | GenericNameCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["genericName"]>
+
+
+
+  export type GenericNameSelectScalar = {
+    generic_id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GenericNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"generic_id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["genericName"]>
+  export type GenericNameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    brandNames?: boolean | GenericName$brandNamesArgs<ExtArgs>
+    _count?: boolean | GenericNameCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $GenericNamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GenericName"
+    objects: {
+      brandNames: Prisma.$BrandNamePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      generic_id: string
+      name: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["genericName"]>
+    composites: {}
+  }
+
+  type GenericNameGetPayload<S extends boolean | null | undefined | GenericNameDefaultArgs> = $Result.GetResult<Prisma.$GenericNamePayload, S>
+
+  type GenericNameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GenericNameFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GenericNameCountAggregateInputType | true
+    }
+
+  export interface GenericNameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GenericName'], meta: { name: 'GenericName' } }
+    /**
+     * Find zero or one GenericName that matches the filter.
+     * @param {GenericNameFindUniqueArgs} args - Arguments to find a GenericName
+     * @example
+     * // Get one GenericName
+     * const genericName = await prisma.genericName.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GenericNameFindUniqueArgs>(args: SelectSubset<T, GenericNameFindUniqueArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GenericName that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GenericNameFindUniqueOrThrowArgs} args - Arguments to find a GenericName
+     * @example
+     * // Get one GenericName
+     * const genericName = await prisma.genericName.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GenericNameFindUniqueOrThrowArgs>(args: SelectSubset<T, GenericNameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenericName that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameFindFirstArgs} args - Arguments to find a GenericName
+     * @example
+     * // Get one GenericName
+     * const genericName = await prisma.genericName.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GenericNameFindFirstArgs>(args?: SelectSubset<T, GenericNameFindFirstArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GenericName that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameFindFirstOrThrowArgs} args - Arguments to find a GenericName
+     * @example
+     * // Get one GenericName
+     * const genericName = await prisma.genericName.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GenericNameFindFirstOrThrowArgs>(args?: SelectSubset<T, GenericNameFindFirstOrThrowArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GenericNames that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GenericNames
+     * const genericNames = await prisma.genericName.findMany()
+     * 
+     * // Get first 10 GenericNames
+     * const genericNames = await prisma.genericName.findMany({ take: 10 })
+     * 
+     * // Only select the `generic_id`
+     * const genericNameWithGeneric_idOnly = await prisma.genericName.findMany({ select: { generic_id: true } })
+     * 
+     */
+    findMany<T extends GenericNameFindManyArgs>(args?: SelectSubset<T, GenericNameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GenericName.
+     * @param {GenericNameCreateArgs} args - Arguments to create a GenericName.
+     * @example
+     * // Create one GenericName
+     * const GenericName = await prisma.genericName.create({
+     *   data: {
+     *     // ... data to create a GenericName
+     *   }
+     * })
+     * 
+     */
+    create<T extends GenericNameCreateArgs>(args: SelectSubset<T, GenericNameCreateArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GenericNames.
+     * @param {GenericNameCreateManyArgs} args - Arguments to create many GenericNames.
+     * @example
+     * // Create many GenericNames
+     * const genericName = await prisma.genericName.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GenericNameCreateManyArgs>(args?: SelectSubset<T, GenericNameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a GenericName.
+     * @param {GenericNameDeleteArgs} args - Arguments to delete one GenericName.
+     * @example
+     * // Delete one GenericName
+     * const GenericName = await prisma.genericName.delete({
+     *   where: {
+     *     // ... filter to delete one GenericName
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GenericNameDeleteArgs>(args: SelectSubset<T, GenericNameDeleteArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GenericName.
+     * @param {GenericNameUpdateArgs} args - Arguments to update one GenericName.
+     * @example
+     * // Update one GenericName
+     * const genericName = await prisma.genericName.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GenericNameUpdateArgs>(args: SelectSubset<T, GenericNameUpdateArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GenericNames.
+     * @param {GenericNameDeleteManyArgs} args - Arguments to filter GenericNames to delete.
+     * @example
+     * // Delete a few GenericNames
+     * const { count } = await prisma.genericName.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GenericNameDeleteManyArgs>(args?: SelectSubset<T, GenericNameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GenericNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GenericNames
+     * const genericName = await prisma.genericName.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GenericNameUpdateManyArgs>(args: SelectSubset<T, GenericNameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one GenericName.
+     * @param {GenericNameUpsertArgs} args - Arguments to update or create a GenericName.
+     * @example
+     * // Update or create a GenericName
+     * const genericName = await prisma.genericName.upsert({
+     *   create: {
+     *     // ... data to create a GenericName
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GenericName we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GenericNameUpsertArgs>(args: SelectSubset<T, GenericNameUpsertArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GenericNames that matches the filter.
+     * @param {GenericNameFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const genericName = await prisma.genericName.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: GenericNameFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a GenericName.
+     * @param {GenericNameAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const genericName = await prisma.genericName.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: GenericNameAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of GenericNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameCountArgs} args - Arguments to filter GenericNames to count.
+     * @example
+     * // Count the number of GenericNames
+     * const count = await prisma.genericName.count({
+     *   where: {
+     *     // ... the filter for the GenericNames we want to count
+     *   }
+     * })
+    **/
+    count<T extends GenericNameCountArgs>(
+      args?: Subset<T, GenericNameCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GenericNameCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GenericName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GenericNameAggregateArgs>(args: Subset<T, GenericNameAggregateArgs>): Prisma.PrismaPromise<GetGenericNameAggregateType<T>>
+
+    /**
+     * Group by GenericName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GenericNameGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GenericNameGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GenericNameGroupByArgs['orderBy'] }
+        : { orderBy?: GenericNameGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GenericNameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGenericNameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GenericName model
+   */
+  readonly fields: GenericNameFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GenericName.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GenericNameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    brandNames<T extends GenericName$brandNamesArgs<ExtArgs> = {}>(args?: Subset<T, GenericName$brandNamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GenericName model
+   */
+  interface GenericNameFieldRefs {
+    readonly generic_id: FieldRef<"GenericName", 'String'>
+    readonly name: FieldRef<"GenericName", 'String'>
+    readonly createdAt: FieldRef<"GenericName", 'DateTime'>
+    readonly updatedAt: FieldRef<"GenericName", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GenericName findUnique
+   */
+  export type GenericNameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter, which GenericName to fetch.
+     */
+    where: GenericNameWhereUniqueInput
+  }
+
+  /**
+   * GenericName findUniqueOrThrow
+   */
+  export type GenericNameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter, which GenericName to fetch.
+     */
+    where: GenericNameWhereUniqueInput
+  }
+
+  /**
+   * GenericName findFirst
+   */
+  export type GenericNameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter, which GenericName to fetch.
+     */
+    where?: GenericNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenericNames to fetch.
+     */
+    orderBy?: GenericNameOrderByWithRelationInput | GenericNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenericNames.
+     */
+    cursor?: GenericNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenericNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenericNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenericNames.
+     */
+    distinct?: GenericNameScalarFieldEnum | GenericNameScalarFieldEnum[]
+  }
+
+  /**
+   * GenericName findFirstOrThrow
+   */
+  export type GenericNameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter, which GenericName to fetch.
+     */
+    where?: GenericNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenericNames to fetch.
+     */
+    orderBy?: GenericNameOrderByWithRelationInput | GenericNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GenericNames.
+     */
+    cursor?: GenericNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenericNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenericNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GenericNames.
+     */
+    distinct?: GenericNameScalarFieldEnum | GenericNameScalarFieldEnum[]
+  }
+
+  /**
+   * GenericName findMany
+   */
+  export type GenericNameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter, which GenericNames to fetch.
+     */
+    where?: GenericNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GenericNames to fetch.
+     */
+    orderBy?: GenericNameOrderByWithRelationInput | GenericNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GenericNames.
+     */
+    cursor?: GenericNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GenericNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GenericNames.
+     */
+    skip?: number
+    distinct?: GenericNameScalarFieldEnum | GenericNameScalarFieldEnum[]
+  }
+
+  /**
+   * GenericName create
+   */
+  export type GenericNameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GenericName.
+     */
+    data: XOR<GenericNameCreateInput, GenericNameUncheckedCreateInput>
+  }
+
+  /**
+   * GenericName createMany
+   */
+  export type GenericNameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GenericNames.
+     */
+    data: GenericNameCreateManyInput | GenericNameCreateManyInput[]
+  }
+
+  /**
+   * GenericName update
+   */
+  export type GenericNameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GenericName.
+     */
+    data: XOR<GenericNameUpdateInput, GenericNameUncheckedUpdateInput>
+    /**
+     * Choose, which GenericName to update.
+     */
+    where: GenericNameWhereUniqueInput
+  }
+
+  /**
+   * GenericName updateMany
+   */
+  export type GenericNameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GenericNames.
+     */
+    data: XOR<GenericNameUpdateManyMutationInput, GenericNameUncheckedUpdateManyInput>
+    /**
+     * Filter which GenericNames to update
+     */
+    where?: GenericNameWhereInput
+    /**
+     * Limit how many GenericNames to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenericName upsert
+   */
+  export type GenericNameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GenericName to update in case it exists.
+     */
+    where: GenericNameWhereUniqueInput
+    /**
+     * In case the GenericName found by the `where` argument doesn't exist, create a new GenericName with this data.
+     */
+    create: XOR<GenericNameCreateInput, GenericNameUncheckedCreateInput>
+    /**
+     * In case the GenericName was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GenericNameUpdateInput, GenericNameUncheckedUpdateInput>
+  }
+
+  /**
+   * GenericName delete
+   */
+  export type GenericNameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+    /**
+     * Filter which GenericName to delete.
+     */
+    where: GenericNameWhereUniqueInput
+  }
+
+  /**
+   * GenericName deleteMany
+   */
+  export type GenericNameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GenericNames to delete
+     */
+    where?: GenericNameWhereInput
+    /**
+     * Limit how many GenericNames to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GenericName findRaw
+   */
+  export type GenericNameFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * GenericName aggregateRaw
+   */
+  export type GenericNameAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * GenericName.brandNames
+   */
+  export type GenericName$brandNamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    where?: BrandNameWhereInput
+    orderBy?: BrandNameOrderByWithRelationInput | BrandNameOrderByWithRelationInput[]
+    cursor?: BrandNameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BrandNameScalarFieldEnum | BrandNameScalarFieldEnum[]
+  }
+
+  /**
+   * GenericName without action
+   */
+  export type GenericNameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GenericName
+     */
+    select?: GenericNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GenericName
+     */
+    omit?: GenericNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GenericNameInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BrandName
+   */
+
+  export type AggregateBrandName = {
+    _count: BrandNameCountAggregateOutputType | null
+    _min: BrandNameMinAggregateOutputType | null
+    _max: BrandNameMaxAggregateOutputType | null
+  }
+
+  export type BrandNameMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    form: string | null
+    strength: string | null
+    generic_id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BrandNameMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    form: string | null
+    strength: string | null
+    generic_id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BrandNameCountAggregateOutputType = {
+    id: number
+    name: number
+    form: number
+    strength: number
+    generic_id: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BrandNameMinAggregateInputType = {
+    id?: true
+    name?: true
+    form?: true
+    strength?: true
+    generic_id?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BrandNameMaxAggregateInputType = {
+    id?: true
+    name?: true
+    form?: true
+    strength?: true
+    generic_id?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BrandNameCountAggregateInputType = {
+    id?: true
+    name?: true
+    form?: true
+    strength?: true
+    generic_id?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BrandNameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BrandName to aggregate.
+     */
+    where?: BrandNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BrandNames to fetch.
+     */
+    orderBy?: BrandNameOrderByWithRelationInput | BrandNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BrandNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BrandNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BrandNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BrandNames
+    **/
+    _count?: true | BrandNameCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BrandNameMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BrandNameMaxAggregateInputType
+  }
+
+  export type GetBrandNameAggregateType<T extends BrandNameAggregateArgs> = {
+        [P in keyof T & keyof AggregateBrandName]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBrandName[P]>
+      : GetScalarType<T[P], AggregateBrandName[P]>
+  }
+
+
+
+
+  export type BrandNameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BrandNameWhereInput
+    orderBy?: BrandNameOrderByWithAggregationInput | BrandNameOrderByWithAggregationInput[]
+    by: BrandNameScalarFieldEnum[] | BrandNameScalarFieldEnum
+    having?: BrandNameScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BrandNameCountAggregateInputType | true
+    _min?: BrandNameMinAggregateInputType
+    _max?: BrandNameMaxAggregateInputType
+  }
+
+  export type BrandNameGroupByOutputType = {
+    id: string
+    name: string
+    form: string | null
+    strength: string | null
+    generic_id: string
+    createdAt: Date
+    updatedAt: Date
+    _count: BrandNameCountAggregateOutputType | null
+    _min: BrandNameMinAggregateOutputType | null
+    _max: BrandNameMaxAggregateOutputType | null
+  }
+
+  type GetBrandNameGroupByPayload<T extends BrandNameGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BrandNameGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BrandNameGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BrandNameGroupByOutputType[P]>
+            : GetScalarType<T[P], BrandNameGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BrandNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    form?: boolean
+    strength?: boolean
+    generic_id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    generic?: boolean | GenericNameDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["brandName"]>
+
+
+
+  export type BrandNameSelectScalar = {
+    id?: boolean
+    name?: boolean
+    form?: boolean
+    strength?: boolean
+    generic_id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BrandNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "form" | "strength" | "generic_id" | "createdAt" | "updatedAt", ExtArgs["result"]["brandName"]>
+  export type BrandNameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    generic?: boolean | GenericNameDefaultArgs<ExtArgs>
+  }
+
+  export type $BrandNamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BrandName"
+    objects: {
+      generic: Prisma.$GenericNamePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      form: string | null
+      strength: string | null
+      generic_id: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["brandName"]>
+    composites: {}
+  }
+
+  type BrandNameGetPayload<S extends boolean | null | undefined | BrandNameDefaultArgs> = $Result.GetResult<Prisma.$BrandNamePayload, S>
+
+  type BrandNameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BrandNameFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BrandNameCountAggregateInputType | true
+    }
+
+  export interface BrandNameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BrandName'], meta: { name: 'BrandName' } }
+    /**
+     * Find zero or one BrandName that matches the filter.
+     * @param {BrandNameFindUniqueArgs} args - Arguments to find a BrandName
+     * @example
+     * // Get one BrandName
+     * const brandName = await prisma.brandName.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BrandNameFindUniqueArgs>(args: SelectSubset<T, BrandNameFindUniqueArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BrandName that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BrandNameFindUniqueOrThrowArgs} args - Arguments to find a BrandName
+     * @example
+     * // Get one BrandName
+     * const brandName = await prisma.brandName.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BrandNameFindUniqueOrThrowArgs>(args: SelectSubset<T, BrandNameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BrandName that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameFindFirstArgs} args - Arguments to find a BrandName
+     * @example
+     * // Get one BrandName
+     * const brandName = await prisma.brandName.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BrandNameFindFirstArgs>(args?: SelectSubset<T, BrandNameFindFirstArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BrandName that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameFindFirstOrThrowArgs} args - Arguments to find a BrandName
+     * @example
+     * // Get one BrandName
+     * const brandName = await prisma.brandName.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BrandNameFindFirstOrThrowArgs>(args?: SelectSubset<T, BrandNameFindFirstOrThrowArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BrandNames that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BrandNames
+     * const brandNames = await prisma.brandName.findMany()
+     * 
+     * // Get first 10 BrandNames
+     * const brandNames = await prisma.brandName.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const brandNameWithIdOnly = await prisma.brandName.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BrandNameFindManyArgs>(args?: SelectSubset<T, BrandNameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BrandName.
+     * @param {BrandNameCreateArgs} args - Arguments to create a BrandName.
+     * @example
+     * // Create one BrandName
+     * const BrandName = await prisma.brandName.create({
+     *   data: {
+     *     // ... data to create a BrandName
+     *   }
+     * })
+     * 
+     */
+    create<T extends BrandNameCreateArgs>(args: SelectSubset<T, BrandNameCreateArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BrandNames.
+     * @param {BrandNameCreateManyArgs} args - Arguments to create many BrandNames.
+     * @example
+     * // Create many BrandNames
+     * const brandName = await prisma.brandName.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BrandNameCreateManyArgs>(args?: SelectSubset<T, BrandNameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a BrandName.
+     * @param {BrandNameDeleteArgs} args - Arguments to delete one BrandName.
+     * @example
+     * // Delete one BrandName
+     * const BrandName = await prisma.brandName.delete({
+     *   where: {
+     *     // ... filter to delete one BrandName
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BrandNameDeleteArgs>(args: SelectSubset<T, BrandNameDeleteArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BrandName.
+     * @param {BrandNameUpdateArgs} args - Arguments to update one BrandName.
+     * @example
+     * // Update one BrandName
+     * const brandName = await prisma.brandName.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BrandNameUpdateArgs>(args: SelectSubset<T, BrandNameUpdateArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BrandNames.
+     * @param {BrandNameDeleteManyArgs} args - Arguments to filter BrandNames to delete.
+     * @example
+     * // Delete a few BrandNames
+     * const { count } = await prisma.brandName.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BrandNameDeleteManyArgs>(args?: SelectSubset<T, BrandNameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BrandNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BrandNames
+     * const brandName = await prisma.brandName.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BrandNameUpdateManyArgs>(args: SelectSubset<T, BrandNameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one BrandName.
+     * @param {BrandNameUpsertArgs} args - Arguments to update or create a BrandName.
+     * @example
+     * // Update or create a BrandName
+     * const brandName = await prisma.brandName.upsert({
+     *   create: {
+     *     // ... data to create a BrandName
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BrandName we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BrandNameUpsertArgs>(args: SelectSubset<T, BrandNameUpsertArgs<ExtArgs>>): Prisma__BrandNameClient<$Result.GetResult<Prisma.$BrandNamePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BrandNames that matches the filter.
+     * @param {BrandNameFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const brandName = await prisma.brandName.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: BrandNameFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a BrandName.
+     * @param {BrandNameAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const brandName = await prisma.brandName.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: BrandNameAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of BrandNames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameCountArgs} args - Arguments to filter BrandNames to count.
+     * @example
+     * // Count the number of BrandNames
+     * const count = await prisma.brandName.count({
+     *   where: {
+     *     // ... the filter for the BrandNames we want to count
+     *   }
+     * })
+    **/
+    count<T extends BrandNameCountArgs>(
+      args?: Subset<T, BrandNameCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BrandNameCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BrandName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BrandNameAggregateArgs>(args: Subset<T, BrandNameAggregateArgs>): Prisma.PrismaPromise<GetBrandNameAggregateType<T>>
+
+    /**
+     * Group by BrandName.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BrandNameGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BrandNameGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BrandNameGroupByArgs['orderBy'] }
+        : { orderBy?: BrandNameGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BrandNameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBrandNameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BrandName model
+   */
+  readonly fields: BrandNameFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BrandName.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BrandNameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    generic<T extends GenericNameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GenericNameDefaultArgs<ExtArgs>>): Prisma__GenericNameClient<$Result.GetResult<Prisma.$GenericNamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BrandName model
+   */
+  interface BrandNameFieldRefs {
+    readonly id: FieldRef<"BrandName", 'String'>
+    readonly name: FieldRef<"BrandName", 'String'>
+    readonly form: FieldRef<"BrandName", 'String'>
+    readonly strength: FieldRef<"BrandName", 'String'>
+    readonly generic_id: FieldRef<"BrandName", 'String'>
+    readonly createdAt: FieldRef<"BrandName", 'DateTime'>
+    readonly updatedAt: FieldRef<"BrandName", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BrandName findUnique
+   */
+  export type BrandNameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter, which BrandName to fetch.
+     */
+    where: BrandNameWhereUniqueInput
+  }
+
+  /**
+   * BrandName findUniqueOrThrow
+   */
+  export type BrandNameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter, which BrandName to fetch.
+     */
+    where: BrandNameWhereUniqueInput
+  }
+
+  /**
+   * BrandName findFirst
+   */
+  export type BrandNameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter, which BrandName to fetch.
+     */
+    where?: BrandNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BrandNames to fetch.
+     */
+    orderBy?: BrandNameOrderByWithRelationInput | BrandNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BrandNames.
+     */
+    cursor?: BrandNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BrandNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BrandNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BrandNames.
+     */
+    distinct?: BrandNameScalarFieldEnum | BrandNameScalarFieldEnum[]
+  }
+
+  /**
+   * BrandName findFirstOrThrow
+   */
+  export type BrandNameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter, which BrandName to fetch.
+     */
+    where?: BrandNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BrandNames to fetch.
+     */
+    orderBy?: BrandNameOrderByWithRelationInput | BrandNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BrandNames.
+     */
+    cursor?: BrandNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BrandNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BrandNames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BrandNames.
+     */
+    distinct?: BrandNameScalarFieldEnum | BrandNameScalarFieldEnum[]
+  }
+
+  /**
+   * BrandName findMany
+   */
+  export type BrandNameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter, which BrandNames to fetch.
+     */
+    where?: BrandNameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BrandNames to fetch.
+     */
+    orderBy?: BrandNameOrderByWithRelationInput | BrandNameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BrandNames.
+     */
+    cursor?: BrandNameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BrandNames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BrandNames.
+     */
+    skip?: number
+    distinct?: BrandNameScalarFieldEnum | BrandNameScalarFieldEnum[]
+  }
+
+  /**
+   * BrandName create
+   */
+  export type BrandNameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BrandName.
+     */
+    data: XOR<BrandNameCreateInput, BrandNameUncheckedCreateInput>
+  }
+
+  /**
+   * BrandName createMany
+   */
+  export type BrandNameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BrandNames.
+     */
+    data: BrandNameCreateManyInput | BrandNameCreateManyInput[]
+  }
+
+  /**
+   * BrandName update
+   */
+  export type BrandNameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BrandName.
+     */
+    data: XOR<BrandNameUpdateInput, BrandNameUncheckedUpdateInput>
+    /**
+     * Choose, which BrandName to update.
+     */
+    where: BrandNameWhereUniqueInput
+  }
+
+  /**
+   * BrandName updateMany
+   */
+  export type BrandNameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BrandNames.
+     */
+    data: XOR<BrandNameUpdateManyMutationInput, BrandNameUncheckedUpdateManyInput>
+    /**
+     * Filter which BrandNames to update
+     */
+    where?: BrandNameWhereInput
+    /**
+     * Limit how many BrandNames to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BrandName upsert
+   */
+  export type BrandNameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BrandName to update in case it exists.
+     */
+    where: BrandNameWhereUniqueInput
+    /**
+     * In case the BrandName found by the `where` argument doesn't exist, create a new BrandName with this data.
+     */
+    create: XOR<BrandNameCreateInput, BrandNameUncheckedCreateInput>
+    /**
+     * In case the BrandName was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BrandNameUpdateInput, BrandNameUncheckedUpdateInput>
+  }
+
+  /**
+   * BrandName delete
+   */
+  export type BrandNameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+    /**
+     * Filter which BrandName to delete.
+     */
+    where: BrandNameWhereUniqueInput
+  }
+
+  /**
+   * BrandName deleteMany
+   */
+  export type BrandNameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BrandNames to delete
+     */
+    where?: BrandNameWhereInput
+    /**
+     * Limit how many BrandNames to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BrandName findRaw
+   */
+  export type BrandNameFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * BrandName aggregateRaw
+   */
+  export type BrandNameAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * BrandName without action
+   */
+  export type BrandNameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandName
+     */
+    select?: BrandNameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BrandName
+     */
+    omit?: BrandNameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BrandNameInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16095,6 +18303,29 @@ export namespace Prisma {
   };
 
   export type AppointmentTypeScalarFieldEnum = (typeof AppointmentTypeScalarFieldEnum)[keyof typeof AppointmentTypeScalarFieldEnum]
+
+
+  export const GenericNameScalarFieldEnum: {
+    generic_id: 'generic_id',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GenericNameScalarFieldEnum = (typeof GenericNameScalarFieldEnum)[keyof typeof GenericNameScalarFieldEnum]
+
+
+  export const BrandNameScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    form: 'form',
+    strength: 'strength',
+    generic_id: 'generic_id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BrandNameScalarFieldEnum = (typeof BrandNameScalarFieldEnum)[keyof typeof BrandNameScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17194,6 +19425,121 @@ export namespace Prisma {
     value?: StringNullableWithAggregatesFilter<"AppointmentType"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AppointmentType"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AppointmentType"> | Date | string
+  }
+
+  export type GenericNameWhereInput = {
+    AND?: GenericNameWhereInput | GenericNameWhereInput[]
+    OR?: GenericNameWhereInput[]
+    NOT?: GenericNameWhereInput | GenericNameWhereInput[]
+    generic_id?: StringFilter<"GenericName"> | string
+    name?: StringFilter<"GenericName"> | string
+    createdAt?: DateTimeFilter<"GenericName"> | Date | string
+    updatedAt?: DateTimeFilter<"GenericName"> | Date | string
+    brandNames?: BrandNameListRelationFilter
+  }
+
+  export type GenericNameOrderByWithRelationInput = {
+    generic_id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    brandNames?: BrandNameOrderByRelationAggregateInput
+  }
+
+  export type GenericNameWhereUniqueInput = Prisma.AtLeast<{
+    generic_id?: string
+    name?: string
+    AND?: GenericNameWhereInput | GenericNameWhereInput[]
+    OR?: GenericNameWhereInput[]
+    NOT?: GenericNameWhereInput | GenericNameWhereInput[]
+    createdAt?: DateTimeFilter<"GenericName"> | Date | string
+    updatedAt?: DateTimeFilter<"GenericName"> | Date | string
+    brandNames?: BrandNameListRelationFilter
+  }, "generic_id" | "name">
+
+  export type GenericNameOrderByWithAggregationInput = {
+    generic_id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GenericNameCountOrderByAggregateInput
+    _max?: GenericNameMaxOrderByAggregateInput
+    _min?: GenericNameMinOrderByAggregateInput
+  }
+
+  export type GenericNameScalarWhereWithAggregatesInput = {
+    AND?: GenericNameScalarWhereWithAggregatesInput | GenericNameScalarWhereWithAggregatesInput[]
+    OR?: GenericNameScalarWhereWithAggregatesInput[]
+    NOT?: GenericNameScalarWhereWithAggregatesInput | GenericNameScalarWhereWithAggregatesInput[]
+    generic_id?: StringWithAggregatesFilter<"GenericName"> | string
+    name?: StringWithAggregatesFilter<"GenericName"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"GenericName"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GenericName"> | Date | string
+  }
+
+  export type BrandNameWhereInput = {
+    AND?: BrandNameWhereInput | BrandNameWhereInput[]
+    OR?: BrandNameWhereInput[]
+    NOT?: BrandNameWhereInput | BrandNameWhereInput[]
+    id?: StringFilter<"BrandName"> | string
+    name?: StringFilter<"BrandName"> | string
+    form?: StringNullableFilter<"BrandName"> | string | null
+    strength?: StringNullableFilter<"BrandName"> | string | null
+    generic_id?: StringFilter<"BrandName"> | string
+    createdAt?: DateTimeFilter<"BrandName"> | Date | string
+    updatedAt?: DateTimeFilter<"BrandName"> | Date | string
+    generic?: XOR<GenericNameScalarRelationFilter, GenericNameWhereInput>
+  }
+
+  export type BrandNameOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    form?: SortOrder
+    strength?: SortOrder
+    generic_id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    generic?: GenericNameOrderByWithRelationInput
+  }
+
+  export type BrandNameWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: BrandNameWhereInput | BrandNameWhereInput[]
+    OR?: BrandNameWhereInput[]
+    NOT?: BrandNameWhereInput | BrandNameWhereInput[]
+    form?: StringNullableFilter<"BrandName"> | string | null
+    strength?: StringNullableFilter<"BrandName"> | string | null
+    generic_id?: StringFilter<"BrandName"> | string
+    createdAt?: DateTimeFilter<"BrandName"> | Date | string
+    updatedAt?: DateTimeFilter<"BrandName"> | Date | string
+    generic?: XOR<GenericNameScalarRelationFilter, GenericNameWhereInput>
+  }, "id" | "name">
+
+  export type BrandNameOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    form?: SortOrder
+    strength?: SortOrder
+    generic_id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BrandNameCountOrderByAggregateInput
+    _max?: BrandNameMaxOrderByAggregateInput
+    _min?: BrandNameMinOrderByAggregateInput
+  }
+
+  export type BrandNameScalarWhereWithAggregatesInput = {
+    AND?: BrandNameScalarWhereWithAggregatesInput | BrandNameScalarWhereWithAggregatesInput[]
+    OR?: BrandNameScalarWhereWithAggregatesInput[]
+    NOT?: BrandNameScalarWhereWithAggregatesInput | BrandNameScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BrandName"> | string
+    name?: StringWithAggregatesFilter<"BrandName"> | string
+    form?: StringNullableWithAggregatesFilter<"BrandName"> | string | null
+    strength?: StringNullableWithAggregatesFilter<"BrandName"> | string | null
+    generic_id?: StringWithAggregatesFilter<"BrandName"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"BrandName"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BrandName"> | Date | string
   }
 
   export type Admission_DischargeCreateInput = {
@@ -18298,6 +20644,120 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GenericNameCreateInput = {
+    generic_id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandNames?: BrandNameCreateNestedManyWithoutGenericInput
+  }
+
+  export type GenericNameUncheckedCreateInput = {
+    generic_id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    brandNames?: BrandNameUncheckedCreateNestedManyWithoutGenericInput
+  }
+
+  export type GenericNameUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandNames?: BrandNameUpdateManyWithoutGenericNestedInput
+  }
+
+  export type GenericNameUncheckedUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    brandNames?: BrandNameUncheckedUpdateManyWithoutGenericNestedInput
+  }
+
+  export type GenericNameCreateManyInput = {
+    generic_id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GenericNameUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GenericNameUncheckedUpdateManyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameCreateInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    generic: GenericNameCreateNestedOneWithoutBrandNamesInput
+  }
+
+  export type BrandNameUncheckedCreateInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    generic_id: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BrandNameUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    generic?: GenericNameUpdateOneRequiredWithoutBrandNamesNestedInput
+  }
+
+  export type BrandNameUncheckedUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    generic_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameCreateManyInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    generic_id: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BrandNameUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameUncheckedUpdateManyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    generic_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -19135,6 +21595,72 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type BrandNameListRelationFilter = {
+    every?: BrandNameWhereInput
+    some?: BrandNameWhereInput
+    none?: BrandNameWhereInput
+  }
+
+  export type BrandNameOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GenericNameCountOrderByAggregateInput = {
+    generic_id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GenericNameMaxOrderByAggregateInput = {
+    generic_id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GenericNameMinOrderByAggregateInput = {
+    generic_id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GenericNameScalarRelationFilter = {
+    is?: GenericNameWhereInput
+    isNot?: GenericNameWhereInput
+  }
+
+  export type BrandNameCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    form?: SortOrder
+    strength?: SortOrder
+    generic_id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BrandNameMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    form?: SortOrder
+    strength?: SortOrder
+    generic_id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BrandNameMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    form?: SortOrder
+    strength?: SortOrder
+    generic_id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type MedicationListCreateEnvelopeInput = {
     set?: MedicationCreateInput | MedicationCreateInput[]
   }
@@ -19734,6 +22260,62 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSessionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type BrandNameCreateNestedManyWithoutGenericInput = {
+    create?: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput> | BrandNameCreateWithoutGenericInput[] | BrandNameUncheckedCreateWithoutGenericInput[]
+    connectOrCreate?: BrandNameCreateOrConnectWithoutGenericInput | BrandNameCreateOrConnectWithoutGenericInput[]
+    createMany?: BrandNameCreateManyGenericInputEnvelope
+    connect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+  }
+
+  export type BrandNameUncheckedCreateNestedManyWithoutGenericInput = {
+    create?: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput> | BrandNameCreateWithoutGenericInput[] | BrandNameUncheckedCreateWithoutGenericInput[]
+    connectOrCreate?: BrandNameCreateOrConnectWithoutGenericInput | BrandNameCreateOrConnectWithoutGenericInput[]
+    createMany?: BrandNameCreateManyGenericInputEnvelope
+    connect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+  }
+
+  export type BrandNameUpdateManyWithoutGenericNestedInput = {
+    create?: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput> | BrandNameCreateWithoutGenericInput[] | BrandNameUncheckedCreateWithoutGenericInput[]
+    connectOrCreate?: BrandNameCreateOrConnectWithoutGenericInput | BrandNameCreateOrConnectWithoutGenericInput[]
+    upsert?: BrandNameUpsertWithWhereUniqueWithoutGenericInput | BrandNameUpsertWithWhereUniqueWithoutGenericInput[]
+    createMany?: BrandNameCreateManyGenericInputEnvelope
+    set?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    disconnect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    delete?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    connect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    update?: BrandNameUpdateWithWhereUniqueWithoutGenericInput | BrandNameUpdateWithWhereUniqueWithoutGenericInput[]
+    updateMany?: BrandNameUpdateManyWithWhereWithoutGenericInput | BrandNameUpdateManyWithWhereWithoutGenericInput[]
+    deleteMany?: BrandNameScalarWhereInput | BrandNameScalarWhereInput[]
+  }
+
+  export type BrandNameUncheckedUpdateManyWithoutGenericNestedInput = {
+    create?: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput> | BrandNameCreateWithoutGenericInput[] | BrandNameUncheckedCreateWithoutGenericInput[]
+    connectOrCreate?: BrandNameCreateOrConnectWithoutGenericInput | BrandNameCreateOrConnectWithoutGenericInput[]
+    upsert?: BrandNameUpsertWithWhereUniqueWithoutGenericInput | BrandNameUpsertWithWhereUniqueWithoutGenericInput[]
+    createMany?: BrandNameCreateManyGenericInputEnvelope
+    set?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    disconnect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    delete?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    connect?: BrandNameWhereUniqueInput | BrandNameWhereUniqueInput[]
+    update?: BrandNameUpdateWithWhereUniqueWithoutGenericInput | BrandNameUpdateWithWhereUniqueWithoutGenericInput[]
+    updateMany?: BrandNameUpdateManyWithWhereWithoutGenericInput | BrandNameUpdateManyWithWhereWithoutGenericInput[]
+    deleteMany?: BrandNameScalarWhereInput | BrandNameScalarWhereInput[]
+  }
+
+  export type GenericNameCreateNestedOneWithoutBrandNamesInput = {
+    create?: XOR<GenericNameCreateWithoutBrandNamesInput, GenericNameUncheckedCreateWithoutBrandNamesInput>
+    connectOrCreate?: GenericNameCreateOrConnectWithoutBrandNamesInput
+    connect?: GenericNameWhereUniqueInput
+  }
+
+  export type GenericNameUpdateOneRequiredWithoutBrandNamesNestedInput = {
+    create?: XOR<GenericNameCreateWithoutBrandNamesInput, GenericNameUncheckedCreateWithoutBrandNamesInput>
+    connectOrCreate?: GenericNameCreateOrConnectWithoutBrandNamesInput
+    upsert?: GenericNameUpsertWithoutBrandNamesInput
+    connect?: GenericNameWhereUniqueInput
+    update?: XOR<XOR<GenericNameUpdateToOneWithWhereWithoutBrandNamesInput, GenericNameUpdateWithoutBrandNamesInput>, GenericNameUncheckedUpdateWithoutBrandNamesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -21370,6 +23952,104 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type BrandNameCreateWithoutGenericInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BrandNameUncheckedCreateWithoutGenericInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BrandNameCreateOrConnectWithoutGenericInput = {
+    where: BrandNameWhereUniqueInput
+    create: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput>
+  }
+
+  export type BrandNameCreateManyGenericInputEnvelope = {
+    data: BrandNameCreateManyGenericInput | BrandNameCreateManyGenericInput[]
+  }
+
+  export type BrandNameUpsertWithWhereUniqueWithoutGenericInput = {
+    where: BrandNameWhereUniqueInput
+    update: XOR<BrandNameUpdateWithoutGenericInput, BrandNameUncheckedUpdateWithoutGenericInput>
+    create: XOR<BrandNameCreateWithoutGenericInput, BrandNameUncheckedCreateWithoutGenericInput>
+  }
+
+  export type BrandNameUpdateWithWhereUniqueWithoutGenericInput = {
+    where: BrandNameWhereUniqueInput
+    data: XOR<BrandNameUpdateWithoutGenericInput, BrandNameUncheckedUpdateWithoutGenericInput>
+  }
+
+  export type BrandNameUpdateManyWithWhereWithoutGenericInput = {
+    where: BrandNameScalarWhereInput
+    data: XOR<BrandNameUpdateManyMutationInput, BrandNameUncheckedUpdateManyWithoutGenericInput>
+  }
+
+  export type BrandNameScalarWhereInput = {
+    AND?: BrandNameScalarWhereInput | BrandNameScalarWhereInput[]
+    OR?: BrandNameScalarWhereInput[]
+    NOT?: BrandNameScalarWhereInput | BrandNameScalarWhereInput[]
+    id?: StringFilter<"BrandName"> | string
+    name?: StringFilter<"BrandName"> | string
+    form?: StringNullableFilter<"BrandName"> | string | null
+    strength?: StringNullableFilter<"BrandName"> | string | null
+    generic_id?: StringFilter<"BrandName"> | string
+    createdAt?: DateTimeFilter<"BrandName"> | Date | string
+    updatedAt?: DateTimeFilter<"BrandName"> | Date | string
+  }
+
+  export type GenericNameCreateWithoutBrandNamesInput = {
+    generic_id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GenericNameUncheckedCreateWithoutBrandNamesInput = {
+    generic_id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GenericNameCreateOrConnectWithoutBrandNamesInput = {
+    where: GenericNameWhereUniqueInput
+    create: XOR<GenericNameCreateWithoutBrandNamesInput, GenericNameUncheckedCreateWithoutBrandNamesInput>
+  }
+
+  export type GenericNameUpsertWithoutBrandNamesInput = {
+    update: XOR<GenericNameUpdateWithoutBrandNamesInput, GenericNameUncheckedUpdateWithoutBrandNamesInput>
+    create: XOR<GenericNameCreateWithoutBrandNamesInput, GenericNameUncheckedCreateWithoutBrandNamesInput>
+    where?: GenericNameWhereInput
+  }
+
+  export type GenericNameUpdateToOneWithWhereWithoutBrandNamesInput = {
+    where?: GenericNameWhereInput
+    data: XOR<GenericNameUpdateWithoutBrandNamesInput, GenericNameUncheckedUpdateWithoutBrandNamesInput>
+  }
+
+  export type GenericNameUpdateWithoutBrandNamesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GenericNameUncheckedUpdateWithoutBrandNamesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -21898,6 +24578,39 @@ export namespace Prisma {
   export type SessionUncheckedUpdateManyWithoutUserInput = {
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameCreateManyGenericInput = {
+    id?: string
+    name: string
+    form?: string | null
+    strength?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BrandNameUpdateWithoutGenericInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameUncheckedUpdateWithoutGenericInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BrandNameUncheckedUpdateManyWithoutGenericInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    form?: NullableStringFieldUpdateOperationsInput | string | null
+    strength?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFieldUpdateOperationsInput = {

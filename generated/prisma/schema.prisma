@@ -214,3 +214,23 @@ model AppointmentType {
   createdAt DateTime @default(now()) @db.Date
   updatedAt DateTime @updatedAt @db.Date
 }
+
+model GenericName {
+  generic_id String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String      @unique
+  createdAt  DateTime    @default(now()) @db.Date
+  updatedAt  DateTime    @updatedAt @db.Date
+  brandNames BrandName[]
+}
+
+model BrandName {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  form       String?
+  strength   String?
+  generic_id String   @db.ObjectId
+  createdAt  DateTime @default(now()) @db.Date
+  updatedAt  DateTime @updatedAt @db.Date
+
+  generic GenericName @relation(fields: [generic_id], references: [generic_id])
+}
