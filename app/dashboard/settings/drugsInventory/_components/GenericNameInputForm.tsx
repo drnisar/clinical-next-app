@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const GenericInputForm = () => {
+const GenericNameInputForm = () => {
   const [genericName, setGenericName] = useState("");
   const router = useRouter();
 
@@ -42,4 +42,4 @@ const GenericInputForm = () => {
   );
 };
 
-export default GenericInputForm;
+export default GenericNameInputForm;

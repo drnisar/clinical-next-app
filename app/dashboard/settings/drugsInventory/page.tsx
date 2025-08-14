@@ -1,5 +1,5 @@
 import { getDrugs } from "@/app/actions/actions";
-import { DrugsList, GenericInputForm, SelectedDrug } from "./_components";
+import { DrugsList, GenericNameInputForm, SelectedDrug } from "./_components";
 
 const DrugsInventoryPage = async () => {
   const drugs = await getDrugs();
@@ -8,7 +8,7 @@ const DrugsInventoryPage = async () => {
     <>
       <h1>Drugs Inventory</h1>
       <p>Manage your drugs inventory here.</p>
-      <GenericInputForm />
+      <GenericNameInputForm />
       <DrugsList drugs={drugs} />
       <SelectedDrug />
     </>
