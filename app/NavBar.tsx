@@ -21,6 +21,7 @@ const NavBar = () => {
 
   const links = [
     { label: "Dashboard", href: "/dashboard" },
+    { label: "Settings", href: "/dashboard/settings" },
     // Add other main navigation links if needed
   ];
 

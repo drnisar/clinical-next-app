@@ -684,3 +684,10 @@ export const dateYYYYMMDD = (
   // Use a consistent format that works on both server and client
   return `${yyyy}-${mm}-${dd}`;
 };
+
+export const BASEURL = (): string => {
+  if (process.env.NODE_ENV === "production") {
+    return "https://clinical-next-app.vercel.app";
+  }
+  return "http://localhost:3000";
+};

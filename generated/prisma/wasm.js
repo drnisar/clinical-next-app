@@ -270,14 +270,14 @@ exports.Prisma.AppointmentTypeScalarFieldEnum = {
 
 exports.Prisma.GenericNameScalarFieldEnum = {
   generic_id: 'generic_id',
-  name: 'name',
+  generic_name: 'generic_name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BrandNameScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  brand_name: 'brand_name',
   form: 'form',
   strength: 'strength',
   generic_id: 'generic_id',

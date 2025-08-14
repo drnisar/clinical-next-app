@@ -16124,21 +16124,21 @@ export namespace Prisma {
 
   export type GenericNameMinAggregateOutputType = {
     generic_id: string | null
-    name: string | null
+    generic_name: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type GenericNameMaxAggregateOutputType = {
     generic_id: string | null
-    name: string | null
+    generic_name: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type GenericNameCountAggregateOutputType = {
     generic_id: number
-    name: number
+    generic_name: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -16147,21 +16147,21 @@ export namespace Prisma {
 
   export type GenericNameMinAggregateInputType = {
     generic_id?: true
-    name?: true
+    generic_name?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type GenericNameMaxAggregateInputType = {
     generic_id?: true
-    name?: true
+    generic_name?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type GenericNameCountAggregateInputType = {
     generic_id?: true
-    name?: true
+    generic_name?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -16241,7 +16241,7 @@ export namespace Prisma {
 
   export type GenericNameGroupByOutputType = {
     generic_id: string
-    name: string
+    generic_name: string
     createdAt: Date
     updatedAt: Date
     _count: GenericNameCountAggregateOutputType | null
@@ -16265,7 +16265,7 @@ export namespace Prisma {
 
   export type GenericNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     generic_id?: boolean
-    name?: boolean
+    generic_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     brandNames?: boolean | GenericName$brandNamesArgs<ExtArgs>
@@ -16276,12 +16276,12 @@ export namespace Prisma {
 
   export type GenericNameSelectScalar = {
     generic_id?: boolean
-    name?: boolean
+    generic_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type GenericNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"generic_id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["genericName"]>
+  export type GenericNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"generic_id" | "generic_name" | "createdAt" | "updatedAt", ExtArgs["result"]["genericName"]>
   export type GenericNameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     brandNames?: boolean | GenericName$brandNamesArgs<ExtArgs>
     _count?: boolean | GenericNameCountOutputTypeDefaultArgs<ExtArgs>
@@ -16294,7 +16294,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       generic_id: string
-      name: string
+      generic_name: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["genericName"]>
@@ -16691,7 +16691,7 @@ export namespace Prisma {
    */
   interface GenericNameFieldRefs {
     readonly generic_id: FieldRef<"GenericName", 'String'>
-    readonly name: FieldRef<"GenericName", 'String'>
+    readonly generic_name: FieldRef<"GenericName", 'String'>
     readonly createdAt: FieldRef<"GenericName", 'DateTime'>
     readonly updatedAt: FieldRef<"GenericName", 'DateTime'>
   }
@@ -17118,7 +17118,7 @@ export namespace Prisma {
 
   export type BrandNameMinAggregateOutputType = {
     id: string | null
-    name: string | null
+    brand_name: string | null
     form: string | null
     strength: string | null
     generic_id: string | null
@@ -17128,7 +17128,7 @@ export namespace Prisma {
 
   export type BrandNameMaxAggregateOutputType = {
     id: string | null
-    name: string | null
+    brand_name: string | null
     form: string | null
     strength: string | null
     generic_id: string | null
@@ -17138,7 +17138,7 @@ export namespace Prisma {
 
   export type BrandNameCountAggregateOutputType = {
     id: number
-    name: number
+    brand_name: number
     form: number
     strength: number
     generic_id: number
@@ -17150,7 +17150,7 @@ export namespace Prisma {
 
   export type BrandNameMinAggregateInputType = {
     id?: true
-    name?: true
+    brand_name?: true
     form?: true
     strength?: true
     generic_id?: true
@@ -17160,7 +17160,7 @@ export namespace Prisma {
 
   export type BrandNameMaxAggregateInputType = {
     id?: true
-    name?: true
+    brand_name?: true
     form?: true
     strength?: true
     generic_id?: true
@@ -17170,7 +17170,7 @@ export namespace Prisma {
 
   export type BrandNameCountAggregateInputType = {
     id?: true
-    name?: true
+    brand_name?: true
     form?: true
     strength?: true
     generic_id?: true
@@ -17253,7 +17253,7 @@ export namespace Prisma {
 
   export type BrandNameGroupByOutputType = {
     id: string
-    name: string
+    brand_name: string
     form: string | null
     strength: string | null
     generic_id: string
@@ -17280,7 +17280,7 @@ export namespace Prisma {
 
   export type BrandNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    brand_name?: boolean
     form?: boolean
     strength?: boolean
     generic_id?: boolean
@@ -17293,7 +17293,7 @@ export namespace Prisma {
 
   export type BrandNameSelectScalar = {
     id?: boolean
-    name?: boolean
+    brand_name?: boolean
     form?: boolean
     strength?: boolean
     generic_id?: boolean
@@ -17301,7 +17301,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BrandNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "form" | "strength" | "generic_id" | "createdAt" | "updatedAt", ExtArgs["result"]["brandName"]>
+  export type BrandNameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "brand_name" | "form" | "strength" | "generic_id" | "createdAt" | "updatedAt", ExtArgs["result"]["brandName"]>
   export type BrandNameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     generic?: boolean | GenericNameDefaultArgs<ExtArgs>
   }
@@ -17313,7 +17313,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      name: string
+      brand_name: string
       form: string | null
       strength: string | null
       generic_id: string
@@ -17713,7 +17713,7 @@ export namespace Prisma {
    */
   interface BrandNameFieldRefs {
     readonly id: FieldRef<"BrandName", 'String'>
-    readonly name: FieldRef<"BrandName", 'String'>
+    readonly brand_name: FieldRef<"BrandName", 'String'>
     readonly form: FieldRef<"BrandName", 'String'>
     readonly strength: FieldRef<"BrandName", 'String'>
     readonly generic_id: FieldRef<"BrandName", 'String'>
@@ -18307,7 +18307,7 @@ export namespace Prisma {
 
   export const GenericNameScalarFieldEnum: {
     generic_id: 'generic_id',
-    name: 'name',
+    generic_name: 'generic_name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -18317,7 +18317,7 @@ export namespace Prisma {
 
   export const BrandNameScalarFieldEnum: {
     id: 'id',
-    name: 'name',
+    brand_name: 'brand_name',
     form: 'form',
     strength: 'strength',
     generic_id: 'generic_id',
@@ -19432,7 +19432,7 @@ export namespace Prisma {
     OR?: GenericNameWhereInput[]
     NOT?: GenericNameWhereInput | GenericNameWhereInput[]
     generic_id?: StringFilter<"GenericName"> | string
-    name?: StringFilter<"GenericName"> | string
+    generic_name?: StringFilter<"GenericName"> | string
     createdAt?: DateTimeFilter<"GenericName"> | Date | string
     updatedAt?: DateTimeFilter<"GenericName"> | Date | string
     brandNames?: BrandNameListRelationFilter
@@ -19440,7 +19440,7 @@ export namespace Prisma {
 
   export type GenericNameOrderByWithRelationInput = {
     generic_id?: SortOrder
-    name?: SortOrder
+    generic_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     brandNames?: BrandNameOrderByRelationAggregateInput
@@ -19448,18 +19448,18 @@ export namespace Prisma {
 
   export type GenericNameWhereUniqueInput = Prisma.AtLeast<{
     generic_id?: string
-    name?: string
+    generic_name?: string
     AND?: GenericNameWhereInput | GenericNameWhereInput[]
     OR?: GenericNameWhereInput[]
     NOT?: GenericNameWhereInput | GenericNameWhereInput[]
     createdAt?: DateTimeFilter<"GenericName"> | Date | string
     updatedAt?: DateTimeFilter<"GenericName"> | Date | string
     brandNames?: BrandNameListRelationFilter
-  }, "generic_id" | "name">
+  }, "generic_id" | "generic_name">
 
   export type GenericNameOrderByWithAggregationInput = {
     generic_id?: SortOrder
-    name?: SortOrder
+    generic_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: GenericNameCountOrderByAggregateInput
@@ -19472,7 +19472,7 @@ export namespace Prisma {
     OR?: GenericNameScalarWhereWithAggregatesInput[]
     NOT?: GenericNameScalarWhereWithAggregatesInput | GenericNameScalarWhereWithAggregatesInput[]
     generic_id?: StringWithAggregatesFilter<"GenericName"> | string
-    name?: StringWithAggregatesFilter<"GenericName"> | string
+    generic_name?: StringWithAggregatesFilter<"GenericName"> | string
     createdAt?: DateTimeWithAggregatesFilter<"GenericName"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"GenericName"> | Date | string
   }
@@ -19482,7 +19482,7 @@ export namespace Prisma {
     OR?: BrandNameWhereInput[]
     NOT?: BrandNameWhereInput | BrandNameWhereInput[]
     id?: StringFilter<"BrandName"> | string
-    name?: StringFilter<"BrandName"> | string
+    brand_name?: StringFilter<"BrandName"> | string
     form?: StringNullableFilter<"BrandName"> | string | null
     strength?: StringNullableFilter<"BrandName"> | string | null
     generic_id?: StringFilter<"BrandName"> | string
@@ -19493,7 +19493,7 @@ export namespace Prisma {
 
   export type BrandNameOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
+    brand_name?: SortOrder
     form?: SortOrder
     strength?: SortOrder
     generic_id?: SortOrder
@@ -19504,7 +19504,7 @@ export namespace Prisma {
 
   export type BrandNameWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    name?: string
+    brand_name?: string
     AND?: BrandNameWhereInput | BrandNameWhereInput[]
     OR?: BrandNameWhereInput[]
     NOT?: BrandNameWhereInput | BrandNameWhereInput[]
@@ -19514,11 +19514,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BrandName"> | Date | string
     updatedAt?: DateTimeFilter<"BrandName"> | Date | string
     generic?: XOR<GenericNameScalarRelationFilter, GenericNameWhereInput>
-  }, "id" | "name">
+  }, "id" | "brand_name">
 
   export type BrandNameOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
+    brand_name?: SortOrder
     form?: SortOrder
     strength?: SortOrder
     generic_id?: SortOrder
@@ -19534,7 +19534,7 @@ export namespace Prisma {
     OR?: BrandNameScalarWhereWithAggregatesInput[]
     NOT?: BrandNameScalarWhereWithAggregatesInput | BrandNameScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"BrandName"> | string
-    name?: StringWithAggregatesFilter<"BrandName"> | string
+    brand_name?: StringWithAggregatesFilter<"BrandName"> | string
     form?: StringNullableWithAggregatesFilter<"BrandName"> | string | null
     strength?: StringNullableWithAggregatesFilter<"BrandName"> | string | null
     generic_id?: StringWithAggregatesFilter<"BrandName"> | string
@@ -20646,7 +20646,7 @@ export namespace Prisma {
 
   export type GenericNameCreateInput = {
     generic_id?: string
-    name: string
+    generic_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     brandNames?: BrandNameCreateNestedManyWithoutGenericInput
@@ -20654,21 +20654,21 @@ export namespace Prisma {
 
   export type GenericNameUncheckedCreateInput = {
     generic_id?: string
-    name: string
+    generic_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     brandNames?: BrandNameUncheckedCreateNestedManyWithoutGenericInput
   }
 
   export type GenericNameUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brandNames?: BrandNameUpdateManyWithoutGenericNestedInput
   }
 
   export type GenericNameUncheckedUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brandNames?: BrandNameUncheckedUpdateManyWithoutGenericNestedInput
@@ -20676,26 +20676,26 @@ export namespace Prisma {
 
   export type GenericNameCreateManyInput = {
     generic_id?: string
-    name: string
+    generic_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type GenericNameUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GenericNameUncheckedUpdateManyInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BrandNameCreateInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     createdAt?: Date | string
@@ -20705,7 +20705,7 @@ export namespace Prisma {
 
   export type BrandNameUncheckedCreateInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     generic_id: string
@@ -20714,7 +20714,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20723,7 +20723,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUncheckedUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     generic_id?: StringFieldUpdateOperationsInput | string
@@ -20733,7 +20733,7 @@ export namespace Prisma {
 
   export type BrandNameCreateManyInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     generic_id: string
@@ -20742,7 +20742,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20750,7 +20750,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUncheckedUpdateManyInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     generic_id?: StringFieldUpdateOperationsInput | string
@@ -21607,21 +21607,21 @@ export namespace Prisma {
 
   export type GenericNameCountOrderByAggregateInput = {
     generic_id?: SortOrder
-    name?: SortOrder
+    generic_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type GenericNameMaxOrderByAggregateInput = {
     generic_id?: SortOrder
-    name?: SortOrder
+    generic_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type GenericNameMinOrderByAggregateInput = {
     generic_id?: SortOrder
-    name?: SortOrder
+    generic_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21633,7 +21633,7 @@ export namespace Prisma {
 
   export type BrandNameCountOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    brand_name?: SortOrder
     form?: SortOrder
     strength?: SortOrder
     generic_id?: SortOrder
@@ -21643,7 +21643,7 @@ export namespace Prisma {
 
   export type BrandNameMaxOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    brand_name?: SortOrder
     form?: SortOrder
     strength?: SortOrder
     generic_id?: SortOrder
@@ -21653,7 +21653,7 @@ export namespace Prisma {
 
   export type BrandNameMinOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    brand_name?: SortOrder
     form?: SortOrder
     strength?: SortOrder
     generic_id?: SortOrder
@@ -23954,7 +23954,7 @@ export namespace Prisma {
 
   export type BrandNameCreateWithoutGenericInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     createdAt?: Date | string
@@ -23963,7 +23963,7 @@ export namespace Prisma {
 
   export type BrandNameUncheckedCreateWithoutGenericInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     createdAt?: Date | string
@@ -24000,7 +24000,7 @@ export namespace Prisma {
     OR?: BrandNameScalarWhereInput[]
     NOT?: BrandNameScalarWhereInput | BrandNameScalarWhereInput[]
     id?: StringFilter<"BrandName"> | string
-    name?: StringFilter<"BrandName"> | string
+    brand_name?: StringFilter<"BrandName"> | string
     form?: StringNullableFilter<"BrandName"> | string | null
     strength?: StringNullableFilter<"BrandName"> | string | null
     generic_id?: StringFilter<"BrandName"> | string
@@ -24010,14 +24010,14 @@ export namespace Prisma {
 
   export type GenericNameCreateWithoutBrandNamesInput = {
     generic_id?: string
-    name: string
+    generic_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type GenericNameUncheckedCreateWithoutBrandNamesInput = {
     generic_id?: string
-    name: string
+    generic_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24039,13 +24039,13 @@ export namespace Prisma {
   }
 
   export type GenericNameUpdateWithoutBrandNamesInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GenericNameUncheckedUpdateWithoutBrandNamesInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    generic_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24582,7 +24582,7 @@ export namespace Prisma {
 
   export type BrandNameCreateManyGenericInput = {
     id?: string
-    name: string
+    brand_name: string
     form?: string | null
     strength?: string | null
     createdAt?: Date | string
@@ -24590,7 +24590,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUpdateWithoutGenericInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24598,7 +24598,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUncheckedUpdateWithoutGenericInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24606,7 +24606,7 @@ export namespace Prisma {
   }
 
   export type BrandNameUncheckedUpdateManyWithoutGenericInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    brand_name?: StringFieldUpdateOperationsInput | string
     form?: NullableStringFieldUpdateOperationsInput | string | null
     strength?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

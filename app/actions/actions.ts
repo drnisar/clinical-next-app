@@ -141,3 +141,15 @@ export const getAppointmentTypes = async () => {
     return [];
   }
 };
+
+export const getDrugs = unstable_cache(
+  async () => {
+    console.log("Fetching drugs...");
+    return await prisma.genericName.findMany();
+  },
+  ["drugs"],
+  {
+    tags: ["drugs"],
+    revalidate: 60,
+  }
+);
