@@ -1,5 +1,6 @@
 import { getAppointments } from "@/app/actions/actions";
 import AppointmentsTable from "./_components/AppointmentsTable";
+import AppointmentStoreInitializer from "./_components/AppointmentStoreInitializer";
 
 const AppointmentsPage = async () => {
   try {
@@ -10,7 +11,10 @@ const AppointmentsPage = async () => {
 
     return (
       <div>
-        <AppointmentsTable appointments={appointments} />
+        <AppointmentStoreInitializer
+          appointmentsWithRegistration={appointments}
+        />
+        <AppointmentsTable />
       </div>
     );
   } catch (error) {

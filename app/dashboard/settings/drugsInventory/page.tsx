@@ -1,16 +1,23 @@
-import { getDrugs } from "@/app/actions/actions";
-import { DrugsList, GenericNameInputForm, SelectedDrug } from "./_components";
+import {
+  DrugsList,
+  DrugsStoreInitializer,
+  GenericNameInputForm,
+  SelectedDrug,
+  BrandNamesForm,
+} from ".";
+import { prisma } from "@/lib/prisma";
 
 const DrugsInventoryPage = async () => {
-  const drugs = await getDrugs();
-
+  const drugs = await prisma.genericName.findMany();
   return (
     <>
+      <DrugsStoreInitializer drugs={drugs} />
       <h1>Drugs Inventory</h1>
       <p>Manage your drugs inventory here.</p>
       <GenericNameInputForm />
-      <DrugsList drugs={drugs} />
+      <DrugsList />
       <SelectedDrug />
+      <BrandNamesForm />
     </>
   );
 };

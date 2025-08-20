@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     });
 
     revalidateTag("drugs");
-    revalidatePath("/dashboard/settings/drugsInventory");
+    // revalidatePath("/dashboard/settings/drugsInventory");
 
     return NextResponse.json(newDrug, { status: 201 });
   } catch (error) {

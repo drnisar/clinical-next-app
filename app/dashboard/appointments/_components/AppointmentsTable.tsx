@@ -29,27 +29,14 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
+import { useAppointmentsStore } from "./AppointmentsStore";
+import SelectAppointmentType from "./SelectAppointmentType";
+import { Appointment, Registration } from "@/generated/prisma";
 
 // Keep your existing Appointment type
-type Appointment = {
-  plan: string;
-  date_appointment: Date;
-  appointment_id: string;
-  status: string;
-  notes: string | null;
-  type: string;
-  registration: {
-    first_name: string;
-    last_name: string;
-    gender: string;
-  };
-};
+type AppointmentWithRegistration = Appointment & { registration: Registration };
 
-interface Props {
-  appointments: Appointment[];
-}
-
-const columnHelper = createColumnHelper<Appointment>();
+const columnHelper = createColumnHelper<AppointmentWithRegistration>();
 
 // Client component for safe date formatting
 const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
@@ -65,8 +52,9 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   return <>{formattedDate ?? "N/A"}</>;
 };
 
-const AppointmentsTable = ({ appointments }: Props) => {
+const AppointmentsTable = () => {
   // State for table features
+  const { appointments } = useAppointmentsStore();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
@@ -86,15 +74,13 @@ const AppointmentsTable = ({ appointments }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.accessor((row) => row.registration.first_name, {
-        id: "first_name",
-        header: "First Name",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor((row) => row.registration.last_name, {
-        id: "last_name",
-        header: "Last Name",
-        cell: (info) => info.getValue(),
+      columnHelper.display({
+        id: "full_name",
+        header: "Full Name",
+        cell: (info) => {
+          const { first_name, last_name } = info.row.original.registration;
+          return `${first_name} ${last_name}`;
+        },
       }),
       columnHelper.accessor("plan", {
         header: "Plan",
@@ -104,9 +90,10 @@ const AppointmentsTable = ({ appointments }: Props) => {
         header: "Date",
         cell: (info) => <FormattedDateCell date={info.getValue()} />,
       }),
-      columnHelper.accessor("status", {
-        header: "Status",
-        cell: (info) => info.getValue(),
+      columnHelper.accessor((row) => row.registration?.phone_number, {
+        id: "phone_number",
+        header: "Phone Number",
+        cell: (info) => "0" + (info.getValue() ?? ""),
       }),
       columnHelper.accessor("type", {
         header: "Type",
@@ -115,7 +102,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
       columnHelper.accessor("notes", {
         header: "Notes",
         cell: (info) => info.getValue() ?? "N/A",
-        enableSorting: false, // Often don't sort by notes
+        enableSorting: false,
       }),
       // Optional: Add an actions column if needed
       // columnHelper.display({
@@ -149,13 +136,14 @@ const AppointmentsTable = ({ appointments }: Props) => {
   return (
     <Box>
       {/* Search Input */}
-      <Flex mb="3">
+      <Flex mb="3" justify={"between"}>
         <TextField.Root
           placeholder="Search appointments..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           style={{ maxWidth: 300 }}
         />
+        <SelectAppointmentType />
       </Flex>
 
       {/* Table */}

@@ -145,7 +145,11 @@ export const getAppointmentTypes = async () => {
 export const getDrugs = unstable_cache(
   async () => {
     console.log("Fetching drugs...");
-    return await prisma.genericName.findMany();
+    return await prisma.genericName.findMany({
+      include: {
+        brandNames: true,
+      },
+    });
   },
   ["drugs"],
   {
