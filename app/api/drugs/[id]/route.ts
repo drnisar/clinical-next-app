@@ -1,14 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
+export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id } = params;
 
     if (!body) {
       return NextResponse.json(
@@ -18,7 +14,7 @@ export const PATCH = async (
     }
 
     const updatedDrug = await prisma.genericName.update({
-      where: { generic_id: id },
+      where: { generic_id: body.generic_id },
       data: {
         brandNames: body.brandNames,
       },
@@ -35,4 +31,4 @@ export const PATCH = async (
       { status: 500 }
     );
   }
-};
+}

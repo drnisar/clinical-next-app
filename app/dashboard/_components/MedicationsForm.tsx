@@ -42,26 +42,29 @@ const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
 
   const { drugs: drugsArray } = watch();
 
-  const handleTemplateSelect = useCallback((templates: MedsTemplate[]) => {
-    if (!templates || templates.length === 0) return;
-    // For example, use the first template in the array
-    const template = templates[0];
-    if (!template || !template.meds || template.meds.length === 0) return;
-    console.log("Selected Template:", template.meds);
-    reset({
-      drugs: template.meds.map((drug) => ({
-        drug_name: drug.drug_name,
-        drug_dose: drug.drug_dose,
-        amount: drug.amount,
-        drug_form: drug.drug_form,
-        route: drug.route,
-        frequency: drug.frequency,
-        duration: drug.duration,
-        interval: drug.interval,
-        instructions: drug.instructions || "",
-      })),
-    });
-  }, []);
+  const handleTemplateSelect = useCallback(
+    (templates: MedsTemplate[]) => {
+      if (!templates || templates.length === 0) return;
+      // For example, use the first template in the array
+      const template = templates[0];
+      if (!template || !template.meds || template.meds.length === 0) return;
+      console.log("Selected Template:", template.meds);
+      reset({
+        drugs: template.meds.map((drug) => ({
+          drug_name: drug.drug_name,
+          drug_dose: drug.drug_dose,
+          amount: drug.amount,
+          drug_form: drug.drug_form,
+          route: drug.route,
+          frequency: drug.frequency,
+          duration: drug.duration,
+          interval: drug.interval,
+          instructions: drug.instructions || "",
+        })),
+      });
+    },
+    [reset]
+  );
 
   return (
     <>
