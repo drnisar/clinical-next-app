@@ -79,7 +79,7 @@ const AppointmentsTable = () => {
         header: "Full Name",
         cell: (info) => {
           const { first_name, last_name } = info.row.original.registration;
-          return `${first_name} ${last_name}`;
+          return `${first_name} ${last_name}`.toUpperCase();
         },
       }),
       columnHelper.accessor("plan", {
