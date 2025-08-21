@@ -1,4 +1,4 @@
-import { GenericName } from "@/generated/prisma/index.d 2";
+import { GenericName } from "@/generated/prisma";
 import { create } from "zustand";
 
 interface Props {

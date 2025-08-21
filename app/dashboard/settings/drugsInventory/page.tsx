@@ -3,7 +3,6 @@ import {
   DrugsStoreInitializer,
   GenericNameInputForm,
   SelectedDrug,
-  BrandNamesForm,
 } from ".";
 import { prisma } from "@/lib/prisma";
 
@@ -17,7 +16,6 @@ const DrugsInventoryPage = async () => {
       <GenericNameInputForm />
       <DrugsList />
       <SelectedDrug />
-      <BrandNamesForm />
     </>
   );
 };

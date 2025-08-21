@@ -1,8 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useDrugsInventoryStore } from "./DrugsInventoryStore";
-import { GenericName } from "@/generated/prisma/index.d 2";
-
+import { GenericName } from "@/generated/prisma";
 const DrugsStoreInitializer = ({ drugs }: { drugs: GenericName[] }) => {
   const { setDrugs } = useDrugsInventoryStore();
   useEffect(() => {
