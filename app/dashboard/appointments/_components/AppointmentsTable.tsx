@@ -93,12 +93,16 @@ const AppointmentsTable = () => {
       columnHelper.accessor((row) => row.registration?.phone_number, {
         id: "phone_number",
         header: "Phone Number",
-        cell: (info) => "0" + (info.getValue() ?? ""),
+        cell: (info) => (
+          <a href={`tel:0${info.getValue() ?? ""}`}>
+            {"0" + (info.getValue() ?? "")}
+          </a>
+        ),
       }),
-      columnHelper.accessor("type", {
-        header: "Type",
-        cell: (info) => info.getValue(),
-      }),
+      // columnHelper.accessor("type", {
+      //   header: "Type",
+      //   cell: (info) => info.getValue(),
+      // }),
       columnHelper.accessor("notes", {
         header: "Notes",
         cell: (info) => info.getValue() ?? "N/A",

@@ -5,8 +5,8 @@ import { appointmentTypeOptions } from "../../_components/appConstants";
 import { useAppointmentsStore } from "./AppointmentsStore";
 
 const SelectAppointmentType = () => {
-  const defaultType = appointmentTypeOptions[0]?.value || "";
-  const [selectedValue, setSelectedValue] = useState(defaultType);
+  // const defaultType = appointmentTypeOptions[0]?.value || "";
+  const [selectedValue, setSelectedValue] = useState("");
   const { setType } = useAppointmentsStore();
   const handleValueChange = (value: string) => {
     setSelectedValue(value);
@@ -17,12 +17,11 @@ const SelectAppointmentType = () => {
     <Select.Root value={selectedValue} onValueChange={handleValueChange}>
       <Select.Trigger placeholder="Select Appointment Type" />
       <Select.Content>
-        {appointmentTypes.length > 0 &&
-          appointmentTypes.map((option) => (
-            <Select.Item key={option.value} value={option.value}>
-              {option.label}
-            </Select.Item>
-          ))}
+        {appointmentTypes.map((option) => (
+          <Select.Item key={option.value} value={option.value}>
+            {option.label}
+          </Select.Item>
+        ))}
       </Select.Content>
     </Select.Root>
   );
