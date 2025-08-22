@@ -132,6 +132,13 @@ const handler = NextAuth({
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Always redirect to dashboard after successful sign-in
+      if (url === "/auth/signin" || url.startsWith("/auth/signin")) {
+        return `${baseUrl}/dashboard`;
+      }
+      return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`;
+    },
   },
   pages: {
     signIn: "/auth/signin",
