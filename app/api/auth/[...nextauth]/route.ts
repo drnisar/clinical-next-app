@@ -135,7 +135,7 @@ const handler = NextAuth({
     async redirect({ url, baseUrl }) {
       // Always redirect to dashboard after successful sign-in
       if (url === "/auth/signin" || url.startsWith("/auth/signin")) {
-        return `${baseUrl}/dashboard`;
+        return `https://clinical-next-app.vercel.app/dashboard`;
       }
       return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`;
     },
