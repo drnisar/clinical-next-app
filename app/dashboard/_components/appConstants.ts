@@ -691,3 +691,33 @@ export const BASEURL = (): string => {
   }
   return "http://localhost:3000";
 };
+
+export const DAY_COLOUR = (dateCell: Date) => {
+  if (
+    !dateCell ||
+    (typeof dateCell !== "string" && !(dateCell instanceof Date))
+  )
+    return undefined;
+  const dateObj = typeof dateCell === "string" ? new Date(dateCell) : dateCell;
+  if (isNaN(dateObj.getTime())) return undefined;
+  const weekday = dateObj.getDay();
+  // 0: Sunday, 1: Monday, ..., 6: Saturday
+  switch (weekday) {
+    case 0:
+      return "#ffeaea"; // Sunday
+    case 1:
+      return "#eaf7ff"; // Monday
+    case 2:
+      return "#eaffea"; // Tuesday
+    case 3:
+      return "#fffbea"; // Wednesday
+    case 4:
+      return "#f0eaff"; // Thursday
+    case 5:
+      return "#eafff7"; // Friday
+    case 6:
+      return "#f5eaff"; // Saturday
+    default:
+      return undefined;
+  }
+};

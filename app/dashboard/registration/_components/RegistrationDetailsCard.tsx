@@ -33,9 +33,14 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
           {registration.gender.toUpperCase()}
         </Text>
       </Flex>
-      <Text as="div" color="gray">
-        MR Number: {registration.mr_number}
-      </Text>
+      <Flex gap={"5"}>
+        <Text as="div" color="gray">
+          MR Number: {registration.mr_number}
+        </Text>
+        <Text as="div" color="gray" className="print:!hidden">
+          {`${registration.code}${registration.phone_number}`}
+        </Text>
+      </Flex>
     </Flex>
   );
 };

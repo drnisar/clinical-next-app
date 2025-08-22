@@ -32,6 +32,7 @@ import {
 import { useAppointmentsStore } from "./AppointmentsStore";
 import SelectAppointmentType from "./SelectAppointmentType";
 import { Appointment, Registration } from "@/generated/prisma";
+import { DAY_COLOUR } from "../../_components/appConstants";
 
 // Keep your existing Appointment type
 type AppointmentWithRegistration = Appointment & { registration: Registration };
@@ -182,7 +183,13 @@ const AppointmentsTable = () => {
         </Table.Header>
         <Table.Body>
           {table.getRowModel().rows.map((row) => (
-            <Table.Row key={row.id}>
+            <Table.Row
+              key={row.id}
+              style={{
+                background:
+                  DAY_COLOUR(row.getValue("date_appointment")) ?? "#fff",
+              }}
+            >
               {row.getVisibleCells().map((cell) => (
                 <Table.Cell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

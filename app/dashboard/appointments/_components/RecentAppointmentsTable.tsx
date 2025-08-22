@@ -1,7 +1,10 @@
 import { Appointment, Registration } from "@/generated/prisma/default";
 import { Badge, Card, Heading, Table } from "@radix-ui/themes";
 import React from "react";
-import { badgeColorForAppointments } from "../../_components/appConstants";
+import {
+  badgeColorForAppointments,
+  DAY_COLOUR,
+} from "../../_components/appConstants";
 
 interface Props {
   appointments: ({ registration: Registration } & Appointment)[];
@@ -33,7 +36,10 @@ const RecentAppointmentsTable = ({ appointments, searchParams }: Props) => {
         </Table.Header>
         <Table.Body>
           {filteredAppointments.map((appointment) => (
-            <Table.Row key={appointment.appointment_id}>
+            <Table.Row
+              key={appointment.appointment_id}
+              style={{ background: DAY_COLOUR(appointment.date_appointment) }}
+            >
               <Table.Cell>
                 {new Date(appointment.date_appointment).toDateString()}
               </Table.Cell>

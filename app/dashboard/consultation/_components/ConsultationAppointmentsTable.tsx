@@ -2,6 +2,7 @@
 import { Appointment, Registration } from "@/generated/prisma";
 import { Table } from "@radix-ui/themes";
 import React from "react";
+import { DAY_COLOUR } from "../../_components/appConstants";
 
 interface Props {
   appointments: Appointment[];
@@ -27,7 +28,12 @@ const ConsultationAppointmentsTable = ({
       </Table.Header>
       <Table.Body>
         {appointments.map((appointment) => (
-          <Table.Row key={appointment.appointment_id}>
+          <Table.Row
+            key={appointment.appointment_id}
+            style={{
+              background: DAY_COLOUR(appointment.date_appointment) ?? "#fff",
+            }}
+          >
             <Table.Cell>
               {
                 registrations.find(
