@@ -282,7 +282,11 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
-
+exports.Status = exports.$Enums.Status = {
+  QUEUED: 'QUEUED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+};
 
 exports.Prisma.ModelName = {
   Admission_Discharge: 'Admission_Discharge',

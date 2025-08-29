@@ -417,6 +417,8 @@ export const investigationsArray = [
   { label: "CBC", value: "CBC" },
   { label: "LFTs", value: "LFTs" },
   { label: "RFTs", value: "RFTs" },
+  { label: "HBSAg", value: "HBSAg" },
+  { label: "HCV", value: "HCV" },
   { label: "Lipid Profile", value: "Lipid Profile" },
   { label: "TFTs", value: "TFTs" },
   { label: "Blood Sugar", value: "Blood Sugar" },

@@ -16,7 +16,7 @@ const ConsultationsPage = async () => {
         <Flex justify={"between"}>
           <h1 className="text-2xl font-bold mb-4">Consultations</h1>
         </Flex>
-        <ConsultationsTable consultations={consultations} />
+        <ConsultationsTable />
       </Suspense>
     </>
   );

@@ -32,6 +32,7 @@ import {
 import { useRouter } from "next/navigation";
 import { Consultation, Registration } from "@/generated/prisma";
 import StatusChangeComponent from "./StatusChangeComponent";
+import { useConsultations } from "./ConsultationStore";
 
 // type Consultation = Omit<Clinic_Visit, "Registration"> & {
 //   registration: PrismaRegistration | null;
@@ -40,9 +41,9 @@ import StatusChangeComponent from "./StatusChangeComponent";
 type consultation = Consultation & {
   registration: Registration | null;
 };
-interface Props {
-  consultations: consultation[];
-}
+// interface Props {
+//   consultations: consultation[];
+// }
 
 const columnHelper = createColumnHelper<consultation>();
 
@@ -58,24 +59,35 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   return <>{formattedDate ?? "N/A"}</>;
 };
 
-const ConsultationsTable = ({ consultations }: Props) => {
+const ConsultationsTable = () => {
+  const { consultations } = useConsultations();
   const router = useRouter();
-
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 20,
   });
 
   const columns = useMemo(
     () => [
+      // columnHelper.display({
+      //   id: "s_no",
+      //   header: "S. No",
+      //   // Access row.index which is available in the cell context
+      //   cell: (info) =>
+      //     info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
+      //   enableSorting: false,
+      // }),
       columnHelper.display({
         id: "s_no",
         header: "S. No",
-        // Access row.index which is available in the cell context
-        cell: (info) =>
-          info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
+        cell: (info) => {
+          // Get the actual row index from the table state
+          const pageIndex = info.table.getState().pagination.pageIndex;
+          const pageSize = info.table.getState().pagination.pageSize;
+          return pageIndex * pageSize + info.row.index + 1;
+        },
         enableSorting: false,
       }),
       columnHelper.accessor(
@@ -302,7 +314,7 @@ const ConsultationsTable = ({ consultations }: Props) => {
         >
           <Select.Trigger placeholder="Rows per page" />
           <Select.Content>
-            {[10, 20, 30, 40, 50].map((pageSize) => (
+            {[20, 40, 60].map((pageSize) => (
               <Select.Item key={pageSize} value={String(pageSize)}>
                 Show {pageSize}
               </Select.Item>

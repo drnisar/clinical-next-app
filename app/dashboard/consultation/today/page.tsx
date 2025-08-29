@@ -1,21 +1,22 @@
 import { getTodaysConsultations } from "@/app/actions/actions";
 import { Flex } from "@radix-ui/themes";
-import CreateRegistrationButton from "../../registration/_components/CreateRegistrationButton";
 import ConsultationsTable from "../_components/ConsultationsTable";
+import SelectConsultationStatus from "../_components/SelectConsultationStatus";
+import ConsultationsStoreInitializer from "./_components/ConsultationsStoreInitializer";
+import CreateRegistrationButton from "../../registration/_components/CreateRegistrationButton";
 
-const page = async () => {
+const Page = async () => {
   const consultations = await getTodaysConsultations();
   return (
     <>
-      <Flex justify={"between"}>
-        <h1 className="text-2xl font-bold mb-4">Today&#39;s Consultations</h1>
-        <Flex gap="2" direction={"column"}>
-          <CreateRegistrationButton />
-        </Flex>
+      <ConsultationsStoreInitializer consultationsFromPage={consultations} />
+      <Flex justify={"between"} mb="5">
+        <SelectConsultationStatus />
+        <CreateRegistrationButton />
       </Flex>
-      <ConsultationsTable consultations={consultations || []} />
+      <ConsultationsTable />
     </>
   );
 };
 
-export default page;
+export default Page;
