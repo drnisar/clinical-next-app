@@ -115,6 +115,24 @@ export type AppointmentType = $Result.DefaultSelection<Prisma.$AppointmentTypePa
 export type GenericName = $Result.DefaultSelection<Prisma.$GenericNamePayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const Status: {
+  QUEUED: 'QUEUED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+};
+
+export type Status = (typeof Status)[keyof typeof Status]
+
+}
+
+export type Status = $Enums.Status
+
+export const Status: typeof $Enums.Status
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -8033,7 +8051,7 @@ export namespace Prisma {
     diagnosis: string | null
     history: string | null
     plan: string | null
-    status: string | null
+    status: $Enums.Status | null
     registration_id: string | null
     updated_at: Date | null
     visit_date: Date | null
@@ -8045,7 +8063,7 @@ export namespace Prisma {
     diagnosis: string | null
     history: string | null
     plan: string | null
-    status: string | null
+    status: $Enums.Status | null
     registration_id: string | null
     updated_at: Date | null
     visit_date: Date | null
@@ -8180,7 +8198,7 @@ export namespace Prisma {
     diagnosis: string | null
     history: string | null
     plan: string | null
-    status: string | null
+    status: $Enums.Status
     registration_id: string
     updated_at: Date
     visit_date: Date
@@ -8250,7 +8268,7 @@ export namespace Prisma {
       diagnosis: string | null
       history: string | null
       plan: string | null
-      status: string | null
+      status: $Enums.Status
       registration_id: string
       updated_at: Date
       visit_date: Date
@@ -8657,7 +8675,7 @@ export namespace Prisma {
     readonly diagnosis: FieldRef<"Consultation", 'String'>
     readonly history: FieldRef<"Consultation", 'String'>
     readonly plan: FieldRef<"Consultation", 'String'>
-    readonly status: FieldRef<"Consultation", 'String'>
+    readonly status: FieldRef<"Consultation", 'Status'>
     readonly registration_id: FieldRef<"Consultation", 'String'>
     readonly updated_at: FieldRef<"Consultation", 'DateTime'>
     readonly visit_date: FieldRef<"Consultation", 'DateTime'>
@@ -17350,6 +17368,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Status'
+   */
+  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+  /**
+   * Reference to a field of type 'Status[]'
+   */
+  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -17862,7 +17894,7 @@ export namespace Prisma {
     investigations?: InvestigationCompositeListFilter | InvestigationObjectEqualityInput[]
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
-    status?: StringNullableFilter<"Consultation"> | string | null
+    status?: EnumStatusFilter<"Consultation"> | $Enums.Status
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -17899,7 +17931,7 @@ export namespace Prisma {
     investigations?: InvestigationCompositeListFilter | InvestigationObjectEqualityInput[]
     plan?: StringNullableFilter<"Consultation"> | string | null
     medications?: MedicationCompositeListFilter | MedicationObjectEqualityInput[]
-    status?: StringNullableFilter<"Consultation"> | string | null
+    status?: EnumStatusFilter<"Consultation"> | $Enums.Status
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -17930,7 +17962,7 @@ export namespace Prisma {
     diagnosis?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     history?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     plan?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
-    status?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
+    status?: EnumStatusWithAggregatesFilter<"Consultation"> | $Enums.Status
     registration_id?: StringWithAggregatesFilter<"Consultation"> | string
     updated_at?: DateTimeWithAggregatesFilter<"Consultation"> | Date | string
     visit_date?: DateTimeWithAggregatesFilter<"Consultation"> | Date | string
@@ -18963,7 +18995,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     updated_at?: Date | string
     visit_date: Date | string
     registration: RegistrationCreateNestedOneWithoutConsultationInput
@@ -18979,7 +19011,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     registration_id: string
     updated_at?: Date | string
     visit_date: Date | string
@@ -18994,7 +19026,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
     registration?: RegistrationUpdateOneRequiredWithoutConsultationNestedInput
@@ -19009,7 +19041,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     registration_id?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19025,7 +19057,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     registration_id: string
     updated_at?: Date | string
     visit_date: Date | string
@@ -19040,7 +19072,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19054,7 +19086,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     registration_id?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20084,6 +20116,13 @@ export namespace Prisma {
     result?: string | null
   }
 
+  export type EnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
   export type ExaminationOrderByCompositeAggregateInput = {
     _count?: SortOrder
   }
@@ -20130,6 +20169,16 @@ export namespace Prisma {
     registration_id?: SortOrder
     updated_at?: SortOrder
     visit_date?: SortOrder
+  }
+
+  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
   export type ConsultationListRelationFilter = {
@@ -20699,6 +20748,10 @@ export namespace Prisma {
     deleteMany?: InvestigationDeleteManyInput
   }
 
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
+  }
+
   export type RegistrationUpdateOneRequiredWithoutConsultationNestedInput = {
     create?: XOR<RegistrationCreateWithoutConsultationInput, RegistrationUncheckedCreateWithoutConsultationInput>
     connectOrCreate?: RegistrationCreateOrConnectWithoutConsultationInput
@@ -21261,6 +21314,23 @@ export namespace Prisma {
     NOT?: InvestigationWhereInput | InvestigationWhereInput[]
     investigation?: StringFilter<"Investigation"> | string
     result?: StringNullableFilter<"Investigation"> | string | null
+  }
+
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
   export type BrandNameWhereInput = {
@@ -22121,7 +22191,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -22136,7 +22206,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -22345,7 +22415,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     history?: StringNullableFilter<"Consultation"> | string | null
     plan?: StringNullableFilter<"Consultation"> | string | null
-    status?: StringNullableFilter<"Consultation"> | string | null
+    status?: EnumStatusFilter<"Consultation"> | $Enums.Status
     registration_id?: StringFilter<"Consultation"> | string
     updated_at?: DateTimeFilter<"Consultation"> | Date | string
     visit_date?: DateTimeFilter<"Consultation"> | Date | string
@@ -22872,7 +22942,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
     medications?: XOR<MedicationListCreateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: string | null
+    status?: $Enums.Status
     updated_at?: Date | string
     visit_date: Date | string
   }
@@ -22951,7 +23021,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22965,7 +23035,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22979,7 +23049,7 @@ export namespace Prisma {
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
     medications?: XOR<MedicationListUpdateEnvelopeInput, MedicationCreateInput> | MedicationCreateInput[]
-    status?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     visit_date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
