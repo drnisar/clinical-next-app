@@ -1,27 +1,30 @@
 "use client";
-import { Text, Box, Heading, Flex, Switch } from "@radix-ui/themes";
+import { Text, Box, Heading, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import KTH_logo from "@/public/KTH_logo.png";
 import kth_name from "@/public/kth_name.png";
-import React, { useState } from "react";
 
-const ConsultantHeader = () => {
-  const [headerVisible, setHeaderVisible] = useState(true);
+interface Props {
+  headerFooterVisible?: boolean;
+}
 
-  const toggleHeaderVisibility = () => {
-    setHeaderVisible(!headerVisible);
-  };
+const ConsultantHeader = ({ headerFooterVisible }: Props) => {
+  // const [headerVisible, setHeaderVisible] = useState(true);
+
+  // const toggleHeaderVisibility = () => {
+  //   setHeaderVisible(!headerVisible);
+  // };
 
   return (
     <>
       {/* <button onClick={toggleHeaderVisibility}>Toggle Header</button> */}
-      <Switch
+      {/* <Switch
         checked={headerVisible}
         onCheckedChange={toggleHeaderVisibility}
         defaultChecked={true}
         className="print:!hidden"
-      />
-      {headerVisible ? (
+      /> */}
+      {headerFooterVisible ? (
         <Flex justify="between">
           <Box>
             <Text as="p">Consultant General and Laparoscopic Surgeon</Text>

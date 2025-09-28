@@ -1,11 +1,5 @@
-import React from "react";
-import SingleConsultationDetails from "../_components/SingleConsultationDetails";
-import { Box, Flex } from "@radix-ui/themes";
-import ConsultantHeader from "../_components/ConsultantHeader";
-import ButtonPrintPage from "../_components/ButtonPrintPage";
-import ButtonEditPage from "../_components/ButtonEditPage";
 import { prisma } from "@/lib/prisma";
-import ConsultantFooter from "../_components/ConsultantFooter";
+import PageClient from "./_components/PageClient";
 
 const SingleConsultationPage = async ({
   params,
@@ -39,27 +33,13 @@ const SingleConsultationPage = async ({
 
   return (
     <div>
-      <main className="print-container ">
-        <header>
-          <Flex gap="2" justify="end">
-            <ButtonEditPage params={id} />
-            <ButtonPrintPage />
-          </Flex>
-          <ConsultantHeader />
-        </header>
-
-        <Box className="">
-          <SingleConsultationDetails
-            registration={registration}
-            medications={meds}
-            consultation={consultation}
-            appointment={appointment || undefined}
-          />
-        </Box>
-      </main>
-      <footer className="print:fixed print:bottom-0 print:left-0 print:w-full hidden print:block">
-        <ConsultantFooter />
-      </footer>
+      <PageClient
+        registration={registration}
+        id={id}
+        meds={meds}
+        consultation={consultation}
+        appointment={appointment || undefined}
+      />
     </div>
   );
 };
