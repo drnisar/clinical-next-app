@@ -1,8 +1,8 @@
 import { getConsultations } from "@/app/actions/actions";
 import { Flex } from "@radix-ui/themes";
 import { Suspense } from "react";
-import ConsultationsTable from "./_components/ConsultationsTable";
 import ConsultationPageSkeleton from "./_skeletons/ConsultationPageSkeleton";
+import TodaysConsultationsTable from "./today/_components/TodaysConsultationsTable";
 
 const ConsultationsPage = async () => {
   const consultations = await getConsultations();
@@ -16,7 +16,7 @@ const ConsultationsPage = async () => {
         <Flex justify={"between"}>
           <h1 className="text-2xl font-bold mb-4">Consultations</h1>
         </Flex>
-        <ConsultationsTable />
+        <TodaysConsultationsTable />
       </Suspense>
     </>
   );

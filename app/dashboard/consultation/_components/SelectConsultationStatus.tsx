@@ -23,7 +23,7 @@ const SelectConsultationStatus = () => {
   });
 
   return (
-    <Select.Root onValueChange={handleValueChange}>
+    <Select.Root onValueChange={handleValueChange} value={status}>
       <Select.Trigger placeholder="Select Status" />
       <Select.Content>
         {statuses.map((status, index) => (
