@@ -3,7 +3,6 @@ import {
   getConsultationById,
   getMedsTemplates,
   getRegistrationById,
-  getTodaysConsultations,
 } from "@/app/actions/actions";
 import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
 import ButtonPrintPreview from "../../_components/ButtonPrintPreview";
@@ -48,18 +47,12 @@ const ConsultationEditPage = async ({
     (appointment) =>
       appointment.registration_id === consultation.registration_id
   );
-  const patients = await getTodaysConsultations();
 
   return (
     <>
       <Grid columns="12" gap="2">
         <Box className="pt-4 col-span-2">
-          <TodaysPatientsSideBar
-            patients={patients.map((patient) => ({
-              ...patient,
-              ...(patient.registration ?? {}),
-            }))}
-          />
+          <TodaysPatientsSideBar id={id} />
         </Box>
 
         <Box className="col-span-10">

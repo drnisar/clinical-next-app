@@ -1,5 +1,6 @@
 "use client";
 import { Badge, Select, Spinner } from "@radix-ui/themes";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useTransition } from "react";
@@ -14,6 +15,8 @@ const StatusChangeComponent = ({ status, consultation_id }: Props) => {
   const [value, setValue] = useState(status);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   // Determine badge color based on status
   let color: React.ComponentProps<typeof Badge>["color"] = "gray";
   if (value === "COMPLETED") color = "green";
@@ -30,6 +33,7 @@ const StatusChangeComponent = ({ status, consultation_id }: Props) => {
           console.log("Status updated successfully:", response.data);
           router.refresh();
           toast.success(`Status changed to ${value}`);
+          queryClient.refetchQueries({ queryKey: ["todaysPatients"] });
         })
         .catch((error) => {
           console.error("Error updating status:", error);
