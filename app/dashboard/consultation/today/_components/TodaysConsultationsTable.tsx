@@ -4,7 +4,7 @@ import { useConsultations } from "../../_components/ConsultationStore";
 import { Badge, Flex, Table } from "@radix-ui/themes";
 import ButtonEditPage from "../../_components/ButtonEditPage";
 
-const calculateAgeFromDate = (date: Date) => {
+export const calculateAgeFromDate = (date: Date) => {
   const today = new Date();
   let age = today.getFullYear() - date.getFullYear();
   const monthDifference = today.getMonth() - date.getMonth();

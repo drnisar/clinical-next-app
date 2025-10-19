@@ -61,7 +61,7 @@ export const getTodaysConsultations = async () => {
       },
     },
     orderBy: {
-      visit_date: "desc",
+      visit_date: "asc",
     },
     include: {
       registration: true, // Include registration details

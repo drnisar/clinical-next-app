@@ -641,6 +641,18 @@ export const badgeColorForAppointments = (
       return "yellow";
   }
 };
+export const colorForStatus = (
+  status: string | "QUEUED" | "IN-PROGRESS" | "COMPLETED"
+) => {
+  switch (status) {
+    case "QUEUED":
+      return "text-yellow-800 bg-yellow-100 dark:text-yellow-300 dark:bg-yellow-900/30";
+    case "IN_PROGRESS":
+      return "text-blue-800 bg-blue-100 dark:text-blue-300 dark:bg-blue-900/30";
+    case "COMPLETED":
+      return "text-green-800 bg-green-100 dark:text-green-300 dark:bg-green-900/30";
+  }
+};
 
 export const datedddDDMMMYY = (
   date: Date | string | null | undefined

@@ -3,9 +3,9 @@ import {
   getConsultationById,
   getMedsTemplates,
   getRegistrationById,
+  getTodaysConsultations,
 } from "@/app/actions/actions";
 import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
-import { Flex } from "@radix-ui/themes";
 import ButtonPrintPreview from "../../_components/ButtonPrintPreview";
 import ConsultationDetailsForSingleRegId from "../../_components/ConsultationDetailsForSingleRegId";
 import ConsultationTabs from "../../_components/ConsultationTabs";
@@ -13,6 +13,8 @@ import MedsDisplayEnglish from "@/app/dashboard/_components/MedsDisplayEnglish";
 import InstructionsDisplayEnglish from "@/app/dashboard/_components/InstructionsDisplayEnglish";
 import AppointmentsTableForSingleRegId from "@/app/dashboard/appointments/_components/AppointmentsTableForSingleRegId";
 import StatusChangeComponent from "../../_components/StatusChangeComponent";
+import TodaysPatientsSideBar from "../../_components/TodaysPatientsSideBar";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 
 const ConsultationEditPage = async ({
   params,
@@ -46,37 +48,61 @@ const ConsultationEditPage = async ({
     (appointment) =>
       appointment.registration_id === consultation.registration_id
   );
+  const patients = await getTodaysConsultations();
 
   return (
     <>
-      <Flex direction="column" gap="4" p="4">
-        <Flex justify="between">
-          <StatusChangeComponent
-            status={consultation.status ?? ""}
-            consultation_id={id}
+      <Grid columns="12" gap="2">
+        <Box className="pt-4 col-span-2">
+          <TodaysPatientsSideBar
+            patients={patients.map((patient) => ({
+              ...patient,
+              ...(patient.registration ?? {}),
+            }))}
           />
-          <ButtonPrintPreview consultation_id={id} />
-        </Flex>
-        <RegistrationDetailsCard registration={consultation?.registration} />
-        <Flex gap={"8"}>
-          <ConsultationTabs
-            consultation={consultation}
-            type={type || ""}
-            templates={templates}
-            appointments={appointments}
-          />
-          <Flex direction="column" gap="4">
-            <ConsultationDetailsForSingleRegId consultation={consultation} />
-            <MedsDisplayEnglish meds={consultation.medications} />
-            <InstructionsDisplayEnglish
-              instructions={consultation.instructions}
+        </Box>
+
+        <Box className="col-span-10">
+          <Flex direction="column" gap="4" p="4" gridColumn={"2"}>
+            <Flex justify="between">
+              <StatusChangeComponent
+                status={consultation.status ?? ""}
+                consultation_id={id}
+              />
+              <ButtonPrintPreview consultation_id={id} />
+            </Flex>
+            <RegistrationDetailsCard
+              registration={consultation?.registration}
             />
-            <AppointmentsTableForSingleRegId
-              appointmentsForRegistration={appointmentsForRegistration}
-            />
+            <Flex gap={"2"}>
+              <Flex className="col-span-6">
+                <ConsultationTabs
+                  consultation={consultation}
+                  type={type || ""}
+                  templates={templates}
+                  appointments={appointments}
+                />
+              </Flex>
+              <Flex
+                direction="column"
+                gap="4"
+                className="col-span-4 bg-yellow-50 dark:bg-transparent w-full p-2"
+              >
+                <ConsultationDetailsForSingleRegId
+                  consultation={consultation}
+                />
+                <MedsDisplayEnglish meds={consultation.medications} />
+                <InstructionsDisplayEnglish
+                  instructions={consultation.instructions}
+                />
+                <AppointmentsTableForSingleRegId
+                  appointmentsForRegistration={appointmentsForRegistration}
+                />
+              </Flex>
+            </Flex>
           </Flex>
-        </Flex>
-      </Flex>
+        </Box>
+      </Grid>
     </>
   );
 };
