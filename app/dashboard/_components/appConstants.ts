@@ -115,7 +115,7 @@ const translations = [
   },
   {
     en: "prn",
-    ur: "ضرورت پڑنے پر",
+    ur: "حسب ضرورت",
   },
   {
     en: "stat",
