@@ -13,7 +13,7 @@ const DashboardNav = () => {
     { name: "Registration", href: "/dashboard/registration" },
     { name: "Appointments", href: "/dashboard/appointments" },
     { name: "Admissions", href: "/dashboard/admissions" },
-    { name: "Consultations", href: "/dashboard/consultation" },
+    // { name: "Consultations", href: "/dashboard/consultation" },
     { name: "Todays Patients", href: "/dashboard/consultation/today" },
   ];
 
