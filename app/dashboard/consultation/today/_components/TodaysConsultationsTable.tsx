@@ -5,6 +5,8 @@ import ButtonEditPage from "../../_components/ButtonEditPage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Consultation } from "@/generated/prisma";
+import SelectConsultationStatus from "../../_components/SelectConsultationStatus";
+import { useConsultationStatus } from "../../_components/ConsultationStore";
 
 // Updated function to handle both string and Date inputs
 export const calculateAgeFromDate = (
@@ -48,6 +50,7 @@ type consultationWithRegistration = Consultation & {
 };
 
 const TodaysConsultationsTable = () => {
+  const { status } = useConsultationStatus();
   const consultations = useQuery({
     queryKey: ["consultations", "today"],
     queryFn: async () => {
@@ -70,10 +73,17 @@ const TodaysConsultationsTable = () => {
   if (consultations.error) {
     return <p>Error loading consultations. Please try again.</p>;
   }
-
+  const filteredConsultations =
+    status === "ALL"
+      ? consultations.data
+      : consultations.data?.filter(
+          (consultation) => consultation.status === status
+        );
   return (
     <>
-      {consultations.data?.length === 0 ? (
+      <SelectConsultationStatus />
+
+      {filteredConsultations?.length === 0 ? (
         <p>No consultations for today.</p>
       ) : (
         <Table.Root size="1">
@@ -89,7 +99,7 @@ const TodaysConsultationsTable = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {consultations.data?.map((consultation, index) => {
+            {filteredConsultations?.map((consultation, index) => {
               const age = calculateAgeFromDate(
                 consultation.registration.date_of_birth
               );

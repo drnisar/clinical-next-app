@@ -1,7 +1,5 @@
 import { getTodaysConsultations } from "@/app/actions/actions";
 import { Flex } from "@radix-ui/themes";
-// import ConsultationsTable from "../_components/ConsultationsTable";
-import SelectConsultationStatus from "../_components/SelectConsultationStatus";
 import ConsultationsStoreInitializer from "./_components/ConsultationsStoreInitializer";
 import CreateRegistrationButton from "../../registration/_components/CreateRegistrationButton";
 import TodaysConsultationsTable from "./_components/TodaysConsultationsTable";
@@ -11,8 +9,7 @@ const Page = async () => {
   return (
     <>
       <ConsultationsStoreInitializer consultationsFromPage={consultations} />
-      <Flex justify={"between"} mb="5">
-        <SelectConsultationStatus />
+      <Flex justify={"end"} mb="5">
         <CreateRegistrationButton />
       </Flex>
       {/* <ConsultationsTable /> */}
