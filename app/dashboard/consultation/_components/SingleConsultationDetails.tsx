@@ -1,17 +1,18 @@
 "use client";
 
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
-import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
-import ConsultationDetailsForSingleRegId from "./ConsultationDetailsForSingleRegId";
 import {
-  Consultation,
-  Registration,
   Appointment,
+  Consultation,
   Medication,
+  Registration,
 } from "@/generated/prisma";
-import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import { formatDate } from "../../_components/appConstants";
 import AppointmentComponent from "../../_components/AppointmentComponent";
+import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
+import ConsultationDetailsForSingleRegId from "./ConsultationDetailsForSingleRegId";
+import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
+import HMISNotes from "./HMISNotes";
 
 interface Props {
   consultation: Consultation;
@@ -37,10 +38,12 @@ const SingleConsultationDetails = ({
       <div className="grid grid-cols-12 gap-4 mb-4">
         <div className="col-span-4 text-xs border-r">
           <Heading size="3">Clinical Details</Heading>
+          <HMISNotes mr_number={registration.mr_number} />
           <ConsultationDetailsForSingleRegId consultation={consultation} />
         </div>
         <div className="col-span-8 px-4">
           <Heading size="3">For Patient</Heading>
+          {/* <HMISNotes mr_number={registration.mr_number} /> */}
           <Flex direction="column" gap="2" className="flex-grow">
             {medications.length > 0 && (
               <Box className="flex-grow py-5 bg-purple-50 dark:bg-transparent">
@@ -65,13 +68,13 @@ const SingleConsultationDetails = ({
                       {consultation.instructions.map(
                         (
                           item: string | { instruction: string },
-                          index: number
+                          index: number,
                         ) => (
                           <Text key={index} size="2" as="p" mb="1">
                             {index + 1} .{" "}
                             {typeof item === "string" ? item : item.instruction}
                           </Text>
-                        )
+                        ),
                       )}
                     </Box>
                   )}

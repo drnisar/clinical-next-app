@@ -229,10 +229,15 @@ model GenericName {
 
 type BrandName {
   brand_name    String
-  brand_details BrandDetails[]
+  brand_details DrugForm[]
 }
 
-type BrandDetails {
-  form     String?
-  strength String?
+type DrugForm {
+  drugForm String?
+  doses    DrugDose[]
+}
+
+type DrugDose {
+  drugDose String?
+  unit     String?
 }

@@ -1,7 +1,12 @@
 import React from "react";
+import CurrentWeekAppointments from "./_components/CurrentWeekAppointments";
 
 const DashboardPage = () => {
-  return <div>DashboardPage</div>;
+  return (
+    <>
+      <CurrentWeekAppointments />
+    </>
+  );
 };
 
 export default DashboardPage;

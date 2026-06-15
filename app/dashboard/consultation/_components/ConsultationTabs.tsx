@@ -14,6 +14,7 @@ import InstructionsArray from "./InstructionsArray";
 import ConsultationHistoryForm from "./ConsultationHistoryForm";
 import ConsultationDiagnosisForm from "./ConsultationDiagnosisForm";
 import ConsultationPlanForm from "./ConsultationPlanForm";
+import ConsultationInvestigationsAdvisedForm from "./ConsultationInvestigationsAdvisedForm";
 interface Props {
   consultation: Consultation;
   type: string;
@@ -46,9 +47,12 @@ const ConsultationTabs = ({
                 </Tabs.Trigger>
                 <Tabs.Trigger value="diagnosis">Diagnosis</Tabs.Trigger>
                 <Tabs.Trigger value="plan">Plan</Tabs.Trigger>
-                <Tabs.Trigger value="medications">Medications</Tabs.Trigger>
               </Flex>
               <Flex>
+                <Tabs.Trigger value="investigationsAdvised">
+                  Investigations Advised
+                </Tabs.Trigger>
+                <Tabs.Trigger value="medications">Medications</Tabs.Trigger>
                 <Tabs.Trigger value="instructions">Instructions</Tabs.Trigger>
                 <Tabs.Trigger value="appointment">Appointment</Tabs.Trigger>
               </Flex>
@@ -87,6 +91,14 @@ const ConsultationTabs = ({
           <Tabs.Content value="plan">
             <ConsultationPlanForm
               defaultValue={consultation.plan || ""}
+              consultation_id={consultation.consultation_id}
+              registration_id={consultation.registration_id}
+              slug="/api/consultation"
+            />
+          </Tabs.Content>
+          <Tabs.Content value="investigationsAdvised">
+            <ConsultationInvestigationsAdvisedForm
+              defaultValue={consultation.investigationsAdvised || ""}
               consultation_id={consultation.consultation_id}
               registration_id={consultation.registration_id}
               slug="/api/consultation"

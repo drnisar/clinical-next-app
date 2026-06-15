@@ -39,10 +39,15 @@ export type Medication = $Result.DefaultSelection<Prisma.$MedicationPayload>
  */
 export type BrandName = $Result.DefaultSelection<Prisma.$BrandNamePayload>
 /**
- * Model BrandDetails
+ * Model DrugForm
  * 
  */
-export type BrandDetails = $Result.DefaultSelection<Prisma.$BrandDetailsPayload>
+export type DrugForm = $Result.DefaultSelection<Prisma.$DrugFormPayload>
+/**
+ * Model DrugDose
+ * 
+ */
+export type DrugDose = $Result.DefaultSelection<Prisma.$DrugDosePayload>
 /**
  * Model Admission_Discharge
  * 
@@ -2486,7 +2491,7 @@ export namespace Prisma {
 
   export type BrandNameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     brand_name?: boolean
-    brand_details?: boolean | BrandDetailsDefaultArgs<ExtArgs>
+    brand_details?: boolean | DrugFormDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["brandName"]>
 
 
@@ -2505,7 +2510,7 @@ export namespace Prisma {
       brand_name: string
     }
     composites: {
-      brand_details: Prisma.$BrandDetailsPayload[]
+      brand_details: Prisma.$DrugFormPayload[]
     }
   }
 
@@ -2544,65 +2549,132 @@ export namespace Prisma {
 
 
   /**
-   * Model BrandDetails
+   * Model DrugForm
    */
 
 
 
 
 
-  export type BrandDetailsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    form?: boolean
-    strength?: boolean
-  }, ExtArgs["result"]["brandDetails"]>
+  export type DrugFormSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    drugForm?: boolean
+    doses?: boolean | DrugDoseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["drugForm"]>
 
 
 
-  export type BrandDetailsSelectScalar = {
-    form?: boolean
-    strength?: boolean
+  export type DrugFormSelectScalar = {
+    drugForm?: boolean
   }
 
-  export type BrandDetailsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"form" | "strength", ExtArgs["result"]["brandDetails"]>
+  export type DrugFormOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"drugForm" | "doses", ExtArgs["result"]["drugForm"]>
+  export type DrugFormInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $BrandDetailsPayload = {
-    name: "BrandDetails"
+  export type $DrugFormPayload = {
+    name: "DrugForm"
     objects: {}
     scalars: {
-      form: string | null
-      strength: string | null
+      drugForm: string | null
     }
-    composites: {}
+    composites: {
+      doses: Prisma.$DrugDosePayload[]
+    }
   }
 
-  type BrandDetailsGetPayload<S extends boolean | null | undefined | BrandDetailsDefaultArgs> = $Result.GetResult<Prisma.$BrandDetailsPayload, S>
+  type DrugFormGetPayload<S extends boolean | null | undefined | DrugFormDefaultArgs> = $Result.GetResult<Prisma.$DrugFormPayload, S>
 
 
 
 
 
   /**
-   * Fields of the BrandDetails model
+   * Fields of the DrugForm model
    */
-  interface BrandDetailsFieldRefs {
-    readonly form: FieldRef<"BrandDetails", 'String'>
-    readonly strength: FieldRef<"BrandDetails", 'String'>
+  interface DrugFormFieldRefs {
+    readonly drugForm: FieldRef<"DrugForm", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * BrandDetails without action
+   * DrugForm without action
    */
-  export type BrandDetailsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type DrugFormDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the BrandDetails
+     * Select specific fields to fetch from the DrugForm
      */
-    select?: BrandDetailsSelect<ExtArgs> | null
+    select?: DrugFormSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the BrandDetails
+     * Omit specific fields from the DrugForm
      */
-    omit?: BrandDetailsOmit<ExtArgs> | null
+    omit?: DrugFormOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DrugFormInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DrugDose
+   */
+
+
+
+
+
+  export type DrugDoseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    drugDose?: boolean
+    unit?: boolean
+  }, ExtArgs["result"]["drugDose"]>
+
+
+
+  export type DrugDoseSelectScalar = {
+    drugDose?: boolean
+    unit?: boolean
+  }
+
+  export type DrugDoseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"drugDose" | "unit", ExtArgs["result"]["drugDose"]>
+
+  export type $DrugDosePayload = {
+    name: "DrugDose"
+    objects: {}
+    scalars: {
+      drugDose: string | null
+      unit: string | null
+    }
+    composites: {}
+  }
+
+  type DrugDoseGetPayload<S extends boolean | null | undefined | DrugDoseDefaultArgs> = $Result.GetResult<Prisma.$DrugDosePayload, S>
+
+
+
+
+
+  /**
+   * Fields of the DrugDose model
+   */
+  interface DrugDoseFieldRefs {
+    readonly drugDose: FieldRef<"DrugDose", 'String'>
+    readonly unit: FieldRef<"DrugDose", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DrugDose without action
+   */
+  export type DrugDoseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DrugDose
+     */
+    select?: DrugDoseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DrugDose
+     */
+    omit?: DrugDoseOmit<ExtArgs> | null
   }
 
 
@@ -20455,7 +20527,7 @@ export namespace Prisma {
 
   export type BrandNameObjectEqualityInput = {
     brand_name: string
-    brand_details?: BrandDetailsObjectEqualityInput[]
+    brand_details?: DrugFormObjectEqualityInput[]
   }
 
   export type BrandNameOrderByCompositeAggregateInput = {
@@ -21088,7 +21160,7 @@ export namespace Prisma {
 
   export type BrandNameCreateInput = {
     brand_name: string
-    brand_details?: BrandDetailsCreateInput | BrandDetailsCreateInput[]
+    brand_details?: DrugFormCreateInput | DrugFormCreateInput[]
   }
 
   export type BrandNameListUpdateEnvelopeInput = {
@@ -21338,12 +21410,12 @@ export namespace Prisma {
     OR?: BrandNameWhereInput[]
     NOT?: BrandNameWhereInput | BrandNameWhereInput[]
     brand_name?: StringFilter<"BrandName"> | string
-    brand_details?: BrandDetailsCompositeListFilter | BrandDetailsObjectEqualityInput[]
+    brand_details?: DrugFormCompositeListFilter | DrugFormObjectEqualityInput[]
   }
 
-  export type BrandDetailsObjectEqualityInput = {
-    form?: string | null
-    strength?: string | null
+  export type DrugFormObjectEqualityInput = {
+    drugForm?: string | null
+    doses?: DrugDoseObjectEqualityInput[]
   }
 
   export type OTCreateWithoutAdmission_dischargeInput = {
@@ -22762,9 +22834,9 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type BrandDetailsCreateInput = {
-    form?: string | null
-    strength?: string | null
+  export type DrugFormCreateInput = {
+    drugForm?: string | null
+    doses?: DrugDoseCreateInput | DrugDoseCreateInput[]
   }
 
   export type BrandNameUpdateManyInput = {
@@ -22787,13 +22859,18 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type BrandDetailsCompositeListFilter = {
-    equals?: BrandDetailsObjectEqualityInput[]
-    every?: BrandDetailsWhereInput
-    some?: BrandDetailsWhereInput
-    none?: BrandDetailsWhereInput
+  export type DrugFormCompositeListFilter = {
+    equals?: DrugFormObjectEqualityInput[]
+    every?: DrugFormWhereInput
+    some?: DrugFormWhereInput
+    none?: DrugFormWhereInput
     isEmpty?: boolean
     isSet?: boolean
+  }
+
+  export type DrugDoseObjectEqualityInput = {
+    drugDose?: string | null
+    unit?: string | null
   }
 
   export type OTCreateManyAdmission_dischargeInput = {
@@ -23315,17 +23392,22 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BrandNameUpdateInput = {
-    brand_name?: StringFieldUpdateOperationsInput | string
-    brand_details?: XOR<BrandDetailsListUpdateEnvelopeInput, BrandDetailsCreateInput> | BrandDetailsCreateInput[]
+  export type DrugDoseCreateInput = {
+    drugDose?: string | null
+    unit?: string | null
   }
 
-  export type BrandDetailsWhereInput = {
-    AND?: BrandDetailsWhereInput | BrandDetailsWhereInput[]
-    OR?: BrandDetailsWhereInput[]
-    NOT?: BrandDetailsWhereInput | BrandDetailsWhereInput[]
-    form?: StringNullableFilter<"BrandDetails"> | string | null
-    strength?: StringNullableFilter<"BrandDetails"> | string | null
+  export type BrandNameUpdateInput = {
+    brand_name?: StringFieldUpdateOperationsInput | string
+    brand_details?: XOR<DrugFormListUpdateEnvelopeInput, DrugFormCreateInput> | DrugFormCreateInput[]
+  }
+
+  export type DrugFormWhereInput = {
+    AND?: DrugFormWhereInput | DrugFormWhereInput[]
+    OR?: DrugFormWhereInput[]
+    NOT?: DrugFormWhereInput | DrugFormWhereInput[]
+    drugForm?: StringNullableFilter<"DrugForm"> | string | null
+    doses?: DrugDoseCompositeListFilter | DrugDoseObjectEqualityInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -23336,25 +23418,63 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type BrandDetailsListUpdateEnvelopeInput = {
-    set?: BrandDetailsCreateInput | BrandDetailsCreateInput[]
-    push?: BrandDetailsCreateInput | BrandDetailsCreateInput[]
-    updateMany?: BrandDetailsUpdateManyInput
-    deleteMany?: BrandDetailsDeleteManyInput
+  export type DrugFormListUpdateEnvelopeInput = {
+    set?: DrugFormCreateInput | DrugFormCreateInput[]
+    push?: DrugFormCreateInput | DrugFormCreateInput[]
+    updateMany?: DrugFormUpdateManyInput
+    deleteMany?: DrugFormDeleteManyInput
   }
 
-  export type BrandDetailsUpdateManyInput = {
-    where: BrandDetailsWhereInput
-    data: BrandDetailsUpdateInput
+  export type DrugDoseCompositeListFilter = {
+    equals?: DrugDoseObjectEqualityInput[]
+    every?: DrugDoseWhereInput
+    some?: DrugDoseWhereInput
+    none?: DrugDoseWhereInput
+    isEmpty?: boolean
+    isSet?: boolean
   }
 
-  export type BrandDetailsDeleteManyInput = {
-    where: BrandDetailsWhereInput
+  export type DrugFormUpdateManyInput = {
+    where: DrugFormWhereInput
+    data: DrugFormUpdateInput
   }
 
-  export type BrandDetailsUpdateInput = {
-    form?: NullableStringFieldUpdateOperationsInput | string | null
-    strength?: NullableStringFieldUpdateOperationsInput | string | null
+  export type DrugFormDeleteManyInput = {
+    where: DrugFormWhereInput
+  }
+
+  export type DrugDoseWhereInput = {
+    AND?: DrugDoseWhereInput | DrugDoseWhereInput[]
+    OR?: DrugDoseWhereInput[]
+    NOT?: DrugDoseWhereInput | DrugDoseWhereInput[]
+    drugDose?: StringNullableFilter<"DrugDose"> | string | null
+    unit?: StringNullableFilter<"DrugDose"> | string | null
+  }
+
+  export type DrugFormUpdateInput = {
+    drugForm?: NullableStringFieldUpdateOperationsInput | string | null
+    doses?: XOR<DrugDoseListUpdateEnvelopeInput, DrugDoseCreateInput> | DrugDoseCreateInput[]
+  }
+
+  export type DrugDoseListUpdateEnvelopeInput = {
+    set?: DrugDoseCreateInput | DrugDoseCreateInput[]
+    push?: DrugDoseCreateInput | DrugDoseCreateInput[]
+    updateMany?: DrugDoseUpdateManyInput
+    deleteMany?: DrugDoseDeleteManyInput
+  }
+
+  export type DrugDoseUpdateManyInput = {
+    where: DrugDoseWhereInput
+    data: DrugDoseUpdateInput
+  }
+
+  export type DrugDoseDeleteManyInput = {
+    where: DrugDoseWhereInput
+  }
+
+  export type DrugDoseUpdateInput = {
+    drugDose?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
