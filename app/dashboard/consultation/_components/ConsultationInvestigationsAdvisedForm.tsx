@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ButtonSaveNotes from "./ButtonSaveNotes";
-import { Checkbox, Flex, Text, TextArea } from "@radix-ui/themes";
+import { Checkbox, Flex, Text } from "@radix-ui/themes";
 import { investigationsArray } from "../../_components/appConstants";
 interface Props {
   defaultValue: string;
@@ -11,11 +11,10 @@ interface Props {
 const ConsultationInvestigationsAdvisedForm = ({
   defaultValue,
   consultation_id,
-  registration_id,
   slug,
 }: Props) => {
   const [investigationsAdvised, setInvestigationsAdvised] = useState<string[]>(
-    []
+    [],
   );
 
   console.log(investigationsAdvised);
