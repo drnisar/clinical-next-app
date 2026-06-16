@@ -35,6 +35,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     // Add suppressHydrationWarning to the html tag
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
