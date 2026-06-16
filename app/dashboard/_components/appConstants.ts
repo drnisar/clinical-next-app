@@ -28,7 +28,7 @@ export const genderOptions = [
 
 export const appointmentTypeOptions = [
   { label: "REGULAR", value: "REGULAR" },
-  { label: "SEHAT CARD", value: "SEHAT CARD" },
+ // { label: "SEHAT CARD", value: "SEHAT CARD" },
   { label: "IBP", value: "IBP" },
   { label: "OPD", value: "OPD" },
 ];
