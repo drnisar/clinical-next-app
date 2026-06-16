@@ -14,6 +14,7 @@ import AppointmentsTableForSingleRegId from "@/app/dashboard/appointments/_compo
 import StatusChangeComponent from "../../_components/StatusChangeComponent";
 import TodaysPatientsSideBar from "../../_components/TodaysPatientsSideBar";
 import { Box, Flex, Grid } from "@radix-ui/themes";
+import HMISNotes from "../../_components/HMISNotes";
 
 const ConsultationEditPage = async ({
   params,
@@ -45,7 +46,7 @@ const ConsultationEditPage = async ({
   }
   const appointmentsForRegistration = await appointments.filter(
     (appointment) =>
-      appointment.registration_id === consultation.registration_id
+      appointment.registration_id === consultation.registration_id,
   );
 
   return (
@@ -84,6 +85,7 @@ const ConsultationEditPage = async ({
                 <ConsultationDetailsForSingleRegId
                   consultation={consultation}
                 />
+                <HMISNotes mr_number={registration.mr_number} />
                 <MedsDisplayEnglish meds={consultation.medications} />
                 <InstructionsDisplayEnglish
                   instructions={consultation.instructions}
