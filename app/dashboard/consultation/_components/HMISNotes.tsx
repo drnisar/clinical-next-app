@@ -1,6 +1,6 @@
 "use client";
 import { Flex, Text } from "@radix-ui/themes";
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 interface Props {
@@ -17,10 +17,19 @@ export async function fetchPatientPhysicianNotes(mrn: string) {
   const mrnPrefix = mrn.substring(0, 3);
   const mrnSuffix = mrn.substring(4, mrn.length);
   const newMRN = `${mrnPrefix}${mrnSuffix}`;
-  const url = `http://182.188.28.220:3004/api/Surgery/patient-physician-notes?mrno=${newMRN}`;
+  // const url = `http://182.188.28.220:3004/api/Surgery/patient-physician-notes?mrno=${newMRN}`;
+  // try {
+  //   const res = await axios.get(url);
+  //   return res.data;
+  // } catch (error) {
+  //   console.error("Error fetching patient physician notes:", error);
+  //   return "Error fetching physician notes.";
+  // }
+
   try {
-    const res = await axios.get(url);
-    return res.data;
+    const res = await fetch(`/api/notes?mrno=${newMRN}`);
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.error("Error fetching patient physician notes:", error);
     return "Error fetching physician notes.";
