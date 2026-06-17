@@ -83,6 +83,14 @@ const CurrentWeekAppointments = ({ appointments }: Props) => {
                       appointmentDateUrdu={dateInUrdu(
                         appointment.date_appointment,
                       )}
+                      patient={
+                        (appointment.registration.gender === "male"
+                          ? "Mr. "
+                          : "Ms. ") +
+                        appointment.registration.first_name +
+                        " " +
+                        appointment.registration.last_name
+                      }
                     />
                   }
                 />

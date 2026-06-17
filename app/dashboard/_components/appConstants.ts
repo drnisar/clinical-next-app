@@ -769,8 +769,9 @@ export const DAY_COLOUR = (dateCell: Date) => {
 export const WhatsappMessageConfirmAppointment = (
   appointmentDateEnglish: string,
   appointmentDateUrdu: string,
+  patient: string,
 ) => {
-  let messageString = `Assalamualaikum, This is a reminder for your appointment on ${appointmentDateEnglish}. Please confirm your availability. Thank you! 
+  let messageString = `Assalamualaikum, This is a reminder for appointment for admission of ${patient} on ${appointmentDateEnglish} at Khyber Teaching Hospital Peshawar. Please confirm your availability. Thank you! 
   Regards,
   السلام علیکم آپ کو${appointmentDateUrdu} ہسپتال میں داخلہ کیلئے یاد دہانی کرائی جاتی ہے، برائے مہربانی اپنے ارادے سے ہمیں مطلع کریں۔ شکریہ!
   DR NISAR AHMED
