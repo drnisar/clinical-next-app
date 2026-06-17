@@ -28,7 +28,7 @@ export const genderOptions = [
 
 export const appointmentTypeOptions = [
   { label: "REGULAR", value: "REGULAR" },
- // { label: "SEHAT CARD", value: "SEHAT CARD" },
+  // { label: "SEHAT CARD", value: "SEHAT CARD" },
   { label: "IBP", value: "IBP" },
   { label: "OPD", value: "OPD" },
 ];
@@ -585,7 +585,7 @@ export const react_select_styles: StylesConfig<
       { label: string; value: string },
       boolean,
       GroupBase<{ label: string; value: string }>
-    >
+    >,
   ) => ({
     ...provided,
     fontSize: "12px",
@@ -595,8 +595,8 @@ export const react_select_styles: StylesConfig<
     backgroundColor: state.isSelected
       ? "rgb(59 130 246)" // blue-500
       : state.isFocused
-      ? "rgb(243 244 246)" // gray-100
-      : "transparent",
+        ? "rgb(243 244 246)" // gray-100
+        : "transparent",
     color: state.isSelected ? "white" : "rgb(17 24 39)", // gray-900
     "&:hover": {
       backgroundColor: state.isSelected
@@ -608,8 +608,8 @@ export const react_select_styles: StylesConfig<
       backgroundColor: state.isSelected
         ? "rgb(59 130 246)" // blue-500
         : state.isFocused
-        ? "rgb(55 65 81)" // gray-700
-        : "transparent",
+          ? "rgb(55 65 81)" // gray-700
+          : "transparent",
       "&:hover": {
         backgroundColor: state.isSelected
           ? "rgb(59 130 246)" // blue-500
@@ -628,7 +628,7 @@ export const react_select_styles: StylesConfig<
 };
 
 export const badgeColorForAppointments = (
-  type: string | "SEHAT CARD" | "IBP" | "OPD" | "REGULAR"
+  type: string | "SEHAT CARD" | "IBP" | "OPD" | "REGULAR",
 ) => {
   switch (type) {
     case "SEHAT CARD":
@@ -642,7 +642,7 @@ export const badgeColorForAppointments = (
   }
 };
 export const colorForStatus = (
-  status: string | "QUEUED" | "IN-PROGRESS" | "COMPLETED"
+  status: string | "QUEUED" | "IN-PROGRESS" | "COMPLETED",
 ) => {
   switch (status) {
     case "QUEUED":
@@ -655,7 +655,7 @@ export const colorForStatus = (
 };
 
 export const datedddDDMMMYY = (
-  date: Date | string | null | undefined
+  date: Date | string | null | undefined,
 ): string => {
   if (!date) return "";
 
@@ -685,7 +685,7 @@ export const dateDDMMMYY = (date: Date | string | null | undefined): string => {
 };
 
 export const dateYYYYMMDD = (
-  date: Date | string | null | undefined
+  date: Date | string | null | undefined,
 ): string => {
   if (!date) return "";
 
@@ -697,6 +697,36 @@ export const dateYYYYMMDD = (
 
   // Use a consistent format that works on both server and client
   return `${yyyy}-${mm}-${dd}`;
+};
+
+export const dateInUrdu = (date: Date | string | null | undefined): string => {
+  if (!date) return "";
+
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  const dd = dateObj.getDate().toString().padStart(2, "0");
+  const mmm = dateObj.toLocaleString("default", { month: "short" });
+  const yy = dateObj.getFullYear().toString().slice(-2);
+
+  const monthTranslations: { [key: string]: string } = {
+    Jan: "جنوری",
+    Feb: "فروری",
+    Mar: "مارچ",
+    Apr: "اپریل",
+    May: "مئی",
+    Jun: "جون",
+    Jul: "جولائی",
+    Aug: "اگست",
+    Sep: "ستمبر",
+    Oct: "اکتوبر",
+    Nov: "نومبر",
+    Dec: "دسمبر",
+  };
+
+  const mmmUrdu = monthTranslations[mmm] || mmm;
+
+  // Use a consistent format that works on both server and client
+  return `${dd} ${mmmUrdu} ${yy}`;
 };
 
 export const BASEURL = (): string => {
@@ -734,4 +764,18 @@ export const DAY_COLOUR = (dateCell: Date) => {
     default:
       return undefined;
   }
+};
+
+export const WhatsappMessageConfirmAppointment = (
+  appointmentDateEnglish: string,
+  appointmentDateUrdu: string,
+) => {
+  let messageString = `Assalamualaikum, This is a reminder for your appointment on ${appointmentDateEnglish}. Please confirm your availability. Thank you! 
+  Regards,
+  السلام علیکم آپ کو${appointmentDateUrdu} ہسپتال میں داخلہ کیلئے یاد دہانی کرائی جاتی ہے، برائے مہربانی اپنے ارادے سے ہمیں مطلع کریں۔ شکریہ!
+  DR NISAR AHMED
+  KHYBER TEACHING HOSPITAL
+  `;
+  messageString = encodeURIComponent(messageString);
+  return messageString;
 };

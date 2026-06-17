@@ -1,4 +1,4 @@
-import { Consultation, Registration } from "@/generated/prisma";
+import type { Consultation, Registration } from "@/generated/prisma";
 import { create } from "zustand";
 
 export type ConsultationWithRegistration = Consultation & {

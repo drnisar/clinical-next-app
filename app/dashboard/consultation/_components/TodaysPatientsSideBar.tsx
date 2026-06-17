@@ -1,5 +1,5 @@
 "use client";
-import { Consultation, Registration } from "@/generated/prisma";
+import type { Consultation, Registration } from "@/generated/prisma";
 import { TextField, Button } from "@radix-ui/themes";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";

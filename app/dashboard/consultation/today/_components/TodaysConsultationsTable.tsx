@@ -4,13 +4,13 @@ import { Badge, Flex, Table } from "@radix-ui/themes";
 import ButtonEditPage from "../../_components/ButtonEditPage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Consultation } from "@/generated/prisma";
+import type { Consultation } from "@/generated/prisma";
 import SelectConsultationStatus from "../../_components/SelectConsultationStatus";
 import { useConsultationStatus } from "../../_components/ConsultationStore";
 
 // Updated function to handle both string and Date inputs
 export const calculateAgeFromDate = (
-  date: Date | string | null | undefined
+  date: Date | string | null | undefined,
 ) => {
   if (!date) return null;
 
@@ -55,7 +55,7 @@ const TodaysConsultationsTable = () => {
     queryKey: ["consultations", "today"],
     queryFn: async () => {
       const res = await axios.get<consultationWithRegistration[]>(
-        "/api/consultation/today"
+        "/api/consultation/today",
       );
       return res.data;
     },
@@ -78,7 +78,7 @@ const TodaysConsultationsTable = () => {
     status === "ALL"
       ? consultations.data
       : consultations.data?.filter(
-          (consultation) => consultation.status === status
+          (consultation) => consultation.status === status,
         );
   return (
     <>
@@ -102,7 +102,7 @@ const TodaysConsultationsTable = () => {
           <Table.Body>
             {filteredConsultations?.map((consultation, index) => {
               const age = calculateAgeFromDate(
-                consultation.registration.date_of_birth
+                consultation.registration.date_of_birth,
               );
 
               return (
@@ -121,8 +121,8 @@ const TodaysConsultationsTable = () => {
                         consultation.status === "COMPLETED"
                           ? "green"
                           : consultation.status === "IN_PROGRESS"
-                          ? "blue"
-                          : "orange"
+                            ? "blue"
+                            : "orange"
                       }
                       variant="soft"
                     >

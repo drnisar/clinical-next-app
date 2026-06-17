@@ -66,6 +66,7 @@ const HMISNotes = ({ mr_number }: Props) => {
   const specificNoteFromIBPClinic = physicianNotesFromHMIS.find(
     (note: PhysicianNote) => note.cliniC_DESC === "IBP NISAR AHMAD",
   );
+  console.log("Specific Note from IBP Clinic:", specificNoteFromIBPClinic);
 
   return (
     // <PhysicianNote

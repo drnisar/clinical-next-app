@@ -1,5 +1,5 @@
 "use client";
-import { Status } from "@/generated/prisma";
+import type { Status } from "@/generated/prisma";
 import { Select } from "@radix-ui/themes";
 import { useConsultationStatus } from "./ConsultationStore";
 import { useEffect } from "react";
@@ -9,9 +9,9 @@ const SelectConsultationStatus = () => {
 
   const statuses: { label: string; value?: Status | "ALL" }[] = [
     { label: "All", value: "ALL" },
-    { label: "QUEUED", value: Status.QUEUED },
-    { label: "IN_PROGRESS", value: Status.IN_PROGRESS },
-    { label: "COMPLETED", value: Status.COMPLETED },
+    { label: "QUEUED", value: "QUEUED" },
+    { label: "IN_PROGRESS", value: "IN_PROGRESS" },
+    { label: "COMPLETED", value: "COMPLETED" },
   ];
 
   const { setStatus, status } = useConsultationStatus();

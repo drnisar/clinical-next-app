@@ -1,5 +1,5 @@
 "use client";
-import { Registration } from "@/generated/prisma";
+import type { Registration } from "@/generated/prisma";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -60,7 +60,7 @@ const ActionButtons = ({ registration_id }: { registration_id: string }) => {
 
   const handleNavigate = (
     path: string,
-    startTransition: React.TransitionStartFunction
+    startTransition: React.TransitionStartFunction,
   ) => {
     startTransition(() => {
       router.push(path);
@@ -78,7 +78,7 @@ const ActionButtons = ({ registration_id }: { registration_id: string }) => {
         onClick={() =>
           handleNavigate(
             `/dashboard/registration/${registration_id}`,
-            startViewTransition
+            startViewTransition,
           )
         }
       >
@@ -92,7 +92,7 @@ const ActionButtons = ({ registration_id }: { registration_id: string }) => {
         onClick={() =>
           handleNavigate(
             `/dashboard/registration/edit/${registration_id}`,
-            startEditTransition
+            startEditTransition,
           )
         }
       >
@@ -103,7 +103,6 @@ const ActionButtons = ({ registration_id }: { registration_id: string }) => {
 };
 
 const RegistrationsTable = ({ registrations }: Props) => {
-  console.log("RegistrationsTable rendered with data:", registrations);
   // State for table features
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -132,7 +131,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
           id: "patient_name", // Need an ID for accessor functions
           header: "Patient Name",
           cell: (info) => info.getValue(),
-        }
+        },
       ),
       // columnHelper.accessor("first_name", {
       //   header: "First Name",
@@ -152,7 +151,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
           id: "phone_number",
           header: "Phone Number",
           cell: (info) => info.getValue() ?? "N/A",
-        }
+        },
       ),
       // columnHelper.accessor("phone_number", {
       //   header: "Phone Number",
@@ -175,7 +174,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
         ),
       }),
     ],
-    [pagination.pageIndex, pagination.pageSize] // No external dependencies needed for column definitions themselves
+    [pagination.pageIndex, pagination.pageSize], // No external dependencies needed for column definitions themselves
   );
 
   // useReactTable hook
@@ -227,7 +226,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                     {{
                       asc: <TriangleUpIcon />,
