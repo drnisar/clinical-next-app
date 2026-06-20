@@ -14,7 +14,9 @@ import InstructionsArray from "./InstructionsArray";
 import ConsultationHistoryForm from "./ConsultationHistoryForm";
 import ConsultationDiagnosisForm from "./ConsultationDiagnosisForm";
 import ConsultationPlanForm from "./ConsultationPlanForm";
+import HMISAllNotes from "./HMISAllNotes";
 interface Props {
+  mrn: string;
   consultation: Consultation;
   type: string;
   templates: MedsTemplate[];
@@ -27,6 +29,7 @@ type Instruction = {
   instruction: string;
 };
 const ConsultationTabs = ({
+  mrn,
   consultation,
   type,
   templates,
@@ -51,6 +54,9 @@ const ConsultationTabs = ({
                 <Tabs.Trigger value="medications">Medications</Tabs.Trigger>
                 <Tabs.Trigger value="instructions">Instructions</Tabs.Trigger>
                 <Tabs.Trigger value="appointment">Appointment</Tabs.Trigger>
+                <Tabs.Trigger value="past_consultations">
+                  Past Consultation Details
+                </Tabs.Trigger>
               </Flex>
             </Flex>
           </Tabs.List>
@@ -118,6 +124,10 @@ const ConsultationTabs = ({
               type={type}
               appointments={appointments}
             />
+          </Tabs.Content>
+
+          <Tabs.Content value="past_consultations">
+            <HMISAllNotes mrn={mrn} />
           </Tabs.Content>
         </Tabs.Root>
       </Flex>

@@ -75,6 +75,7 @@ const ConsultationEditPage = async ({
                   type={type || ""}
                   templates={templates}
                   appointments={appointments}
+                  mrn={registration.mr_number}
                 />
               </Flex>
               <Flex

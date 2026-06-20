@@ -17,14 +17,6 @@ export async function fetchPatientPhysicianNotes(mrn: string) {
   const mrnPrefix = mrn.substring(0, 3);
   const mrnSuffix = mrn.substring(4, mrn.length);
   const newMRN = `${mrnPrefix}${mrnSuffix}`;
-  // const url = `http://182.188.28.220:3004/api/Surgery/patient-physician-notes?mrno=${newMRN}`;
-  // try {
-  //   const res = await axios.get(url);
-  //   return res.data;
-  // } catch (error) {
-  //   console.error("Error fetching patient physician notes:", error);
-  //   return "Error fetching physician notes.";
-  // }
 
   try {
     const res = await fetch(`/api/notes?mrno=${newMRN}`);
@@ -58,7 +50,6 @@ const HMISNotes = ({ mr_number }: Props) => {
   useEffect(() => {
     // Fetch physician notes when the component mounts
     fetchPatientPhysicianNotes(mr_number).then((notes) => {
-      console.log("Patient Physician Notes:", notes);
       setPhysicianNotesFromHMIS(notes);
     });
   }, [mr_number]);
@@ -66,15 +57,8 @@ const HMISNotes = ({ mr_number }: Props) => {
   const specificNoteFromIBPClinic = physicianNotesFromHMIS.find(
     (note: PhysicianNote) => note.cliniC_DESC === "IBP NISAR AHMAD",
   );
-  console.log("Specific Note from IBP Clinic:", specificNoteFromIBPClinic);
 
   return (
-    // <PhysicianNote
-    //   text={
-    //     specificNoteFromIBPClinic?.notes ??
-    //     "No physician notes available from HMIS."
-    //   }
-    // />
     <div style={{ whiteSpace: "pre-wrap" }}>
       {specificNoteFromIBPClinic?.notes ??
         "No physician notes available from HMIS."}
