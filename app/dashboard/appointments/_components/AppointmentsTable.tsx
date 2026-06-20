@@ -29,7 +29,7 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { useAppointmentsStore } from "./AppointmentsStore";
+// import { useAppointmentsStore } from "./AppointmentsStore";
 import SelectAppointmentType from "./SelectAppointmentType";
 import { Appointment, Registration } from "@/generated/prisma";
 import { DAY_COLOUR } from "../../_components/appConstants";
@@ -53,9 +53,13 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   return <>{formattedDate ?? "N/A"}</>;
 };
 
-const AppointmentsTable = () => {
+interface Props {
+  appointments: AppointmentWithRegistration[];
+}
+
+const AppointmentsTable = ({ appointments }: Props) => {
   // State for table features
-  const { appointments } = useAppointmentsStore();
+  // const { appointments } = useAppointmentsStore();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
@@ -116,7 +120,7 @@ const AppointmentsTable = () => {
       //   cell: props => <Button size="1">View</Button>
       // })
     ],
-    [pagination.pageIndex, pagination.pageSize] // Add pagination state to dependencies for S.No calculation
+    [pagination.pageIndex, pagination.pageSize], // Add pagination state to dependencies for S.No calculation
   );
 
   // useReactTable hook
@@ -169,7 +173,7 @@ const AppointmentsTable = () => {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                     {{
                       asc: <TriangleUpIcon />,

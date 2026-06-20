@@ -14,7 +14,7 @@ const AppointmentsPage = async () => {
         <AppointmentStoreInitializer
           appointmentsWithRegistration={appointments}
         />
-        <AppointmentsTable />
+        <AppointmentsTable appointments={appointments} />
       </div>
     );
   } catch (error) {

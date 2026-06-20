@@ -37,6 +37,24 @@ export const getAppointments = async () => {
   return appointments;
 };
 
+export const getNextTenAppointments = async () => {
+  const nextTenAppointments = await prisma.appointment.findMany({
+    where: {
+      date_appointment: {
+        gte: new Date(), // Fetch appointments from today onwards
+      },
+    },
+    orderBy: {
+      date_appointment: "asc", // Order by appointment date ascending
+    },
+    take: 10, // Limit to the next 10 appointments
+    include: {
+      registration: true, // Include registration details
+    },
+  });
+  return nextTenAppointments;
+};
+
 export const getConsultations = async () => {
   const consultations = await prisma.consultation.findMany({
     orderBy: {
@@ -98,7 +116,7 @@ export const getConsultationById = unstable_cache(
     return consultation;
   },
   ["consultation-by-id"],
-  { tags: ["consultation", "consultation-by-id"], revalidate: 3600 }
+  { tags: ["consultation", "consultation-by-id"], revalidate: 3600 },
 );
 
 export const getMedsTemplates = async () => {
@@ -155,5 +173,5 @@ export const getDrugs = unstable_cache(
   {
     tags: ["drugs"],
     revalidate: 60,
-  }
+  },
 );
