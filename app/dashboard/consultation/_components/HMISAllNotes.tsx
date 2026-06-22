@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchPatientPhysicianNotes } from "./HMISNotes";
 import { Heading, Separator } from "@radix-ui/themes";
+import { parseHMISDate } from "../../_components/appConstants";
 
 type note = {
   notes: string;
@@ -16,15 +17,28 @@ interface Props {
 
 const HMISAllNotes = ({ mrn }: Props) => {
   const [allNotes, setAllNotes] = useState<note[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchPatientPhysicianNotes(mrn).then((notes) => setAllNotes(notes));
+    setLoading(true);
+    fetchPatientPhysicianNotes(mrn).then((notes) => {
+      const sortedNotes = [...notes].sort(
+        (a, b) =>
+          // new Date(b.noteS_DATE).getTime() - new Date(a.noteS_DATE).getTime(),
+          parseHMISDate(b.noteS_DATE).getTime() -
+          parseHMISDate(a.noteS_DATE).getTime(),
+      );
+      setLoading(false);
+      setAllNotes(sortedNotes);
+    });
   }, [mrn]);
   console.log("HMIS all notes", allNotes);
 
+  if (loading) return <div>Loading Notes ...</div>;
+
   return (
     <>
-      {allNotes ? (
+      {allNotes.length > 0 ? (
         allNotes.map((note, index) => (
           <div key={index} style={{ whiteSpace: "pre-wrap" }}>
             <Heading size={"3"}>

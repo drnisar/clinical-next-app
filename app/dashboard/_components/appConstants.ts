@@ -780,3 +780,26 @@ export const WhatsappMessageConfirmAppointment = (
   messageString = encodeURIComponent(messageString);
   return messageString;
 };
+
+export const mrnWithoutDash = (mrn: string) => {
+  const mrnFirst = mrn.slice(0, 3);
+  const mrnSecond = mrn.slice(4, 15);
+  return mrnFirst + mrnSecond;
+};
+
+export const parseHMISDate = (dateStr: string) => {
+  const [datePart, timePart, meridiem] = dateStr.split(" ");
+
+  const [month, day, year] = datePart.split("/").map(Number);
+  const [hours, minutes, seconds] = timePart.split(":").map(Number);
+
+  let adjustedHours = hours;
+
+  if (meridiem === "PM" && hours !== 12) {
+    adjustedHours = hours + 12;
+  } else if (meridiem === "AM" && hours === 12) {
+    adjustedHours = 0;
+  }
+
+  return new Date(year, month - 1, day, adjustedHours, minutes, seconds);
+};
