@@ -5,14 +5,14 @@ import { getRegistrationById } from "@/app/actions/actions";
 import { Heading } from "@radix-ui/themes";
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     mrn: string;
     registration_id: string;
-  };
+  }>;
 }
 
 const HMISPage = async ({ searchParams }: Props) => {
-  const { mrn, registration_id } = searchParams;
+  const { mrn, registration_id } = await searchParams;
 
   const registration = await getRegistrationById(registration_id);
   if (!registration) return null;
