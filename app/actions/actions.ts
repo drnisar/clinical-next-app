@@ -24,6 +24,20 @@ export const getRegistrationById = async (id: string) => {
   });
   return registration;
 };
+export const getRegistrationByMRN = async (mrn: string) => {
+  const registration = await prisma.registration.findFirst({
+    where: {
+      mr_number: mrn,
+    },
+    // include: {
+    //   Appointment: true,
+    //   Consultation: true,
+    //   Admission_Discharge: true,
+    //   OT: true,
+    // },
+  });
+  return registration;
+};
 
 export const getAppointments = async () => {
   const appointments = await prisma.appointment.findMany({

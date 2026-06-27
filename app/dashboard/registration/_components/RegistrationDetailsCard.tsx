@@ -41,7 +41,7 @@ const RegistrationDetailsCard = ({ registration }: Props) => {
           {`${registration.code}${registration.phone_number}`}
         </Text>
         <Link
-          href={`/dashboard/hmis?mrn=${registration.mr_number}&registration_id=${registration.registration_id}`}
+          href={`/dashboard/hmis?mrn=${registration.mr_number}`}
           className="print:!hidden"
         >
           HMIS
