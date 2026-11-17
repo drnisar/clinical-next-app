@@ -33,7 +33,9 @@ import {
 // import { useAppointmentsStore } from "./AppointmentsStore";
 import SelectAppointmentType from "./SelectAppointmentType";
 import { Appointment, Registration } from "@/generated/prisma";
-import { DAY_COLOUR } from "../../_components/appConstants";
+import { DAY_COLOUR, datedddDDMMMYY } from "../../_components/appConstants";
+import { WhatsappIcon } from "../../_components/ui/WhatsappIconButton";
+import PhoneContactLinks from "../../_components/ui/PhoneContactLinks";
 
 // Keep your existing Appointment type
 type AppointmentWithRegistration = Appointment & { registration: Registration };
@@ -128,9 +130,10 @@ const AppointmentsTable = ({ appointments }: Props) => {
         id: "phone_number",
         header: "Phone Number",
         cell: (info) => (
-          <a href={`tel:0${info.getValue() ?? ""}`}>
-            {"0" + (info.getValue() ?? "")}
-          </a>
+          <PhoneContactLinks
+            code={info.row.original.registration?.code}
+            phone={info.getValue()}
+          />
         ),
       }),
       // columnHelper.accessor("type", {
@@ -171,6 +174,31 @@ const AppointmentsTable = ({ appointments }: Props) => {
     // debugTable: true, // Uncomment for debugging
   });
 
+  // WhatsApp message: every appointment matching the current date/search
+  // filter (all pages), grouped by day, as "name – plan" lines.
+  const shareRows = table.getPrePaginationRowModel().rows;
+  const whatsappUrl = useMemo(() => {
+    const byDay = new Map<string, AppointmentWithRegistration[]>();
+    for (const { original: a } of shareRows) {
+      const day = a.date_appointment ? toLocalYMD(a.date_appointment) : "";
+      byDay.set(day, [...(byDay.get(day) ?? []), a]);
+    }
+    const sections = [...byDay.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([day, appts]) => {
+        const heading = day
+          ? datedddDDMMMYY(new Date(`${day}T00:00`))
+          : "No date";
+        const lines = appts.map(
+          (a, i) =>
+            `${i + 1}. ${`${a.registration.first_name} ${a.registration.last_name}`.toUpperCase()} – ${a.plan ?? "N/A"}`,
+        );
+        return [`*${heading}*`, ...lines].join("\n");
+      });
+    const message = ["*Appointments*", ...sections].join("\n\n");
+    return `https://wa.me/?text=${encodeURIComponent(message)}`;
+  }, [shareRows]);
+
   return (
     <Box>
       {/* Search Input */}
@@ -210,6 +238,21 @@ const AppointmentsTable = ({ appointments }: Props) => {
             {appointmentsForDate.length === 1 ? "" : "s"} on{" "}
             {new Date(`${selectedDate}T00:00`).toDateString()}
           </Text>
+        )}
+      </Flex>
+
+      {/* WhatsApp share: phones and small screens only */}
+      <Flex mb="3" display={{ initial: "flex", sm: "none" }}>
+        {shareRows.length > 0 ? (
+          <Button color="grass" asChild style={{ width: "100%" }}>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+              <WhatsappIcon /> Send on WhatsApp ({shareRows.length})
+            </a>
+          </Button>
+        ) : (
+          <Button color="grass" disabled style={{ width: "100%" }}>
+            <WhatsappIcon /> Send on WhatsApp
+          </Button>
         )}
       </Flex>
 
@@ -254,8 +297,11 @@ const AppointmentsTable = ({ appointments }: Props) => {
                     </Text>
                   )}
                   {phone && (
-                    <Text size="2" asChild>
-                      <a href={`tel:0${phone}`}>{"0" + phone}</a>
+                    <Text size="2" as="div">
+                      <PhoneContactLinks
+                        code={appt.registration?.code}
+                        phone={phone}
+                      />
                     </Text>
                   )}
                 </Flex>
