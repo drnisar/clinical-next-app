@@ -9,6 +9,7 @@ import {
   Button,
   Text,
   Select,
+  Theme,
 } from "@radix-ui/themes";
 import {
   useReactTable,
@@ -57,15 +58,43 @@ interface Props {
   appointments: AppointmentWithRegistration[];
 }
 
+// Local calendar date as "YYYY-MM-DD" (the format <input type="date"> uses).
+const toLocalYMD = (date: Date | string) => {
+  const d = new Date(date);
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mm}-${dd}`;
+};
+
 const AppointmentsTable = ({ appointments }: Props) => {
   // State for table features
   // const { appointments } = useAppointmentsStore();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [selectedDate, setSelectedDate] = useState(""); // "" = all dates
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const changeDate = (ymd: string) => {
+    setSelectedDate(ymd);
+    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  };
+  const today = toLocalYMD(new Date());
+  const showingToday = selectedDate === today;
+
+  const appointmentsForDate = useMemo(
+    () =>
+      selectedDate
+        ? appointments.filter(
+            (a) =>
+              a.date_appointment &&
+              toLocalYMD(a.date_appointment) === selectedDate,
+          )
+        : appointments,
+    [appointments, selectedDate],
+  );
 
   // Define columns
   const columns = useMemo(
@@ -125,7 +154,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
 
   // useReactTable hook
   const table = useReactTable({
-    data: appointments,
+    data: appointmentsForDate,
     columns,
     state: {
       sorting,
@@ -145,74 +174,171 @@ const AppointmentsTable = ({ appointments }: Props) => {
   return (
     <Box>
       {/* Search Input */}
-      <Flex mb="3" justify={"between"}>
+      <Flex mb="3" justify={"between"} gap="2" wrap="wrap">
         <TextField.Root
           placeholder="Search appointments..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          style={{ maxWidth: 300 }}
+          style={{ flexGrow: 1, maxWidth: 300 }}
         />
         <SelectAppointmentType />
       </Flex>
 
-      {/* Table */}
-      <Table.Root variant="surface">
-        <Table.Header>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Row key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Table.ColumnHeaderCell
-                  key={header.id}
-                  style={{
-                    cursor: header.column.getCanSort() ? "pointer" : "default",
-                  }}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <Flex align="center" gap="1">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                    {{
-                      asc: <TriangleUpIcon />,
-                      desc: <TriangleDownIcon />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </Flex>
-                </Table.ColumnHeaderCell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Header>
-        <Table.Body>
-          {table.getRowModel().rows.map((row) => (
-            <Table.Row
-              key={row.id}
-              style={{
-                background:
-                  DAY_COLOUR(row.getValue("date_appointment")) ?? "#fff",
-              }}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <Table.Cell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Cell>
-              ))}
-            </Table.Row>
-          ))}
-          {table.getRowModel().rows.length === 0 && (
-            <Table.Row>
-              <Table.Cell colSpan={columns.length} align="center">
-                No appointments found {globalFilter && "matching your search"}.
-              </Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table.Root>
+      {/* Date filter */}
+      <Flex mb="3" gap="2" align="center" wrap="wrap">
+        <TextField.Root
+          type="date"
+          aria-label="Filter by appointment date"
+          value={selectedDate}
+          onChange={(e) => changeDate(e.target.value)}
+          style={{ width: 170 }}
+        />
+        <Button
+          variant={showingToday ? "solid" : "soft"}
+          onClick={() => changeDate(showingToday ? "" : today)}
+        >
+          Today&apos;s appointments
+        </Button>
+        {selectedDate && (
+          <Button variant="ghost" color="gray" onClick={() => changeDate("")}>
+            Show all dates
+          </Button>
+        )}
+        {selectedDate && (
+          <Text size="2" color="gray">
+            {appointmentsForDate.length} appointment
+            {appointmentsForDate.length === 1 ? "" : "s"} on{" "}
+            {new Date(`${selectedDate}T00:00`).toDateString()}
+          </Text>
+        )}
+      </Flex>
 
-      {/* Pagination Controls */}
-      <Flex align="center" justify="between" mt="4" gap="3">
+      {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}
+      <Flex
+        direction="column"
+        gap="2"
+        display={{ initial: "flex", sm: "none" }}
+      >
+        {table.getRowModel().rows.map((row) => {
+          const appt = row.original;
+          const phone = appt.registration?.phone_number;
+          return (
+            // Light theme so text stays dark on the pastel day colours.
+            <Theme key={row.id} appearance="light" hasBackground={false}>
+              <Box
+                p="3"
+                className="rounded-lg border"
+                style={{
+                  background: DAY_COLOUR(appt.date_appointment) ?? "#fff",
+                }}
+              >
+                <Flex direction="column" gap="1">
+                  <Flex justify="between" align="start" gap="2">
+                    <Text
+                      weight="bold"
+                      size="3"
+                      style={{ wordBreak: "break-word" }}
+                    >
+                      {`${appt.registration.first_name} ${appt.registration.last_name}`.toUpperCase()}
+                    </Text>
+                    <Text size="2" weight="medium" style={{ flexShrink: 0 }}>
+                      <FormattedDateCell date={appt.date_appointment} />
+                    </Text>
+                  </Flex>
+                  <Text size="2">
+                    <Text weight="medium">Plan:</Text> {appt.plan ?? "N/A"}
+                  </Text>
+                  {appt.notes && (
+                    <Text size="2" color="gray">
+                      {appt.notes}
+                    </Text>
+                  )}
+                  {phone && (
+                    <Text size="2" asChild>
+                      <a href={`tel:0${phone}`}>{"0" + phone}</a>
+                    </Text>
+                  )}
+                </Flex>
+              </Box>
+            </Theme>
+          );
+        })}
+        {table.getRowModel().rows.length === 0 && (
+          <Text size="2" align="center" color="gray">
+            No appointments found {globalFilter && "matching your search"}.
+          </Text>
+        )}
+      </Flex>
+
+      {/* Table: tablets and larger */}
+      <Box display={{ initial: "none", sm: "block" }}>
+        <Table.Root variant="surface">
+          <Table.Header>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Table.Row key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <Table.ColumnHeaderCell
+                    key={header.id}
+                    style={{
+                      cursor: header.column.getCanSort()
+                        ? "pointer"
+                        : "default",
+                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <Flex align="center" gap="1">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                      {{
+                        asc: <TriangleUpIcon />,
+                        desc: <TriangleDownIcon />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </Flex>
+                  </Table.ColumnHeaderCell>
+                ))}
+              </Table.Row>
+            ))}
+          </Table.Header>
+          <Table.Body>
+            {table.getRowModel().rows.map((row) => (
+              <Table.Row
+                key={row.id}
+                style={{
+                  background:
+                    DAY_COLOUR(row.getValue("date_appointment")) ?? "#fff",
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Cell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))}
+            {table.getRowModel().rows.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={columns.length} align="center">
+                  No appointments found {globalFilter && "matching your search"}
+                  .
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table.Root>
+      </Box>
+
+      {/* Pagination Controls: stack on small screens */}
+      <Flex
+        direction={{ initial: "column", sm: "row" }}
+        align="center"
+        justify="between"
+        mt="4"
+        gap="3"
+      >
         <Text size="2">
           Page{" "}
           <strong>
@@ -235,7 +361,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
             disabled={!table.getCanPreviousPage()}
             size="1"
           >
-            <ChevronLeftIcon /> Previous
+            <ChevronLeftIcon /> Prev
           </Button>
           <Button
             variant="soft"

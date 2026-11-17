@@ -9,8 +9,10 @@ import {
   TriangleUpIcon,
 } from "@radix-ui/react-icons";
 import {
+  Badge,
   Box,
   Button,
+  Card,
   Flex,
   Select,
   Spinner,
@@ -204,62 +206,126 @@ const RegistrationsTable = ({ registrations }: Props) => {
           placeholder="Search registrations..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          style={{ maxWidth: 300 }}
+          style={{ width: "100%", maxWidth: 300 }}
         />
       </Flex>
 
-      {/* Table */}
-      <Table.Root variant="surface" size={"1"}>
-        <Table.Header>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Row key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Table.ColumnHeaderCell
-                  key={header.id}
-                  style={{
-                    cursor: header.column.getCanSort() ? "pointer" : "default",
-                  }}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <Flex align="center" gap="1">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                    {{
-                      asc: <TriangleUpIcon />,
-                      desc: <TriangleDownIcon />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </Flex>
-                </Table.ColumnHeaderCell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Header>
-        <Table.Body>
-          {table.getRowModel().rows.map((row) => (
-            <Table.Row key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Table.Cell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Cell>
-              ))}
-            </Table.Row>
-          ))}
-          {table.getRowModel().rows.length === 0 && (
-            <Table.Row>
-              <Table.Cell colSpan={columns.length} align="center">
-                No registrations found {globalFilter && "matching your search"}.
-              </Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table.Root>
+      {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}
+      <Flex
+        direction="column"
+        gap="2"
+        display={{ initial: "flex", sm: "none" }}
+      >
+        {table.getRowModel().rows.map((row) => {
+          const reg = row.original;
+          const phone = row.getValue<string>("phone_number");
+          return (
+            <Card key={row.id} size="1">
+              <Flex direction="column" gap="2">
+                <Flex justify="between" align="start" gap="2">
+                  <Text
+                    weight="bold"
+                    size="3"
+                    style={{ wordBreak: "break-word" }}
+                  >
+                    {row.getValue<string>("patient_name")}
+                  </Text>
+                  <Badge variant="soft" style={{ flexShrink: 0 }}>
+                    MR {reg.mr_number ?? "N/A"}
+                  </Badge>
+                </Flex>
+                <Flex gap="3" wrap="wrap">
+                  <Text size="2" color="gray">
+                    {reg.gender?.toUpperCase()}
+                  </Text>
+                  {phone ? (
+                    <Text size="2" asChild>
+                      <a href={`tel:${phone}`}>{phone}</a>
+                    </Text>
+                  ) : (
+                    <Text size="2" color="gray">
+                      No phone
+                    </Text>
+                  )}
+                  <Text size="2" color="gray">
+                    <FormattedDateCell date={reg.created_at} />
+                  </Text>
+                </Flex>
+                <ActionButtons registration_id={reg.registration_id} />
+              </Flex>
+            </Card>
+          );
+        })}
+        {table.getRowModel().rows.length === 0 && (
+          <Text size="2" align="center" color="gray">
+            No registrations found {globalFilter && "matching your search"}.
+          </Text>
+        )}
+      </Flex>
 
-      {/* Pagination Controls */}
-      <Flex align="center" justify="between" mt="4" gap="3">
+      {/* Table: tablets and larger */}
+      <Box display={{ initial: "none", sm: "block" }}>
+        <Table.Root variant="surface" size={"1"}>
+          <Table.Header>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Table.Row key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <Table.ColumnHeaderCell
+                    key={header.id}
+                    style={{
+                      cursor: header.column.getCanSort()
+                        ? "pointer"
+                        : "default",
+                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <Flex align="center" gap="1">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                      {{
+                        asc: <TriangleUpIcon />,
+                        desc: <TriangleDownIcon />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </Flex>
+                  </Table.ColumnHeaderCell>
+                ))}
+              </Table.Row>
+            ))}
+          </Table.Header>
+          <Table.Body>
+            {table.getRowModel().rows.map((row) => (
+              <Table.Row key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Cell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))}
+            {table.getRowModel().rows.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={columns.length} align="center">
+                  No registrations found{" "}
+                  {globalFilter && "matching your search"}.
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table.Root>
+      </Box>
+
+      {/* Pagination Controls: stack on small screens */}
+      <Flex
+        direction={{ initial: "column", sm: "row" }}
+        align="center"
+        justify="between"
+        mt="4"
+        gap="3"
+      >
         <Text size="2">
           Page{" "}
           <strong>
@@ -282,7 +348,7 @@ const RegistrationsTable = ({ registrations }: Props) => {
             disabled={!table.getCanPreviousPage()}
             size="1"
           >
-            <ChevronLeftIcon /> Previous
+            <ChevronLeftIcon /> Prev
           </Button>
           <Button
             variant="soft"
