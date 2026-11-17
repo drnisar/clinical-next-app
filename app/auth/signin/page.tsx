@@ -27,9 +27,7 @@ function SignInForm() {
         toast.error(result.error);
       } else {
         toast.success("Signed in successfully!");
-        const callbackURL =
-          searchParams.get("callbackUrl") ||
-          "https://clinical-next-app.vercel.app/dashboard";
+        const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
         router.push(callbackURL);
       }
     } catch (error) {
@@ -51,6 +49,14 @@ function SignInForm() {
         <Heading size="6" className="text-center mb-6">
           Clinical App Login
         </Heading>
+
+        {searchParams.get("error") && (
+          <Text as="p" color="red" size="2" className="mb-4 text-center">
+            {searchParams.get("error") === "AccessDenied"
+              ? "This account is not allowed to access the app."
+              : "Sign-in failed. Please try again."}
+          </Text>
+        )}
 
         <form onSubmit={handleCredentialsSignIn} className="space-y-4">
           <div>

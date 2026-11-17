@@ -135,14 +135,15 @@ export const authOptions: NextAuthOptions = {
     async redirect({ url, baseUrl }) {
       // Always redirect to dashboard after successful sign-in
       if (url === "/auth/signin" || url.startsWith("/auth/signin")) {
-        return `https://clinical-next-app.vercel.app/dashboard`;
+        return `${baseUrl}/dashboard`;
       }
       return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`;
     },
   },
   pages: {
     signIn: "/auth/signin",
-    error: "/auth/error",
+    // NextAuth appends ?error=<code>; the sign-in page shows it.
+    error: "/auth/signin",
   },
 };
 
