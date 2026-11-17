@@ -12,7 +12,15 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // NextAuth names the session cookie "__Secure-next-auth.session-token" on
+  // https and "next-auth.session-token" on http. getToken's default guesses
+  // from NEXTAUTH_URL / VERCEL env vars, which the Edge runtime may not see,
+  // so derive it from the request itself to match how the cookie was set.
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    secureCookie: req.nextUrl.protocol === "https:",
+  });
   if (token) return NextResponse.next();
 
   if (pathname.startsWith("/api/")) {

@@ -16,6 +16,15 @@ const loggedIn = () =>
 describe("middleware", () => {
   beforeEach(() => vi.mocked(getToken).mockReset());
 
+  it("reads the __Secure- session cookie on https and the plain one on http", async () => {
+    loggedIn();
+    await middleware(new NextRequest("https://clinical-next-app.vercel.app/dashboard"));
+    expect(vi.mocked(getToken).mock.calls[0][0]).toMatchObject({ secureCookie: true });
+
+    await middleware(req("/dashboard"));
+    expect(vi.mocked(getToken).mock.calls[1][0]).toMatchObject({ secureCookie: false });
+  });
+
   it("covers both dashboard pages and API routes", () => {
     expect(config.matcher).toEqual(["/dashboard/:path*", "/api/:path*"]);
   });
