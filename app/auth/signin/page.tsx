@@ -1,7 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button, Card, TextField, Heading, Text, Link } from "@radix-ui/themes";
 import toast from "react-hot-toast";
 
@@ -9,7 +9,6 @@ function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
@@ -21,14 +20,18 @@ function SignInForm() {
         email,
         password,
         redirect: false,
+        callbackUrl: searchParams.get("callbackUrl") || "/dashboard",
       });
 
       if (result?.error) {
         toast.error(result.error);
       } else {
         toast.success("Signed in successfully!");
-        const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
-        router.push(callbackURL);
+        // Full page load, not router.push: the client router may hold a
+        // cached (prefetched while logged out) redirect for /dashboard that
+        // would bounce straight back here. result.url has been through the
+        // NextAuth redirect callback, so it is always on this site.
+        window.location.assign(result?.url || "/dashboard");
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
