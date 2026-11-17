@@ -287,7 +287,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/nisar/Desktop/workspace/clinical-next-app/generated/prisma",
+      "value": "/Users/nisar/Documents/workspace/clinical-next-app/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -296,17 +296,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/nisar/Desktop/workspace/clinical-next-app/prisma/schema.prisma",
+    "sourceFilePath": "/Users/nisar/Documents/workspace/clinical-next-app/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.9.0",
