@@ -3,6 +3,15 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+const UNAUTHORIZED = {
+  success: false,
+  message: "Unauthorized",
+  data: null,
+  errors: {},
+};
 
 const registrationSchema = z.object({
   first_name: z
@@ -29,6 +38,7 @@ export async function createRegistration(
   prevState: unknown,
   formData: FormData
 ) {
+  if (!(await getServerSession(authOptions))) return UNAUTHORIZED;
   try {
     // Debug: Log the form data
     console.log("Form data received:");
@@ -94,6 +104,7 @@ export async function updateRegistration(
   prevState: unknown,
   formData: FormData
 ) {
+  if (!(await getServerSession(authOptions))) return UNAUTHORIZED;
   try {
     // Debug: Log the form data
     console.log("Update form data received:");
