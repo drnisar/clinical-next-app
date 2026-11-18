@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
           }
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password,
           );
 
           if (!isPasswordValid) {
@@ -137,6 +137,11 @@ export const authOptions: NextAuthOptions = {
       if (url === "/auth/signin" || url.startsWith("/auth/signin")) {
         return `${baseUrl}/dashboard`;
       }
+      // Same-site relative path (e.g. "/dashboard/registration/1" from the
+      // sign-in page): keep it. "//host" is protocol-relative, so not same-site.
+      if (url.startsWith("/") && !url.startsWith("//")) {
+        return `${baseUrl}${url}`;
+      }
       return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`;
     },
   },
@@ -146,4 +151,3 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/signin",
   },
 };
-

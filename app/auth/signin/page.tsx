@@ -4,12 +4,22 @@ import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Card, TextField, Heading, Text, Link } from "@radix-ui/themes";
 import toast from "react-hot-toast";
+import { dashboardCallbackUrl } from "@/lib/callbackUrl";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
+
+  // Land on /dashboard after sign-in, unless we were sent here from a
+  // specific dashboard page (then go back there). Read at click time, when
+  // window is available.
+  const getCallbackUrl = () =>
+    dashboardCallbackUrl(
+      searchParams.get("callbackUrl"),
+      window.location.origin,
+    );
 
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +30,7 @@ function SignInForm() {
         email,
         password,
         redirect: false,
-        callbackUrl: searchParams.get("callbackUrl") || "/dashboard",
+        callbackUrl: getCallbackUrl(),
       });
 
       if (result?.error) {
@@ -42,8 +52,7 @@ function SignInForm() {
   };
 
   const handleGoogleSignIn = () => {
-    const callbackURL = searchParams.get("callbackUrl") || "/dashboard";
-    signIn("google", { callbackUrl: callbackURL });
+    signIn("google", { callbackUrl: getCallbackUrl() });
   };
 
   return (
