@@ -4,6 +4,7 @@ import { Button, Flex, IconButton, Spinner, Text } from "@radix-ui/themes";
 import {
   BedDouble,
   CalendarDays,
+  House,
   Menu,
   Stethoscope,
   UsersRound,
@@ -11,6 +12,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link, { useLinkStatus } from "next/link";
+import ThemeToggle from "../ThemeToggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -68,16 +70,24 @@ const DashboardNav = () => {
           {activeLink && <activeLink.icon size={18} aria-hidden />}
           <Text weight="medium">{activeLink?.name ?? "Dashboard"}</Text>
         </Flex>
-        <IconButton
-          variant="soft"
-          size="2"
-          aria-label={open ? "Close sections menu" : "Open sections menu"}
-          aria-expanded={open}
-          aria-controls="dashboard-nav-links"
-          onClick={() => setOpen((o) => !o)}
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-        </IconButton>
+        <Flex align="center" gap="2">
+          <IconButton variant="soft" color="gray" size="2" asChild>
+            <Link href="/" aria-label="Leave dashboard (home)" title="Home">
+              <House size={18} />
+            </Link>
+          </IconButton>
+          <ThemeToggle />
+          <IconButton
+            variant="soft"
+            size="2"
+            aria-label={open ? "Close sections menu" : "Open sections menu"}
+            aria-expanded={open}
+            aria-controls="dashboard-nav-links"
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </IconButton>
+        </Flex>
       </Flex>
 
       {/* Links: a vertical drop-down on mobile when open, a row on wider screens */}
@@ -113,6 +123,23 @@ const DashboardNav = () => {
             </Button>
           );
         })}
+
+        {/* Wider screens: Home and theme toggle, pushed to the right end.
+            Log out lives in the main top bar (reached via Home). */}
+        <Flex
+          display={{ initial: "none", sm: "flex" }}
+          ml="auto"
+          align="center"
+          gap="3"
+        >
+          <Button variant="soft" color="gray" size="1" asChild>
+            <Link href="/" aria-label="Leave dashboard (home)">
+              <House size={16} aria-hidden />
+              Home
+            </Link>
+          </Button>
+          <ThemeToggle size="1" />
+        </Flex>
       </Flex>
     </nav>
   );

@@ -2,55 +2,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState, useEffect } from "react"; // Import useState, useEffect
-import { Flex, Text, Button, IconButton, Skeleton } from "@radix-ui/themes"; // Import IconButton
+import React from "react";
+import { Flex, Text, Button, Skeleton } from "@radix-ui/themes";
 import classnames from "classnames";
 import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes"; // Import useTheme
-import { SunIcon, MoonIcon } from "@radix-ui/react-icons"; // Import icons
+import ThemeToggle from "./ThemeToggle";
 
 const NavBar = () => {
   const currentPath = usePathname();
-  const { theme, setTheme } = useTheme();
-  // State to prevent hydration mismatch
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Inside the dashboard, DashboardNav takes over (with a Home link back here).
+  // Placed after all hooks so hook order stays stable.
+  if (currentPath === "/dashboard" || currentPath?.startsWith("/dashboard/")) {
+    return null;
+  }
 
   const links = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Settings", href: "/dashboard/settings" },
     // Add other main navigation links if needed
   ];
-
-  // Render placeholder or null until mounted to avoid hydration errors
-  const renderThemeToggle = () => {
-    if (!mounted) {
-      // Render a simple placeholder matching IconButton size
-      return (
-        <div className="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
-      );
-    }
-
-    const isDarkMode = theme === "dark";
-
-    return (
-      <IconButton
-        variant="ghost"
-        color="gray"
-        onClick={() => setTheme(isDarkMode ? "light" : "dark")}
-        title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        {isDarkMode ? (
-          <SunIcon width="18" height="18" />
-        ) : (
-          <MoonIcon width="18" height="18" />
-        )}
-      </IconButton>
-    );
-  };
 
   return (
     <nav className="border-b mb-5 px-5 py-3 print:!hidden">
@@ -81,7 +52,7 @@ const NavBar = () => {
 
         <Flex align="center" gap="4">
           {/* Theme Toggle Button */}
-          {renderThemeToggle()}
+          <ThemeToggle />
 
           {/* Auth Status */}
           <AuthStatus />
