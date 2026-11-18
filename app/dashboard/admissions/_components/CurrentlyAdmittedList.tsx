@@ -3,6 +3,7 @@ import { Admission_Discharge, Registration } from "@/generated/prisma";
 import {
   Badge,
   Button,
+  Card,
   Table,
   Flex,
   Box,
@@ -88,7 +89,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         router.push("/dashboard/admissions/" + admissionId);
       });
     },
-    [router, startTransition]
+    [router, startTransition],
   );
   const handleDischargeClick = React.useCallback(
     (admissionId: string) => {
@@ -97,7 +98,37 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         router.push("/dashboard/discharge/" + admissionId);
       });
     },
-    [router, startTransition]
+    [router, startTransition],
+  );
+
+  // Details / Discharge buttons, shared by the mobile cards and the table.
+  const renderActions = React.useCallback(
+    (admissionId: string) => {
+      const isButtonDisabled = isNavPending && navigatingId === admissionId;
+      return (
+        <Flex gap="1">
+          <Button
+            size={"1"}
+            variant="soft"
+            color="grass"
+            onClick={() => handleDetailsClick(admissionId)}
+            disabled={isButtonDisabled}
+          >
+            {isButtonDisabled ? "Loading..." : "Details"}
+          </Button>
+          <Button
+            size={"1"}
+            variant="soft"
+            color="blue"
+            onClick={() => handleDischargeClick(admissionId)}
+            disabled={isButtonDisabled}
+          >
+            {isButtonDisabled ? "Loading..." : "Discharge"}
+          </Button>
+        </Flex>
+      );
+    },
+    [isNavPending, navigatingId, handleDetailsClick, handleDischargeClick],
   );
 
   // Define columns
@@ -112,7 +143,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
           id: "patient_name", // Need an ID for accessor functions
           header: "Patient Name",
           cell: (info) => info.getValue().toUpperCase(),
-        }
+        },
       ),
       columnHelper.accessor((row) => row.registration?.gender, {
         id: "gender",
@@ -134,7 +165,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
           id: "bed",
           header: "Bed",
           cell: (info) => info.getValue().trim() || "N/A",
-        }
+        },
       ),
       columnHelper.accessor("admission_mode", {
         header: "Mode",
@@ -153,39 +184,10 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
         id: "actions",
         header: "Actions",
         enableSorting: false,
-        cell: (props) => {
-          const isButtonDisabled =
-            isNavPending && navigatingId === props.row.original.admission_id;
-          return (
-            <Flex gap="1">
-              <Button
-                size={"1"}
-                variant="soft"
-                color="grass"
-                onClick={() =>
-                  handleDetailsClick(props.row.original.admission_id)
-                }
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Loading..." : "Details"}
-              </Button>
-              <Button
-                size={"1"}
-                variant="soft"
-                color="blue"
-                onClick={() =>
-                  handleDischargeClick(props.row.original.admission_id)
-                }
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Loading..." : "Discharge"}
-              </Button>
-            </Flex>
-          );
-        },
+        cell: (props) => renderActions(props.row.original.admission_id),
       }),
     ],
-    [isNavPending, navigatingId, handleDetailsClick, handleDischargeClick] // Include dependencies used in column defs
+    [renderActions], // Include dependencies used in column defs
   );
 
   // useReactTable hook
@@ -215,62 +217,130 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
           placeholder="Search admissions..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          style={{ maxWidth: 300 }}
+          style={{ width: "100%", maxWidth: 300 }}
         />
       </Flex>
 
-      {/* Table */}
-      <Table.Root variant="surface">
-        <Table.Header>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Table.Row key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Table.ColumnHeaderCell
-                  key={header.id}
-                  style={{
-                    cursor: header.column.getCanSort() ? "pointer" : "default",
-                  }}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <Flex align="center" gap="1">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {{
-                      asc: <TriangleUpIcon />,
-                      desc: <TriangleDownIcon />,
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </Flex>
-                </Table.ColumnHeaderCell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Header>
-        <Table.Body>
-          {table.getRowModel().rows.map((row) => (
-            <Table.Row key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Table.Cell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Cell>
-              ))}
-            </Table.Row>
-          ))}
-          {table.getRowModel().rows.length === 0 && (
-            <Table.Row>
-              <Table.Cell colSpan={columns.length} align="center">
-                No admissions found {globalFilter && "matching your search"}.
-              </Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table.Root>
+      {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}
+      <Flex
+        direction="column"
+        gap="2"
+        display={{ initial: "flex", sm: "none" }}
+      >
+        {table.getRowModel().rows.map((row) => {
+          const adm = row.original;
+          const bed = row.getValue<string>("bed").trim();
+          return (
+            <Card key={row.id} size="1">
+              <Flex direction="column" gap="2">
+                <Flex justify="between" align="start" gap="2">
+                  <Text
+                    weight="bold"
+                    size="3"
+                    style={{ wordBreak: "break-word" }}
+                  >
+                    {row.getValue<string>("patient_name").toUpperCase()}
+                  </Text>
+                  <Badge
+                    color={badgeColor(adm.admission_mode)}
+                    style={{ flexShrink: 0 }}
+                  >
+                    {adm.admission_mode ?? "N/A"}
+                  </Badge>
+                </Flex>
+                <Flex gap="3" wrap="wrap">
+                  <Text size="2" color="gray">
+                    MR {adm.registration?.mr_number ?? "N/A"}
+                  </Text>
+                  <Text size="2" color="gray">
+                    {adm.registration?.gender?.toUpperCase() ?? "N/A"}
+                  </Text>
+                  <Text size="2" weight="medium">
+                    Bed: {bed || "N/A"}
+                  </Text>
+                  <Text size="2" color="gray">
+                    Admitted <FormattedDateCell date={adm.admission_date} />
+                  </Text>
+                </Flex>
+                {adm.admission_plan && (
+                  <Text size="2">
+                    <Text weight="medium">Plan:</Text> {adm.admission_plan}
+                  </Text>
+                )}
+                {renderActions(adm.admission_id)}
+              </Flex>
+            </Card>
+          );
+        })}
+        {table.getRowModel().rows.length === 0 && (
+          <Text size="2" align="center" color="gray">
+            No admissions found {globalFilter && "matching your search"}.
+          </Text>
+        )}
+      </Flex>
 
-      {/* Pagination Controls */}
-      <Flex align="center" justify="between" mt="4" gap="3">
+      {/* Table: tablets and larger */}
+      <Box display={{ initial: "none", sm: "block" }}>
+        <Table.Root variant="surface">
+          <Table.Header>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Table.Row key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <Table.ColumnHeaderCell
+                    key={header.id}
+                    style={{
+                      cursor: header.column.getCanSort()
+                        ? "pointer"
+                        : "default",
+                    }}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <Flex align="center" gap="1">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                      {{
+                        asc: <TriangleUpIcon />,
+                        desc: <TriangleDownIcon />,
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </Flex>
+                  </Table.ColumnHeaderCell>
+                ))}
+              </Table.Row>
+            ))}
+          </Table.Header>
+          <Table.Body>
+            {table.getRowModel().rows.map((row) => (
+              <Table.Row key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <Table.Cell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))}
+            {table.getRowModel().rows.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={columns.length} align="center">
+                  No admissions found {globalFilter && "matching your search"}.
+                </Table.Cell>
+              </Table.Row>
+            )}
+          </Table.Body>
+        </Table.Root>
+      </Box>
+
+      {/* Pagination Controls: stack on small screens */}
+      <Flex
+        direction={{ initial: "column", sm: "row" }}
+        align="center"
+        justify="between"
+        mt="4"
+        gap="3"
+      >
         <Text size="2">
           Page{" "}
           <strong>
@@ -293,7 +363,7 @@ const CurrentlyAdmittedList = ({ admissions }: Props) => {
             disabled={!table.getCanPreviousPage()}
             size="1"
           >
-            <ChevronLeftIcon /> Previous
+            <ChevronLeftIcon /> Prev
           </Button>
           <Button
             variant="soft"
