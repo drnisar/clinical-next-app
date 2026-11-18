@@ -41,7 +41,7 @@ const ContactCard = ({
 
         <Link
           className="text-green-600 font-bold uppercase"
-          href={`https://wa.me/${phoneNumber}?text=${WhatsappMessageConfirmAppointment(appointmentDateEnglish || "", appointmentDateUrdu || "", patient || "")}`}
+          href={`https://wa.me/${phoneNumber.replace(/\D/g, "")}?text=${WhatsappMessageConfirmAppointment(appointmentDateEnglish || "", appointmentDateUrdu || "", patient || "")}`}
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -7,6 +7,7 @@ import {
   Flex,
   Box,
   Button,
+  IconButton,
   Text,
   Select,
   Theme,
@@ -33,9 +34,15 @@ import {
 // import { useAppointmentsStore } from "./AppointmentsStore";
 import SelectAppointmentType from "./SelectAppointmentType";
 import { Appointment, Registration } from "@/generated/prisma";
-import { DAY_COLOUR, datedddDDMMMYY } from "../../_components/appConstants";
+import {
+  DAY_COLOUR,
+  dateDDMMMYY,
+  dateInUrdu,
+  datedddDDMMMYY,
+} from "../../_components/appConstants";
 import { WhatsappIcon } from "../../_components/ui/WhatsappIconButton";
-import PhoneContactLinks from "../../_components/ui/PhoneContactLinks";
+import ContactCard from "../../_components/ui/ContactCard";
+import DialogComponent from "../../_components/ui/DialogComponent";
 
 // Keep your existing Appointment type
 type AppointmentWithRegistration = Appointment & { registration: Registration };
@@ -56,6 +63,34 @@ const FormattedDateCell = ({ date }: { date: Date | null | undefined }) => {
   return <>{formattedDate ?? "N/A"}</>;
 };
 
+// "Contact" button that opens ContactCard
+// (call / SMS / WhatsApp reminder), as on the dashboard's upcoming list.
+const PhoneWithContact = ({ appt }: { appt: AppointmentWithRegistration }) => {
+  const { code, phone_number, gender, first_name, last_name } =
+    appt.registration;
+  const local = (phone_number ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (!local) return <Text color="gray">N/A</Text>;
+
+  return (
+    <Flex align="center" gap="2" wrap="nowrap">
+      <DialogComponent
+        triggerButtonText="Contact"
+        triggerButtonVariant="soft"
+        triggerButtonColor="grass"
+        titleText="Contact Details"
+        content={
+          <ContactCard
+            phoneNumber={`${code || "+92"}${local}`}
+            appointmentDateEnglish={dateDDMMMYY(appt.date_appointment)}
+            appointmentDateUrdu={dateInUrdu(appt.date_appointment)}
+            patient={`${gender === "male" ? "Mr. " : "Ms. "}${first_name} ${last_name}`}
+          />
+        }
+      />
+    </Flex>
+  );
+};
+
 interface Props {
   appointments: AppointmentWithRegistration[];
 }
@@ -66,6 +101,13 @@ const toLocalYMD = (date: Date | string) => {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const dd = String(d.getDate()).padStart(2, "0");
   return `${d.getFullYear()}-${mm}-${dd}`;
+};
+
+// Move a "YYYY-MM-DD" date by n days (local calendar, DST-safe).
+const shiftDate = (ymd: string, n: number) => {
+  const d = new Date(`${ymd}T00:00`);
+  d.setDate(d.getDate() + n);
+  return toLocalYMD(d);
 };
 
 const AppointmentsTable = ({ appointments }: Props) => {
@@ -128,13 +170,8 @@ const AppointmentsTable = ({ appointments }: Props) => {
       }),
       columnHelper.accessor((row) => row.registration?.phone_number, {
         id: "phone_number",
-        header: "Phone Number",
-        cell: (info) => (
-          <PhoneContactLinks
-            code={info.row.original.registration?.code}
-            phone={info.getValue()}
-          />
-        ),
+        header: "Contact",
+        cell: (info) => <PhoneWithContact appt={info.row.original} />,
       }),
       // columnHelper.accessor("type", {
       //   header: "Type",
@@ -214,13 +251,31 @@ const AppointmentsTable = ({ appointments }: Props) => {
 
       {/* Date filter */}
       <Flex mb="3" gap="2" align="center" wrap="wrap">
-        <TextField.Root
-          type="date"
-          aria-label="Filter by appointment date"
-          value={selectedDate}
-          onChange={(e) => changeDate(e.target.value)}
-          style={{ width: 170 }}
-        />
+        <Flex align="center" gap="1">
+          <IconButton
+            variant="soft"
+            aria-label="Previous day"
+            title="Previous day"
+            onClick={() => changeDate(shiftDate(selectedDate || today, -1))}
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+          <TextField.Root
+            type="date"
+            aria-label="Filter by appointment date"
+            value={selectedDate}
+            onChange={(e) => changeDate(e.target.value)}
+            style={{ width: 170 }}
+          />
+          <IconButton
+            variant="soft"
+            aria-label="Next day"
+            title="Next day"
+            onClick={() => changeDate(shiftDate(selectedDate || today, 1))}
+          >
+            <ChevronRightIcon />
+          </IconButton>
+        </Flex>
         <Button
           variant={showingToday ? "solid" : "soft"}
           onClick={() => changeDate(showingToday ? "" : today)}
@@ -241,20 +296,22 @@ const AppointmentsTable = ({ appointments }: Props) => {
         )}
       </Flex>
 
-      {/* WhatsApp share: phones and small screens only */}
-      <Flex mb="3" display={{ initial: "flex", sm: "none" }}>
-        {shareRows.length > 0 ? (
-          <Button color="grass" asChild style={{ width: "100%" }}>
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-              <WhatsappIcon /> Send on WhatsApp ({shareRows.length})
-            </a>
-          </Button>
-        ) : (
-          <Button color="grass" disabled style={{ width: "100%" }}>
-            <WhatsappIcon /> Send on WhatsApp
-          </Button>
-        )}
-      </Flex>
+      {/* WhatsApp share: phones and small screens only, once a date is chosen */}
+      {selectedDate && (
+        <Flex mb="3" display={{ initial: "flex", sm: "none" }}>
+          {shareRows.length > 0 ? (
+            <Button color="grass" asChild style={{ width: "100%" }}>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <WhatsappIcon /> Send on WhatsApp ({shareRows.length})
+              </a>
+            </Button>
+          ) : (
+            <Button color="grass" disabled style={{ width: "100%" }}>
+              <WhatsappIcon /> Send on WhatsApp
+            </Button>
+          )}
+        </Flex>
+      )}
 
       {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}
       <Flex
@@ -298,10 +355,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
                   )}
                   {phone && (
                     <Text size="2" as="div">
-                      <PhoneContactLinks
-                        code={appt.registration?.code}
-                        phone={phone}
-                      />
+                      <PhoneWithContact appt={appt} />
                     </Text>
                   )}
                 </Flex>
