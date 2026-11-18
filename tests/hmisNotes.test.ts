@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import { displayResult } from "@/app/dashboard/consultation/_components/HMISAllNotes";
 import {
   dedupeByNoteId,
+  dedupeLabResults,
+  type HMISLabResult,
   type HMISPhysicianNote,
 } from "@/app/dashboard/consultation/_components/HMISNotes";
 
@@ -73,5 +75,65 @@ describe("displayResult (lab value shown in the Result column)", () => {
 
   it("shows a dash when no value is reported", () => {
     expect(displayResult(base)).toBe("—");
+  });
+});
+
+describe("dedupeLabResults (repeated parameters within a lab report)", () => {
+  const row = (
+    parameterId: string,
+    reportDate: string,
+    extra: Partial<HMISLabResult> = {},
+  ): HMISLabResult => ({
+    parameterId,
+    parameterName: `P${parameterId}`,
+    resultValue: "",
+    resultNumeric: 1,
+    resultText: "",
+    normal: "Y",
+    rangeText: "1 - 2",
+    reportDate,
+    ...extra,
+  });
+  const T1 = "2026-11-17T10:00:00";
+  const T2 = "2026-11-17T14:00:00";
+
+  it("collapses exact copies to one row", () => {
+    const r = row("1", T1);
+    expect(dedupeLabResults([r, { ...r }, { ...r }])).toEqual([r]);
+  });
+
+  it("keeps the first non-empty range when copies differ only in rangeText", () => {
+    const out = dedupeLabResults([
+      row("1", T1, { rangeText: " " }),
+      row("1", T1, { rangeText: "3 - 4" }),
+      row("1", T1, { rangeText: "5 - 6" }),
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out[0].rangeText).toBe("3 - 4");
+  });
+
+  it("keeps the abnormal flag if any copy is abnormal", () => {
+    const out = dedupeLabResults([row("1", T1), row("1", T1, { normal: "N" })]);
+    expect(out).toHaveLength(1);
+    expect(out[0].normal).toBe("N");
+  });
+
+  it("keeps repeat measurements at different times, newest first, in the parameter's first position", () => {
+    const out = dedupeLabResults([
+      row("1", T1, { resultNumeric: 10 }),
+      row("2", T1),
+      row("1", T2, { resultNumeric: 12 }),
+      row("1", T1, { resultNumeric: 10 }),
+    ]);
+    expect(out.map((r) => [r.parameterId, r.reportDate])).toEqual([
+      ["1", T2],
+      ["1", T1],
+      ["2", T1],
+    ]);
+  });
+
+  it("leaves single rows unchanged", () => {
+    const rows = [row("1", T1), row("2", T1), row("3", T2)];
+    expect(dedupeLabResults(rows)).toEqual(rows);
   });
 });

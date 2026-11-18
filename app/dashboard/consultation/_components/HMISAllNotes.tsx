@@ -54,8 +54,13 @@ const byDateDesc = (a?: string | null, b?: string | null) =>
 // Collapsible investigation: the header (name, department, date and an
 // "Abnormal" badge if any result is out of range) toggles the results table.
 const InvestigationTable = ({ inv }: { inv: HMISInvestigation }) => {
-  const results = inv.results ?? [];
+  const results = inv.results ?? []; // already de-duplicated per report time
   const abnormalCount = results.filter((r) => r.normal === "N").length;
+  // Parameters measured more than once in this report show their report time.
+  const timesPerParam = results.reduce(
+    (m, r) => m.set(r.parameterId, (m.get(r.parameterId) ?? 0) + 1),
+    new Map<string, number>(),
+  );
   return (
     <Card size="1" asChild>
       <details className="group">
@@ -107,10 +112,12 @@ const InvestigationTable = ({ inv }: { inv: HMISInvestigation }) => {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {results.map((r, i) => {
+                  {results.map((r) => {
                     const abnormal = r.normal === "N";
+                    const repeated =
+                      (timesPerParam.get(r.parameterId) ?? 0) > 1;
                     return (
-                      <Table.Row key={`${r.parameterId}-${i}`}>
+                      <Table.Row key={`${r.parameterId}-${r.reportDate}`}>
                         <Table.Cell>{r.parameterName}</Table.Cell>
                         <Table.Cell>
                           <Text
@@ -124,6 +131,11 @@ const InvestigationTable = ({ inv }: { inv: HMISInvestigation }) => {
                             <Badge color="red" variant="soft" ml="2">
                               Abnormal
                             </Badge>
+                          )}
+                          {repeated && (
+                            <Text as="div" size="1" color="gray">
+                              {formatHMISDate(r.reportDate)}
+                            </Text>
                           )}
                         </Table.Cell>
                         <Table.Cell>{r.rangeText?.trim() || "—"}</Table.Cell>

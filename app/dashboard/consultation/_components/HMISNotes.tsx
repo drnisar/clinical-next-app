@@ -49,6 +49,36 @@ const EMPTY_HISTORY: HMISClinicalHistory = {
   investigations: [],
 };
 
+// HMIS repeats lab parameters within a report: exact copies, and copies that
+// differ only in rangeText (it attaches every reference range it has). Within
+// one parameter + reportDate the value is always the same, so keep one row per
+// parameter per report time: first non-empty rangeText, and "N" (abnormal) if
+// any copy is flagged. Genuine repeat measurements (different reportDate) stay
+// as separate rows. Order: parameters as HMIS first lists them; a parameter's
+// repeat measurements newest first.
+export function dedupeLabResults(results: HMISLabResult[]): HMISLabResult[] {
+  const byParam = new Map<string, Map<string, HMISLabResult>>();
+  for (const r of results) {
+    const times =
+      byParam.get(r.parameterId) ?? new Map<string, HMISLabResult>();
+    byParam.set(r.parameterId, times);
+    const kept = times.get(r.reportDate);
+    if (!kept) {
+      times.set(r.reportDate, { ...r });
+      continue;
+    }
+    if (!kept.rangeText?.trim() && r.rangeText?.trim()) {
+      kept.rangeText = r.rangeText;
+    }
+    if (r.normal === "N") kept.normal = "N";
+  }
+  return [...byParam.values()].flatMap((times) =>
+    [...times.values()].sort((a, b) =>
+      (b.reportDate ?? "").localeCompare(a.reportDate ?? ""),
+    ),
+  );
+}
+
 // HMIS can return the same note once per patient location (identical noteId,
 // text, author and date; only the location fields differ). Keep the first copy.
 // Notes without a noteId are always kept.
@@ -76,7 +106,12 @@ export async function fetchPatientClinicalHistory(
     const data = await res.json();
     return {
       physicianNotes: dedupeByNoteId(data.physicianNotes ?? []),
-      investigations: data.investigations ?? [],
+      investigations: ((data.investigations ?? []) as HMISInvestigation[]).map(
+        (inv) => ({
+          ...inv,
+          results: inv.results ? dedupeLabResults(inv.results) : inv.results,
+        }),
+      ),
     };
   } catch (error) {
     console.error("Error fetching HMIS clinical history:", error);
