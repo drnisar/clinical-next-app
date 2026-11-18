@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { Badge, Flex, Table } from "@radix-ui/themes";
+import { Badge, Box, Card, Flex, Table, Text } from "@radix-ui/themes";
 import ButtonEditPage from "../../_components/ButtonEditPage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -49,6 +49,13 @@ type consultationWithRegistration = Consultation & {
   };
 };
 
+const statusColor = (status: string) =>
+  status === "COMPLETED"
+    ? "green"
+    : status === "IN_PROGRESS"
+      ? "blue"
+      : "orange";
+
 const TodaysConsultationsTable = () => {
   const { status } = useConsultationStatus();
   const consultations = useQuery({
@@ -87,58 +94,111 @@ const TodaysConsultationsTable = () => {
       {filteredConsultations?.length === 0 ? (
         <p>No consultations for today.</p>
       ) : (
-        <Table.Root size="1">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>S No</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Patient Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Age</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Gender</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>MRN</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
+        <>
+          {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}
+          <Flex
+            direction="column"
+            gap="2"
+            mt="3"
+            display={{ initial: "flex", sm: "none" }}
+          >
             {filteredConsultations?.map((consultation, index) => {
-              const age = calculateAgeFromDate(
-                consultation.registration.date_of_birth,
-              );
-
+              const {
+                first_name,
+                last_name,
+                gender,
+                mr_number,
+                date_of_birth,
+              } = consultation.registration;
+              const age = calculateAgeFromDate(date_of_birth);
               return (
-                <Table.Row key={consultation.consultation_id}>
-                  <Table.Cell>{index + 1}</Table.Cell>
-                  <Table.Cell>
-                    {consultation.registration.first_name}{" "}
-                    {consultation.registration.last_name}
-                  </Table.Cell>
-                  <Table.Cell>{age !== null ? age : "N/A"}</Table.Cell>
-                  <Table.Cell>{consultation.registration.gender}</Table.Cell>
-                  <Table.Cell>{consultation.registration.mr_number}</Table.Cell>
-                  <Table.Cell>
-                    <Badge
-                      color={
-                        consultation.status === "COMPLETED"
-                          ? "green"
-                          : consultation.status === "IN_PROGRESS"
-                            ? "blue"
-                            : "orange"
-                      }
-                      variant="soft"
-                    >
-                      {consultation.status}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Flex justify="end">
+                <Card key={consultation.consultation_id} size="1">
+                  <Flex direction="column" gap="2">
+                    <Flex justify="between" align="start" gap="2">
+                      <Text
+                        weight="bold"
+                        size="3"
+                        style={{ wordBreak: "break-word" }}
+                      >
+                        {index + 1}. {first_name} {last_name}
+                      </Text>
+                      <Badge
+                        color={statusColor(consultation.status)}
+                        variant="soft"
+                        style={{ flexShrink: 0 }}
+                      >
+                        {consultation.status}
+                      </Badge>
+                    </Flex>
+                    <Flex justify="between" align="center" gap="2" wrap="wrap">
+                      <Text size="2" color="gray">
+                        {age !== null ? `${age} yrs` : "Age N/A"} · {gender} ·
+                        MRN {mr_number}
+                      </Text>
                       <ButtonEditPage params={consultation.consultation_id} />
                     </Flex>
-                  </Table.Cell>
-                </Table.Row>
+                  </Flex>
+                </Card>
               );
             })}
-          </Table.Body>
-        </Table.Root>
+          </Flex>
+
+          {/* Table: tablets and larger */}
+          <Box display={{ initial: "none", sm: "block" }}>
+            <Table.Root size="1">
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeaderCell>S No</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Patient Name</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Age</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Gender</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>MRN</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {filteredConsultations?.map((consultation, index) => {
+                  const age = calculateAgeFromDate(
+                    consultation.registration.date_of_birth,
+                  );
+
+                  return (
+                    <Table.Row key={consultation.consultation_id}>
+                      <Table.Cell>{index + 1}</Table.Cell>
+                      <Table.Cell>
+                        {consultation.registration.first_name}{" "}
+                        {consultation.registration.last_name}
+                      </Table.Cell>
+                      <Table.Cell>{age !== null ? age : "N/A"}</Table.Cell>
+                      <Table.Cell>
+                        {consultation.registration.gender}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {consultation.registration.mr_number}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Badge
+                          color={statusColor(consultation.status)}
+                          variant="soft"
+                        >
+                          {consultation.status}
+                        </Badge>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Flex justify="end">
+                          <ButtonEditPage
+                            params={consultation.consultation_id}
+                          />
+                        </Flex>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+        </>
       )}
     </>
   );
