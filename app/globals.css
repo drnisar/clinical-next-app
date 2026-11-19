@@ -231,3 +231,95 @@
     margin-top: 0.5rem;
   }
 }
+
+/* Medications form (MedicationRow). Sized by the space the form has, not the
+   screen: on the consultation page it sits in a narrow middle column.
+   narrow  → a card per medicine, fields in 2 columns
+   ≥560px  → a card per medicine, fields in 4 columns
+   ≥960px  → one line per medicine under a single header row */
+.med-list {
+  container-type: inline-size;
+}
+.med-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--gray-a6);
+  border-radius: var(--radius-3);
+}
+.med-row__top {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.med-row__num {
+  padding-bottom: 0.5rem;
+}
+.med-row__remove {
+  margin-bottom: 0.25rem;
+}
+.med-row__instructions {
+  grid-column: 1 / -1;
+}
+.med-row .rt-SelectTrigger {
+  width: 100%; /* match the text inputs (Radix sets its own width) */
+}
+.med-header {
+  display: none;
+}
+@container (min-width: 560px) {
+  .med-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .med-row__instructions {
+    grid-column: auto;
+  }
+}
+@container (min-width: 960px) {
+  .med-row,
+  .med-header {
+    grid-template-columns:
+      1.5rem minmax(9rem, 2fr) minmax(5rem, 1fr) 4.5rem minmax(6.5rem, 1fr)
+      minmax(6.5rem, 1fr) minmax(5.5rem, 1fr) 4.5rem minmax(6rem, 1fr)
+      minmax(8rem, 1.5fr) 2rem;
+    gap: 0.5rem;
+  }
+  .med-header {
+    display: grid;
+    padding: 0 0.25rem 0.25rem;
+    border-bottom: 1px solid var(--gray-a6);
+  }
+  .med-row {
+    align-items: center;
+    padding: 0.25rem;
+    border: 0;
+    border-bottom: 1px solid var(--gray-a6);
+    border-radius: 0;
+  }
+  /* Number and drug name become the first two cells; remove is the last. */
+  .med-row__top {
+    display: contents;
+  }
+  .med-row__num {
+    padding-bottom: 0;
+  }
+  .med-row__remove {
+    grid-column: -2;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+  .med-row__instructions {
+    grid-column: auto;
+  }
+  /* The header row labels the columns; keep field labels for screen readers. */
+  .med-row__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}

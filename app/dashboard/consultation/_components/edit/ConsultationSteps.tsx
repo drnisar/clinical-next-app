@@ -152,7 +152,8 @@ const ConsultationSteps = ({
 
       {/* Current step. The note stays mounted (only hidden) so unsaved text
           and a pending autosave survive switching steps. */}
-      <Box className={step === "note" ? "" : "hidden"}>
+      {/* Inline style: Radix's Box display rule beats Tailwind's `hidden`. */}
+      <Box style={step === "note" ? undefined : { display: "none" }}>
         <ClinicalNoteEditor
           key={c.consultation_id}
           consultationId={c.consultation_id}

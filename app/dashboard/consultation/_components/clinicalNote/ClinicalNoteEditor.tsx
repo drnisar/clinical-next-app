@@ -10,7 +10,8 @@ import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextSelection } from "@tiptap/pm/state";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { patchJson, useQueuedAutosave } from "@/lib/useQueuedAutosave";
 import {
   NOTE_HEADING_LEVEL,
   NOTE_HEADINGS,
@@ -20,7 +21,6 @@ import {
   type NoteSectionKey,
 } from "./clinicalNote";
 
-type SaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
 const AUTOSAVE_MS = 2000;
 
 /** Sections whose heading is present in the editor. */
@@ -108,16 +108,19 @@ interface Props {
  */
 const ClinicalNoteEditor = ({ consultationId, initialDoc }: Props) => {
   const router = useRouter();
-  const [status, setStatus] = useState<SaveStatus>("idle");
-  const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [present, setPresent] = useState<Set<NoteSectionKey>>(new Set());
 
-  const editVersion = useRef(0); // bumps on every edit
-  const savedVersion = useRef(0); // version of the last successful save
-  const latestDoc = useRef<object | null>(null); // content of the last edit
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const queue = useRef<Promise<void>>(Promise.resolve());
-  const saveRef = useRef<() => void>(() => {});
+  const { status, statusText, markChanged, saveNow, setBaseline } =
+    useQueuedAutosave<object>({
+      save: (doc, opts) =>
+        patchJson(
+          `/api/consultation/${consultationId}`,
+          { clinical_note: doc },
+          opts,
+        ),
+      onSaved: () => router.refresh(), // summary + ✓ marks
+      delayMs: AUTOSAVE_MS,
+    });
 
   const editor = useEditor({
     immediatelyRender: false, // Next.js: render on the client only
@@ -137,100 +140,16 @@ const ClinicalNoteEditor = ({ consultationId, initialDoc }: Props) => {
         "aria-multiline": "true",
       },
     },
-    onCreate: ({ editor }) => setPresent(presentSections(editor)),
+    onCreate: ({ editor }) => {
+      setPresent(presentSections(editor));
+      setBaseline(editor.getJSON()); // Save works before any edit
+    },
     onUpdate: ({ editor }) => {
       setPresent(presentSections(editor));
-      editVersion.current += 1;
-      latestDoc.current = editor.getJSON();
-      setStatus("dirty");
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => saveRef.current(), AUTOSAVE_MS);
+      markChanged(editor.getJSON());
     },
   });
-
-  const save = useCallback(() => {
-    if (!editor) return;
-    if (timer.current) clearTimeout(timer.current);
-    const version = editVersion.current;
-    const doc = editor.getJSON();
-    setStatus("saving");
-    // One save at a time, in order: the last edit is always the one stored.
-    queue.current = queue.current.then(async () => {
-      try {
-        const res = await fetch(`/api/consultation/${consultationId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clinical_note: doc }),
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        savedVersion.current = Math.max(savedVersion.current, version);
-        if (version === editVersion.current) {
-          setStatus("saved");
-          setSavedAt(new Date());
-        } else {
-          setStatus("dirty"); // newer edits are waiting for their own save
-        }
-        router.refresh(); // summary + ✓ marks
-      } catch (error) {
-        console.error("Saving clinical note failed:", error);
-        if (version === editVersion.current) setStatus("error");
-      }
-    });
-  }, [editor, consultationId, router]);
-  saveRef.current = save;
-
-  // Ctrl/Cmd+S saves now.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") {
-        e.preventDefault();
-        saveRef.current();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  // Warn before leaving with unsaved changes.
-  useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (status === "dirty" || status === "saving" || status === "error") {
-        e.preventDefault();
-      }
-    };
-    window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
-  }, [status]);
-
-  // Leaving the note (another patient, another page) with edits not yet
-  // saved: send them now. keepalive lets the request finish during navigation.
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-      if (editVersion.current > savedVersion.current && latestDoc.current) {
-        fetch(`/api/consultation/${consultationId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clinical_note: latestDoc.current }),
-          keepalive: true,
-        }).catch((error) =>
-          console.error("Saving clinical note on leave failed:", error),
-        );
-      }
-    },
-    [consultationId],
-  );
-
-  const statusText =
-    status === "saving"
-      ? "Saving…"
-      : status === "dirty"
-        ? "Unsaved changes"
-        : status === "error"
-          ? "Save failed — retry"
-          : status === "saved" && savedAt
-            ? `Saved · ${savedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-            : "";
+  const save = saveNow;
 
   return (
     <Flex direction="column" gap="2">
