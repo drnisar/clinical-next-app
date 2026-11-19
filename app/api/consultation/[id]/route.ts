@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath, revalidateTag } from "next/cache";
+import {
+  deriveLegacyFields,
+  isNoteDoc,
+} from "@/app/dashboard/consultation/_components/clinicalNote/clinicalNote";
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -14,7 +18,7 @@ export async function GET(req: NextRequest, { params }: Props) {
   if (!consultation) {
     return NextResponse.json(
       { message: "Consultation not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
   // Revalidate paths and tags
@@ -34,7 +38,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
   if (!consultation) {
     return NextResponse.json(
       { message: "Consultation not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
   await prisma.consultation.delete({
@@ -42,23 +46,30 @@ export async function DELETE(req: NextRequest, { params }: Props) {
   });
   return NextResponse.json(
     { message: "Consultation deleted successfully" },
-    { status: 200 }
+    { status: 200 },
   );
 }
 
 export async function PATCH(req: NextRequest, { params }: Props) {
-  const {
-    registration_id,
-    history,
-    examination,
-    investigations,
-    diagnosis,
-    visit_date,
-    instructions,
-    plan,
-    medications,
-    status,
-  } = await req.json();
+  const body = await req.json();
+  const { registration_id, visit_date, medications, status, clinical_note } =
+    body;
+  let { history, examination, investigations, diagnosis, instructions, plan } =
+    body;
+
+  // The Clinical Note is the source of truth: when it is sent, store it and
+  // overwrite the old separate fields from it, so everything that reads them
+  // (print report, registration page, history panel) stays consistent.
+  if (clinical_note !== undefined) {
+    if (!isNoteDoc(clinical_note)) {
+      return NextResponse.json(
+        { message: "clinical_note must be a TipTap document" },
+        { status: 400 },
+      );
+    }
+    ({ history, examination, investigations, diagnosis, instructions, plan } =
+      deriveLegacyFields(clinical_note));
+  }
   const { id } = await params;
   const consultation = await prisma.consultation.findUnique({
     where: { consultation_id: id },
@@ -66,7 +77,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
   if (!consultation) {
     return NextResponse.json(
       { message: "Consultation not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -84,6 +95,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
         plan,
         medications,
         status,
+        ...(clinical_note !== undefined && { clinical_note }),
       },
     });
 
@@ -102,7 +114,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
         message: "Failed to update consultation",
         error: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

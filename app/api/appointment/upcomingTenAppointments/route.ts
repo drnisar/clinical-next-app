@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { startOfTodayPKT } from "@/lib/dates";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -12,7 +13,7 @@ export const GET = async (req: NextRequest) => {
       },
       where: {
         date_appointment: {
-          gte: new Date(), // Fetch appointments from today onwards
+          gte: startOfTodayPKT(), // From today (Pakistan), including earlier today
         },
       },
       orderBy: {

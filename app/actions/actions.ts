@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { unstable_cache } from "next/cache";
+import { startOfTodayPKT, todayRangePKT } from "@/lib/dates";
 
 export const getRegistrations = async () => {
   const registrations = await prisma.registration.findMany({
@@ -51,11 +52,66 @@ export const getAppointments = async () => {
   return appointments;
 };
 
+/** One patient's appointments, newest first. */
+export const getAppointmentsForRegistration = async (registrationId: string) =>
+  prisma.appointment.findMany({
+    where: { registration_id: registrationId },
+    orderBy: { date_appointment: "desc" },
+  });
+
+/**
+ * Upcoming appointments (from today, Pakistan time) for the booking dialog,
+ * which shows how busy each day is. Only the fields it displays: no phone
+ * numbers, MRNs or dates of birth of other patients.
+ */
+export const getUpcomingAppointmentsForBooking = async () =>
+  prisma.appointment.findMany({
+    where: { date_appointment: { gte: startOfTodayPKT() } },
+    orderBy: { date_appointment: "asc" },
+    select: {
+      appointment_id: true,
+      date_appointment: true,
+      type: true,
+      plan: true,
+      registration: { select: { first_name: true, last_name: true } },
+    },
+  });
+
+export type BookingAppointment = Awaited<
+  ReturnType<typeof getUpcomingAppointmentsForBooking>
+>[number];
+
+/** A patient's earlier consultations (excluding the current one), newest first. */
+export const getConsultationHistory = async (
+  registrationId: string,
+  excludeConsultationId: string,
+) =>
+  prisma.consultation.findMany({
+    where: {
+      registration_id: registrationId,
+      NOT: { consultation_id: excludeConsultationId },
+    },
+    orderBy: { visit_date: "desc" },
+    take: 10,
+    select: {
+      consultation_id: true,
+      visit_date: true,
+      status: true,
+      diagnosis: true,
+      plan: true,
+      medications: true,
+    },
+  });
+
+export type ConsultationHistoryItem = Awaited<
+  ReturnType<typeof getConsultationHistory>
+>[number];
+
 export const getNextTenAppointments = async () => {
   const nextTenAppointments = await prisma.appointment.findMany({
     where: {
       date_appointment: {
-        gte: new Date(), // Fetch appointments from today onwards
+        gte: startOfTodayPKT(), // From today (Pakistan), including earlier today
       },
     },
     orderBy: {
@@ -82,14 +138,13 @@ export const getConsultations = async () => {
 };
 
 export const getTodaysConsultations = async () => {
-  const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+  // Today in Pakistan, not the server's (UTC on Vercel) day.
+  const { start, end } = todayRangePKT();
   const consultations = await prisma.consultation.findMany({
     where: {
       visit_date: {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: start,
+        lt: end,
       },
     },
     orderBy: {

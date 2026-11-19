@@ -1,5 +1,5 @@
 "use client";
-import { Appointment, Registration } from "@/generated/prisma";
+import type { Appointment } from "@/generated/prisma";
 import { Table, Badge, Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import {
   badgeColorForAppointments,
@@ -8,7 +8,7 @@ import {
 import AppointmentDeleteButton from "../../appointments/_components/AppointmentDeleteButton";
 
 interface Props {
-  appointmentsForRegistration: ({ registration: Registration } & Appointment)[];
+  appointmentsForRegistration: Appointment[];
 }
 const AppointmentsTableForSingleRegId = ({
   appointmentsForRegistration,

@@ -101,6 +101,10 @@ model Consultation {
   diagnosis       String?
   examination     Examination[]
   history         String?
+  /// TipTap document for the single "Clinical Note". When present it is the
+  /// source of truth; history/examination/investigations/diagnosis/plan/
+  /// instructions are derived from it on save (see clinicalNote.ts).
+  clinical_note   Json?
   instructions    Instruction[]
   investigations  Investigation[]
   plan            String?

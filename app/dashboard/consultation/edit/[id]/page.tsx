@@ -1,27 +1,22 @@
 import {
-  getAppointments,
+  getAppointmentsForRegistration,
   getConsultationById,
+  getConsultationHistory,
   getMedsTemplates,
-  getRegistrationById,
+  getUpcomingAppointmentsForBooking,
 } from "@/app/actions/actions";
-import RegistrationDetailsCard from "@/app/dashboard/registration/_components/RegistrationDetailsCard";
-import ButtonPrintPreview from "../../_components/ButtonPrintPreview";
-import ConsultationDetailsForSingleRegId from "../../_components/ConsultationDetailsForSingleRegId";
-import ConsultationTabs from "../../_components/ConsultationTabs";
-import MedsDisplayEnglish from "@/app/dashboard/_components/MedsDisplayEnglish";
-import InstructionsDisplayEnglish from "@/app/dashboard/_components/InstructionsDisplayEnglish";
-import AppointmentsTableForSingleRegId from "@/app/dashboard/appointments/_components/AppointmentsTableForSingleRegId";
-import StatusChangeComponent from "../../_components/StatusChangeComponent";
-import TodaysPatientsSideBar from "../../_components/TodaysPatientsSideBar";
-import { Box, Flex, Grid } from "@radix-ui/themes";
-import HMISNotes from "../../_components/HMISNotes";
+import { startOfTodayPKT } from "@/lib/dates";
+import ConsultationSteps from "../../_components/edit/ConsultationSteps";
+import ConsultationSummary from "../../_components/edit/ConsultationSummary";
+import ConsultationWorkspace from "../../_components/edit/ConsultationWorkspace";
+import PatientHistoryPanel from "../../_components/edit/PatientHistoryPanel";
 
 const ConsultationEditPage = async ({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ type: string }>;
+  searchParams: Promise<{ type?: string }>;
 }) => {
   const { id } = await params;
   const { type } = await searchParams;
@@ -30,76 +25,67 @@ const ConsultationEditPage = async ({
   if (!consultation) {
     return <div>Consultation not found</div>;
   }
-  const registration = await getRegistrationById(consultation?.registration_id);
+  const registration = consultation.registration;
   if (!registration) {
     return <div>Registration not found</div>;
   }
 
-  const templates = await getMedsTemplates();
-  if (!templates) {
-    return <div>No medication templates found</div>;
-  }
+  // Everything else in parallel. Only this patient's appointments, plus the
+  // minimal upcoming-bookings list the appointment dialog shows.
+  const [templates, patientAppointments, bookingAppointments, earlierVisits] =
+    await Promise.all([
+      getMedsTemplates().catch(() => []),
+      getAppointmentsForRegistration(consultation.registration_id),
+      getUpcomingAppointmentsForBooking(),
+      getConsultationHistory(consultation.registration_id, id),
+    ]);
 
-  const appointments = await getAppointments();
-  if (!appointments) {
-    return <div>No appointments found</div>;
-  }
-  const appointmentsForRegistration = await appointments.filter(
-    (appointment) =>
-      appointment.registration_id === consultation.registration_id,
-  );
+  const today = startOfTodayPKT();
+  const upcomingAppointments = patientAppointments
+    .filter((a) => new Date(a.date_appointment) >= today)
+    .sort(
+      (a, b) =>
+        new Date(a.date_appointment).getTime() -
+        new Date(b.date_appointment).getTime(),
+    );
 
   return (
-    <>
-      <Grid columns="12" gap="2">
-        <Box className="pt-4 col-span-2">
-          <TodaysPatientsSideBar id={id} />
-        </Box>
-
-        <Box className="col-span-10">
-          <Flex direction="column" gap="4" p="4" gridColumn={"2"}>
-            <Flex justify="between">
-              <StatusChangeComponent
-                status={consultation.status ?? ""}
-                consultation_id={id}
-              />
-              <ButtonPrintPreview consultation_id={id} />
-            </Flex>
-            <RegistrationDetailsCard
-              registration={consultation?.registration}
-            />
-            <Flex gap={"2"}>
-              <Flex className="col-span-6">
-                <ConsultationTabs
-                  consultation={consultation}
-                  type={type || ""}
-                  templates={templates}
-                  appointments={appointments}
-                  mrn={registration.mr_number}
-                />
-              </Flex>
-              <Flex
-                direction="column"
-                gap="4"
-                className="col-span-4 bg-yellow-50 dark:bg-transparent w-full p-2"
-              >
-                <ConsultationDetailsForSingleRegId
-                  consultation={consultation}
-                />
-                <HMISNotes mr_number={registration.mr_number} />
-                <MedsDisplayEnglish meds={consultation.medications} />
-                <InstructionsDisplayEnglish
-                  instructions={consultation.instructions}
-                />
-                <AppointmentsTableForSingleRegId
-                  appointmentsForRegistration={appointmentsForRegistration}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-        </Box>
-      </Grid>
-    </>
+    // Keyed by consultation: moving to another patient (e.g. "Next patient")
+    // must never reuse the previous patient's editor or panel state.
+    <ConsultationWorkspace
+      key={id}
+      consultationId={id}
+      status={consultation.status ?? ""}
+      patient={{
+        first_name: registration.first_name,
+        last_name: registration.last_name,
+        gender: registration.gender,
+        mr_number: registration.mr_number,
+        date_of_birth: registration.date_of_birth,
+      }}
+      form={
+        <ConsultationSteps
+          consultation={consultation}
+          templates={templates ?? []}
+          bookingAppointments={bookingAppointments}
+          type={type ?? ""}
+          hasUpcomingAppointment={upcomingAppointments.length > 0}
+        />
+      }
+      summary={
+        <ConsultationSummary
+          consultation={consultation}
+          upcomingAppointments={upcomingAppointments}
+        />
+      }
+      history={
+        <PatientHistoryPanel
+          mrn={registration.mr_number}
+          nextAppointment={upcomingAppointments[0] ?? null}
+          earlierVisits={earlierVisits}
+        />
+      }
+    />
   );
 };
 

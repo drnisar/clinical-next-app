@@ -1,153 +1,144 @@
 "use client";
-import type { Consultation, Registration } from "@/generated/prisma";
-import { TextField, Button } from "@radix-ui/themes";
+import { Button, Flex, Text, TextField } from "@radix-ui/themes";
 import Link from "next/link";
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { colorForStatus } from "../../_components/appConstants";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { calculateAgeFromDate } from "../today/_components/TodaysConsultationsTable";
+import { useTodaysPatients, type QueuePatient } from "./edit/useTodaysPatients";
 
-type Patient = Consultation & {
-  registration: Registration;
-};
+const STATUS_FILTERS = [
+  { value: "QUEUED", label: "Queued", color: "orange" },
+  { value: "IN_PROGRESS", label: "In progress", color: "blue" },
+  { value: "COMPLETED", label: "Completed", color: "green" },
+] as const;
 
 interface Props {
+  /** consultation_id of the patient being seen (highlighted). */
   id?: string;
+  /** Called after a patient is picked (e.g. to close the mobile drawer). */
+  onNavigate?: () => void;
 }
 
-const TodaysPatientsSideBar = ({ id }: Props) => {
+const TodaysPatientsSideBar = ({ id, onNavigate }: Props) => {
   const [search, setSearch] = useState("");
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const patientsQuery = useTodaysPatients();
+  const patients = useMemo(
+    () => patientsQuery.data ?? [],
+    [patientsQuery.data],
+  );
 
-  const patientsFromQuery = useQuery({
-    queryKey: ["todaysPatients"],
-    queryFn: async () => {
-      const response = await axios.get("/api/consultation/today");
-      if (response.status !== 200) {
-        throw new Error("Failed to fetch today's patients");
-      }
-      return response.data;
-    },
-    refetchInterval: 60 * 1000, // Reduced to 60 seconds since we have manual refresh
-    staleTime: 30 * 1000, // Consider data stale after 30 seconds
-  });
+  const counts = useMemo(() => {
+    const c: Record<string, number> = {};
+    for (const p of patients) c[p.status] = (c[p.status] ?? 0) + 1;
+    return c;
+  }, [patients]);
 
-  const filteredAndSortedPatients = useMemo(() => {
-    if (!patientsFromQuery.data || patientsFromQuery.data.length === 0)
-      return [];
-
-    return patientsFromQuery.data.filter((patient: Patient) => {
-      const firstName = patient?.registration?.first_name;
-      if (!firstName) return false;
-
-      const lastName = patient?.registration?.last_name || "";
-      const searchLower = search.toLowerCase();
-      return (
-        firstName.toLowerCase().includes(searchLower) ||
-        lastName.toLowerCase().includes(searchLower)
-      );
+  const visible = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return patients.filter((p: QueuePatient) => {
+      if (statusFilter && p.status !== statusFilter) return false;
+      const first = p.registration?.first_name?.toLowerCase() ?? "";
+      const last = p.registration?.last_name?.toLowerCase() ?? "";
+      return !q || first.includes(q) || last.includes(q);
     });
-  }, [patientsFromQuery.data, search]);
-
-  // Helper function to safely calculate age
-  const getAge = (dateOfBirth: string | Date | null | undefined) => {
-    if (!dateOfBirth) return null;
-
-    try {
-      // Convert string to Date if necessary
-      const date =
-        typeof dateOfBirth === "string" ? new Date(dateOfBirth) : dateOfBirth;
-
-      // Check if date is valid
-      if (isNaN(date.getTime())) return null;
-
-      return calculateAgeFromDate(date);
-    } catch (error) {
-      console.error("Error calculating age:", error);
-      return null;
-    }
-  };
-
-  // Fast refresh function
-  const refreshFunction = async () => {
-    setIsRefreshing(true);
-    try {
-      // Use refetch instead of invalidateQueries for faster response
-      await patientsFromQuery.refetch();
-    } catch (error) {
-      console.error("Failed to refresh patients:", error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
+  }, [patients, search, statusFilter]);
 
   return (
-    <div className="pr-2 border-r border-slate-300 h-screen overflow-y-auto">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold">Today Patients</h2>
+    <Flex direction="column" gap="2">
+      <Flex align="center" justify="between">
+        <Text weight="bold" size="3">
+          Today&apos;s patients ({patients.length})
+        </Text>
         <Button
           variant="ghost"
           size="1"
-          onClick={refreshFunction}
-          disabled={isRefreshing}
-          className="p-1"
+          onClick={() => patientsQuery.refetch()}
+          disabled={patientsQuery.isFetching}
+          aria-label="Refresh today's patients"
+          title="Refresh"
         >
           <ReloadIcon
-            className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`}
+            className={patientsQuery.isFetching ? "animate-spin" : ""}
           />
         </Button>
-      </div>
+      </Flex>
+
+      {/* Status chips: counts, tap to filter (tap again to clear) */}
+      <Flex gap="1" wrap="wrap">
+        {STATUS_FILTERS.map((s) => {
+          const active = statusFilter === s.value;
+          return (
+            <Button
+              key={s.value}
+              size="1"
+              radius="full"
+              color={s.color}
+              variant={active ? "solid" : "soft"}
+              aria-pressed={active}
+              onClick={() => setStatusFilter(active ? null : s.value)}
+            >
+              {s.label} {counts[s.value] ?? 0}
+            </Button>
+          );
+        })}
+      </Flex>
 
       <TextField.Root
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        size="1"
+        size="2"
         placeholder="Search patients..."
-        className="mb-2 w-full"
       />
 
       <ul className="space-y-1">
-        {filteredAndSortedPatients.map((patient: Patient, index: number) => (
-          <li
-            key={patient.registration_id || patient.consultation_id}
-            className={`
-              ${colorForStatus(patient.status)}
-              ${patient.consultation_id === id && " font-extrabold"}
-              px-2 py-1 border-b border-slate-300 rounded-sm text-xs transition-colors duration-200 hover:bg-slate-100
-            `}
-          >
-            <Link
-              href={`/dashboard/consultation/edit/${patient.consultation_id}`}
-              className="block w-full h-full"
-            >
-              {index + 1}.{" "}
-              {patient.registration.first_name?.toUpperCase() || "Unknown"}{" "}
-              {patient.registration.last_name?.toUpperCase() || ""} -{" "}
-              {patient.registration.date_of_birth &&
-                getAge(patient.registration.date_of_birth)}{" "}
-              {patient.registration.gender === "male" ? " (M)" : " (F)"}
-            </Link>
-          </li>
-        ))}
+        {visible.map((patient, index) => {
+          const current = patient.consultation_id === id;
+          const age = calculateAgeFromDate(patient.registration?.date_of_birth);
+          return (
+            <li key={patient.consultation_id}>
+              <Link
+                href={`/dashboard/consultation/edit/${patient.consultation_id}`}
+                aria-current={current ? "page" : undefined}
+                onClick={onNavigate}
+                className={`block rounded-md px-2 py-2 text-sm transition-colors hover:brightness-95 ${colorForStatus(
+                  patient.status,
+                )} ${current ? "font-bold ring-2 ring-[var(--accent-9)]" : ""}`}
+              >
+                {index + 1}.{" "}
+                {patient.registration?.first_name?.toUpperCase() || "Unknown"}{" "}
+                {patient.registration?.last_name?.toUpperCase() || ""}
+                <span className="opacity-75">
+                  {age !== null ? ` · ${age}` : ""}
+                  {patient.registration?.gender === "male" ? " (M)" : " (F)"}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
 
-        {patientsFromQuery.isLoading && (
-          <li className="px-2 py-4 text-center text-gray-500 text-sm">
+        {patientsQuery.isLoading && (
+          <li className="px-2 py-4 text-center text-sm text-gray-500">
             Loading patients...
           </li>
         )}
-
-        {filteredAndSortedPatients.length === 0 &&
-          !patientsFromQuery.isLoading && (
-            <li className="px-2 py-4 text-center text-gray-500 text-sm">
-              {search
-                ? "No patients found matching your search"
+        {patientsQuery.isError && (
+          <li className="px-2 py-4 text-center text-sm text-red-600">
+            Couldn&apos;t load today&apos;s patients.
+          </li>
+        )}
+        {!patientsQuery.isLoading &&
+          !patientsQuery.isError &&
+          visible.length === 0 && (
+            <li className="px-2 py-4 text-center text-sm text-gray-500">
+              {search || statusFilter
+                ? "No patients match"
                 : "No patients for today"}
             </li>
           )}
       </ul>
-    </div>
+    </Flex>
   );
 };
 

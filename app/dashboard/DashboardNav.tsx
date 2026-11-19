@@ -14,7 +14,8 @@ import {
 import Link, { useLinkStatus } from "next/link";
 import ThemeToggle from "../ThemeToggle";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useHeightCssVar } from "@/lib/useHeightCssVar";
 
 type NavLink = { name: string; href: string; icon: LucideIcon };
 
@@ -50,8 +51,13 @@ const DashboardNav = () => {
 
   const activeLink = links.find((link) => isActiveLink(pathname, link.href));
 
+  // Publish this bar's height so page-level sticky bars can sit below it.
+  const navRef = useRef<HTMLElement>(null);
+  useHeightCssVar(navRef, "--dashboard-nav-h");
+
   return (
     <nav
+      ref={navRef}
       aria-label="Dashboard sections"
       // Sticky: stays at the top while the page scrolls. Solid theme
       // background (light/dark) so content doesn't show through; z-index

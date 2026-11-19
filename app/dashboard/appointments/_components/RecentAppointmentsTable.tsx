@@ -1,4 +1,4 @@
-import { Appointment, Registration } from "@/generated/prisma/default";
+import type { BookingAppointment } from "@/app/actions/actions";
 import {
   Badge,
   Box,
@@ -16,7 +16,8 @@ import {
 } from "../../_components/appConstants";
 
 interface Props {
-  appointments: ({ registration: Registration } & Appointment)[];
+  // Only the fields shown: date, type, plan and the patient's name.
+  appointments: BookingAppointment[];
   searchParams: { type: string };
 }
 

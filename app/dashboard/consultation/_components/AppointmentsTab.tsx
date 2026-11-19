@@ -1,12 +1,12 @@
 "use client";
-import { Appointment, Registration } from "@/generated/prisma";
+import type { BookingAppointment } from "@/app/actions/actions";
 import CreateAppointmentDialog from "../../appointments/_components/CreateAppointmentDialog";
 
 interface Props {
   registration_id: string;
   consultation_id: string;
   type: string;
-  appointments: ({ registration: Registration } & Appointment)[];
+  appointments: BookingAppointment[];
 }
 
 const AppointmentsTab = ({ registration_id, type, appointments }: Props) => {

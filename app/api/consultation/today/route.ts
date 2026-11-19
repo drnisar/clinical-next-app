@@ -1,16 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { todayRangePKT } from "@/lib/dates";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(req: NextRequest) {
-  const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+  // Today in Pakistan, not the server's (UTC on Vercel) day.
+  const { start, end } = todayRangePKT();
   const consultations = await prisma.consultation.findMany({
     where: {
       visit_date: {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: start,
+        lt: end,
       },
     },
     orderBy: [{ status: "desc" }, { visit_date: "asc" }],
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   if (consultations.length === 0) {
     return NextResponse.json(
       { message: "No consultations found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
   return NextResponse.json(consultations);

@@ -1,14 +1,14 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 import React, { useState } from "react";
 import AppointmentForm from "./AppointmentForm";
-import { Appointment, Registration } from "@/generated/prisma";
+import type { BookingAppointment } from "@/app/actions/actions";
 import RecentAppointmentsTable from "./RecentAppointmentsTable";
 import { CircleIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 interface Props {
   registration_id: string;
   type: string;
-  appointments: ({ registration: Registration } & Appointment)[];
+  appointments: BookingAppointment[];
   searchParams: { type: string };
 }
 

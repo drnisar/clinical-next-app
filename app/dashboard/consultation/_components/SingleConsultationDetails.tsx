@@ -13,6 +13,8 @@ import RegistrationDetailsCard from "../../registration/_components/Registration
 import ConsultationDetailsForSingleRegId from "./ConsultationDetailsForSingleRegId";
 import MedDetailsForSingleVisitId from "./MedDetailsForSingleVisitId";
 import HMISNotes from "./HMISNotes";
+import ClinicalNoteView from "./clinicalNote/ClinicalNoteView";
+import { isNoteDoc } from "./clinicalNote/clinicalNote";
 
 interface Props {
   consultation: Consultation;
@@ -39,7 +41,15 @@ const SingleConsultationDetails = ({
         <div className="col-span-4 text-xs border-r">
           <Heading size="3">Clinical Details</Heading>
           <HMISNotes mr_number={registration.mr_number} />
-          <ConsultationDetailsForSingleRegId consultation={consultation} />
+          {isNoteDoc(consultation.clinical_note) ? (
+            // Instructions are printed in the For Patient column instead.
+            <ClinicalNoteView
+              doc={consultation.clinical_note}
+              omit={["instructions"]}
+            />
+          ) : (
+            <ConsultationDetailsForSingleRegId consultation={consultation} />
+          )}
         </div>
         <div className="col-span-8 px-4">
           <Heading size="3">For Patient</Heading>

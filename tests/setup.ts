@@ -8,6 +8,8 @@ process.env.DATABASE_URL ??= "mongodb://localhost:27017/test";
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
   revalidateTag: vi.fn(),
+  // No cache in tests: call the wrapped function directly.
+  unstable_cache: <T extends (...args: never[]) => unknown>(fn: T) => fn,
 }));
 
 // Keep test output readable: routes log errors on purpose in failure paths.

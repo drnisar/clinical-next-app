@@ -14,6 +14,7 @@ import {
   Flex,
   Heading,
   Separator,
+  Switch,
   Table,
   Tabs,
   Text,
@@ -158,6 +159,7 @@ const HMISAllNotes = ({ mrn }: Props) => {
     investigations: [],
   });
   const [loading, setLoading] = useState(false);
+  const [abnormalOnly, setAbnormalOnly] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -179,6 +181,13 @@ const HMISAllNotes = ({ mrn }: Props) => {
   if (loading) return <div>Loading HMIS notes and labs ...</div>;
 
   const { physicianNotes, investigations } = history;
+  // Investigations with at least one result flagged abnormal by HMIS.
+  const abnormalInvestigations = investigations.filter((inv) =>
+    (inv.results ?? []).some((r) => r.normal === "N"),
+  );
+  const shownInvestigations = abnormalOnly
+    ? abnormalInvestigations
+    : investigations;
 
   return (
     <Tabs.Root defaultValue="notes">
@@ -216,9 +225,24 @@ const HMISAllNotes = ({ mrn }: Props) => {
       {/* Most recent investigation first (report date, else order date). */}
       <Tabs.Content value="labs">
         <Box pt="3">
-          {investigations.length > 0 ? (
+          {investigations.length > 0 && (
+            <Text
+              as="label"
+              size="2"
+              mb="3"
+              className="flex items-center gap-2"
+            >
+              <Switch
+                checked={abnormalOnly}
+                onCheckedChange={setAbnormalOnly}
+                color="red"
+              />
+              Abnormal only ({abnormalInvestigations.length})
+            </Text>
+          )}
+          {shownInvestigations.length > 0 ? (
             <Flex direction="column" gap="3">
-              {investigations.map((inv, index) => (
+              {shownInvestigations.map((inv, index) => (
                 <InvestigationTable
                   key={`${inv.ocptKey || inv.orderNo}-${index}`}
                   inv={inv}
@@ -226,7 +250,11 @@ const HMISAllNotes = ({ mrn }: Props) => {
               ))}
             </Flex>
           ) : (
-            <p>No lab results found</p>
+            <p>
+              {abnormalOnly && investigations.length > 0
+                ? "No abnormal lab results"
+                : "No lab results found"}
+            </p>
           )}
         </Box>
       </Tabs.Content>

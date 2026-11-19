@@ -8146,6 +8146,7 @@ export namespace Prisma {
     created_at: number
     diagnosis: number
     history: number
+    clinical_note: number
     plan: number
     status: number
     registration_id: number
@@ -8184,6 +8185,7 @@ export namespace Prisma {
     created_at?: true
     diagnosis?: true
     history?: true
+    clinical_note?: true
     plan?: true
     status?: true
     registration_id?: true
@@ -8269,6 +8271,7 @@ export namespace Prisma {
     created_at: Date
     diagnosis: string | null
     history: string | null
+    clinical_note: JsonValue | null
     plan: string | null
     status: $Enums.Status
     registration_id: string
@@ -8299,6 +8302,7 @@ export namespace Prisma {
     diagnosis?: boolean
     examination?: boolean | ExaminationDefaultArgs<ExtArgs>
     history?: boolean
+    clinical_note?: boolean
     instructions?: boolean | InstructionDefaultArgs<ExtArgs>
     investigations?: boolean | InvestigationDefaultArgs<ExtArgs>
     plan?: boolean
@@ -8317,6 +8321,7 @@ export namespace Prisma {
     created_at?: boolean
     diagnosis?: boolean
     history?: boolean
+    clinical_note?: boolean
     plan?: boolean
     status?: boolean
     registration_id?: boolean
@@ -8324,7 +8329,7 @@ export namespace Prisma {
     visit_date?: boolean
   }
 
-  export type ConsultationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"consultation_id" | "created_at" | "diagnosis" | "examination" | "history" | "instructions" | "investigations" | "plan" | "medications" | "status" | "registration_id" | "updated_at" | "visit_date", ExtArgs["result"]["consultation"]>
+  export type ConsultationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"consultation_id" | "created_at" | "diagnosis" | "examination" | "history" | "clinical_note" | "instructions" | "investigations" | "plan" | "medications" | "status" | "registration_id" | "updated_at" | "visit_date", ExtArgs["result"]["consultation"]>
   export type ConsultationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     registration?: boolean | RegistrationDefaultArgs<ExtArgs>
   }
@@ -8339,6 +8344,12 @@ export namespace Prisma {
       created_at: Date
       diagnosis: string | null
       history: string | null
+      /**
+       * TipTap document for the single "Clinical Note". When present it is the
+       * source of truth; history/examination/investigations/diagnosis/plan/
+       * instructions are derived from it on save (see clinicalNote.ts).
+       */
+      clinical_note: Prisma.JsonValue | null
       plan: string | null
       status: $Enums.Status
       registration_id: string
@@ -8746,6 +8757,7 @@ export namespace Prisma {
     readonly created_at: FieldRef<"Consultation", 'DateTime'>
     readonly diagnosis: FieldRef<"Consultation", 'String'>
     readonly history: FieldRef<"Consultation", 'String'>
+    readonly clinical_note: FieldRef<"Consultation", 'Json'>
     readonly plan: FieldRef<"Consultation", 'String'>
     readonly status: FieldRef<"Consultation", 'Status'>
     readonly registration_id: FieldRef<"Consultation", 'String'>
@@ -17265,6 +17277,7 @@ export namespace Prisma {
     created_at: 'created_at',
     diagnosis: 'diagnosis',
     history: 'history',
+    clinical_note: 'clinical_note',
     plan: 'plan',
     status: 'status',
     registration_id: 'registration_id',
@@ -17962,6 +17975,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     examination?: ExaminationCompositeListFilter | ExaminationObjectEqualityInput[]
     history?: StringNullableFilter<"Consultation"> | string | null
+    clinical_note?: JsonNullableFilter<"Consultation">
     instructions?: InstructionCompositeListFilter | InstructionObjectEqualityInput[]
     investigations?: InvestigationCompositeListFilter | InvestigationObjectEqualityInput[]
     plan?: StringNullableFilter<"Consultation"> | string | null
@@ -17979,6 +17993,7 @@ export namespace Prisma {
     diagnosis?: SortOrder
     examination?: ExaminationOrderByCompositeAggregateInput
     history?: SortOrder
+    clinical_note?: SortOrder
     instructions?: InstructionOrderByCompositeAggregateInput
     investigations?: InvestigationOrderByCompositeAggregateInput
     plan?: SortOrder
@@ -17999,6 +18014,7 @@ export namespace Prisma {
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     examination?: ExaminationCompositeListFilter | ExaminationObjectEqualityInput[]
     history?: StringNullableFilter<"Consultation"> | string | null
+    clinical_note?: JsonNullableFilter<"Consultation">
     instructions?: InstructionCompositeListFilter | InstructionObjectEqualityInput[]
     investigations?: InvestigationCompositeListFilter | InvestigationObjectEqualityInput[]
     plan?: StringNullableFilter<"Consultation"> | string | null
@@ -18015,6 +18031,7 @@ export namespace Prisma {
     created_at?: SortOrder
     diagnosis?: SortOrder
     history?: SortOrder
+    clinical_note?: SortOrder
     plan?: SortOrder
     status?: SortOrder
     registration_id?: SortOrder
@@ -18033,6 +18050,7 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"Consultation"> | Date | string
     diagnosis?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     history?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
+    clinical_note?: JsonNullableWithAggregatesFilter<"Consultation">
     plan?: StringNullableWithAggregatesFilter<"Consultation"> | string | null
     status?: EnumStatusWithAggregatesFilter<"Consultation"> | $Enums.Status
     registration_id?: StringWithAggregatesFilter<"Consultation"> | string
@@ -19063,6 +19081,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -19079,6 +19098,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -19094,6 +19114,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19109,6 +19130,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19125,6 +19147,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -19140,6 +19163,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19154,6 +19178,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20212,6 +20237,7 @@ export namespace Prisma {
     created_at?: SortOrder
     diagnosis?: SortOrder
     history?: SortOrder
+    clinical_note?: SortOrder
     plan?: SortOrder
     status?: SortOrder
     registration_id?: SortOrder
@@ -22259,6 +22285,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -22274,6 +22301,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -22486,6 +22514,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Consultation"> | Date | string
     diagnosis?: StringNullableFilter<"Consultation"> | string | null
     history?: StringNullableFilter<"Consultation"> | string | null
+    clinical_note?: JsonNullableFilter<"Consultation">
     plan?: StringNullableFilter<"Consultation"> | string | null
     status?: EnumStatusFilter<"Consultation"> | $Enums.Status
     registration_id?: StringFilter<"Consultation"> | string
@@ -23015,6 +23044,7 @@ export namespace Prisma {
     diagnosis?: string | null
     examination?: XOR<ExaminationListCreateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: string | null
+    clinical_note?: InputJsonValue | null
     instructions?: XOR<InstructionListCreateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListCreateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: string | null
@@ -23094,6 +23124,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23108,6 +23139,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23122,6 +23154,7 @@ export namespace Prisma {
     diagnosis?: NullableStringFieldUpdateOperationsInput | string | null
     examination?: XOR<ExaminationListUpdateEnvelopeInput, ExaminationCreateInput> | ExaminationCreateInput[]
     history?: NullableStringFieldUpdateOperationsInput | string | null
+    clinical_note?: InputJsonValue | InputJsonValue | null
     instructions?: XOR<InstructionListUpdateEnvelopeInput, InstructionCreateInput> | InstructionCreateInput[]
     investigations?: XOR<InvestigationListUpdateEnvelopeInput, InvestigationCreateInput> | InvestigationCreateInput[]
     plan?: NullableStringFieldUpdateOperationsInput | string | null
