@@ -1,5 +1,6 @@
 "use client";
-import { Box, Flex, Tabs } from "@radix-ui/themes";
+import { Box, Flex, IconButton, Select, Tabs, Text } from "@radix-ui/themes";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import DischargeForm from "./DischargeForm";
 // import { Admission_Discharge } from "@prisma/client";
@@ -49,17 +50,78 @@ const DischargeTabs = ({ admission, templates }: Props) => {
     }
   };
 
+  const activeIndex = tabValues.indexOf(activeTab);
+  const goTo = (index: number) => setActiveTab(tabValues[index]);
+
   return (
     <>
       <DischargeForm admission={admission} />
       <Tabs.Root
         orientation="vertical"
-        defaultValue="Status"
         value={activeTab}
         onValueChange={setActiveTab}
       >
-        <Flex className="min-h-[200px]">
-          <Box className="w-1/6 bg-teal-50 dark:bg-transparent">
+        <Flex
+          direction={{ initial: "column", sm: "row" }}
+          className="min-h-[200px]"
+        >
+          {/* Phones (below 768px): section dropdown with previous/next,
+              in place of the narrow vertical tab list. */}
+          <Flex
+            display={{ initial: "flex", sm: "none" }}
+            align="center"
+            gap="2"
+            mb="3"
+          >
+            <IconButton
+              variant="soft"
+              size="3"
+              aria-label="Previous section"
+              disabled={activeIndex <= 0}
+              onClick={() => goTo(activeIndex - 1)}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <Box flexGrow="1" minWidth="0">
+              <Select.Root
+                value={activeTab}
+                onValueChange={setActiveTab}
+                size="3"
+              >
+                <Select.Trigger
+                  aria-label="Discharge section"
+                  style={{ width: "100%" }}
+                >
+                  {activeTab}{" "}
+                  <Text color="gray" size="2">
+                    ({activeIndex + 1}/{tabValues.length})
+                  </Text>
+                </Select.Trigger>
+                <Select.Content position="popper">
+                  {tabValues.map((value, i) => (
+                    <Select.Item value={value} key={value}>
+                      {i + 1}. {value}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Root>
+            </Box>
+            <IconButton
+              variant="soft"
+              size="3"
+              aria-label="Next section"
+              disabled={activeIndex >= tabValues.length - 1}
+              onClick={() => goTo(activeIndex + 1)}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Flex>
+
+          {/* Wider screens: vertical tab list on the left, as before. */}
+          <Box
+            display={{ initial: "none", sm: "block" }}
+            className="md:w-1/4 lg:w-1/6 bg-teal-50 dark:bg-transparent"
+          >
             <Tabs.List className="flex md:flex-col md:items-start">
               {tabValues.map((value) => (
                 <Tabs.Trigger value={value} key={value}>
@@ -68,7 +130,7 @@ const DischargeTabs = ({ admission, templates }: Props) => {
               ))}
             </Tabs.List>
           </Box>
-          <Box className="w-4/5 pl-4 min-h-[500px] ">
+          <Box className="w-full md:w-3/4 lg:w-4/5 md:pl-4 min-h-[500px]">
             <Tabs.Content value="Diagnosis / es">
               <Diagnosis
                 defaultValue={admission.diagnosis || ""}

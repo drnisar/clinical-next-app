@@ -1,7 +1,7 @@
 "use client";
 
 import { Admission_Discharge } from "@/generated/prisma";
-import { Button, Flex, Select, TextField } from "@radix-ui/themes";
+import { Button, Flex, Select, Text, TextField } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
@@ -19,17 +19,39 @@ interface Props {
 interface DischargeData {
   status: string;
   discharge_mode: string;
-  discharge_date: Date;
+  discharge_date: Date | null;
 }
+
+// Label + control, stacked on phones (full-width control) and inline on wider
+// screens.
+const Field = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => (
+  <Flex
+    direction={{ initial: "column", sm: "row" }}
+    align={{ initial: "stretch", sm: "center" }}
+    gap={{ initial: "1", sm: "2" }}
+  >
+    <Text as="label" size="2" weight="medium">
+      {label}
+    </Text>
+    {children}
+  </Flex>
+);
 
 const DischargeForm = ({ admission }: Props) => {
   const [status, setStatus] = useState(admission.status || "");
   const [disMode, setDisMode] = useState<string>(
-    admission.discharge_mode || ""
+    admission.discharge_mode || "",
   );
   const router = useRouter();
-  const [disDate, setDisDate] = useState(
-    new Date(admission.discharge_date || "")
+  // null when the admission has no discharge date yet (input shows empty).
+  const [disDate, setDisDate] = useState<Date | null>(
+    admission.discharge_date ? new Date(admission.discharge_date) : null,
   );
   const [formChanged, setFormChanged] = useState(false);
 
@@ -40,7 +62,7 @@ const DischargeForm = ({ admission }: Props) => {
     mutationFn: async (data: DischargeData) => {
       const response = await axios.patch(
         "/api/admission/" + admission.admission_id,
-        data
+        data,
       );
       return response.data;
     },
@@ -65,7 +87,7 @@ const DischargeForm = ({ admission }: Props) => {
     const disData = {
       status: status,
       discharge_mode: disMode,
-      discharge_date: new Date(disDate),
+      discharge_date: disDate,
     };
 
     addMutation.mutate(disData);
@@ -74,40 +96,54 @@ const DischargeForm = ({ admission }: Props) => {
   return (
     <>
       <Toaster />
-      <form>
-        <Flex gap="5" p="4">
-          <label htmlFor="status">Discharge Status</label>
-          <Select.Root
-            onValueChange={(value) => {
-              setStatus(value);
-              setFormChanged(true);
-            }}
-            value={status}
-            size={"1"}
-          >
-            <Select.Trigger placeholder="Select Discharge Status">
-              {status}
-            </Select.Trigger>
-            <Select.Content>
-              {dischargeStatuses.map((status) => (
-                <Select.Item key={status.value} value={status.value}>
-                  {status.label}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select.Root>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
+        {/* Phones: fields stacked full-width, larger controls, full-width Save.
+            Wider screens: one row, as before. */}
+        <Flex
+          direction={{ initial: "column", sm: "row" }}
+          align={{ initial: "stretch", sm: "center" }}
+          wrap="wrap"
+          gap={{ initial: "3", sm: "5" }}
+          p={{ initial: "3", sm: "4" }}
+        >
+          <Field label="Discharge Status">
+            <Select.Root
+              onValueChange={(value) => {
+                setStatus(value);
+                setFormChanged(true);
+              }}
+              value={status}
+              size={{ initial: "3", sm: "1" }}
+            >
+              <Select.Trigger placeholder="Select Discharge Status">
+                {status}
+              </Select.Trigger>
+              <Select.Content>
+                {dischargeStatuses.map((status) => (
+                  <Select.Item key={status.value} value={status.value}>
+                    {status.label}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Root>
+          </Field>
+
           {status === "DISCHARGED" && (
-            <>
-              <label>Mode</label>
+            <Field label="Mode">
               <Select.Root
                 onValueChange={(value) => {
                   setDisMode(value);
                   setFormChanged(true);
                 }}
                 value={disMode}
-                size={"1"}
+                size={{ initial: "3", sm: "1" }}
               >
-                <Select.Trigger placeholder="Select Discharge Status">
+                <Select.Trigger placeholder="Select Discharge Mode">
                   {disMode}
                 </Select.Trigger>
                 <Select.Content>
@@ -118,37 +154,33 @@ const DischargeForm = ({ admission }: Props) => {
                   ))}
                 </Select.Content>
               </Select.Root>
-            </>
+            </Field>
           )}
+
           {status === "DISCHARGED" && disMode !== "" && (
-            <>
-              <label>Discharge Date</label>
+            <Field label="Discharge Date">
               <TextField.Root
                 type="date"
-                size={"1"}
-                defaultValue={disDate && dateYYYYMMDD(disDate)}
-                onBlur={(e) => {
-                  setDisDate(new Date(e.target.value));
-                }}
-                onChange={() => {
+                size={{ initial: "3", sm: "1" }}
+                defaultValue={disDate ? dateYYYYMMDD(disDate) : ""}
+                // onChange, not onBlur: mobile date pickers often don't blur
+                // before Save is tapped.
+                onChange={(e) => {
+                  setDisDate(e.target.value ? new Date(e.target.value) : null);
                   setFormChanged(true);
                 }}
               />
-            </>
+            </Field>
           )}
+
           {formChanged && (
             <Button
+              type="submit"
               variant="soft"
-              className="align-self-end"
-              onClick={(e) => {
-                e.preventDefault();
-                onSubmit();
-              }}
               disabled={addMutation.isPending}
-              size="1"
-              // disabled={!formChanged}
+              size={{ initial: "3", sm: "1" }}
             >
-              Save
+              {addMutation.isPending ? "Saving..." : "Save"}
             </Button>
           )}
         </Flex>
