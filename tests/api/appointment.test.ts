@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { NextRequest } from "next/server";
 import { prismaMock } from "../helpers/prisma";
 import { jsonRequest, params } from "../helpers/request";
@@ -9,6 +9,7 @@ vi.mock("@/lib/prisma", async () => ({
 
 import { GET, POST } from "@/app/api/appointment/route";
 import { DELETE, PATCH } from "@/app/api/appointment/[id]/route";
+import { GET as getUpcoming } from "@/app/api/appointment/upcoming/route";
 
 const REG_ID = "64b7f0c2a1b2c3d4e5f60718";
 const APPT_ID = "64b7f0c2a1b2c3d4e5f60719";
@@ -234,5 +235,34 @@ describe("PATCH /api/appointment/[id]", () => {
     prismaMock.appointment.update.mockRejectedValue(new Error("db down"));
     const res = await patch(APPT_ID, { status: "ARRIVED" });
     expect(res.status).toBe(500);
+  });
+});
+
+describe("GET /api/appointment/upcoming", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    // 02:30 on 19 Nov in Pakistan = 21:30 on 18 Nov UTC.
+    vi.setSystemTime(new Date("2026-11-18T21:30:00Z"));
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it("returns non-cancelled appointments from the start of today in Pakistan, names only", async () => {
+    prismaMock.appointment.findMany.mockResolvedValue([{ appointment_id: "a1" }]);
+    const res = await getUpcoming();
+    expect(await res.json()).toEqual([{ appointment_id: "a1" }]);
+
+    const query = prismaMock.appointment.findMany.mock.calls[0][0];
+    expect(query.where).toEqual({
+      date_appointment: { gte: new Date("2026-11-18T19:00:00Z") },
+      status: { not: "CANCELLED" },
+    });
+    expect(query.select.registration).toEqual({
+      select: { first_name: true, last_name: true },
+    });
+  });
+
+  it("returns 500 when the database fails", async () => {
+    prismaMock.appointment.findMany.mockRejectedValue(new Error("db down"));
+    expect((await getUpcoming()).status).toBe(500);
   });
 });

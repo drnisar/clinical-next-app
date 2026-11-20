@@ -1,144 +1,183 @@
 "use client";
 import { appointmentSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Flex, Select } from "@radix-ui/themes";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
+import {
+  Button,
+  Callout,
+  Flex,
+  SegmentedControl,
+  Text,
+  TextArea,
+  TextField,
+} from "@radix-ui/themes";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Form } from "radix-ui";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 import { appointmentTypeOptions } from "../../_components/appConstants";
-import { TextInput } from "../../_components/FormComponents";
-import { Appointment } from "@/generated/prisma";
+import AppointmentDayPicker from "./AppointmentDayPicker";
+import { useRefreshUpcomingAppointments } from "./useUpcomingAppointments";
 
-type FormData = Omit<Appointment, "status">;
+type FormData = z.infer<typeof appointmentSchema>;
 
-const AppointmentForm = ({
-  registration_id,
-  successFn,
+const longDate = (ymd: string) =>
+  new Date(`${ymd}T00:00:00Z`).toLocaleDateString("en-GB", {
+    timeZone: "UTC",
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+
+const Field = ({
+  label,
+  error,
+  children,
 }: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) => (
+  <Flex direction="column" gap="1">
+    <Text as="label" size="2" weight="bold">
+      {label}
+    </Text>
+    {children}
+    {error && (
+      <Text size="1" color="red">
+        {error}
+      </Text>
+    )}
+  </Flex>
+);
+
+interface Props {
   registration_id: string;
-  successFn: () => void;
-}) => {
+  /** Pre-selected appointment type, e.g. from ?type=. */
+  defaultType?: string;
+  /** Called after a successful booking (e.g. to close a dialog). */
+  onSuccess?: () => void;
+}
+
+const AppointmentForm = ({ registration_id, defaultType, onSuccess }: Props) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const refreshUpcoming = useRefreshUpcomingAppointments();
+  const [booked, setBooked] = useState("");
+  const validDefault = appointmentTypeOptions.some((o) => o.value === defaultType)
+    ? defaultType
+    : appointmentTypeOptions[0].value;
+
   const {
     register,
     handleSubmit,
     control,
+    watch,
+    reset,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(appointmentSchema) });
+  } = useForm<FormData>({
+    resolver: zodResolver(appointmentSchema),
+    defaultValues: {
+      registration_id,
+      type: validDefault,
+      date_appointment: "",
+      plan: "",
+      notes: "",
+    },
+  });
+  const date = watch("date_appointment");
 
   const addMutation = useMutation({
     mutationFn: (data: FormData) => axios.post("/api/appointment", data),
-    onSuccess: () => {
-      alert("Appointment added successfully");
-      successFn();
+    onSuccess: (_res, data) => {
+      setBooked(data.date_appointment);
+      reset({ ...data, date_appointment: "", plan: "", notes: "" });
+      refreshUpcoming();
       router.refresh();
-    },
-    onError: () => {
-      alert("Error adding appointment");
+      onSuccess?.();
     },
   });
 
-  const onSubmit = (data: FormData) => addMutation.mutate(data);
-
   return (
-    <div>
-      <Form.Root
-        onSubmit={handleSubmit(onSubmit)}
-        className="border p-6 shadow-md rounded-md w-full mx-auto"
-      >
-        <Flex gap="3" align="baseline" className="items-baseline flex-wrap">
-          <div className="min-w-0 flex-1">
-            <Controller
-              control={control}
-              name="type"
-              render={({ field: { onChange, value } }) => (
-                <div className="flex flex-col">
-                  <label className="text-sm font-medium mb-3 leading-none">
-                    Type
-                  </label>
-                  <Select.Root
-                    onValueChange={(newValue) => {
-                      onChange(newValue);
-                      const params = new URLSearchParams(searchParams);
-                      params.set("type", newValue);
-                      params.set("registration_id", registration_id);
-                      router.replace(`?${params}`, { scroll: false });
-                    }}
-                    value={value}
-                  >
-                    <Select.Trigger placeholder="Select type" />
-                    <Select.Content>
-                      <Select.Group>
-                        <Select.Label>Options</Select.Label>
-                        {appointmentTypeOptions.map((option) => (
-                          <Select.Item key={option.value} value={option.value}>
-                            {option.label}
-                          </Select.Item>
-                        ))}
-                      </Select.Group>
-                    </Select.Content>
-                  </Select.Root>
-                </div>
-              )}
-            />
-          </div>
+    <form
+      onSubmit={handleSubmit((data) => {
+        setBooked("");
+        addMutation.mutate(data);
+      })}
+    >
+      <Flex direction="column" gap="4">
+        {booked && (
+          <Callout.Root color="green" size="1">
+            <Callout.Icon>
+              <CheckCircledIcon />
+            </Callout.Icon>
+            <Callout.Text>Appointment booked for {longDate(booked)}.</Callout.Text>
+          </Callout.Root>
+        )}
 
-          <div className="min-w-0 flex-1">
-            <TextInput
-              label="Date"
-              name="date_appointment"
-              type="date"
-              placeholder="Date"
-              errorMessage={errors.date_appointment?.message?.toString() || ""}
-              register={() => register("date_appointment")}
-            />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <TextInput
-              label="Plan"
-              name="plan"
-              type="text"
-              placeholder="Appointment Plan"
-              errorMessage={errors.plan?.message?.toString() || ""}
-              register={() => register("plan")}
-            />
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <TextInput
-              label="Notes"
-              name="notes"
-              type="text"
-              placeholder="Notes"
-              errorMessage={errors.notes?.message?.toString() || ""}
-              register={() => register("notes")}
-            />
-          </div>
-
-          <div className="flex items-end flex-col ">
-            <label className="mb-3"></label>
-            <Button type="submit" disabled={addMutation.isPending}>
-              {addMutation.isPending ? "Submitting..." : "Submit"}
-            </Button>
-          </div>
-
-          <TextInput
-            label="Registration ID"
-            name="registration_id"
-            type="text"
-            placeholder="Registration ID"
-            hidden={true}
-            errorMessage=""
-            register={() => register("registration_id")}
-            defaultValue={registration_id}
+        <Field label="Type" error={errors.type?.message}>
+          <Controller
+            control={control}
+            name="type"
+            render={({ field }) => (
+              <SegmentedControl.Root
+                value={field.value}
+                onValueChange={field.onChange}
+                style={{ alignSelf: "flex-start" }}
+              >
+                {appointmentTypeOptions.map((o) => (
+                  <SegmentedControl.Item key={o.value} value={o.value}>
+                    {o.label}
+                  </SegmentedControl.Item>
+                ))}
+              </SegmentedControl.Root>
+            )}
           />
+        </Field>
+
+        <Field
+          label="Date — pick a day with room"
+          error={errors.date_appointment?.message}
+        >
+          <Controller
+            control={control}
+            name="date_appointment"
+            render={({ field }) => (
+              <AppointmentDayPicker value={field.value} onChange={field.onChange} />
+            )}
+          />
+        </Field>
+
+        <Field label="Plan" error={errors.plan?.message}>
+          <TextField.Root
+            placeholder="e.g. Post-op review, dressing, stitch removal"
+            maxLength={255}
+            {...register("plan")}
+          />
+        </Field>
+
+        <Field label="Notes (optional)" error={errors.notes?.message}>
+          <TextArea rows={2} placeholder="Anything to remember" {...register("notes")} />
+        </Field>
+
+        {addMutation.isError && (
+          <Text size="2" color="red">
+            Could not book the appointment. Please try again.
+          </Text>
+        )}
+
+        <Flex justify="end">
+          <Button type="submit" size="3" disabled={addMutation.isPending}>
+            {addMutation.isPending
+              ? "Booking…"
+              : date
+                ? `Book for ${longDate(date)}`
+                : "Book appointment"}
+          </Button>
         </Flex>
-      </Form.Root>
-    </div>
+      </Flex>
+    </form>
   );
 };
 

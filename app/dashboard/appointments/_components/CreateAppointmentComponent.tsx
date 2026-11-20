@@ -1,37 +1,25 @@
 "use client";
-import { Heading, Flex } from "@radix-ui/themes";
+import { Card, Flex, Heading } from "@radix-ui/themes";
+import { Registration } from "@/generated/prisma";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 import AppointmentForm from "./AppointmentForm";
-import RecentAppointmentsTable from "./RecentAppointmentsTable";
-import { Registration } from "@/generated/prisma";
-import type { BookingAppointment } from "@/app/actions/actions";
 
 interface Props {
   registration: Registration;
-  appointments: BookingAppointment[];
-  searchParams: { type: string };
+  defaultType: string;
 }
-const CreateAppointmentComponent = ({
-  registration,
-  appointments,
-  searchParams,
-}: Props) => {
-  return (
-    <div>
-      <Heading size="4">Create Appointment</Heading>
-      <Flex gap="4" direction={"column"}>
-        <RegistrationDetailsCard registration={registration} />
-        <AppointmentForm
-          registration_id={registration.registration_id}
-          successFn={() => {}}
-        />
-        <RecentAppointmentsTable
-          appointments={appointments}
-          searchParams={searchParams}
-        />
-      </Flex>
-    </div>
-  );
-};
+
+const CreateAppointmentComponent = ({ registration, defaultType }: Props) => (
+  <Flex direction="column" gap="4" className="max-w-3xl">
+    <Heading size="5">New appointment</Heading>
+    <RegistrationDetailsCard registration={registration} />
+    <Card size="2">
+      <AppointmentForm
+        registration_id={registration.registration_id}
+        defaultType={defaultType}
+      />
+    </Card>
+  </Flex>
+);
 
 export default CreateAppointmentComponent;

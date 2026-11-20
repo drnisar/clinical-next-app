@@ -13,7 +13,7 @@ import {
   getNextTenAppointments,
   getTodaysConsultations,
 } from "@/app/actions/actions";
-import { todayRangePKT } from "@/lib/dates";
+import { addDaysYMD, todayRangePKT, weekdayYMD, ymdPKT } from "@/lib/dates";
 
 // 02:30 on 19 Nov in Pakistan = 21:30 on 18 Nov UTC (a UTC server's "yesterday").
 const NOW = "2026-11-18T21:30:00Z";
@@ -78,5 +78,27 @@ describe("'today' is the Pakistan day, whatever the server time zone", () => {
         date_appointment: { gte: PKT_DAY.gte },
       });
     }
+  });
+});
+
+describe("calendar-day helpers", () => {
+  it("ymdPKT gives the Pakistan date of an instant", () => {
+    expect(ymdPKT("2026-11-18T21:30:00Z")).toBe("2026-11-19"); // 02:30 PKT
+    expect(ymdPKT("2026-11-18T18:59:59Z")).toBe("2026-11-18"); // 23:59 PKT
+  });
+
+  it("ymdPKT returns the booked date for an appointment stored as UTC midnight", () => {
+    expect(ymdPKT(new Date("2026-11-27"))).toBe("2026-11-27");
+  });
+
+  it("addDaysYMD crosses month and year ends", () => {
+    expect(addDaysYMD("2026-11-30", 1)).toBe("2026-12-01");
+    expect(addDaysYMD("2026-12-31", 1)).toBe("2027-01-01");
+    expect(addDaysYMD("2026-03-01", -1)).toBe("2026-02-28");
+  });
+
+  it("weekdayYMD", () => {
+    expect(weekdayYMD("2026-11-20")).toBe(5); // Friday
+    expect(weekdayYMD("2026-11-22")).toBe(0); // Sunday
   });
 });

@@ -79,13 +79,18 @@ export const getAppointmentsForRegistration = async (registrationId: string) =>
  */
 export const getUpcomingAppointmentsForBooking = async () =>
   prisma.appointment.findMany({
-    where: { date_appointment: { gte: startOfTodayPKT() } },
+    // Cancelled appointments don't take up a slot.
+    where: {
+      date_appointment: { gte: startOfTodayPKT() },
+      status: { not: "CANCELLED" },
+    },
     orderBy: { date_appointment: "asc" },
     select: {
       appointment_id: true,
       date_appointment: true,
       type: true,
       plan: true,
+      status: true,
       registration: { select: { first_name: true, last_name: true } },
     },
   });

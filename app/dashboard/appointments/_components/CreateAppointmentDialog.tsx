@@ -1,51 +1,42 @@
-import { Button, Dialog, Flex } from "@radix-ui/themes";
-import React, { useState } from "react";
+"use client";
+import { Cross2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { Button, Dialog, Flex, IconButton } from "@radix-ui/themes";
+import { useState } from "react";
 import AppointmentForm from "./AppointmentForm";
-import type { BookingAppointment } from "@/app/actions/actions";
-import RecentAppointmentsTable from "./RecentAppointmentsTable";
-import { CircleIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 interface Props {
   registration_id: string;
+  /** Pre-selected appointment type. */
   type: string;
-  appointments: BookingAppointment[];
-  searchParams: { type: string };
 }
 
-const CreateAppointmentDialog = ({
-  registration_id,
-  appointments,
-  searchParams,
-}: Props) => {
+const CreateAppointmentDialog = ({ registration_id, type }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
-        <Button variant="soft" size="1">
+        <Button variant="soft">
           <PlusCircledIcon />
           Create New Appointment
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="max-w-90vW h-90vh" maxWidth={"90vw"}>
-        <Dialog.Close>
-          <CircleIcon className="fixed right-4, top-4" />
-        </Dialog.Close>
-        <Dialog.Title>Create new appointment</Dialog.Title>
-        <Flex gap="4" width={"100%"} direction="column">
-          <AppointmentForm
-            registration_id={registration_id}
-            successFn={() => {
-              setOpen(false);
-            }}
-          />
-          {/* <AppointmentsTable appointments={appointments} /> */}
-          {appointments && appointments.length > 0 && (
-            <RecentAppointmentsTable
-              appointments={appointments}
-              searchParams={searchParams}
-            />
-          )}
+      <Dialog.Content maxWidth="720px">
+        <Flex justify="between" align="start">
+          <Dialog.Title>New appointment</Dialog.Title>
+          <Dialog.Close>
+            <IconButton variant="ghost" color="gray" aria-label="Close">
+              <Cross2Icon />
+            </IconButton>
+          </Dialog.Close>
         </Flex>
+        <Dialog.Description size="2" color="gray" mb="3">
+          The calendar shows how many patients are already booked each day.
+        </Dialog.Description>
+        <AppointmentForm
+          registration_id={registration_id}
+          defaultType={type}
+          onSuccess={() => setOpen(false)}
+        />
       </Dialog.Content>
     </Dialog.Root>
   );

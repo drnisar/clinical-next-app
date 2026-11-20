@@ -38,11 +38,13 @@ describe("consultation page loaders", () => {
     // Pakistan midnight of 19 Nov = 18 Nov 19:00 UTC.
     expect(a.where).toEqual({
       date_appointment: { gte: new Date("2026-11-18T19:00:00Z") },
+      status: { not: "CANCELLED" }, // cancelled bookings don't take a slot
     });
     expect(a.select).toEqual({
       appointment_id: true,
       date_appointment: true,
       type: true,
+      status: true,
       plan: true,
       registration: { select: { first_name: true, last_name: true } },
     });

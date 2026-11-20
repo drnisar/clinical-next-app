@@ -16,6 +16,9 @@ import {
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ymdPKT } from "@/lib/dates";
+import AppointmentDayPicker from "./AppointmentDayPicker";
+import { useRefreshUpcomingAppointments } from "./useUpcomingAppointments";
 
 interface Props {
   appointment: {
@@ -26,20 +29,13 @@ interface Props {
   };
 }
 
-// Local calendar date as "YYYY-MM-DD" (the format <input type="date"> uses).
-const toLocalYMD = (date: Date | string) => {
-  const d = new Date(date);
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${mm}-${dd}`;
-};
-
 const patchAppointment = (id: string, data: Record<string, string>) =>
   axios.patch(`/api/appointment/${id}`, data);
 
 /** Status dropdown and a Reschedule button for one appointment. */
 const AppointmentActions = ({ appointment }: Props) => {
   const router = useRouter();
+  const refreshUpcoming = useRefreshUpcomingAppointments();
   const [saving, setSaving] = useState(false);
 
   const changeStatus = async (status: string) => {
@@ -47,6 +43,7 @@ const AppointmentActions = ({ appointment }: Props) => {
     setSaving(true);
     try {
       await patchAppointment(appointment.appointment_id, { status });
+      refreshUpcoming();
       router.refresh();
     } catch {
       alert("Could not update the appointment status");
@@ -85,6 +82,8 @@ const AppointmentActions = ({ appointment }: Props) => {
 
 const RescheduleDialog = ({ appointment }: Props) => {
   const router = useRouter();
+  const refreshUpcoming = useRefreshUpcomingAppointments();
+  const currentDate = ymdPKT(appointment.date_appointment);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("");
   const [plan, setPlan] = useState("");
@@ -93,7 +92,7 @@ const RescheduleDialog = ({ appointment }: Props) => {
 
   const onOpenChange = (next: boolean) => {
     if (next) {
-      setDate(toLocalYMD(appointment.date_appointment));
+      setDate(currentDate);
       setPlan(appointment.plan);
       setError("");
     }
@@ -102,6 +101,8 @@ const RescheduleDialog = ({ appointment }: Props) => {
 
   const save = async () => {
     if (!date) return setError("Please choose a date");
+    if (date === currentDate && plan === appointment.plan)
+      return setError("Pick a different day");
     if (!plan.trim()) return setError("Please write the plan");
     setSaving(true);
     try {
@@ -110,6 +111,7 @@ const RescheduleDialog = ({ appointment }: Props) => {
         ...(plan !== appointment.plan && { plan: plan.trim() }),
       });
       setOpen(false);
+      refreshUpcoming();
       router.refresh();
     } catch {
       setError("Could not reschedule the appointment");
@@ -125,23 +127,26 @@ const RescheduleDialog = ({ appointment }: Props) => {
           <CalendarIcon /> Reschedule
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content maxWidth="400px">
+      <Dialog.Content maxWidth="720px">
         <Dialog.Title>Reschedule appointment</Dialog.Title>
         <Dialog.Description size="2" color="gray" mb="3">
-          Currently {new Date(appointment.date_appointment).toDateString()}.
-          The status goes back to Pending.
+          Currently booked for{" "}
+          {new Date(`${currentDate}T00:00:00Z`).toLocaleDateString("en-GB", {
+            timeZone: "UTC",
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          })}{" "}
+          (marked &ldquo;now&rdquo;). Pick a day with room; the status goes
+          back to Pending.
         </Dialog.Description>
         <Flex direction="column" gap="3">
-          <label>
-            <Text as="div" size="2" weight="medium" mb="1">
-              New date
-            </Text>
-            <TextField.Root
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </label>
+          <AppointmentDayPicker
+            value={date}
+            onChange={setDate}
+            excludeId={appointment.appointment_id}
+            currentDate={currentDate}
+          />
           <label>
             <Text as="div" size="2" weight="medium" mb="1">
               Plan

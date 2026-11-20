@@ -3,7 +3,6 @@ import {
   getConsultationById,
   getConsultationHistory,
   getMedsTemplates,
-  getUpcomingAppointmentsForBooking,
 } from "@/app/actions/actions";
 import { startOfTodayPKT } from "@/lib/dates";
 import ConsultationSteps from "../../_components/edit/ConsultationSteps";
@@ -30,15 +29,13 @@ const ConsultationEditPage = async ({
     return <div>Registration not found</div>;
   }
 
-  // Everything else in parallel. Only this patient's appointments, plus the
-  // minimal upcoming-bookings list the appointment dialog shows.
-  const [templates, patientAppointments, bookingAppointments, earlierVisits] =
-    await Promise.all([
-      getMedsTemplates().catch(() => []),
-      getAppointmentsForRegistration(consultation.registration_id),
-      getUpcomingAppointmentsForBooking(),
-      getConsultationHistory(consultation.registration_id, id),
-    ]);
+  // Everything else in parallel. Only this patient's appointments; the
+  // booking dialog loads other patients' bookings itself when opened.
+  const [templates, patientAppointments, earlierVisits] = await Promise.all([
+    getMedsTemplates().catch(() => []),
+    getAppointmentsForRegistration(consultation.registration_id),
+    getConsultationHistory(consultation.registration_id, id),
+  ]);
 
   const today = startOfTodayPKT();
   const upcomingAppointments = patientAppointments
@@ -67,7 +64,6 @@ const ConsultationEditPage = async ({
         <ConsultationSteps
           consultation={consultation}
           templates={templates ?? []}
-          bookingAppointments={bookingAppointments}
           type={type ?? ""}
           hasUpcomingAppointment={upcomingAppointments.length > 0}
         />

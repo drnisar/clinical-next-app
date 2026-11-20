@@ -20,3 +20,22 @@ export const todayRangePKT = (now: number = Date.now()) => {
   const start = startOfTodayPKT(now);
   return { start, end: new Date(start.getTime() + 24 * 60 * 60 * 1000) };
 };
+
+/**
+ * The Pakistan calendar day of an instant, as "YYYY-MM-DD". Appointments are
+ * stored as UTC midnight of the booked date, which is 05:00 that same day in
+ * Pakistan, so this gives back the date that was booked.
+ */
+export const ymdPKT = (date: Date | string | number) =>
+  new Date(new Date(date).getTime() + PKT_OFFSET_MS).toISOString().slice(0, 10);
+
+/** Move a "YYYY-MM-DD" date by n days (pure calendar arithmetic, no time zone). */
+export const addDaysYMD = (ymd: string, n: number) => {
+  const d = new Date(`${ymd}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+};
+
+/** Day of the week of a "YYYY-MM-DD" date: 0 = Sunday … 6 = Saturday. */
+export const weekdayYMD = (ymd: string) =>
+  new Date(`${ymd}T00:00:00Z`).getUTCDay();

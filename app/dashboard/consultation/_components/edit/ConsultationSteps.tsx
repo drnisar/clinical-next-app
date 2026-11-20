@@ -6,7 +6,6 @@ import type {
   Medication,
   MedsTemplate,
 } from "@/generated/prisma";
-import type { BookingAppointment } from "@/app/actions/actions";
 import { Box, Button, Flex, IconButton, Select, Text } from "@radix-ui/themes";
 import {
   CheckCircledIcon,
@@ -35,7 +34,6 @@ interface Props {
     instructions: Instruction[];
   };
   templates: MedsTemplate[];
-  bookingAppointments: BookingAppointment[];
   /** ?type= appointment type, passed through to the booking dialog. */
   type: string;
   hasUpcomingAppointment: boolean;
@@ -50,7 +48,6 @@ interface Props {
 const ConsultationSteps = ({
   consultation: c,
   templates,
-  bookingAppointments,
   type,
   hasUpcomingAppointment,
 }: Props) => {
@@ -173,7 +170,6 @@ const ConsultationSteps = ({
           registration_id={c.registration_id}
           consultation_id={c.consultation_id}
           type={type}
-          appointments={bookingAppointments}
         />
       )}
 

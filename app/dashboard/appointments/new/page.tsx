@@ -1,7 +1,4 @@
-import {
-  getRegistrationById,
-  getUpcomingAppointmentsForBooking,
-} from "@/app/actions/actions";
+import { getRegistrationById } from "@/app/actions/actions";
 import { isObjectId } from "@/lib/objectId";
 import CreateAppointmentComponent from "../_components/CreateAppointmentComponent";
 
@@ -15,20 +12,13 @@ const NewAppointmentPage = async ({
     return <div>Registration not found</div>;
   }
 
-  const [registration, appointments] = await Promise.all([
-    getRegistrationById(registration_id),
-    getUpcomingAppointmentsForBooking(),
-  ]);
+  const registration = await getRegistrationById(registration_id);
   if (!registration) {
     return <div>Registration not found</div>;
   }
 
   return (
-    <CreateAppointmentComponent
-      registration={registration}
-      appointments={appointments}
-      searchParams={{ type }}
-    />
+    <CreateAppointmentComponent registration={registration} defaultType={type} />
   );
 };
 

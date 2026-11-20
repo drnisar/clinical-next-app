@@ -17,6 +17,7 @@ const AppointmentDeleteButton = ({
   const deleteMutation = useMutation({
     mutationFn: () => axios.delete("/api/appointment/" + appointment_id),
     onSuccess: () => {
+      // Also refreshes the booking calendar's ["appointments", "upcoming"].
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
       router.refresh();
     },
