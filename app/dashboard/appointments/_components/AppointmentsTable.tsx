@@ -31,7 +31,16 @@ import {
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
+  Cross2Icon,
 } from "@radix-ui/react-icons";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { addDaysYMD, ymdPKT } from "@/lib/dates";
+import {
+  appointmentFiltersQuery,
+  parseAppointmentFilters,
+  resolveFilterDate,
+  type AppointmentFilters,
+} from "./appointmentFilters";
 import SelectAppointmentType, { ALL_TYPES } from "./SelectAppointmentType";
 import AppointmentActions from "./AppointmentActions";
 import { APPOINTMENT_STATUSES, statusLabel } from "@/lib/appointmentStatus";
@@ -100,59 +109,113 @@ interface Props {
   appointments: AppointmentWithRegistration[];
 }
 
-// Local calendar date as "YYYY-MM-DD" (the format <input type="date"> uses).
-const toLocalYMD = (date: Date | string) => {
-  const d = new Date(date);
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${mm}-${dd}`;
-};
+const shortDate = (ymd: string) =>
+  new Date(`${ymd}T00:00:00Z`).toLocaleDateString("en-GB", {
+    timeZone: "UTC",
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
-// Move a "YYYY-MM-DD" date by n days (local calendar, DST-safe).
-const shiftDate = (ymd: string, n: number) => {
-  const d = new Date(`${ymd}T00:00`);
-  d.setDate(d.getDate() + n);
-  return toLocalYMD(d);
-};
+/** A removable chip for one active filter. */
+const FilterChip = ({
+  label,
+  onRemove,
+}: {
+  label: string;
+  onRemove: () => void;
+}) => (
+  <Button
+    size="1"
+    variant="soft"
+    radius="full"
+    onClick={onRemove}
+    aria-label={`Remove filter: ${label}`}
+  >
+    {label} <Cross2Icon />
+  </Button>
+);
 
 const AppointmentsTable = ({ appointments }: Props) => {
   // State for table features
   const [sorting, setSorting] = useState<SortingState>([]);
+  // Search stays in memory only (patient names don't belong in URLs);
+  // type, status and date live in the URL.
   const [globalFilter, setGlobalFilter] = useState("");
-  const [selectedDate, setSelectedDate] = useState(""); // "" = all dates
-  const [selectedType, setSelectedType] = useState(ALL_TYPES);
-  const [selectedStatus, setSelectedStatus] = useState(ALL_TYPES);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const filters = parseAppointmentFilters(searchParams);
 
-  const changeDate = (ymd: string) => {
-    setSelectedDate(ymd);
-    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  const today = ymdPKT(Date.now());
+  const selectedDate = resolveFilterDate(filters.date, today);
+  const showingToday = filters.date === "today" || selectedDate === today;
+
+  const resetPage = () => setPagination((p) => ({ ...p, pageIndex: 0 }));
+  const setFilters = (patch: Partial<AppointmentFilters>) => {
+    resetPage();
+    router.replace(
+      pathname + appointmentFiltersQuery({ ...filters, ...patch }),
+      { scroll: false },
+    );
   };
-  const changeType = (type: string) => {
-    setSelectedType(type);
-    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  const changeDate = (ymd: string) => setFilters({ date: ymd || null });
+  const changeType = (type: string) =>
+    setFilters({ type: type === ALL_TYPES ? null : type });
+  const changeStatus = (status: string) =>
+    setFilters({ status: status === ALL_TYPES ? null : status });
+  const changeSearch = (text: string) => {
+    resetPage();
+    setGlobalFilter(text);
   };
-  const changeStatus = (status: string) => {
-    setSelectedStatus(status);
-    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  const clearAll = () => {
+    setGlobalFilter("");
+    resetPage();
+    router.replace(pathname, { scroll: false });
   };
-  const today = toLocalYMD(new Date());
-  const showingToday = selectedDate === today;
+
+  const chips = [
+    globalFilter && {
+      key: "search",
+      label: `“${globalFilter}”`,
+      onRemove: () => changeSearch(""),
+    },
+    filters.type && {
+      key: "type",
+      label: filters.type,
+      onRemove: () => setFilters({ type: null }),
+    },
+    filters.status && {
+      key: "status",
+      label: statusLabel(filters.status),
+      onRemove: () => setFilters({ status: null }),
+    },
+    selectedDate && {
+      key: "date",
+      label: filters.date === "today" ? "Today" : shortDate(selectedDate),
+      onRemove: () => setFilters({ date: null }),
+    },
+  ].filter((c): c is { key: string; label: string; onRemove: () => void } =>
+    Boolean(c),
+  );
+  const filtered = chips.length > 0;
 
   const appointmentsForDate = useMemo(
     () =>
       appointments.filter(
         (a) =>
-          (selectedType === ALL_TYPES || a.type === selectedType) &&
-          (selectedStatus === ALL_TYPES || a.status === selectedStatus) &&
+          (!filters.type || a.type === filters.type) &&
+          (!filters.status || a.status === filters.status) &&
           (!selectedDate ||
             (a.date_appointment &&
-              toLocalYMD(a.date_appointment) === selectedDate)),
+              ymdPKT(a.date_appointment) === selectedDate)),
       ),
-    [appointments, selectedDate, selectedType, selectedStatus],
+    [appointments, selectedDate, filters.type, filters.status],
   );
 
   // Define columns
@@ -239,7 +302,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
   const whatsappUrl = useMemo(() => {
     const byDay = new Map<string, AppointmentWithRegistration[]>();
     for (const { original: a } of shareRows) {
-      const day = a.date_appointment ? toLocalYMD(a.date_appointment) : "";
+      const day = a.date_appointment ? ymdPKT(a.date_appointment) : "";
       byDay.set(day, [...(byDay.get(day) ?? []), a]);
     }
     const sections = [...byDay.entries()]
@@ -264,13 +327,23 @@ const AppointmentsTable = ({ appointments }: Props) => {
       <Flex mb="3" justify={"between"} gap="2" wrap="wrap">
         <TextField.Root
           placeholder="Search appointments..."
+          aria-label="Search appointments (Esc to clear)"
           value={globalFilter ?? ""}
-          onChange={(e) => setGlobalFilter(e.target.value)}
+          onChange={(e) => changeSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") changeSearch("");
+          }}
           style={{ flexGrow: 1, maxWidth: 300 }}
         />
         <Flex gap="2">
-          <SelectAppointmentType value={selectedType} onChange={changeType} />
-          <Select.Root value={selectedStatus} onValueChange={changeStatus}>
+          <SelectAppointmentType
+            value={filters.type ?? ALL_TYPES}
+            onChange={changeType}
+          />
+          <Select.Root
+            value={filters.status ?? ALL_TYPES}
+            onValueChange={changeStatus}
+          >
             <Select.Trigger aria-label="Filter by status" />
             <Select.Content>
               <Select.Item value={ALL_TYPES}>All statuses</Select.Item>
@@ -291,7 +364,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
             variant="soft"
             aria-label="Previous day"
             title="Previous day"
-            onClick={() => changeDate(shiftDate(selectedDate || today, -1))}
+            onClick={() => changeDate(addDaysYMD(selectedDate || today, -1))}
           >
             <ChevronLeftIcon />
           </IconButton>
@@ -306,30 +379,39 @@ const AppointmentsTable = ({ appointments }: Props) => {
             variant="soft"
             aria-label="Next day"
             title="Next day"
-            onClick={() => changeDate(shiftDate(selectedDate || today, 1))}
+            onClick={() => changeDate(addDaysYMD(selectedDate || today, 1))}
           >
             <ChevronRightIcon />
           </IconButton>
         </Flex>
+        {/* "today" in the URL keeps meaning today, so it can be bookmarked */}
         <Button
           variant={showingToday ? "solid" : "soft"}
-          onClick={() => changeDate(showingToday ? "" : today)}
+          onClick={() => changeDate(showingToday ? "" : "today")}
         >
           Today&apos;s appointments
         </Button>
-        {selectedDate && (
-          <Button variant="ghost" color="gray" onClick={() => changeDate("")}>
-            Show all dates
-          </Button>
-        )}
-        {selectedDate && (
-          <Text size="2" color="gray">
-            {appointmentsForDate.length} appointment
-            {appointmentsForDate.length === 1 ? "" : "s"} on{" "}
-            {new Date(`${selectedDate}T00:00`).toDateString()}
-          </Text>
-        )}
       </Flex>
+
+      {/* Active filters: one chip each, plus Clear all */}
+      {filtered && (
+        <Flex mb="3" gap="2" align="center" wrap="wrap">
+          <Text size="2" color="gray">
+            Filters:
+          </Text>
+          {chips.map((c) => (
+            <FilterChip key={c.key} label={c.label} onRemove={c.onRemove} />
+          ))}
+          <Button size="1" variant="ghost" color="red" onClick={clearAll}>
+            Clear all
+          </Button>
+        </Flex>
+      )}
+      <Text as="div" size="2" color="gray" mb="3">
+        {filtered
+          ? `${shareRows.length} of ${appointments.length} appointments`
+          : `${appointments.length} appointments`}
+      </Text>
 
       {/* WhatsApp share: phones and small screens only, once a date is chosen */}
       {selectedDate && (
@@ -401,9 +483,16 @@ const AppointmentsTable = ({ appointments }: Props) => {
           );
         })}
         {table.getRowModel().rows.length === 0 && (
-          <Text size="2" align="center" color="gray">
-            No appointments found {globalFilter && "matching your search"}.
-          </Text>
+          <Flex direction="column" align="center" gap="2" py="3">
+            <Text size="2" color="gray">
+              No appointments found{filtered && " for these filters"}.
+            </Text>
+            {filtered && (
+              <Button size="1" variant="soft" onClick={clearAll}>
+                Clear filters
+              </Button>
+            )}
+          </Flex>
         )}
       </Flex>
 
@@ -459,8 +548,16 @@ const AppointmentsTable = ({ appointments }: Props) => {
             {table.getRowModel().rows.length === 0 && (
               <Table.Row>
                 <Table.Cell colSpan={columns.length} align="center">
-                  No appointments found {globalFilter && "matching your search"}
-                  .
+                  <Flex direction="column" align="center" gap="2" py="2">
+                    <Text color="gray">
+                      No appointments found{filtered && " for these filters"}.
+                    </Text>
+                    {filtered && (
+                      <Button size="1" variant="soft" onClick={clearAll}>
+                        Clear filters
+                      </Button>
+                    )}
+                  </Flex>
                 </Table.Cell>
               </Table.Row>
             )}
