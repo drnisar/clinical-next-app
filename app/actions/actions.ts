@@ -40,17 +40,30 @@ export const getRegistrationByMRN = async (mrn: string) => {
   return registration;
 };
 
-export const getAppointments = async () => {
-  const appointments = await prisma.appointment.findMany({
-    orderBy: {
-      date_appointment: "desc",
-    },
+/**
+ * All appointments for the appointments list, newest first, with only the
+ * patient fields the list shows (name, and phone/gender for the Contact card),
+ * so MRNs, dates of birth and addresses don't reach the browser.
+ */
+export const getAppointments = async () =>
+  prisma.appointment.findMany({
+    orderBy: { date_appointment: "desc" },
     include: {
-      registration: true, // Include registration details
+      registration: {
+        select: {
+          first_name: true,
+          last_name: true,
+          gender: true,
+          code: true,
+          phone_number: true,
+        },
+      },
     },
   });
-  return appointments;
-};
+
+export type AppointmentListItem = Awaited<
+  ReturnType<typeof getAppointments>
+>[number];
 
 /** One patient's appointments, newest first. */
 export const getAppointmentsForRegistration = async (registrationId: string) =>

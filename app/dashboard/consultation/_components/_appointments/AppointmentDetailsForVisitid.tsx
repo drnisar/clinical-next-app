@@ -1,6 +1,7 @@
 "use client";
 import { Appointment } from "@/generated/prisma";
 import { Badge, Button, DataList, Flex } from "@radix-ui/themes";
+import { statusColor, statusLabel } from "@/lib/appointmentStatus";
 
 interface Props {
   appointment: Appointment | null;
@@ -33,7 +34,11 @@ const AppointmentDetailsForVisitid = ({ appointment }: Props) => {
         </DataList.Item>
         <DataList.Item>
           <DataList.Label minWidth="88px">Status</DataList.Label>
-          <DataList.Value>{appointment.status}</DataList.Value>
+          <DataList.Value>
+            <Badge color={statusColor(appointment.status)}>
+              {statusLabel(appointment.status)}
+            </Badge>
+          </DataList.Value>
         </DataList.Item>
         <DataList.Item>
           <DataList.Label minWidth="88px">Notes</DataList.Label>

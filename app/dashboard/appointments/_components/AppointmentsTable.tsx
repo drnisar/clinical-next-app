@@ -11,6 +11,7 @@ import {
   Text,
   Select,
   Theme,
+  Badge,
 } from "@radix-ui/themes";
 import {
   useReactTable,
@@ -31,10 +32,12 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-// import { useAppointmentsStore } from "./AppointmentsStore";
-import SelectAppointmentType from "./SelectAppointmentType";
-import { Appointment, Registration } from "@/generated/prisma";
+import SelectAppointmentType, { ALL_TYPES } from "./SelectAppointmentType";
+import AppointmentActions from "./AppointmentActions";
+import { APPOINTMENT_STATUSES, statusLabel } from "@/lib/appointmentStatus";
+import type { AppointmentListItem } from "@/app/actions/actions";
 import {
+  badgeColorForAppointments,
   DAY_COLOUR,
   dateDDMMMYY,
   dateInUrdu,
@@ -44,8 +47,10 @@ import { WhatsappIcon } from "../../_components/ui/WhatsappIconButton";
 import ContactCard from "../../_components/ui/ContactCard";
 import DialogComponent from "../../_components/ui/DialogComponent";
 
-// Keep your existing Appointment type
-type AppointmentWithRegistration = Appointment & { registration: Registration };
+type AppointmentWithRegistration = AppointmentListItem;
+
+const fullName = (a: AppointmentWithRegistration) =>
+  `${a.registration.first_name} ${a.registration.last_name}`.toUpperCase();
 
 const columnHelper = createColumnHelper<AppointmentWithRegistration>();
 
@@ -112,10 +117,11 @@ const shiftDate = (ymd: string, n: number) => {
 
 const AppointmentsTable = ({ appointments }: Props) => {
   // State for table features
-  // const { appointments } = useAppointmentsStore();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [selectedDate, setSelectedDate] = useState(""); // "" = all dates
+  const [selectedType, setSelectedType] = useState(ALL_TYPES);
+  const [selectedStatus, setSelectedStatus] = useState(ALL_TYPES);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -125,19 +131,28 @@ const AppointmentsTable = ({ appointments }: Props) => {
     setSelectedDate(ymd);
     setPagination((p) => ({ ...p, pageIndex: 0 }));
   };
+  const changeType = (type: string) => {
+    setSelectedType(type);
+    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  };
+  const changeStatus = (status: string) => {
+    setSelectedStatus(status);
+    setPagination((p) => ({ ...p, pageIndex: 0 }));
+  };
   const today = toLocalYMD(new Date());
   const showingToday = selectedDate === today;
 
   const appointmentsForDate = useMemo(
     () =>
-      selectedDate
-        ? appointments.filter(
-            (a) =>
-              a.date_appointment &&
-              toLocalYMD(a.date_appointment) === selectedDate,
-          )
-        : appointments,
-    [appointments, selectedDate],
+      appointments.filter(
+        (a) =>
+          (selectedType === ALL_TYPES || a.type === selectedType) &&
+          (selectedStatus === ALL_TYPES || a.status === selectedStatus) &&
+          (!selectedDate ||
+            (a.date_appointment &&
+              toLocalYMD(a.date_appointment) === selectedDate)),
+      ),
+    [appointments, selectedDate, selectedType, selectedStatus],
   );
 
   // Define columns
@@ -152,13 +167,18 @@ const AppointmentsTable = ({ appointments }: Props) => {
           info.row.index + 1 + pagination.pageIndex * pagination.pageSize,
         enableSorting: false,
       }),
-      columnHelper.display({
+      // An accessor (not a display column) so the search box matches names.
+      columnHelper.accessor(fullName, {
         id: "full_name",
         header: "Full Name",
-        cell: (info) => {
-          const { first_name, last_name } = info.row.original.registration;
-          return `${first_name} ${last_name}`.toUpperCase();
-        },
+      }),
+      columnHelper.accessor("type", {
+        header: "Type",
+        cell: (info) => (
+          <Badge color={badgeColorForAppointments(info.getValue())}>
+            {info.getValue()}
+          </Badge>
+        ),
       }),
       columnHelper.accessor("plan", {
         header: "Plan",
@@ -173,14 +193,16 @@ const AppointmentsTable = ({ appointments }: Props) => {
         header: "Contact",
         cell: (info) => <PhoneWithContact appt={info.row.original} />,
       }),
-      // columnHelper.accessor("type", {
-      //   header: "Type",
-      //   cell: (info) => info.getValue(),
-      // }),
       columnHelper.accessor("notes", {
         header: "Notes",
         cell: (info) => info.getValue() ?? "N/A",
         enableSorting: false,
+      }),
+      // Label as the value so searching "no show" finds NO_SHOW.
+      columnHelper.accessor((row) => statusLabel(row.status), {
+        id: "status",
+        header: "Status",
+        cell: (info) => <AppointmentActions appointment={info.row.original} />,
       }),
       // Optional: Add an actions column if needed
       // columnHelper.display({
@@ -228,7 +250,7 @@ const AppointmentsTable = ({ appointments }: Props) => {
           : "No date";
         const lines = appts.map(
           (a, i) =>
-            `${i + 1}. ${`${a.registration.first_name} ${a.registration.last_name}`.toUpperCase()} – ${a.plan ?? "N/A"}`,
+            `${i + 1}. ${fullName(a)} – ${a.plan ?? "N/A"}`,
         );
         return [`*${heading}*`, ...lines].join("\n");
       });
@@ -246,7 +268,20 @@ const AppointmentsTable = ({ appointments }: Props) => {
           onChange={(e) => setGlobalFilter(e.target.value)}
           style={{ flexGrow: 1, maxWidth: 300 }}
         />
-        <SelectAppointmentType />
+        <Flex gap="2">
+          <SelectAppointmentType value={selectedType} onChange={changeType} />
+          <Select.Root value={selectedStatus} onValueChange={changeStatus}>
+            <Select.Trigger aria-label="Filter by status" />
+            <Select.Content>
+              <Select.Item value={ALL_TYPES}>All statuses</Select.Item>
+              {APPOINTMENT_STATUSES.map((s) => (
+                <Select.Item key={s} value={s}>
+                  {statusLabel(s)}
+                </Select.Item>
+              ))}
+            </Select.Content>
+          </Select.Root>
+        </Flex>
       </Flex>
 
       {/* Date filter */}
@@ -339,13 +374,16 @@ const AppointmentsTable = ({ appointments }: Props) => {
                       size="3"
                       style={{ wordBreak: "break-word" }}
                     >
-                      {`${appt.registration.first_name} ${appt.registration.last_name}`.toUpperCase()}
+                      {fullName(appt)}
                     </Text>
                     <Text size="2" weight="medium" style={{ flexShrink: 0 }}>
                       <FormattedDateCell date={appt.date_appointment} />
                     </Text>
                   </Flex>
                   <Text size="2">
+                    <Badge color={badgeColorForAppointments(appt.type)}>
+                      {appt.type}
+                    </Badge>{" "}
                     <Text weight="medium">Plan:</Text> {appt.plan ?? "N/A"}
                   </Text>
                   {appt.notes && (
@@ -353,11 +391,10 @@ const AppointmentsTable = ({ appointments }: Props) => {
                       {appt.notes}
                     </Text>
                   )}
-                  {phone && (
-                    <Text size="2" as="div">
-                      <PhoneWithContact appt={appt} />
-                    </Text>
-                  )}
+                  <Flex justify="between" align="center" gap="2" wrap="wrap" mt="1">
+                    <AppointmentActions appointment={appt} />
+                    {phone && <PhoneWithContact appt={appt} />}
+                  </Flex>
                 </Flex>
               </Box>
             </Theme>

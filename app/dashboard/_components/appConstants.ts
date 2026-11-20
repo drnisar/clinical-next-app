@@ -32,12 +32,6 @@ export const appointmentTypeOptions = [
   { label: "IBP", value: "IBP" },
   { label: "OPD", value: "OPD" },
 ];
-export const appointmentStatusOptions = [
-  { label: "Waiting", value: "waiting" },
-  { label: "Completed", value: "completed" },
-  { label: "No Show", value: "no_show" },
-  { label: "Postponed", value: "postponed" },
-];
 
 export const drugForms = [
   { label: "Tablet", value: "tablet" },

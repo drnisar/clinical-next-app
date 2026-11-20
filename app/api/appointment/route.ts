@@ -1,6 +1,7 @@
 import { appointmentSchema } from "@/app/validationSchemas";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isObjectId } from "@/lib/objectId";
 import { revalidatePath } from "next/cache";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (req: NextRequest) => {
@@ -28,40 +29,61 @@ export const GET = async (req: NextRequest) => {
 };
 
 export const POST = async (req: NextRequest) => {
-  const body = await req.json();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
+  }
 
-  const registration = await prisma.registration.findUnique({
-    where: { registration_id: body.registration_id },
-  });
+  const validation = appointmentSchema.safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(
+      { message: "Validation error", errors: validation.error.flatten() },
+      { status: 400 }
+    );
+  }
+  const { registration_id, date_appointment, plan, notes, type } =
+    validation.data;
 
-  if (!registration) {
+  if (!isObjectId(registration_id)) {
     return NextResponse.json(
       { message: "Registration not found" },
       { status: 404 }
     );
   }
 
-  const validation = appointmentSchema.safeParse(body);
-  if (!validation.success) {
+  try {
+    const registration = await prisma.registration.findUnique({
+      where: { registration_id },
+      select: { registration_id: true },
+    });
+    if (!registration) {
+      return NextResponse.json(
+        { message: "Registration not found" },
+        { status: 404 }
+      );
+    }
+
+    const appointment = await prisma.appointment.create({
+      data: {
+        registration_id,
+        date_appointment: new Date(date_appointment),
+        plan,
+        notes: notes ?? "",
+        type,
+      },
+    });
+
+    revalidatePath("/dashboard/appointments");
+    revalidatePath("/dashboard/consultation/edit", "page");
+
+    return NextResponse.json(appointment);
+  } catch (error) {
+    console.error("Error creating appointment", error);
     return NextResponse.json(
-      { message: "Validation error", errors: validation.error },
-      { status: 400 }
+      { message: "Error creating appointment" },
+      { status: 500 }
     );
   }
-
-  const appointment = await prisma.appointment.create({
-    data: {
-      registration_id: body.registration_id,
-      date_appointment: new Date(body.date_appointment),
-      plan: body.plan,
-      notes: body.notes,
-      type: body.type, // Add the missing 'type' property
-    },
-  });
-
-  revalidatePath("/dashboard/appointments");
-  revalidatePath("/dashboard/consultation/edit/" + body.registration_id);
-  revalidatePath("/dashboard/consultation/edit", "page");
-
-  return NextResponse.json(appointment);
 };

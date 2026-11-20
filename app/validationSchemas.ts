@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { APPOINTMENT_STATUSES } from "@/lib/appointmentStatus";
 
 export const registrationSchema = z.object({
   first_name: z.string().min(1).max(20),
@@ -18,9 +19,30 @@ export const registrationSchema = z.object({
     .nullable(),
 });
 
+const appointmentDate = z
+  .string()
+  .min(1, "Please select a valid date")
+  .refine((s) => !isNaN(Date.parse(s)), "Please select a valid date");
+
+/**
+ * Changing an appointment: its status, or a new date (rescheduling), plus
+ * optionally a new plan/notes. At least one field is required; unknown
+ * fields such as registration_id are rejected.
+ */
+export const appointmentUpdateSchema = z
+  .object({
+    status: z.enum(APPOINTMENT_STATUSES).optional(),
+    date_appointment: appointmentDate.optional(),
+    plan: z.string().min(1, "Please write plan for the appointment").max(255).optional(),
+    notes: z.string().max(1000).optional(),
+  })
+  .strict()
+  .refine((d) => Object.values(d).some((v) => v !== undefined), {
+    message: "Nothing to update",
+  });
+
 export const appointmentSchema = z.object({
-  // date_appointment: z.date().min(new Date(), "Please select a valid date"),
-  date_appointment: z.string().min(1, "Please select a valid date"),
+  date_appointment: appointmentDate,
   plan: z.string().min(1, "Please write plan for the appointment").max(255),
   registration_id: z.string().min(1, "Please select a valid registration"),
   notes: z.string().optional(),

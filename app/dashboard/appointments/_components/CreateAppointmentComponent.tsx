@@ -3,12 +3,12 @@ import { Heading, Flex } from "@radix-ui/themes";
 import RegistrationDetailsCard from "../../registration/_components/RegistrationDetailsCard";
 import AppointmentForm from "./AppointmentForm";
 import RecentAppointmentsTable from "./RecentAppointmentsTable";
-import { useRouter } from "next/navigation";
-import { Registration, Appointment } from "@/generated/prisma";
+import { Registration } from "@/generated/prisma";
+import type { BookingAppointment } from "@/app/actions/actions";
 
 interface Props {
   registration: Registration;
-  appointments: ({ registration: Registration } & Appointment)[];
+  appointments: BookingAppointment[];
   searchParams: { type: string };
 }
 const CreateAppointmentComponent = ({
@@ -16,7 +16,6 @@ const CreateAppointmentComponent = ({
   appointments,
   searchParams,
 }: Props) => {
-  const router = useRouter();
   return (
     <div>
       <Heading size="4">Create Appointment</Heading>
@@ -24,7 +23,7 @@ const CreateAppointmentComponent = ({
         <RegistrationDetailsCard registration={registration} />
         <AppointmentForm
           registration_id={registration.registration_id}
-          successFn={() => router.refresh()}
+          successFn={() => {}}
         />
         <RecentAppointmentsTable
           appointments={appointments}

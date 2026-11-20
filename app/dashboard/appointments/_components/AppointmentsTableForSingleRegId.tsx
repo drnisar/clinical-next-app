@@ -6,6 +6,7 @@ import {
   datedddDDMMMYY,
 } from "../../_components/appConstants";
 import AppointmentDeleteButton from "../../appointments/_components/AppointmentDeleteButton";
+import AppointmentActions from "../../appointments/_components/AppointmentActions";
 
 interface Props {
   appointmentsForRegistration: Appointment[];
@@ -44,6 +45,7 @@ const AppointmentsTableForSingleRegId = ({
                     <Text size="2" style={{ wordBreak: "break-word" }}>
                       {appointment.plan}
                     </Text>
+                    <AppointmentActions appointment={appointment} />
                   </Flex>
                   <AppointmentDeleteButton
                     appointment_id={appointment.appointment_id}
@@ -71,6 +73,9 @@ const AppointmentsTableForSingleRegId = ({
                       </Badge>
                     </Table.Cell>
                     <Table.Cell>{appointment.plan}</Table.Cell>
+                    <Table.Cell>
+                      <AppointmentActions appointment={appointment} />
+                    </Table.Cell>
                     <Table.Cell>
                       <AppointmentDeleteButton
                         appointment_id={appointment.appointment_id}

@@ -34,20 +34,14 @@ const AppointmentForm = ({
     onSuccess: () => {
       alert("Appointment added successfully");
       successFn();
-      // router.push("/dashboard/registration/" + registration_id);
       router.refresh();
     },
     onError: () => {
       alert("Error adding appointment");
-      console.log(errors);
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(" Subbmittting Form Data:", data);
-    // alert("Submitting Form Data: ");
-    addMutation.mutate(data);
-  };
+  const onSubmit = (data: FormData) => addMutation.mutate(data);
 
   return (
     <div>

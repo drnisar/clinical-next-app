@@ -2,6 +2,7 @@ import { Appointment } from "@/generated/prisma";
 import { Card, Flex, Heading, Link, Text } from "@radix-ui/themes";
 import React from "react";
 import AppointmentDeleteButton from "./AppointmentDeleteButton";
+import AppointmentActions from "./AppointmentActions";
 
 interface Appointments {
   appointments: Appointment[];
@@ -16,7 +17,7 @@ const AppointmentsForSingleRegId = ({
     <Card>
       <Flex justify="between">
         <Heading size="2">
-          Appointments {!appointments && `(No appointments found)`}
+          Appointments {appointments.length === 0 && "(No appointments found)"}
         </Heading>
         <Link
           href={`/dashboard/appointments/new?registration_id=${registration_id}`}
@@ -26,8 +27,7 @@ const AppointmentsForSingleRegId = ({
         </Link>
       </Flex>
 
-      {appointments &&
-        appointments.map((appointment) => (
+      {appointments.map((appointment) => (
           <Flex
             justify="between"
             key={appointment.appointment_id}
@@ -43,16 +43,13 @@ const AppointmentsForSingleRegId = ({
                   <Text color="gray">{appointment.plan}</Text>
                 </Flex>
                 <Flex gap="3">
-                  <Text weight="bold">Status</Text>
-                  <Text color="gray">{appointment.status}</Text>
-                </Flex>
-                <Flex gap="3">
                   <Text weight="bold">Notes</Text>
                   <Text color="gray">{appointment.notes}</Text>
                 </Flex>
               </Flex>
             </Flex>
-            <Flex>
+            <Flex direction="column" gap="2" align="end">
+              <AppointmentActions appointment={appointment} />
               <AppointmentDeleteButton
                 appointment_id={appointment.appointment_id}
               />

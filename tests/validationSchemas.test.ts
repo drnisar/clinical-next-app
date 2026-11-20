@@ -70,6 +70,10 @@ describe("appointmentSchema", () => {
   it("rejects a plan longer than 255 characters", () => {
     expect(appointmentSchema.safeParse({ ...valid, plan: "x".repeat(256) }).success).toBe(false);
   });
+
+  it("rejects a date that doesn't parse", () => {
+    expect(appointmentSchema.safeParse({ ...valid, date_appointment: "abc" }).success).toBe(false);
+  });
 });
 
 describe("consultationSchema", () => {

@@ -5,9 +5,22 @@ import {
   deriveLegacyFields,
   isNoteDoc,
 } from "@/app/dashboard/consultation/_components/clinicalNote/clinicalNote";
+import { completeAppointmentsForVisit } from "@/lib/completeAppointments";
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+/** Fields whose saving means the doctor has seen the patient. */
+const CONTENT_FIELDS = [
+  "clinical_note",
+  "medications",
+  "history",
+  "examination",
+  "investigations",
+  "diagnosis",
+  "instructions",
+  "plan",
+] as const;
 
 export async function GET(req: NextRequest, { params }: Props) {
   const { id } = await params;
@@ -105,6 +118,24 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     revalidatePath(`/dashboard/consultation/today`);
     revalidateTag("consultation");
     revalidateTag("consultation-" + id);
+
+    // Seeing the patient completes their appointment for that day. A status
+    // change alone (queued / in progress) doesn't count.
+    const savedNotes = CONTENT_FIELDS.some((f) => body[f] !== undefined);
+    if (savedNotes || status === "COMPLETED") {
+      try {
+        const regId =
+          updatedConsultation.registration_id ?? consultation.registration_id;
+        const visit = updatedConsultation.visit_date ?? consultation.visit_date;
+        if (regId && visit && (await completeAppointmentsForVisit(regId, visit))) {
+          revalidatePath("/dashboard/appointments");
+          revalidatePath("/dashboard");
+        }
+      } catch (error) {
+        // The consultation is saved; don't fail the request over this.
+        console.error("Error completing appointment for consultation:", error);
+      }
+    }
 
     return NextResponse.json(updatedConsultation);
   } catch (error) {
