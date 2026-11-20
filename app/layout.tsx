@@ -54,7 +54,16 @@ export default function RootLayout({ children }: PropsWithChildren) {
                   <main className="py-5">{children}</main>
                 </Container>
                 {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-                <Toaster />
+                {/* Theme colours so toasts read correctly in dark mode too */}
+                <Toaster
+                  toastOptions={{
+                    style: {
+                      background: "var(--color-panel-solid)",
+                      color: "var(--gray-12)",
+                      border: "1px solid var(--gray-a5)",
+                    },
+                  }}
+                />
               </QueryClProvider>
             </Theme>
           </AuthProvider>

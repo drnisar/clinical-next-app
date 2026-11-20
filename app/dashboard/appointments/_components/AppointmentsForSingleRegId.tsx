@@ -20,7 +20,10 @@ const AppointmentsForSingleRegId = ({
           Appointments {appointments.length === 0 && "(No appointments found)"}
         </Heading>
         <Link
-          href={`/dashboard/appointments/new?registration_id=${registration_id}`}
+          href={`/dashboard/appointments/new?${new URLSearchParams({
+            registration_id,
+            returnTo: `/dashboard/registration/${registration_id}`,
+          })}`}
           className="btn btn-primary items-end"
         >
           Create New Appointment

@@ -3,6 +3,7 @@ import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -21,9 +22,8 @@ const AppointmentDeleteButton = ({
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
       router.refresh();
     },
-    onError: (error) => {
-      alert("Error deleting appointment");
-      console.error(error);
+    onError: () => {
+      toast.error("Could not delete the appointment");
     },
   });
   const deleteAppointment = async () => {

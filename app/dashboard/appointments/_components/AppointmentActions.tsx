@@ -19,6 +19,8 @@ import { useState } from "react";
 import { ymdPKT } from "@/lib/dates";
 import AppointmentDayPicker from "./AppointmentDayPicker";
 import { useRefreshUpcomingAppointments } from "./useUpcomingAppointments";
+import { useAppointmentToasts } from "./useAppointmentToasts";
+import toast from "react-hot-toast";
 
 interface Props {
   appointment: {
@@ -46,7 +48,7 @@ const AppointmentActions = ({ appointment }: Props) => {
       refreshUpcoming();
       router.refresh();
     } catch {
-      alert("Could not update the appointment status");
+      toast.error("Could not update the appointment status");
     } finally {
       setSaving(false);
     }
@@ -84,6 +86,7 @@ const RescheduleDialog = ({ appointment }: Props) => {
   const router = useRouter();
   const refreshUpcoming = useRefreshUpcomingAppointments();
   const currentDate = ymdPKT(appointment.date_appointment);
+  const { rescheduledToast } = useAppointmentToasts();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState("");
   const [plan, setPlan] = useState("");
@@ -111,6 +114,7 @@ const RescheduleDialog = ({ appointment }: Props) => {
         ...(plan !== appointment.plan && { plan: plan.trim() }),
       });
       setOpen(false);
+      rescheduledToast(appointment, date);
       refreshUpcoming();
       router.refresh();
     } catch {

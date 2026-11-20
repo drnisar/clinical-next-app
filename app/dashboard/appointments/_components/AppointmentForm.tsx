@@ -1,10 +1,8 @@
 "use client";
 import { appointmentSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
 import {
   Button,
-  Callout,
   Flex,
   SegmentedControl,
   Text,
@@ -14,12 +12,12 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { appointmentTypeOptions } from "../../_components/appConstants";
 import AppointmentDayPicker from "./AppointmentDayPicker";
 import { useRefreshUpcomingAppointments } from "./useUpcomingAppointments";
+import { useAppointmentToasts } from "./useAppointmentToasts";
 
 type FormData = z.infer<typeof appointmentSchema>;
 
@@ -57,14 +55,21 @@ interface Props {
   registration_id: string;
   /** Pre-selected appointment type, e.g. from ?type=. */
   defaultType?: string;
-  /** Called after a successful booking (e.g. to close a dialog). */
+  /** Shown in the confirmation toast. */
+  patientName?: string;
+  /** Called after a successful booking (e.g. to close a dialog or go back). */
   onSuccess?: () => void;
 }
 
-const AppointmentForm = ({ registration_id, defaultType, onSuccess }: Props) => {
+const AppointmentForm = ({
+  registration_id,
+  defaultType,
+  patientName,
+  onSuccess,
+}: Props) => {
   const router = useRouter();
   const refreshUpcoming = useRefreshUpcomingAppointments();
-  const [booked, setBooked] = useState("");
+  const { bookedToast } = useAppointmentToasts();
   const validDefault = appointmentTypeOptions.some((o) => o.value === defaultType)
     ? defaultType
     : appointmentTypeOptions[0].value;
@@ -89,9 +94,13 @@ const AppointmentForm = ({ registration_id, defaultType, onSuccess }: Props) => 
   const date = watch("date_appointment");
 
   const addMutation = useMutation({
-    mutationFn: (data: FormData) => axios.post("/api/appointment", data),
-    onSuccess: (_res, data) => {
-      setBooked(data.date_appointment);
+    mutationFn: (data: FormData) =>
+      axios.post<{ appointment_id: string; date_appointment: string }>(
+        "/api/appointment",
+        data,
+      ),
+    onSuccess: (res, data) => {
+      bookedToast(res.data, patientName);
       reset({ ...data, date_appointment: "", plan: "", notes: "" });
       refreshUpcoming();
       router.refresh();
@@ -101,21 +110,9 @@ const AppointmentForm = ({ registration_id, defaultType, onSuccess }: Props) => 
 
   return (
     <form
-      onSubmit={handleSubmit((data) => {
-        setBooked("");
-        addMutation.mutate(data);
-      })}
+      onSubmit={handleSubmit((data) => addMutation.mutate(data))}
     >
       <Flex direction="column" gap="4">
-        {booked && (
-          <Callout.Root color="green" size="1">
-            <Callout.Icon>
-              <CheckCircledIcon />
-            </Callout.Icon>
-            <Callout.Text>Appointment booked for {longDate(booked)}.</Callout.Text>
-          </Callout.Root>
-        )}
-
         <Field label="Type" error={errors.type?.message}>
           <Controller
             control={control}
