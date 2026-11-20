@@ -21,7 +21,8 @@ export const useTodaysPatients = () =>
         );
         return response.data;
       } catch (error) {
-        // The API answers 404 when nobody is booked today: an empty queue.
+        // The API now answers [] for an empty queue; older deployments
+        // answered 404, which still means "nobody today".
         if (axios.isAxiosError(error) && error.response?.status === 404) {
           return [];
         }

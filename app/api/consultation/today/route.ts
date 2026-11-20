@@ -18,11 +18,6 @@ export async function GET(req: NextRequest) {
       registration: true, // Include registration details
     },
   });
-  if (consultations.length === 0) {
-    return NextResponse.json(
-      { message: "No consultations found" },
-      { status: 404 },
-    );
-  }
+  // An empty queue is a normal answer, not an error.
   return NextResponse.json(consultations);
 }

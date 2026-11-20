@@ -1,6 +1,8 @@
 "use client";
-import React, { useEffect } from "react";
-import { Badge, Box, Card, Flex, Table, Text } from "@radix-ui/themes";
+import React from "react";
+import { Badge, Box, Button, Card, Flex, Table, Text } from "@radix-ui/themes";
+import { MagnifyingGlassIcon, PlusIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import ButtonEditPage from "../../_components/ButtonEditPage";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -57,7 +59,7 @@ const statusColor = (status: string) =>
       : "orange";
 
 const TodaysConsultationsTable = () => {
-  const { status } = useConsultationStatus();
+  const { status, setStatus } = useConsultationStatus();
   const consultations = useQuery({
     queryKey: ["consultations", "today"],
     queryFn: async () => {
@@ -70,16 +72,47 @@ const TodaysConsultationsTable = () => {
     refetchInterval: 1000 * 60,
   });
 
-  useEffect(() => {
-    console.log(consultations.data);
-  }, [consultations.data]);
-
   if (consultations.isLoading) {
     return <p>Loading consultations...</p>;
   }
 
   if (consultations.error) {
-    return <p>Error loading consultations. Please try again.</p>;
+    return (
+      <Flex direction="column" align="center" gap="3" py="6">
+        <Text color="red">Couldn&apos;t load today&apos;s patients.</Text>
+        <Button variant="soft" onClick={() => consultations.refetch()}>
+          Try again
+        </Button>
+      </Flex>
+    );
+  }
+
+  if (!consultations.data?.length) {
+    return (
+      <Card size="3">
+        <Flex direction="column" align="center" gap="3" py="4">
+          <Text size="4" weight="bold">
+            No patients in today&apos;s clinic yet
+          </Text>
+          <Text size="2" color="gray" align="center">
+            Find a registered patient and add them to today&apos;s queue from
+            their page, or register a new patient.
+          </Text>
+          <Flex gap="3" wrap="wrap" justify="center">
+            <Button asChild>
+              <Link href="/dashboard/registration">
+                <MagnifyingGlassIcon /> Find a patient
+              </Link>
+            </Button>
+            <Button asChild variant="soft">
+              <Link href="/dashboard/registration/new">
+                <PlusIcon /> Register new patient
+              </Link>
+            </Button>
+          </Flex>
+        </Flex>
+      </Card>
+    );
   }
   const filteredConsultations =
     status === "ALL"
@@ -92,7 +125,14 @@ const TodaysConsultationsTable = () => {
       <SelectConsultationStatus />
 
       {filteredConsultations?.length === 0 ? (
-        <p>No consultations for today.</p>
+        <Flex direction="column" align="center" gap="2" py="5">
+          <Text color="gray">
+            No {status.toLowerCase().replace("_", " ")} patients today.
+          </Text>
+          <Button size="1" variant="soft" onClick={() => setStatus("ALL")}>
+            Show all
+          </Button>
+        </Flex>
       ) : (
         <>
           {/* Cards: phones and small screens (below the sm breakpoint, 768px) */}

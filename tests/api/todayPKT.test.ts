@@ -47,6 +47,13 @@ describe("'today' is the Pakistan day, whatever the server time zone", () => {
     });
   });
 
+  it("GET /api/consultation/today answers an empty queue with [] (not an error)", async () => {
+    prismaMock.consultation.findMany.mockResolvedValue([]);
+    const res = await getTodayQueue(jsonRequest("/api/consultation/today", "GET"));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual([]);
+  });
+
   it("GET /api/consultation/today/[id] queries the Pakistan day for that patient", async () => {
     prismaMock.consultation.findMany.mockResolvedValue([]);
     await getTodayForPatient(
