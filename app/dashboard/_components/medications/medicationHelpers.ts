@@ -195,3 +195,36 @@ export const emptyMedicationRow = (): MedicationRowValues => ({
   interval: "",
   instructions: "",
 });
+
+/**
+ * Drugs matching what was typed, for the drug-name search box. Names starting
+ * with the text come first, then a word starting with it, then anywhere in the
+ * name; within each group the most prescribed first (the list's own order).
+ */
+export const searchDrugs = (
+  drugs: FrequentDrug[],
+  query: string,
+  limit = 8,
+): FrequentDrug[] => {
+  const q = drugKey(query);
+  if (!q) return [];
+  const rank = (name: string) => {
+    const k = drugKey(name);
+    if (k.startsWith(q)) return 0;
+    if (k.split(/[\s\-/(]+/).some((w) => w.startsWith(q))) return 1;
+    if (k.includes(q)) return 2;
+    return -1;
+  };
+  return drugs
+    .map((d, i) => ({ d, i, r: rank(d.drug_name) }))
+    .filter((x) => x.r >= 0)
+    .sort((a, b) => a.r - b.r || a.i - b.i)
+    .slice(0, limit)
+    .map((x) => x.d);
+};
+
+/** One-line summary of an entered medicine, e.g. "40 mg · CAPSULE · ORAL · OD · 14 DAYS · after meals". */
+export const summarizeRow = (row: MedicationRowValues) => {
+  const [m] = cleanMedications([{ ...row, drug_name: row.drug_name || "-" }]);
+  return [formatUsual(m), m.instructions].filter(Boolean).join(" · ");
+};

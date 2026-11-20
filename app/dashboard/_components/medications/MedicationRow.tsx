@@ -1,11 +1,12 @@
 "use client";
 import { IconButton, Text, TextField } from "@radix-ui/themes";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import type {
-  Control,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import {
+  useWatch,
+  type Control,
+  type UseFormGetValues,
+  type UseFormRegister,
+  type UseFormSetValue,
 } from "react-hook-form";
 import { SelectInput } from "../FormComponents";
 import {
@@ -14,9 +15,10 @@ import {
   drugsFrequency,
   intervals,
 } from "../appConstants";
+import DrugSearch from "./DrugSearch";
 import {
   applyUsual,
-  drugKey,
+  summarizeRow,
   type FrequentDrug,
   type MedicationRowValues,
 } from "./medicationHelpers";
@@ -38,7 +40,7 @@ export const MED_COLUMNS = [
   "",
 ];
 
-/** Field label: visible above the input on smaller screens, a column header on large ones. */
+/** Field label: above the input in cards, a column header in the one-line layout. */
 const Field = ({
   label,
   className = "",
@@ -48,7 +50,7 @@ const Field = ({
   className?: string;
   children: React.ReactNode;
 }) => (
-  <label className={`flex min-w-0 flex-col gap-1 ${className}`}>
+  <label className={`flex min-w-0 flex-col gap-0.5 ${className}`}>
     <Text size="1" color="gray" className="med-row__label">
       {label}
     </Text>
@@ -59,6 +61,9 @@ const Field = ({
 interface Props {
   index: number;
   isLast: boolean;
+  /** Being edited. Rows without a drug name are always open. */
+  open: boolean;
+  onOpen: (index: number | null) => void;
   control: Control<MedsFormValues>;
   register: UseFormRegister<MedsFormValues>;
   setValue: UseFormSetValue<MedsFormValues>;
@@ -66,30 +71,34 @@ interface Props {
   onRemove: () => void;
   /** Enter in a field: add a row after the last one, otherwise move down. */
   onEnter: (index: number) => void;
-  suggestionsListId: string;
-  frequentByKey: Map<string, FrequentDrug>;
+  drugs: FrequentDrug[];
 }
 
 /**
- * One medicine. Where the form is wide: a single line under the header row.
- * Otherwise a card with the drug name on top and labelled fields below. The
- * layout follows the form's own width (container queries in globals.css).
- * Choosing a suggested drug fills in its usual dosing wherever the row is empty.
+ * One medicine.
+ * - Cards (most screens): a filled-in medicine shows as one summary line; tap
+ *   it to edit. While editing, the drug name is on top and the other fields
+ *   sit in a tight grid; ✓ closes it again.
+ * - Wide forms: always a single editable line under the header row.
+ * The layout follows the form's own width (container queries in globals.css).
  */
 const MedicationRow = ({
   index,
   isLast,
+  open,
+  onOpen,
   control,
   register,
   setValue,
   getValues,
   onRemove,
   onEnter,
-  suggestionsListId,
-  frequentByKey,
+  drugs,
 }: Props) => {
   const base = `drugs.${index}` as const;
-  const nameField = register(`${base}.drug_name`);
+  const row = useWatch({ control, name: base });
+  const name = String(row?.drug_name ?? "").trim();
+  const isOpen = open || !name;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -98,61 +107,90 @@ const MedicationRow = ({
     }
   };
 
-  const fillUsualFor = (name: string) => {
-    const match = frequentByKey.get(drugKey(name));
-    if (!match) return;
-    const updates = applyUsual(getValues(base), match.usual);
+  // A chosen suggestion fills its usual dosing wherever the row is empty.
+  const pick = (drug: FrequentDrug) => {
+    setValue(`${base}.drug_name`, drug.drug_name, { shouldDirty: true });
+    const updates = applyUsual(getValues(base), drug.usual);
     for (const [field, value] of Object.entries(updates)) {
       setValue(
         `${base}.${field as keyof MedicationRowValues}`,
         value as never,
-        {
-          shouldDirty: true,
-        },
+        { shouldDirty: true },
       );
     }
   };
 
+  const removeButton = (
+    <IconButton
+      type="button"
+      variant="ghost"
+      color="red"
+      onClick={onRemove}
+      aria-label={`Remove ${name || `medication ${index + 1}`}`}
+      title="Remove"
+    >
+      <Cross2Icon />
+    </IconButton>
+  );
+
   return (
     <div
       className="med-row"
+      data-open={isOpen}
       role="group"
       aria-label={`Medication ${index + 1}`}
     >
-      {/* Card: number + name + remove on one line; one-line layout: grid cells */}
+      {/* Collapsed card: one tappable line */}
+      <div className="med-row__summary">
+        <button
+          type="button"
+          className="flex min-w-0 flex-1 items-baseline gap-2 text-left"
+          onClick={() => onOpen(index)}
+          aria-label={`Edit ${name}`}
+        >
+          <Text size="2" weight="bold" className="shrink-0">
+            {index + 1}.
+          </Text>
+          <Text size="2" weight="bold" className="shrink-0 uppercase">
+            {name}
+          </Text>
+          <Text size="1" color="gray" className="truncate">
+            {row ? summarizeRow(row) : ""}
+          </Text>
+        </button>
+        {removeButton}
+      </div>
+
+      {/* Editing card: number + name + done + remove; one-line layout: grid cells */}
       <div className="med-row__top">
         <Text size="2" weight="bold" className="med-row__num" aria-hidden>
           {index + 1}.
         </Text>
         <Field label="Drug" className="flex-1">
-          <TextField.Root
-            {...nameField}
-            onChange={(e) => {
-              nameField.onChange(e);
-              fillUsualFor(e.target.value);
-            }}
-            list={suggestionsListId}
-            autoComplete="off"
-            placeholder="Start typing a drug…"
-            size="2"
-            className="uppercase"
-            data-med-name={index}
-            onKeyDown={onKeyDown}
+          <DrugSearch
+            field={register(`${base}.drug_name`)}
+            index={index}
+            drugs={drugs}
+            onPick={pick}
+            onEnter={() => onEnter(index)}
           />
         </Field>
+        {name && (
+          <div className="med-row__done">
+            <IconButton
+              type="button"
+              variant="soft"
+              color="green"
+              onClick={() => onOpen(null)}
+              aria-label="Done editing"
+              title="Done"
+            >
+              <CheckIcon />
+            </IconButton>
+          </div>
+        )}
         {/* Plain wrapper carries the grid placement (Radix button CSS overrides it). */}
-        <div className="med-row__remove">
-          <IconButton
-            type="button"
-            variant="ghost"
-            color="red"
-            onClick={onRemove}
-            aria-label={`Remove medication ${index + 1}`}
-            title="Remove"
-          >
-            <Cross2Icon />
-          </IconButton>
-        </div>
+        <div className="med-row__remove">{removeButton}</div>
       </div>
 
       <Field label="Dose">

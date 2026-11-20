@@ -116,7 +116,7 @@ const ConsultationWorkspace = ({
       </Dialog.Root>
 
       {/* Smaller screens: what to show */}
-      <Box mb="3" className="lg:hidden">
+      <Box mb="3" display={{ initial: "block", md: "none" }}>
         <SegmentedControl.Root
           value={mobileView}
           onValueChange={(v) => setMobileView(v as MobileView)}
@@ -154,7 +154,7 @@ const ConsultationWorkspace = ({
             aria-label="Summary and history"
             className={`consultation-sticky-pane ${mobileView === "consultation" ? "hidden" : "block"} w-full lg:block lg:w-[24rem] lg:shrink-0 lg:self-start lg:rounded-md lg:border lg:p-3 xl:w-[28rem]`}
           >
-            <Box mb="3" className="hidden lg:block">
+            <Box mb="3" display={{ initial: "none", md: "block" }}>
               <SegmentedControl.Root
                 value={sideTab}
                 onValueChange={(v) => setSideTab(v as Pane)}

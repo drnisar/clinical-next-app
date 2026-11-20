@@ -234,19 +234,36 @@
 
 /* Medications form (MedicationRow). Sized by the space the form has, not the
    screen: on the consultation page it sits in a narrow middle column.
-   narrow  → a card per medicine, fields in 2 columns
-   ≥560px  → a card per medicine, fields in 4 columns
-   ≥960px  → one line per medicine under a single header row */
+   cards   → a filled medicine is one summary line (tap to edit); the card being
+             edited has its fields in 3 columns (4 from 560px)
+   ≥960px  → one editable line per medicine under a single header row */
 .med-list {
   container-type: inline-size;
 }
 .med-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-  padding: 0.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem 0.5rem;
+  padding: 0.375rem 0.5rem;
   border: 1px solid var(--gray-a6);
   border-radius: var(--radius-3);
+}
+.med-row[data-open="true"] {
+  padding-bottom: 0.5rem;
+  border-color: var(--accent-a7);
+  background: var(--accent-a2);
+}
+.med-row__summary {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2rem;
+}
+/* Collapsed: only the summary line. Open: everything but the summary. */
+.med-row[data-open="false"] > :not(.med-row__summary),
+.med-row[data-open="true"] > .med-row__summary {
+  display: none;
 }
 .med-row__top {
   grid-column: 1 / -1;
@@ -255,13 +272,14 @@
   gap: 0.5rem;
 }
 .med-row__num {
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
 }
+.med-row__done,
 .med-row__remove {
-  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 .med-row__instructions {
-  grid-column: 1 / -1;
+  grid-column: span 2;
 }
 .med-row .rt-SelectTrigger {
   width: 100%; /* match the text inputs (Radix sets its own width) */
@@ -269,12 +287,20 @@
 .med-header {
   display: none;
 }
+/* Drug search list */
+.med-search-list {
+  background: var(--color-panel-solid);
+  border-color: var(--gray-a6);
+}
+.med-search-active {
+  background: var(--accent-a4);
+}
 @container (min-width: 560px) {
   .med-row {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .med-row__instructions {
-    grid-column: auto;
+    grid-column: span 1;
   }
 }
 @container (min-width: 960px) {
@@ -291,24 +317,34 @@
     padding: 0 0.25rem 0.25rem;
     border-bottom: 1px solid var(--gray-a6);
   }
-  .med-row {
+  .med-row,
+  .med-row[data-open="true"] {
     align-items: center;
     padding: 0.25rem;
     border: 0;
     border-bottom: 1px solid var(--gray-a6);
     border-radius: 0;
+    background: none;
+  }
+  /* Always editable in one line: no summary, no done button. */
+  .med-row > .med-row__summary,
+  .med-row__done {
+    display: none !important;
+  }
+  .med-row[data-open="false"] > :not(.med-row__summary):not(.med-row__top) {
+    display: flex;
   }
   /* Number and drug name become the first two cells; remove is the last. */
-  .med-row__top {
+  .med-row[data-open] > .med-row__top {
     display: contents;
   }
-  .med-row__num {
+  .med-row__num,
+  .med-row__remove {
     padding-bottom: 0;
   }
   .med-row__remove {
     grid-column: -2;
     grid-row: 1;
-    margin-bottom: 0;
   }
   .med-row__instructions {
     grid-column: auto;

@@ -4,7 +4,9 @@ import {
   cleanMedications,
   emptyMedicationRow,
   formatUsual,
+  searchDrugs,
   summarizeMedications,
+  summarizeRow,
 } from "@/app/dashboard/_components/medications/medicationHelpers";
 
 const line = (drug_name: string, extra: Record<string, unknown> = {}) => ({
@@ -144,5 +146,35 @@ describe("formatUsual", () => {
         interval: "days",
       }),
     ).toBe("500 mg · TABLET · ORAL · BD · 5 DAYS");
+  });
+});
+
+describe("searchDrugs", () => {
+  const drugs = ["Nexum", "Voltral", "Diagesic P", "Augmentin", "Co-Nexum Plus"].map(
+    (drug_name, i) => ({ drug_name, count: 10 - i, usual: { drug_dose: "", amount: 1 } }),
+  );
+  const names = (q: string) => searchDrugs(drugs, q).map((d) => d.drug_name);
+
+  it("returns nothing for an empty query", () => {
+    expect(names("  ")).toEqual([]);
+  });
+
+  it("ranks name start, then word start, then anywhere; ignores case", () => {
+    expect(names("NEX")).toEqual(["Nexum", "Co-Nexum Plus"]);
+    expect(names("p")).toEqual(["Diagesic P", "Co-Nexum Plus"]);
+    expect(names("ment")).toEqual(["Augmentin"]);
+  });
+
+  it("limits the number of matches", () => {
+    expect(searchDrugs(drugs, "a", 2)).toHaveLength(2);
+  });
+});
+
+describe("summarizeRow", () => {
+  it("joins dosing and instructions, skipping blanks", () => {
+    expect(
+      summarizeRow({ ...emptyMedicationRow(), drug_name: "Nexum", drug_dose: "40 mg", drug_form: "capsule", frequency: "od", duration: "14", interval: "days", instructions: "before breakfast" }),
+    ).toBe("40 mg · CAPSULE · OD · 14 DAYS · before breakfast");
+    expect(summarizeRow(emptyMedicationRow())).toBe("");
   });
 });

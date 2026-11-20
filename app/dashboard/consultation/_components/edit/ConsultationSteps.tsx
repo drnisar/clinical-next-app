@@ -177,8 +177,9 @@ const ConsultationSteps = ({
         />
       )}
 
-      {/* Bottom previous/next, on every screen size */}
-      <Flex justify="between" gap="2" pt="2" className="border-t">
+      {/* Bottom previous/next, on every screen size. px offsets the ghost
+          buttons' negative margins, which otherwise overflow the page on phones. */}
+      <Flex justify="between" gap="2" pt="2" px="2" className="border-t">
         {prev ? (
           <Button variant="ghost" onClick={() => goTo(prev.key)}>
             <ChevronLeftIcon /> {prev.label}

@@ -3,7 +3,7 @@ import type { Medication, MedsTemplate } from "@/generated/prisma";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   useFieldArray,
   useForm,
@@ -20,7 +20,6 @@ import MedicationRow, {
 import {
   cleanMedications,
   emptyMedicationRow,
-  formatUsual,
   type MedicationLine,
   type MedicationRowValues,
 } from "./medications/medicationHelpers";
@@ -52,16 +51,18 @@ const SaveAsTemplate = ({ control }: { control: Control<MedsFormValues> }) => {
 
 /**
  * Medications for a consultation or a discharge.
- * - Drug names suggest what you prescribe most; picking one fills its usual
+ * - The drug box searches what you prescribe most; picking one fills its usual
  *   dosing into empty fields. Enter adds/moves to the next row.
- * - Labelled fields: one line per medicine where the form is wide, else a card.
+ * - Cards show each filled medicine as one summary line (tap to edit); wide
+ *   forms show one editable line per medicine under a header row.
  * - Autosaves 2 s after the last change (plus Save); blank rows are skipped and
  *   empty Amount/Duration are saved safely (see cleanMedications).
  */
 const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
   const router = useRouter();
-  const listId = useId();
-  const { drugs: frequent, byKey: frequentByKey } = useFrequentMeds();
+  const { drugs: frequent } = useFrequentMeds();
+  // The card being edited; the others show as one summary line each.
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const { control, register, setValue, getValues, watch } =
     useForm<MedsFormValues>({
@@ -107,11 +108,17 @@ const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
     );
   const onEnter = (index: number) => {
     if (index === fields.length - 1) append(emptyMedicationRow());
+    setOpenIndex(index + 1);
     focusRow(index + 1);
   };
   const addRow = () => {
     append(emptyMedicationRow());
+    setOpenIndex(fields.length);
     focusRow(fields.length);
+  };
+  const removeRow = (index: number) => {
+    remove(index);
+    setOpenIndex(null);
   };
 
   // Templates: fill an empty list; otherwise ask Add or Replace.
@@ -122,13 +129,16 @@ const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
     (selected: MedsTemplate[]) => {
       const rows = (selected?.[0]?.meds ?? []).map(toRow);
       if (rows.length === 0) return;
-      if (cleanMedications(getValues("drugs")).length === 0) replace(rows);
-      else setPendingTemplate(rows);
+      if (cleanMedications(getValues("drugs")).length === 0) {
+        setOpenIndex(null);
+        replace(rows);
+      } else setPendingTemplate(rows);
     },
     [getValues, replace],
   );
   const applyTemplate = (mode: "add" | "replace") => {
     if (!pendingTemplate) return;
+    setOpenIndex(null);
     if (mode === "replace") {
       replace(pendingTemplate);
     } else {
@@ -168,20 +178,9 @@ const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
         </Flex>
       </Flex>
 
-      {/* Suggestions: the drugs you prescribe most, with usual dosing */}
-      <datalist id={listId}>
-        {frequent.map((d) => (
-          <option
-            key={d.drug_name}
-            value={d.drug_name}
-            label={formatUsual(d.usual)}
-          />
-        ))}
-      </datalist>
-
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="med-list flex flex-col gap-2"
+        className="med-list flex flex-col gap-1.5"
       >
         {fields.length > 0 && (
           <div className="med-header" aria-hidden>
@@ -198,14 +197,15 @@ const MedicationsForm = ({ id, slug, medications, templates }: Props) => {
             key={field.id}
             index={index}
             isLast={index === fields.length - 1}
+            open={openIndex === index}
+            onOpen={setOpenIndex}
             control={control}
             register={register}
             setValue={setValue}
             getValues={getValues}
-            onRemove={() => remove(index)}
+            onRemove={() => removeRow(index)}
             onEnter={onEnter}
-            suggestionsListId={listId}
-            frequentByKey={frequentByKey}
+            drugs={frequent}
           />
         ))}
 
